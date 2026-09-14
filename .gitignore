@@ -51,3 +51,9 @@ papers/original/*.pdf
 !kaggle/outputs_phase5/fanet-phase5.log
 # Machine-local config
 .env
+
+# Kaggle kernel output raw data (dataset copies & duplicate checkpoints — not versioned)
+kaggle/outputs_phase5/Kvasir-SEG/
+kaggle/outputs_phase5/checkpoints_phase5/
+kaggle/outputs_phase6/Kvasir-SEG/
+kaggle/outputs_phase6/checkpoints_phase6/
