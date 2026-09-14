@@ -1,0 +1,43 @@
+{
+  "entries": [
+    {
+      "path": "tools/opencode/skills"
+    },
+    {
+      "path": "~/.config/opencode/external/scientific-agent-skills/skills",
+      "include_only": [
+        "pytorch-lightning",
+        "scikit-learn",
+        "statistical-analysis",
+        "matplotlib",
+        "seaborn",
+        "scientific-visualization",
+        "optimize-for-gpu",
+        "get-available-resources",
+        "pathml",
+        "histolab",
+        "pydicom",
+        "scientific-writing",
+        "literature-review",
+        "paper-lookup",
+        "research-lookup",
+        "bgpt-paper-search",
+        "citation-management",
+        "peer-review",
+        "markdown-mermaid-writing",
+        "docx",
+        "pptx",
+        "scientific-slides",
+        "venue-templates",
+        "latex-posters",
+        "exploratory-data-analysis",
+        "hypothesis-generation",
+        "experimental-design",
+        "exa-search",
+        "parallel-web",
+        "hugging-science",
+        "markitdown"
+      ]
+    }
+  ]
+}
