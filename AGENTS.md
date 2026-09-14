@@ -15,6 +15,10 @@
 
 - Mỗi phase nghiên cứu: viết report theo `docs/reports/_TEMPLATE.md`,
   cập nhật index `docs/reports/README.md` (timeline + experiment tracking).
+- **Prompt/phiên làm việc:** lưu prompt giao cho AI assistant dưới
+  `docs/prompts/` với tên có ngày (vd `docs/prompts/2026-09-09_<slug>.md`),
+  nội dung tóm tắt mục tiêu + phạm vi + constraint để tái lập ngữ cảnh và
+  theo dõi repo đang làm tới đâu. Commmit/push theo git workflow chung.
 - Khi research (tìm paper, phân tích literature, xác định research gap):
   BẮT BUỘC dùng scientific agent research skills để hỗ trợ —
   literature-review, paper-lookup, citation-management, exa-search,

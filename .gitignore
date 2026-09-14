@@ -28,6 +28,9 @@ notebooks/.ipynb_checkpoints/
 docs/*.pdf
 papers_not_accessible.md
 
+# Prompts (phiên làm việc — giữ ở local, không versioned)
+docs/prompts/
+
 # PDF translation (VI-Translate integration)
 # Isolated runtime environment (never commit)
 papers/.vitranslate-venv/
