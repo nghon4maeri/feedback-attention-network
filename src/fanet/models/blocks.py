@@ -57,21 +57,56 @@ class ResidualBlock(nn.Module):
 class MixPool(nn.Module):
     """MixPool with configurable gating.
 
+    BACKWARD-COMPATIBLE: existing checkpoints load without any change.
+    Default args reproduce original FANet behaviour exactly.
+
+    ── Legacy gate= parameter (kept for compat) ──────────────────────────
     gate:
         "binary" - hard threshold (original FANet, zero gradient to fmask)
         "ste"    - hard forward + straight-through gradient to fmask
         "soft"   - soft gating max(fmask, m_fg), full gradient
+
+    ── Phase-7B: new parameters ──────────────────────────────────────────
+    gating_mode (takes priority over gate= if set explicitly):
+        "hard"      - identical to gate="binary"   [DEFAULT, compat]
+        "hard_ste"  - identical to gate="ste"
+        "soft_max"  - identical to gate="soft"
+        "soft_or"   - Smooth Probabilistic OR: 1-(1-fmask)(1-m_fg)
+                      Fully differentiable; saturates gracefully near 0/1.
+
+    detach_feedback:
+        False  - original: m_fg participates in backward graph  [DEFAULT]
+        True   - m_fg.detach() before gating; severs the Feedback Trap:
+                   * eliminates BN drift (e1.r1.bn3 KL=33.63 -> 0)
+                   * restores gradient norm to nhánh fmask
+                   * fmask MUST learn to suppress FP via Tversky loss
+
     dual_path:
-        False - mask m is [B,1,H,W] foreground only
-        True  - mask m is [B,2,H,W] = [m_fg, m_bg]; confident background
-                suppresses activation (kept = keep * (1 - m_bg))
+        False - mask m is [B,1,H,W] foreground only               [DEFAULT]
+        True  - mask m is [B,2,H,W] = [m_fg, m_bg]
     """
-    def __init__(self, in_c, out_c, gate="binary", dual_path=False):
+    _GATE_ALIAS = {"binary": "hard", "ste": "hard_ste", "soft": "soft_max"}
+    _VALID_MODES = ("hard", "hard_ste", "soft_max", "soft_or")
+
+    def __init__(self, in_c, out_c, gate="binary", dual_path=False,
+                 gating_mode=None, detach_feedback=False):
         super(MixPool, self).__init__()
 
-        assert gate in ("binary", "ste", "soft"), f"unknown gate {gate}"
-        self.gate = gate
+        # ── Resolve gating_mode (new) vs gate (legacy) ──────────────────
+        if gating_mode is not None:
+            assert gating_mode in self._VALID_MODES, (
+                f"Unknown gating_mode '{gating_mode}'. Valid: {self._VALID_MODES}"
+            )
+            self.gating_mode = gating_mode
+        else:
+            assert gate in self._GATE_ALIAS, (
+                f"Unknown gate '{gate}'. Valid: {list(self._GATE_ALIAS)}"
+            )
+            self.gating_mode = self._GATE_ALIAS[gate]
+
+        self.gate = gate              # preserve legacy attribute
         self.dual_path = dual_path
+        self.detach_feedback = detach_feedback
 
         self.fmask = nn.Sequential(
             nn.Conv2d(in_c, out_c, kernel_size=3, padding=1),
@@ -94,23 +129,56 @@ class MixPool(nn.Module):
         )
 
     def forward(self, x, m):
-        fmask = self.fmask(x)  # soft attention, differentiable
+        fmask = self.fmask(x)   # [B,1,h,w] in (0,1), always differentiable
 
-        m = nn.MaxPool2d((m.shape[2]//x.shape[2], m.shape[3]//x.shape[3]))(m)
+        # ── Downsample mask to feature map resolution ────────────────────
+        stride_h = m.shape[2] // x.shape[2]
+        stride_w = m.shape[3] // x.shape[3]
+        m = nn.MaxPool2d((stride_h, stride_w))(m)
         m_fg = m[:, 0:1]
-        m_bg = m[:, 1:2] if (self.dual_path and m.shape[1] > 1) else torch.zeros_like(m_fg)
+        m_bg = (m[:, 1:2] if (self.dual_path and m.shape[1] > 1)
+                else torch.zeros_like(m_fg))
 
-        if self.gate == "binary":
+        # ── Phase-7B: detach feedback from gradient graph ────────────────
+        # Severs the Feedback Trap:
+        #   m_fg carries spatial hint at inference, but ZERO gradient
+        #   flows back into the recurrent loop. fmask now owns all FP
+        #   gradient signal → Tversky loss can reshape encoder weights.
+        if self.detach_feedback:
+            m_fg = m_fg.detach()
+            m_bg = m_bg.detach()
+
+        # ── Gating ──────────────────────────────────────────────────────
+        if self.gating_mode == "hard":
+            # Original FANet — hard OR, gradient killed by (>0.5)
             fmask_g = (fmask > 0.5).float()
-        elif self.gate == "ste":
+            keep = torch.maximum(fmask_g, m_fg)
+
+        elif self.gating_mode == "hard_ste":
+            # STE: hard forward, straight-through backward
             fmask_g = (fmask > 0.5).float() + fmask - fmask.detach()
-        else:  # soft
-            fmask_g = fmask
+            keep = torch.maximum(fmask_g, m_fg)
 
-        keep = torch.maximum(fmask_g, m_fg)              # fg path (OR semantics)
+        elif self.gating_mode == "soft_max":
+            # Soft max (old "soft" gate) — continuous element-wise max
+            keep = torch.maximum(fmask, m_fg)
+
+        else:  # "soft_or"
+            # Smooth Probabilistic OR:  keep = 1 - (1-p)(1-q)
+            # Properties:
+            #   • keep=0 only when BOTH p=0 AND q=0
+            #   • keep=1 when either p=1 or q=1
+            #   • Fully differentiable everywhere
+            #   • With detach_feedback: d(keep)/d(fmask) = (1-m_fg)
+            #     → gradient scales inversely with prior mask confidence,
+            #     so the network is pushed hardest where mask is uncertain.
+            keep = 1.0 - (1.0 - fmask) * (1.0 - m_fg)
+
+        # ── Background suppression (dual_path only) ──────────────────────
         if self.dual_path:
-            keep = keep * (1.0 - m_bg)                   # bg suppression
+            keep = keep * (1.0 - m_bg)
 
+        # ── Split-Transform-Merge ────────────────────────────────────────
         x1 = x * keep
         x1 = self.conv1(x1)
         x2 = self.conv2(x)

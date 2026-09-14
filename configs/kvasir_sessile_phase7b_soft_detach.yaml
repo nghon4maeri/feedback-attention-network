@@ -1,0 +1,49 @@
+# FANet Phase-7B: Detached Soft-OR Gate + Asymmetric (Tversky) Loss
+# Inherits all base settings from kvasir_sessile.yaml and overrides Phase-7B specifics.
+#
+# Changes vs baseline:
+#   model.gating_mode    : "soft_or"  (smooth probabilistic OR, fully differentiable)
+#   model.detach_feedback: true       (severs BN-drift / gradient-attenuation trap)
+#   train.loss           : "tversky"  (asymmetric, penalises FP — proved -3.25pp FP in Phase 6)
+#   train.feedback       : true       (recurrent loop ACTIVE — this is the key test)
+#   paths.*              : Phase-7B specific to avoid overwriting Phase-5/6 artifacts
+
+dataset:
+  root: data/sessile-main-Kvasir-SEG
+  image_size: [256, 256]
+
+train:
+  batch_size: 2
+  epochs: 200
+  lr: 0.0001
+  seed: 43            # same as Phase 5/6 for direct comparability
+
+  # ── Phase-7B Model Config ─────────────────────────────────────────────
+  gate: "binary"              # legacy param kept for compat (overridden by gating_mode)
+  gating_mode: "soft_or"     # smooth prob-OR: 1-(1-fmask)(1-m_fg)
+  detach_feedback: true       # KEY: severs Feedback Trap gradient path
+  dual_path: false
+
+  # ── Loss ──────────────────────────────────────────────────────────────
+  loss: "tversky"
+  tversky_alpha: 0.7          # penalise FP heavily (alpha > 0.5)
+  tversky_beta: 0.3
+
+  # ── Feedback Loop ─────────────────────────────────────────────────────
+  no_feedback: false          # recurrent mask-at-input ACTIVE
+
+  # ── Augmentation (same as baseline) ──────────────────────────────────
+  augmentation:
+    rotate_limit: 35
+    rotate_p: 0.3
+    hflip_p: 0.3
+    vflip_p: 0.3
+    dropout_p: 0.3
+
+eval:
+  num_iter: 10
+
+paths:
+  checkpoint: checkpoints_phase7b/ckpt_M12_soft_or_detach.pth
+  train_log:  logs/phase7b_M12_train.log
+  results:    results/phase7b

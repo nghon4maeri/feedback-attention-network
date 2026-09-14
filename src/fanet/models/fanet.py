@@ -2,14 +2,17 @@ import torch
 import torch.nn as nn
 from .blocks import ResidualBlock, MixPool
 
+
 class EncoderBlock(nn.Module):
-    def __init__(self, in_c, out_c, gate="binary", dual_path=False, name=None):
+    def __init__(self, in_c, out_c, gate="binary", dual_path=False,
+                 gating_mode=None, detach_feedback=False, name=None):
         super(EncoderBlock, self).__init__()
 
         self.name = name
         self.r1 = ResidualBlock(in_c, out_c)
         self.r2 = ResidualBlock(out_c, out_c)
-        self.p1 = MixPool(out_c, out_c, gate=gate, dual_path=dual_path)
+        self.p1 = MixPool(out_c, out_c, gate=gate, dual_path=dual_path,
+                          gating_mode=gating_mode, detach_feedback=detach_feedback)
         self.pool = nn.MaxPool2d((2, 2))
 
     def forward(self, inputs, masks):
@@ -19,14 +22,17 @@ class EncoderBlock(nn.Module):
         o = self.pool(p)
         return o, x
 
+
 class DecoderBlock(nn.Module):
-    def __init__(self, in_c, out_c, gate="binary", dual_path=False, name=None):
+    def __init__(self, in_c, out_c, gate="binary", dual_path=False,
+                 gating_mode=None, detach_feedback=False, name=None):
         super(DecoderBlock, self).__init__()
 
         self.upsample = nn.ConvTranspose2d(in_c, in_c, kernel_size=4, stride=2, padding=1)
         self.r1 = ResidualBlock(in_c+in_c, out_c)
         self.r2 = ResidualBlock(out_c, out_c)
-        self.p1 = MixPool(out_c, out_c, gate=gate, dual_path=dual_path)
+        self.p1 = MixPool(out_c, out_c, gate=gate, dual_path=dual_path,
+                          gating_mode=gating_mode, detach_feedback=detach_feedback)
 
     def forward(self, inputs, skip, masks):
         x = self.upsample(inputs)
@@ -36,29 +42,40 @@ class DecoderBlock(nn.Module):
         p = self.p1(x, masks)
         return p
 
+
 class FANet(nn.Module):
     """FANet with configurable MixPool gating.
 
-    gate: "binary" (original) | "ste" | "soft"
-    dual_path: False (mask [B,1,H,W]) | True (mask [B,2,H,W] = [m_fg, m_bg])
+    Backward-compatible: FANet() reproduces original behaviour exactly.
+
+    New Phase-7B parameters:
+        gating_mode: "hard" | "hard_ste" | "soft_max" | "soft_or"
+        detach_feedback: bool — severs BN-drift / gradient-attenuation trap
     """
-    def __init__(self, gate="binary", dual_path=False):
+    def __init__(self, gate="binary", dual_path=False,
+                 gating_mode=None, detach_feedback=False):
         super(FANet, self).__init__()
 
         self.gate = gate
         self.dual_path = dual_path
+        self.gating_mode = gating_mode
+        self.detach_feedback = detach_feedback
 
-        self.e1 = EncoderBlock(3, 32, gate=gate, dual_path=dual_path)
-        self.e2 = EncoderBlock(32, 64, gate=gate, dual_path=dual_path)
-        self.e3 = EncoderBlock(64, 128, gate=gate, dual_path=dual_path)
-        self.e4 = EncoderBlock(128, 256, gate=gate, dual_path=dual_path)
+        # Shared kwargs forwarded to every Encoder/DecoderBlock
+        mp_kwargs = dict(gate=gate, dual_path=dual_path,
+                         gating_mode=gating_mode, detach_feedback=detach_feedback)
 
-        self.d1 = DecoderBlock(256, 128, gate=gate, dual_path=dual_path)
-        self.d2 = DecoderBlock(128, 64, gate=gate, dual_path=dual_path)
-        self.d3 = DecoderBlock(64, 32, gate=gate, dual_path=dual_path)
-        self.d4 = DecoderBlock(32, 16, gate=gate, dual_path=dual_path)
+        self.e1 = EncoderBlock(3, 32, **mp_kwargs)
+        self.e2 = EncoderBlock(32, 64, **mp_kwargs)
+        self.e3 = EncoderBlock(64, 128, **mp_kwargs)
+        self.e4 = EncoderBlock(128, 256, **mp_kwargs)
 
-        # Output head giữ nguyên 17 kênh: concat chỉ với m_fg (kênh 0)
+        self.d1 = DecoderBlock(256, 128, **mp_kwargs)
+        self.d2 = DecoderBlock(128, 64, **mp_kwargs)
+        self.d3 = DecoderBlock(64, 32, **mp_kwargs)
+        self.d4 = DecoderBlock(32, 16, **mp_kwargs)
+
+        # Output head: concat d4 with m_fg (1 channel)
         self.output = nn.Conv2d(16+1, 1, kernel_size=1, padding=0)
 
     def forward(self, x):
@@ -80,14 +97,17 @@ class FANet(nn.Module):
 
         return output
 
+
 if __name__ == "__main__":
     x = torch.randn((2, 3, 256, 256))
     m = torch.randn((2, 1, 256, 256))
+
+    # Original behaviour
     model = FANet()
     y = model([x, m])
-    print("single-path:", y.shape)
+    print("original (binary, no detach):", y.shape)
 
-    m2 = torch.randn((2, 2, 256, 256))
-    model2 = FANet(gate="ste", dual_path=True)
-    y2 = model2([x, m2])
-    print("dual-path ste:", y2.shape)
+    # Phase-7B: Detached Soft-OR
+    model7b = FANet(gating_mode="soft_or", detach_feedback=True)
+    y7b = model7b([x, m])
+    print("Phase-7B (soft_or + detach):  ", y7b.shape)
