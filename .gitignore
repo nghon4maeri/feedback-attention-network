@@ -57,6 +57,7 @@ kaggle/outputs_phase5/Kvasir-SEG/
 kaggle/outputs_phase5/checkpoints_phase5/
 kaggle/outputs_phase6/Kvasir-SEG/
 kaggle/outputs_phase6/checkpoints_phase6/
+kaggle/downloads_phase7b/
 
 # Antigravity local linked skills (directory junctions to external skills - keep configs tracked)
 .agents/skills/
