@@ -177,7 +177,7 @@ def main():
 
     print("\nTop 5 Cases selected:")
     for rank, item in enumerate(top5, 1):
-        print(f"  Rank {rank}: {item['filename']} | FP M11={item['fp_11']:>5} -> M12={item['fp_12']:>5} (ΔFP={item['fp_reduction']:>+5} px) | Dice M11={item['dice_11']:.3f} -> M12={item['dice_12']:.3f}")
+        print(f"  Rank {rank}: {item['filename']} | FP M11={item['fp_11']:>5} -> M12={item['fp_12']:>5} (dFP={item['fp_reduction']:>+5} px) | Dice M11={item['dice_11']:.3f} -> M12={item['dice_12']:.3f}")
 
     # 3. Render 5x4 Matplotlib Grid
     fig, axes = plt.subplots(5, 4, figsize=(14, 17.5), dpi=300)
@@ -239,8 +239,8 @@ def main():
     plt.close()
 
     print(f"\n[SUCCESS] Qualitative figure saved to:")
-    print(f"  ✔ {png_path.relative_to(REPO_ROOT)} (300 DPI PNG)")
-    print(f"  ✔ {pdf_path.relative_to(REPO_ROOT)} (Vector PDF)")
+    print(f"  [OK] {png_path.relative_to(REPO_ROOT)} (300 DPI PNG)")
+    print(f"  [OK] {pdf_path.relative_to(REPO_ROOT)} (Vector PDF)")
 
 
 if __name__ == "__main__":
