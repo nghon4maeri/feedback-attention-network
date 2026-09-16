@@ -11,7 +11,7 @@ Our proposed Detached Soft-OR gating ($M_{12}$) directly addresses this clinical
 \subsubsection{Rigorous Statistical Confirmation}
 To verify that the empirical superiority of $M_{12}$ over the Feedback Trap baseline ($M_{11}$) is statistically robust across both images and random initializations, we conducted paired non-parametric testing over $200$ independent evaluation instances ($40\text{ validation images} \times 5\text{ seeds}$) using standard 4-iteration recurrent inference with Otsu initialization.
 
-\begin{table}[t]
+\begin{table*}[t!]
 \centering
 \caption{Paired Statistical Significance (Wilcoxon Signed-Rank Test, $N = 200$ Evaluation Instances).}
 \label{tab:wilcoxon}
@@ -25,7 +25,7 @@ Dice Score (Multi-Seed)    & 0.2517  & 0.2995  & +19.0\% gain & --      & $p = 0
 Inter-Seed Variance (Std)  & 0.0869  & 0.0291  & -66.5\% drop & --      & $F$-test $p < 0.01$ \\
 \bottomrule
 \end{tabularx}
-\end{table}
+\end{table*}
 
 As detailed in Table~\ref{tab:wilcoxon}, over-segmentation suppression by $M_{12}$ is overwhelmingly significant: Wilcoxon signed-rank test yields $W = 4,055.0$ with \textbf{$p < 0.001$} (exact $p = 1.13 \times 10^{-6}$) and a large rank-biserial correlation of $r = 0.422$. Mean Precision increases significantly from $6.84\%$ to $10.81\%$ ($p = 0.0306$).
 
