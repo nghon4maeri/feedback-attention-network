@@ -10,11 +10,11 @@
 
 Accurate medical image segmentation, particularly for subtle colorectal lesions such as sessile polyps, requires precise boundary discrimination against visually similar healthy mucosa. Recurrent feedback architectures, exemplified by Feature Attention Networks (FANet), promise iterative refinement by reinjecting past prediction masks into early encoder features across training epochs. However, these architectures frequently suffer from chronic false-positive over-segmentation. Strikingly, while dedicated asymmetric boundary loss functions (e.g., Tversky loss) effectively suppress over-segmentation in feedforward backbones, their remedial effect is completely neutralized once recurrent feedback is engaged. 
 
-In this work, we diagnose the root cause of this failure: the *Feedback Trap*. We reveal that conventional hard binary gating—expressed as $\max(\mathbb{I}(\text{fmask} > 0.5), m_{\text{fg}})$—yields zero gradients almost everywhere for the learnable attention branch, while simultaneously transmitting unchecked recurrent errors that attenuate gradient magnitude by over $79\%$, permanently locking the encoder into hallucinated background lesions. 
+In this work, we present a rigorous **mechanistic study** diagnosing the root cause of this failure: the *Feedback Trap*. Rather than competing on generic benchmark leaderboards, our goal is to dissect the internal mathematical dynamics of recurrent feedback in biomedical vision. We reveal that conventional hard binary gating—expressed as $\max(\mathbb{I}(\text{fmask} > 0.5), m_{\text{fg}})$—yields zero gradients almost everywhere for the learnable attention branch, while simultaneously transmitting unchecked recurrent errors that attenuate gradient magnitude by over $79\%$, permanently locking the encoder into hallucinated background lesions. 
 
 To resolve this dilemma, we propose **Detached Soft-OR Gating**, a mathematically elegant, zero-parameter reformulation. Our method substitutes discontinuous thresholding with a probabilistic smooth union while detaching the recurrent feedback tensor from backward automatic differentiation. Analytically, the gradient with respect to the learnable mask becomes strictly proportional to background uncertainty ($\frac{\partial \text{keep}}{\partial \text{fmask}} = 1 - m_{\text{fg}}$), dynamically channeling updates into ambiguous boundary zones while severing the corruptive feedback loop. 
 
-Benchmarked across 5 independent seeds ($200$ epochs each) on the Kvasir-SEG (Sessile) dataset, our approach slashes False Positive Rate by **$42.8\%$** (down to $2.46\%$), elevates mean Dice score by **$+4.77\text{ pp}$** (to $29.95\%$), increases Precision by **$+7.50\text{ pp}$**, reduces inter-seed variance by **$66.5\%$**, and establishes complete immunity against catastrophic representation collapse. Rigorous paired non-parametric testing across $200$ evaluation points confirms that over-segmentation suppression is highly statistically significant (Wilcoxon signed-rank $W = 4,055.0$, $p < 0.001$).
+Benchmarked across 5 independent seeds ($200$ epochs each) on Kvasir-SEG (Sessile), our approach slashes False Positive Rate by **$42.8\%$** (down to $2.46\%$), elevates mean Dice score by **$+4.77\text{ pp}$** (to $29.95\%$), increases Precision by **$+7.50\text{ pp}$**, reduces inter-seed variance by **$66.5\%$**, and establishes complete immunity against catastrophic representation collapse (paired Wilcoxon $W = 4,055.0$, $p < 0.001$). Furthermore, zero-shot cross-center evaluation on the unseen CVC-ClinicDB dataset ($N = 612$) demonstrates sustained out-of-distribution superiority, improving Dice by **$+2.67\text{ pp}$** ($p = 1.61 \times 10^{-15}$) and elevating recall by **$+6.48\text{ pp}$** with a $41.1\%$ reduction in inter-seed variance.
 
 ---
 
@@ -47,12 +47,15 @@ This formulation produces two fatal mathematical and representational pathologie
 1. **Gradient Vanishing in Internal Attention:** Because the indicator function $\mathbb{I}(\cdot > 0.5)$ has a derivative of zero almost everywhere, $\frac{\partial \text{keep}}{\partial \text{fmask}} \equiv 0$. The learnable convolutional layers tasked with extracting local lesion attention receive zero direct supervision from the segmentation loss.
 2. **Toxic Recurrent Backpropagation:** Concurrently, non-zero gradients backpropagate through the recurrent mask branch ($m_{\text{fg}}$). When the network makes an early false-positive error, that erroneous prior is reintroduced in the next epoch. Because the network backpropagates through this unvalidated recursive loop, early encoder Batch Normalization distributions drift catastrophically ($D_{\text{KL}} = 33.63$ at `e1.r1.bn3`), and mask gradient norms collapse by $79.6\%$. The network becomes permanently over-committed to hallucinated lesions, overpowering any loss-level penalty.
 
+### Framing: A Mechanistic Study of Recurrent Feedback
+**Disentangling Mechanistic Principles from SOTA Chasing:** We explicitly frame this paper as a **mechanistic foundational study** rather than an engineering effort to surpass state-of-the-art leaderboards on omnibus polyp challenges. Our explicit scientific goal is to isolate and resolve a fundamental mathematical pathology in recurrent medical vision architectures. By holding the backbone, augmentation pipeline, and training regime strictly constant, we ensure that every measured difference is attributable directly to the gating mechanics and gradient routing within `MixPool`.
+
 ### Contributions of This Work
 To break the Feedback Trap without discarding the intrinsic benefits of recurrent refinement, we propose **Detached Soft-OR Gating**—a principled reformulation grounded in Boolean continuous relaxation and gradient path analysis. Our contributions are threefold:
 
 1. **Diagnostic Formulation of the Feedback Trap:** We provide the first systematic diagnosis of gradient paralysis and loss neutralization in recurrent medical segmentation networks, combining empirical layer-wise BatchNorm drift, representational cosine similarity, and gradient norm tracking.
 2. **Zero-Parameter Detached Soft-OR Formulation:** We redesign the `MixPool` gating operator using smooth probabilistic union coupled with gradient detachment ($\text{detach}(m_{\text{fg}})$). We prove analytically that this transformation guarantees continuous gradient flow to the internal attention branch, strictly proportional to the uncertainty of past predictions ($\frac{\partial \text{keep}}{\partial \text{fmask}} = 1 - m_{\text{fg}}$), requiring zero additional learnable parameters.
-3. **Multi-Seed Empirical Validation and Qualitative Eradication:** Through a 5-seed benchmark on Kvasir-SEG (Sessile), we demonstrate that our method reduces the False Positive Rate by **$42.8\%$** (dropping from $4.30\%$ to $2.46\%$), elevates mean Dice by **$+4.77\text{ pp}$** (to $29.95\%$), improves Precision by **$+7.50\text{ pp}$**, compresses inter-seed standard deviation by **$66.5\%$**, and eradicates catastrophic representation collapse. Paired Wilcoxon signed-rank tests across $200$ instances confirm statistical significance at $p < 0.001$.
+3. **Multi-Seed and Cross-Center Empirical Validation:** Through a 5-seed benchmark on Kvasir-SEG (Sessile), we demonstrate that our method reduces the False Positive Rate by **$42.8\%$** (dropping from $4.30\%$ to $2.46\%$), elevates mean Dice by **$+4.77\text{ pp}$** (to $29.95\%$), improves Precision by **$+7.50\text{ pp}$**, compresses inter-seed standard deviation by **$66.5\%$**, and eradicates catastrophic representation collapse ($p < 0.001$). Furthermore, in zero-shot cross-center validation on CVC-ClinicDB ($N = 612$), our method demonstrates robust multi-center generalization, achieving a statistically significant Dice increase ($+2.67\text{ pp}$, $p = 1.61 \times 10^{-15}$) and reducing inter-seed variance by $41.1\%$.
 
 ---
 
@@ -255,17 +258,57 @@ The defining clinical flaw of the original recurrent architecture was rampant ov
 
 ### 4.3. Qualitative Comparison and Error Analysis
 
-Figure 1 provides visual confirmation of the quantitative metrics across representative validation samples exhibiting severe over-segmentation in $M_{11}$.
+Figure 1 provides visual confirmation of the quantitative metrics across representative validation samples exhibiting severe over-segmentation in the baseline model ($M_{11}$).
 
 ```
 [Figure 1: See paper_figures/qualitative_comparison.pdf and paper_figures/qualitative_comparison.png]
 ```
 
-**Figure 1 Caption:** Qualitative comparison between $M_{11}$ (Feedback Trap baseline) and $M_{12}$ (Proposed Detached Soft-OR). Columns from left to right: (a) Input colonoscopy frame, (b) Ground truth annotation, (c) Prediction of $M_{11}$ (FB + Hard Gate), and (d) Prediction of $M_{12}$ (FB + Soft-OR Detach). Green regions denote True Positives; Red regions highlight False Positive over-segmentation; Yellow regions denote False Negatives; White contour outlines the Ground Truth boundary. Notice the complete eradication of extensive spurious background lesions (Red) in $M_{12}$.
+**Figure 1 Caption:** Qualitative comparison between $M_{11}$ (Feedback Trap baseline) and $M_{12}$ (Proposed Detached Soft-OR) on Kvasir-SEG (Sessile) validation cases. Columns from left to right: (a) Input colonoscopy frame, (b) Ground truth annotation, (c) Prediction of $M_{11}$ (FB + Hard Gate), and (d) Prediction of $M_{12}$ (FB + Soft-OR Detach). Green regions denote True Positives; Red regions highlight False Positive over-segmentation (bleeding); Yellow regions denote False Negatives; White contour outlines the Ground Truth boundary. Notice the preservation of dominant True Positive polyp bodies (Green) alongside the dramatic elimination of extensive spurious background lesions (Red) in $M_{12}$.
 
-As demonstrated in Figure 1:
-- In challenging cases with specular reflections, folds, and mucosal texture (e.g., Cases 1 and 2), $M_{11}$ produces expansive false positive "ghost" segmentations ($>1,000$ to $3,350\text{ px}$ of false positive error) due to recurrent reinforcement of early erroneous priors.
-- In contrast, $M_{12}$ completely eliminates these spurious predictions ($0\text{ px}$ False Positives), delineating clean, clinically reliable boundaries that adhere strictly to the true polyp contours.
+#### Differentiating True Delineation from Trivial Background Collapse
+A critical pitfall when evaluating false-positive reduction in medical segmentation is the risk of **trivial background collapse**—an artifact where a model artificially drives false-positive counts to zero simply by predicting an empty background mask (resulting in $\text{Dice} = 0.000$ and exclusively yellow False Negatives). 
+
+As shown in Figure 1, our proposed Detached Soft-OR model ($M_{12}$) achieves genuine morphological delineation rather than trivial collapse:
+- **Case 1 (`cju40jl7skiuo0817p0smlgg8.jpg`):** $M_{11}$ correctly locates the lesion but suffers catastrophic over-segmentation, bleeding $21,699\text{ px}$ of false alarms (Red) into the colonic mucosa ($\text{Dice} = 0.645$). $M_{12}$ maintains a prominent True Positive core (Green), increasing Dice to **$0.742$** while eliminating **$12,280\text{ px}$** of false-positive bleeding ($\Delta\text{FP} = +12,280\text{ px}$ pruned).
+- **Case 2 (`cju886ryxnsl50801r93jai7q.jpg`):** $M_{11}$ generates $13,544\text{ px}$ of extraneous background mask ($\text{Dice} = 0.553$). $M_{12}$ sharply constrains the prediction to the true histological boundary, elevating Dice to **$0.728$** and purging $9,312\text{ px}$ of false alarms.
+- **Case 3 (`cju1c0qb4tzi308355wtsnp0y.jpg`):** In this subtle sessile lesion, $M_{11}$ expands $5,128\text{ px}$ beyond the ground truth ($\text{Dice} = 0.766$). $M_{12}$ achieves an exceptional Dice of **$0.769$**, pruning nearly $80\%$ of the false positive halo down to just $1,113\text{ px}$ ($\Delta\text{FP} = +4,015\text{ px}$).
+- **Case 4 (`ck2bxpfgxu2mk0748gsh7xelu.jpg`):** Confronted with low-contrast mucosal folds, $M_{11}$ becomes trapped in a diffuse false-positive cloud ($15,633\text{ px}$ FP, $\text{Dice} = 0.358$). $M_{12}$ anchors directly to the true polyp core, surging Dice to **$0.593$** ($+23.5\text{ pp}$) while shearing off $10,171\text{ px}$ of background noise.
+- **Case 5 (`cju7f6cqy2ur20818t1saazbm.jpg`):** $M_{11}$ accumulates $12,658\text{ px}$ of over-segmented perimeter. $M_{12}$ preserves full polyp coverage ($\text{Dice} = 0.497$) while pruning $5,116\text{ px}$ of erroneous margins.
+
+In all cases, $M_{12}$ maintains solid True Positive agreement (Green, Dice $0.50$ to $0.77$) while surgical detachment of the feedback path severs the recurrent error loop, preventing the hallucinated lesions that cripple $M_{11}$.
+
+---
+
+### 4.4. Zero-Shot Cross-Center Generalization: CVC-ClinicDB
+
+To evaluate whether the benefits of Detached Soft-OR are confined to the training distribution or reflect a generalizable architectural remedy, we conduct an external **Zero-Shot Cross-Center Evaluation** on the CVC-ClinicDB benchmark (Hospital Clinic, Barcelona, Spain) [5]. 
+
+CVC-ClinicDB comprises $612$ colonoscopy frames acquired with different endoscopy video processors, optical resolutions, and mucosal illumination conditions compared to Kvasir-SEG. Models trained exclusively on Kvasir-SEG (Sessile) across all 5 seeds ($S \in \{7, 42, 99, 1337, 2024\}$) were directly evaluated on CVC-ClinicDB with zero retraining, fine-tuning, or domain adaptation ($N = 5 \times 612 = 3,060$ recurrent inference evaluations).
+
+```
+================================================================================================================
+Table 4: Multi-Seed Zero-Shot Cross-Center Generalization: CVC-ClinicDB (N = 612 images, 5 Seeds)
+================================================================================================================
+Metric                      M11 (Feedback Trap)    M12 (Detached Soft-OR)     Difference (Delta)    Rel. Change
+----------------------------------------------------------------------------------------------------------------
+Dice Score (DSC)             0.2375 ± 0.0639        0.2641 ± 0.0377           +0.0267 (+2.67 pp)     +11.2%
+mIoU (Jaccard Index)         0.1614 ± 0.0452        0.1751 ± 0.0266           +0.0137 (+1.37 pp)      +8.5%
+Precision                    0.2282 ± 0.0393        0.2476 ± 0.0137           +0.0195 (+1.95 pp)      +8.5%
+Recall (Sensitivity)         0.4540 ± 0.1490        0.5188 ± 0.1432           +0.0648 (+6.48 pp)     +14.3%
+Inter-Seed Variance (Std)            0.0639                 0.0377                    -0.0262        -41.1%
+----------------------------------------------------------------------------------------------------------------
+Sample-Level Wilcoxon Test:  Dice p = 1.61e-15 *** (Statistically Significant across N = 612)
+================================================================================================================
+*** p < 0.001
+```
+
+#### Out-of-Distribution Robustness and Statistical Significance
+As summarized in Table 4:
+1. **Generalization Superiority:** Without a single gradient step on CVC-ClinicDB, $M_{12}$ achieves consistent improvements across all primary segmentation metrics, elevating mean Dice from **$0.2375$ to $0.2641$** ($+11.2\%$ relative gain) and mIoU from **$0.1614$ to $0.1751$** ($+8.5\%$).
+2. **Elevated Lesion Sensitivity (+6.48 pp Recall):** Crucially, $M_{12}$ boosts out-of-distribution Recall from **$45.40\%$ to $51.88\%$** ($+14.3\%$ relative gain). In $M_{11}$, feedback-induced representation collapse during training causes the encoder to miss subtle lesions under unfamiliar lighting; $M_{12}$ retains uncorrupted visual features that reliably detect polyps across clinical centers.
+3. **Severe Variance Compression (-41.1%):** In $M_{11}$, random initialization induced massive cross-center instability (e.g., Seed $42$ collapsed to $\text{Dice} = 0.1431$). In contrast, $M_{12}$ achieves stable transfer across all seeds (Seed $42$ reaching $\text{Dice} = 0.2493$, a $+10.6\text{ pp}$ jump), compressing inter-seed standard deviation from $0.0639$ down to $0.0377$ (a $41.1\%$ reduction).
+4. **Rigorous Significance:** Non-parametric Wilcoxon signed-rank testing across all $612$ patient frames yields $p = 1.61 \times 10^{-15} \ll 0.001$, decisively refuting the hypothesis that Detached Soft-OR overfits to the small Kvasir-SEG training distribution.
 
 ---
 
@@ -276,7 +319,7 @@ As demonstrated in Figure 1:
 #### Clinical Significance of False-Positive Over-Segmentation Suppression
 In computer-aided colonoscopy, high sensitivity (recall) is a baseline prerequisite, but low specificity and rampant over-segmentation represent the primary barriers to clinical adoption [2, 28]. In real-time clinical screening, false-positive alarms—where healthy colonic folds, mucosal reflections, or residual stool are erroneously highlighted as neoplastic tissue—induce severe cognitive fatigue in endoscopists [28, 29]. Crucially, over-segmented lesion boundaries misguide endoscopists during polyp resection, potentially leading to unnecessary biopsies or excessive mucosal resection, which elevates procedural risks such as post-polypectomy perforation and delayed bleeding [30].
 
-Our proposed Detached Soft-OR gating ($M_{12}$) directly addresses this clinical vulnerability. By breaking the Feedback Trap, $M_{12}$ achieves a **$42.8\%$ relative reduction in False Positive Rate** (dropping from $4.30\%$ to $2.46\%$ in online validation, and reducing inference over-segmentation from $21.39\%$ to $7.55\%$). As evidenced in our paired qualitative analysis (Figure 1), $M_{12}$ completely eliminates extensive false-positive "ghost" lesions ($>3,000\text{ px}$ errors eradicated to $0\text{ px}$), producing tightly bounded, clinically dependable segmentations.
+Our proposed Detached Soft-OR gating ($M_{12}$) directly addresses this clinical vulnerability. By breaking the Feedback Trap, $M_{12}$ achieves a **$42.8\%$ relative reduction in False Positive Rate** (dropping from $4.30\%$ to $2.46\%$ in online validation, and reducing inference over-segmentation from $21.39\%$ to $7.55\%$). As evidenced in our paired qualitative analysis (Figure 1), $M_{12}$ prunes extensive false-positive "ghost" lesions ($>10,000\text{ px}$ errors pruned while preserving Dice $>0.70$), producing tightly bounded, clinically dependable segmentations.
 
 #### Rigorous Statistical Confirmation (Wilcoxon Signed-Rank Test)
 To verify that the empirical superiority of $M_{12}$ over the Feedback Trap baseline ($M_{11}$) is statistically robust across both images and random initializations, we conducted paired non-parametric testing over $200$ independent evaluation instances ($40\text{ validation images} \times 5\text{ seeds}$) using standard 4-iteration recurrent inference with Otsu initialization.
@@ -308,10 +351,10 @@ $$\frac{\partial \text{keep}}{\partial \text{fmask}} = 1 - m_{\text{fg}}$$
 This provides an optimal learning schedule: gradients are suppressed in confidently segmented lesion interiors, but maximally amplified in ambiguous boundary margins and false-positive regions.
 
 #### Limitations and Future Work
-While our experiments demonstrate decisive improvements on the challenging Kvasir-SEG (Sessile) dataset, several avenues remain for future investigation:
-1. **Multi-Center Benchmark Validation:** Evaluating the cross-center generalization of Detached Soft-OR across diverse endoscopic datasets (e.g., CVC-ClinicDB, BKAI-IGH, and ETIS-LaribPolypDB).
-2. **Extension to Video Colonoscopy:** Applying the detached soft-gating mechanism across temporal video frames, where frame-to-frame recurrent feedback is inherently susceptible to temporal error accumulation.
-3. **Generalization to Other Recurrent Modalities:** Investigating whether the Feedback Trap similarly afflicts recurrent networks in ultrasound lesion tracking, cardiac MRI segmentation, and iterative point cloud completion.
+While our experiments demonstrate decisive improvements on Kvasir-SEG (Sessile) and zero-shot cross-center transfer to CVC-ClinicDB, several avenues remain for future investigation:
+1. **Multi-Center Video Generalization:** Expanding evaluation across temporal video sequences (e.g., SUN-SEG and BKAI-IGH) to investigate frame-to-frame temporal recurrence dynamics under high-speed camera motion.
+2. **Dynamic Gating Modulation:** Exploring learnable or adaptive temperature parameters for the Soft-OR continuous relaxation across deeper versus shallower encoder layers.
+3. **Cross-Modality Transfer:** Investigating whether the Feedback Trap similarly afflicts recurrent networks in ultrasound lesion tracking, cardiac MRI segmentation, and iterative point cloud completion.
 
 ---
 
