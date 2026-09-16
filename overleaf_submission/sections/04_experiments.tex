@@ -16,7 +16,7 @@ We first perform a $2 \times 2$ factorial diagnostic study to isolate the intera
     \item $M_{12}$: Recurrent Feedback with proposed Detached Soft-OR Gating [Ours].
 \end{itemize}
 
-\begin{table}[t]
+\begin{table*}[t]
 \centering
 \caption{Factorial Diagnostic of Recurrent Pathologies and Gradient Restoration. $\Delta$BN Drift ($D_{\text{KL}}$) measures encoder distribution shift; Saturation (\%) denotes confident predictions ($p > 0.9$ or $p < 0.1$); Bottleneck Cosine Similarity measures feature margin between boundary and background; Mask Grad Norm tracks gradient flow through the mask branch.}
 \label{tab:diagnostic}
@@ -30,9 +30,16 @@ $M_{11}$ & FB + Hard Gate [Trap]      & 2.03 & 1.13\% & 0.7981 & 663.43 \\
 $M_{12}$ & FB + Soft-OR Detach [Ours] & \textbf{3.94} & \textbf{97.20\%} & \textbf{0.9339} & \textbf{53.62} \\
 \bottomrule
 \end{tabularx}
-\end{table}
+\end{table*}
 
-As shown in Table~\ref{tab:diagnostic}:
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\textwidth]{figures/bn_drift_violin.png}
+\caption{Distribution of Batch Normalization statistics drift (measured via $D_{\text{KL}}$). $M_{11}$ suffers from representational collapse as the feedback loop forces the encoder to memorize recurrent background hallucinations. $M_{12}$ (Detached Soft-OR) breaks this cycle, resulting in separated background/foreground features.}
+\label{fig:bn_drift}
+\end{figure}
+
+As shown in Table~\ref{tab:diagnostic} and Fig.~\ref{fig:bn_drift}:
 \begin{itemize}
     \item \textbf{Severing Toxic Gradient Flow:} In $M_{11}$, backpropagating through the feedback loop attenuates mask gradient norm by over $79\%$ (from $3,247.49$ down to $663.43$). In $M_{12}$, detaching the feedback tensor inside \texttt{MixPool} reduces the mask gradient norm to a residual baseline of $53.62$ (originating solely from the final prediction head skip-connection), preventing corruptive feedback loops from distorting early encoder layers.
     \item \textbf{Feature Separation and Confident Convergence:} In $M_{11}$, the bottleneck cosine similarity between boundary features and background deteriorated to $0.7981$, indicating representational collapse. $M_{12}$ elevates cosine similarity to \textbf{$0.9339$} and achieves a prediction saturation rate of \textbf{$97.20\%$}, cleanly separating lesions from healthy background mucosa.
@@ -41,7 +48,7 @@ As shown in Table~\ref{tab:diagnostic}:
 \subsection{Quantitative Segmentation Performance: Multi-Seed Robustness}
 To verify that our architectural fix provides consistent empirical superiority, we conduct a full 5-seed benchmark ($S \in \{7, 42, 99, 1337, 2024\}$) trained for 200 epochs each under identical conditions.
 
-\begin{table}[t]
+\begin{table*}[t]
 \centering
 \caption{Quantitative 5-Seed Benchmark on Kvasir-SEG (Sessile): Baseline $M_{11}$ (Feedback Trap) vs. Proposed $M_{12}$ (Detached Soft-OR). All models evaluated using standard 4-iteration recurrent inference with Otsu initialization.}
 \label{tab:kvasir_benchmark}
@@ -59,7 +66,7 @@ To verify that our architectural fix provides consistent empirical superiority, 
 \textbf{Rel. Change}    & -- & -- & \textbf{+19.0\%} & -- & -- & \textbf{-42.8\%} \\
 \bottomrule
 \end{tabularx}
-\end{table}
+\end{table*}
 
 As detailed in Table~\ref{tab:kvasir_benchmark}:
 \begin{itemize}
@@ -71,12 +78,12 @@ As detailed in Table~\ref{tab:kvasir_benchmark}:
 \subsection{Qualitative Comparison: Delineation vs. Trivial Background Collapse}
 A critical concern when evaluating false-positive reduction is the risk of \textit{trivial background collapse}---where an algorithm reduces false alarms simply by predicting empty masks ($\text{Dice} = 0$, yielding exclusively false negatives).
 
-\begin{figure}[t]
+\begin{figure*}[t]
 \centering
 \includegraphics[width=\textwidth]{figures/qualitative_comparison_fixed.pdf}
 \caption{Qualitative comparison between $M_{11}$ (Feedback Trap baseline) and $M_{12}$ (Proposed Detached Soft-OR) across representative sessile polyp validation cases. Columns: (a) Input frame, (b) Ground truth annotation, (c) $M_{11}$ prediction, and (d) $M_{12}$ prediction. Color coding: \textcolor{green}{Green} = True Positive (Polyp Match); \textcolor{red}{Red} = False Positive (Over-segmentation / Bleeding); \textcolor{orange}{Yellow} = False Negative (Missed Region); White contour = Ground Truth boundary. Notice the preservation of dominant True Positive polyp bodies (\textcolor{green}{Green}) alongside the massive eradication of spurious background halos (\textcolor{red}{Red}) in $M_{12}$.}
 \label{fig:qualitative}
-\end{figure}
+\end{figure*}
 
 As visualized in Fig.~\ref{fig:qualitative}, our proposed Detached Soft-OR model ($M_{12}$) achieves genuine morphological boundary delineation:
 \begin{itemize}
@@ -91,7 +98,7 @@ In all cases, $M_{12}$ sustains high Dice ($0.50$ to $0.77$) while surgical deta
 \subsection{Zero-Shot Cross-Center Generalization: CVC-ClinicDB}
 To evaluate whether the benefits of Detached Soft-OR generalize beyond the training cohort, we conduct an external \textbf{Zero-Shot Cross-Center Evaluation} on the CVC-ClinicDB benchmark (Hospital Clinic, Barcelona, Spain)~\cite{bernal2017comparative}. CVC-ClinicDB comprises 612 colonoscopy frames acquired under different optical resolutions and illumination conditions compared to Kvasir-SEG. Models trained exclusively on Kvasir-SEG (Sessile) across all 5 seeds were directly evaluated on CVC-ClinicDB with zero retraining or fine-tuning ($N = 5 \times 612 = 3,060$ recurrent inference evaluations).
 
-\begin{table}[t]
+\begin{table*}[t]
 \centering
 \caption{Multi-Seed Zero-Shot Cross-Center Generalization on CVC-ClinicDB ($N = 612$ images, 5 Seeds). Models evaluated without retraining or fine-tuning.}
 \label{tab:zero_shot}
@@ -108,7 +115,7 @@ Inter-Seed Variance (Std) & 0.0639              & \textbf{0.0377}              &
 \multicolumn{5}{l}{Sample-Level Wilcoxon Signed-Rank Test: \textbf{Dice $p = 1.61 \times 10^{-15}$***} (Significant across $N = 612$)} \\
 \bottomrule
 \end{tabularx}
-\end{table}
+\end{table*}
 
 As summarized in Table~\ref{tab:zero_shot}:
 \begin{itemize}

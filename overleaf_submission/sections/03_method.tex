@@ -29,25 +29,25 @@ x_1 = \text{Conv}_1\left(x \odot \text{keep}_{\text{hard}}\right), \quad x_2 = \
 
 \subsubsection{The Calculus of Failure: Zero-Gradient and Toxic Coupling}
 Let $\mathcal{L}$ denote the scalar segmentation objective. Applying the chain rule to backpropagate gradients from $x_1$ back to the parameters $\theta_{\text{att}}$ of the attention generator $\mathcal{F}_{\text{att}}$:
-\begin{equation}
+\begin{align}
 \label{eq:chain_rule}
-\frac{\partial \mathcal{L}}{\partial \theta_{\text{att}}} = \frac{\partial \mathcal{L}}{\partial x_1} \cdot \frac{\partial x_1}{\partial \text{keep}_{\text{hard}}} \cdot \frac{\partial \text{keep}_{\text{hard}}}{\partial \text{fmask}} \cdot \frac{\partial \text{fmask}}{\partial \theta_{\text{att}}}.
-\end{equation}
+\frac{\partial \mathcal{L}}{\partial \theta_{\text{att}}} &= \frac{\partial \mathcal{L}}{\partial x_1} \cdot \frac{\partial x_1}{\partial \text{keep}_{\text{hard}}} \cdot \frac{\partial \text{keep}_{\text{hard}}}{\partial \text{fmask}} \cdot \frac{\partial \text{fmask}}{\partial \theta_{\text{att}}}.
+\end{align}
 
 Because $\text{keep}_{\text{hard}}$ utilizes the indicator function $\mathbb{I}(\text{fmask} > 0.5)$, the distributional derivative of the Heaviside step function is the Dirac delta:
-\begin{equation}
-\frac{\partial}{\partial u}\mathbb{I}(u > 0.5) = \delta(u - 0.5) = 0 \quad \forall u \neq 0.5.
-\end{equation}
+\begin{align}
+\frac{\partial}{\partial u}\mathbb{I}(u > 0.5) &= \delta(u - 0.5) = 0 \quad \forall u \neq 0.5.
+\end{align}
 Consequently, the third factor in Eq.~(\ref{eq:chain_rule}) evaluates to:
-\begin{equation}
-\frac{\partial \text{keep}_{\text{hard}}}{\partial \text{fmask}} \equiv 0 \quad \text{almost everywhere}.
-\end{equation}
+\begin{align}
+\frac{\partial \text{keep}_{\text{hard}}}{\partial \text{fmask}} &\equiv 0 \quad \text{almost everywhere}.
+\end{align}
 As a direct consequence, \textbf{zero gradient reaches the parameters $\theta_{\text{att}}$ of the attention generator}. The network cannot adapt its internal spatial feature selector in response to task-specific segmentation errors.
 
 Simultaneously, the recurrent branch receives backward gradients through automatic differentiation:
-\begin{equation}
-\frac{\partial \mathcal{L}}{\partial m_{\text{fg}}} = \frac{\partial \mathcal{L}}{\partial x_1} \cdot \frac{\partial x_1}{\partial \text{keep}_{\text{hard}}} \cdot \frac{\partial \text{keep}_{\text{hard}}}{\partial m_{\text{fg}}} \neq 0.
-\end{equation}
+\begin{align}
+\frac{\partial \mathcal{L}}{\partial m_{\text{fg}}} &= \frac{\partial \mathcal{L}}{\partial x_1} \cdot \frac{\partial x_1}{\partial \text{keep}_{\text{hard}}} \cdot \frac{\partial \text{keep}_{\text{hard}}}{\partial m_{\text{fg}}} \neq 0.
+\end{align}
 When the network produces an early false-positive prediction, this erroneous mask is reinjected into the encoder. Because gradients flow through $m_{\text{fg}}$ back into the recursive history without internal attention guidance, the encoder parameters are updated to maximize consistency with past errors rather than anatomical boundaries. This causes the internal feature representations of healthy background mucosa to collapse into lesion-like embeddings.
 
 \subsection{Proposed Solution: Detached Soft-OR Gating}
@@ -77,17 +77,17 @@ Our proposed Detached Soft-OR formulation provides three analytical guarantees:
 
 \begin{theorem}[Continuous Gradient Flow with Dynamic Uncertainty Scaling]
 Under the Detached Soft-OR formulation (Eq.~\ref{eq:detached_soft_or}), the gradient of the feature gate with respect to the internal attention map $\text{fmask}$ is strictly non-zero, continuous, and dynamically proportional to background uncertainty:
-\begin{equation}
-\frac{\partial \text{keep}_{\text{detached}}}{\partial \text{fmask}} = 1 - m_{\text{fg}} \ge 0.
-\end{equation}
+\begin{align}
+\frac{\partial \text{keep}_{\text{detached}}}{\partial \text{fmask}} &= 1 - m_{\text{fg}} \ge 0.
+\end{align}
 \end{theorem}
 
 \begin{proof}
 Taking the partial derivative of Eq.~(\ref{eq:detached_soft_or}) with respect to $a \equiv \text{fmask}$:
-\begin{equation}
-\frac{\partial \text{keep}_{\text{detached}}}{\partial a} = \frac{\partial}{\partial a} \left[a + \text{detach}(m_{\text{fg}}) - a \cdot \text{detach}(m_{\text{fg}})\right] = 1 - \text{detach}(m_{\text{fg}}).
-\end{equation}
-Because $\text{detach}(\cdot)$ behaves as an identity in forward evaluation and zero in backward differentiation, the effective backward derivative is $1 - m_{\text{fg}}$. Since $m_{\text{fg}} \in [0, 1]$, this quantity is strictly non-negative and bounded in $[0, 1]$. \qed
+\begin{align}
+\frac{\partial \text{keep}_{\text{detached}}}{\partial a} &= \frac{\partial}{\partial a} \left[a + \text{detach}(m_{\text{fg}}) - a \cdot \text{detach}(m_{\text{fg}})\right] = 1 - \text{detach}(m_{\text{fg}}).
+\end{align}
+Because $\text{detach}(\cdot)$ behaves as an identity in forward evaluation and zero in backward differentiation, the effective backward derivative is $1 - m_{\text{fg}}$. Since $m_{\text{fg}} \in [0, 1]$, this quantity is strictly non-negative and bounded in $[0, 1]$. $\blacksquare$
 \end{proof}
 
 \textbf{Clinical Intuition of the Derivative:}
@@ -98,12 +98,12 @@ Because $\text{detach}(\cdot)$ behaves as an identity in forward evaluation and 
 
 \begin{theorem}[Complete Severance of Degenerate Error Propagation]
 Under Detached Soft-OR, backward automatic differentiation through the recurrent mask branch is identically zero:
-\begin{equation}
-\frac{\partial \text{keep}_{\text{detached}}}{\partial m_{\text{fg}}} \equiv 0.
-\end{equation}
+\begin{align}
+\frac{\partial \text{keep}_{\text{detached}}}{\partial m_{\text{fg}}} &\equiv 0.
+\end{align}
 \end{theorem}
 \begin{proof}
-Direct consequence of applying the stop-gradient operator $\text{detach}(\cdot)$ on $m_{\text{fg}}$. \qed
+Direct consequence of applying the stop-gradient operator $\text{detach}(\cdot)$ on $m_{\text{fg}}$. $\blacksquare$
 \end{proof}
 
 \textbf{Zero Parameter Overhead:} The entire transformation in Eq.~(\ref{eq:detached_soft_or}) requires exactly \textbf{zero learnable parameters} ($\Delta \Theta = 0$) and introduces zero additional FLOPs beyond elementary tensor arithmetic.

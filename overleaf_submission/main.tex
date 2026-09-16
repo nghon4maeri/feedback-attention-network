@@ -4,14 +4,19 @@
 %
 % Formatted for Springer LNCS (MICCAI) / Adaptable for IEEE TMI
 % ==============================================================================
-\documentclass[runningheads]{llncs}
+\documentclass[journal, 10pt]{IEEEtran}
 
 \usepackage{graphicx}
 \usepackage{amsmath,amssymb}
 \usepackage{booktabs}
 \usepackage{multirow}
 \usepackage{tabularx}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
 \usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proof}{Proof}
 \usepackage{xcolor}
 \usepackage{cite}
 \usepackage[pagebackref=true,breaklinks=true,colorlinks,bookmarks=false,citecolor=blue,linkcolor=red]{hyperref}
@@ -19,12 +24,8 @@
 \begin{document}
 
 \title{Breaking the Feedback Trap: Detached Soft-Gating Restores Gradient Flow in Recurrent Medical Image Segmentation}
-\titlerunning{Breaking the Feedback Trap in Recurrent Segmentation}
-
-\author{Anonymous Authors}
-\authorrunning{Anonymous et al.}
-\institute{Anonymous Institute / Affiliation\\
-\email{anonymous@domain.edu}}
+\author{Anonymous Authors
+\thanks{Anonymous Institute / Affiliation. Email: anonymous@domain.edu}}
 
 \maketitle
 
@@ -37,7 +38,9 @@ To resolve this dilemma, we propose \textbf{Detached Soft-OR Gating}, a mathemat
 
 Benchmarked across 5 independent seeds ($200$ epochs each) on Kvasir-SEG (Sessile), our approach slashes False Positive Rate by \textbf{$42.8\%$} (down to $2.46\%$), elevates mean Dice score by \textbf{$+4.77$ pp} (to $29.95\%$), increases Precision by \textbf{$+7.50$ pp}, reduces inter-seed variance by \textbf{$66.5\%$}, and establishes complete immunity against catastrophic representation collapse (paired Wilcoxon $W = 4,055.0$, $p < 0.001$). Furthermore, zero-shot cross-center evaluation on the unseen CVC-ClinicDB dataset ($N = 612$) demonstrates sustained out-of-distribution superiority, improving Dice by \textbf{$+2.67$ pp} ($p = 1.61 \times 10^{-15}$) and elevating recall by \textbf{$+6.48$ pp} with a $41.1\%$ reduction in inter-seed variance.
 
-\keywords{Recurrent Feedback \and Medical Image Segmentation \and Polyp Segmentation \and Feedback Trap \and Detached Soft-OR \and Zero-Shot Cross-Center Generalization}
+\begin{IEEEkeywords}
+Recurrent Feedback, Medical Image Segmentation, Polyp Segmentation, Feedback Trap, Detached Soft-OR, Zero-Shot Cross-Center Generalization
+\end{IEEEkeywords}
 \end{abstract}
 
 % ------------------------------------------------------------------------------
@@ -52,7 +55,7 @@ Benchmarked across 5 independent seeds ($200$ epochs each) on Kvasir-SEG (Sessil
 % ------------------------------------------------------------------------------
 % REFERENCES
 % ------------------------------------------------------------------------------
-\bibliographystyle{splncs04}
+\bibliographystyle{IEEEtran}
 \bibliography{refs}
 
 \end{document}
