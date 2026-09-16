@@ -75,15 +75,15 @@ As detailed in Table~\ref{tab:kvasir_benchmark}:
     \item \textbf{Immunity to Collapse and Variance Reduction:} Under $M_{11}$, Seed 1337 suffered catastrophic collapse ($\text{Dice} = 0.0928$). $M_{12}$ converged steadily to $\text{Dice} = 0.2779$. Inter-seed standard deviation plummeted by \textbf{$66.5\%$} ($\sigma = 0.0869 \to 0.0291$).
 \end{itemize}
 
-\subsection{Qualitative Comparison: Delineation vs. Trivial Background Collapse}
-A critical concern when evaluating false-positive reduction is the risk of \textit{trivial background collapse}---where an algorithm reduces false alarms simply by predicting empty masks ($\text{Dice} = 0$, yielding exclusively false negatives).
-
 \begin{figure*}[t!]
 \centering
 \includegraphics[width=\textwidth]{figures/qualitative_comparison_fixed.pdf}
 \caption{Qualitative comparison between $M_{11}$ (Feedback Trap baseline) and $M_{12}$ (Proposed Detached Soft-OR) across representative sessile polyp validation cases. Columns: (a) Input frame, (b) Ground truth annotation, (c) $M_{11}$ prediction, and (d) $M_{12}$ prediction. Color coding: \textcolor{green}{Green} = True Positive (Polyp Match); \textcolor{red}{Red} = False Positive (Over-segmentation / Bleeding); \textcolor{orange}{Yellow} = False Negative (Missed Region); White contour = Ground Truth boundary. Notice the preservation of dominant True Positive polyp bodies (\textcolor{green}{Green}) alongside the massive eradication of spurious background halos (\textcolor{red}{Red}) in $M_{12}$.}
 \label{fig:qualitative}
 \end{figure*}
+
+\subsection{Qualitative Comparison: Delineation vs. Trivial Background Collapse}
+A critical concern when evaluating false-positive reduction is the risk of \textit{trivial background collapse}---where an algorithm reduces false alarms simply by predicting empty masks ($\text{Dice} = 0$, yielding exclusively false negatives).
 
 As visualized in Fig.~\ref{fig:qualitative}, our proposed Detached Soft-OR model ($M_{12}$) achieves genuine morphological boundary delineation:
 \begin{itemize}
@@ -94,9 +94,6 @@ As visualized in Fig.~\ref{fig:qualitative}, our proposed Detached Soft-OR model
     \item \textbf{Case 5 (\texttt{cju7f6cq...}):} $M_{11}$ accumulates $12,658\text{ px}$ of over-segmented perimeter. $M_{12}$ preserves full polyp coverage ($\text{Dice} = 0.497$) while pruning $5,116\text{ px}$ of erroneous margins.
 \end{itemize}
 In all cases, $M_{12}$ sustains high Dice ($0.50$ to $0.77$) while surgical detachment of the feedback path severs the recurrent error loop, preventing the hallucinated lesions that cripple $M_{11}$.
-
-\subsection{Zero-Shot Cross-Center Generalization: CVC-ClinicDB}
-To evaluate whether the benefits of Detached Soft-OR generalize beyond the training cohort, we conduct an external \textbf{Zero-Shot Cross-Center Evaluation} on the CVC-ClinicDB benchmark (Hospital Clinic, Barcelona, Spain)~\cite{bernal2017comparative}. CVC-ClinicDB comprises 612 colonoscopy frames acquired under different optical resolutions and illumination conditions compared to Kvasir-SEG. Models trained exclusively on Kvasir-SEG (Sessile) across all 5 seeds were directly evaluated on CVC-ClinicDB with zero retraining or fine-tuning ($N = 5 \times 612 = 3,060$ recurrent inference evaluations).
 
 \begin{table*}[t!]
 \centering
@@ -116,6 +113,9 @@ Inter-Seed Variance (Std) & 0.0639              & \textbf{0.0377}              &
 \bottomrule
 \end{tabularx}
 \end{table*}
+
+\subsection{Zero-Shot Cross-Center Generalization: CVC-ClinicDB}
+To evaluate whether the benefits of Detached Soft-OR generalize beyond the training cohort, we conduct an external \textbf{Zero-Shot Cross-Center Evaluation} on the CVC-ClinicDB benchmark (Hospital Clinic, Barcelona, Spain)~\cite{bernal2017comparative}. CVC-ClinicDB comprises 612 colonoscopy frames acquired under different optical resolutions and illumination conditions compared to Kvasir-SEG. Models trained exclusively on Kvasir-SEG (Sessile) across all 5 seeds were directly evaluated on CVC-ClinicDB with zero retraining or fine-tuning ($N = 5 \times 612 = 3,060$ recurrent inference evaluations).
 
 As summarized in Table~\ref{tab:zero_shot}:
 \begin{itemize}

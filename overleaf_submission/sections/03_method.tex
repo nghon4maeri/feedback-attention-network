@@ -97,7 +97,7 @@ Taking the partial derivative of Eq.~(\ref{eq:detached_soft_or}) with respect to
 \frac{\partial \text{keep}_{\text{detached}}}{\partial a} &= \frac{\partial}{\partial a} \left[a + \text{detach}(m_{\text{fg}}) - a \cdot \text{detach}(m_{\text{fg}})\right] \nonumber \\
 &= 1 - \text{detach}(m_{\text{fg}}).
 \end{align}
-Because $\text{detach}(\cdot)$ behaves as an identity in forward evaluation and zero in backward differentiation, the effective backward derivative is $1 - m_{\text{fg}}$. Since $m_{\text{fg}} \in [0, 1]$, this quantity is strictly non-negative and bounded in $[0, 1]$. $\blacksquare$
+Because $\text{detach}(\cdot)$ behaves as an identity in forward evaluation and zero in backward differentiation, the effective backward derivative is $1 - m_{\text{fg}}$. Since $m_{\text{fg}} \in [0, 1]$, this quantity is strictly non-negative and bounded in $[0, 1]$.
 \end{proof}
 
 \textbf{Clinical Intuition of the Derivative:}
@@ -113,7 +113,7 @@ Under Detached Soft-OR, backward automatic differentiation through the recurrent
 \end{align}
 \end{theorem}
 \begin{proof}
-Direct consequence of applying the stop-gradient operator $\text{detach}(\cdot)$ on $m_{\text{fg}}$. $\blacksquare$
+Direct consequence of applying the stop-gradient operator $\text{detach}(\cdot)$ on $m_{\text{fg}}$.
 \end{proof}
 
 \textbf{Zero Parameter Overhead:} The entire transformation in Eq.~(\ref{eq:detached_soft_or}) requires exactly \textbf{zero learnable parameters} ($\Delta \Theta = 0$) and introduces zero additional FLOPs beyond elementary tensor arithmetic.
