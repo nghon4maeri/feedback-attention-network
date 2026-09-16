@@ -1,3 +1,12 @@
+"""
+KAGGLE EXECUTION INSTRUCTIONS
+-----------------------------
+1. Upload this script to a Kaggle Notebook with a T4 GPU enabled.
+2. Ensure you have added the Kvasir-SEG Sessile dataset to the notebook.
+3. Install the required dependency by running the following cell:
+   !pip install segmentation-models-pytorch
+4. Run this script to compute SOTA baseline metrics (Dice, FPR) for Table 3.
+"""
 import os
 import glob
 import torch
