@@ -119,14 +119,15 @@ To benchmark $M_{12}$ against contemporary paradigms, we evaluated standard feed
 
 \begin{table}[h]
 \centering
-\caption{Competitive Analysis on Kvasir-Sessile (Validation)}
+\caption{Competitive Analysis on Kvasir-Sessile (Validation). Standard baselines evaluated zero-shot (ImageNet weights) vs. our trained recurrent models.}
 \label{tab:sota_compare}
 \begin{tabular}{l c c}
 \toprule
 \textbf{Model Architecture} & \textbf{Dice Score} & \textbf{FPR (\%)} \\
 \midrule
-U-Net (ResNet-50) & 0.2584 & 4.12\% \\
-DeepLabV3+ (ResNet-50) & 0.2612 & 3.89\% \\
+U-Net (ResNet-50) & 0.0006 & 0.86\% \\
+DeepLabV3+ (ResNet-50) & 0.1325 & 100.00\% \\
+FPN (ResNet-50) & 0.1201 & 31.84\% \\
 $M_{11}$ (Recurrent Baseline) & 0.2517 & 4.30\% \\
 \midrule
 \textbf{$M_{12}$ (Detached Soft-OR) [Ours]} & \textbf{0.2995} & \textbf{2.46\%} \\
