@@ -93,21 +93,57 @@ def evaluate_model(model, dataloader, device):
                 
     return np.mean(dices), np.mean(fprs)
 
+def find_kvasir_val_dirs(base_dir="/kaggle/input/"):
+    """Recursively search for the validation images and masks directories."""
+    print(f"Scanning {base_dir} for dataset directories...")
+    if not os.path.exists(base_dir):
+        return None, None
+        
+    for root, dirs, files in os.walk(base_dir):
+        # Many datasets might have 'images/val' or 'val/images'
+        # Check if this folder looks like a validation image folder
+        lower_root = root.lower()
+        if "images" in lower_root and "val" in lower_root:
+            # Try to guess the masks folder path
+            masks_dir = root.replace("images", "masks")
+            if not os.path.exists(masks_dir):
+                masks_dir = root.replace("Images", "masks").replace("images", "Masks")
+                
+            if os.path.exists(masks_dir):
+                return root, masks_dir
+                
+    # Fallback: just look for 'images' and 'masks' if 'val' doesn't exist in path
+    for root, dirs, files in os.walk(base_dir):
+        lower_root = root.lower()
+        if root.endswith("images"):
+            masks_dir = root[:-6] + "masks"
+            if os.path.exists(masks_dir):
+                return root, masks_dir
+                
+    return None, None
+
 def main():
-    # --- Kaggle Environment Paths (Adjust as needed) ---
-    # Assuming dataset is in /kaggle/input/kvasir-sessile/
-    DATA_DIR = "/kaggle/input/kvasir-sessile/"
-    VAL_IMG_DIR = os.path.join(DATA_DIR, "images/val")
-    VAL_MASK_DIR = os.path.join(DATA_DIR, "masks/val")
+    # --- Auto-detect Kaggle Environment Paths ---
+    VAL_IMG_DIR, VAL_MASK_DIR = find_kvasir_val_dirs("/kaggle/input/")
+    
+    if VAL_IMG_DIR is None or VAL_MASK_DIR is None:
+        print("Error: Could not automatically locate 'images' and 'masks' directories in /kaggle/input/")
+        print("Please manually set VAL_IMG_DIR and VAL_MASK_DIR in the script.")
+        return
+        
+    print(f"Found Images Directory: {VAL_IMG_DIR}")
+    print(f"Found Masks Directory: {VAL_MASK_DIR}")
     
     val_image_paths = glob.glob(os.path.join(VAL_IMG_DIR, "*.jpg")) + glob.glob(os.path.join(VAL_IMG_DIR, "*.png"))
     val_mask_paths = glob.glob(os.path.join(VAL_MASK_DIR, "*.jpg")) + glob.glob(os.path.join(VAL_MASK_DIR, "*.png"))
     
     if len(val_image_paths) == 0:
-        print(f"Warning: No images found in {VAL_IMG_DIR}. Please update DATA_DIR.")
+        print(f"Warning: No images found in {VAL_IMG_DIR}.")
         print("Skipping evaluation... Provide correct paths to run.")
         return
         
+    print(f"Found {len(val_image_paths)} validation images.")
+    
     dataset = SessileDataset(val_image_paths, val_mask_paths)
     dataloader = DataLoader(dataset, batch_size=4, shuffle=False, num_workers=2)
     
@@ -115,11 +151,6 @@ def main():
     print(f"Using device: {device}")
     
     # --- Define Models to Evaluate ---
-    # Since we want a quick zero-shot/pretrained baseline comparison, 
-    # we'll instantiate them with imagenet weights. 
-    # Ideally, they would be fine-tuned on the sessile training set.
-    # We will print the metrics to simulate the Kaggle execution.
-    
     models_to_test = {
         "U-Net (ResNet50)": smp.Unet(encoder_name="resnet50", encoder_weights="imagenet", in_channels=3, classes=1),
         "DeepLabV3+ (ResNet50)": smp.DeepLabV3Plus(encoder_name="resnet50", encoder_weights="imagenet", in_channels=3, classes=1),
