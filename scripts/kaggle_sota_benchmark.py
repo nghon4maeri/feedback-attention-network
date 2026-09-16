@@ -47,14 +47,14 @@ class SessileDataset(Dataset):
         mask = (mask > 0.5).astype(np.float32)
         
         # Normalize image (ImageNet stats)
-        mean = np.array([0.485, 0.456, 0.406])
-        std = np.array([0.229, 0.224, 0.225])
+        mean = np.array([0.485, 0.456, 0.406], dtype=np.float32)
+        std = np.array([0.229, 0.224, 0.225], dtype=np.float32)
         image = (image - mean) / std
         
         # Transpose to CHW
         image = image.transpose(2, 0, 1)
         
-        return torch.tensor(image), torch.tensor(mask).unsqueeze(0)
+        return torch.tensor(image, dtype=torch.float32), torch.tensor(mask, dtype=torch.float32).unsqueeze(0)
 
 def compute_metrics(pred, target):
     # Flatten
