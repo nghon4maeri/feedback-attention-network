@@ -1,21 +1,85 @@
 \section{Related Work}
 \label{sec:related}
 
+% -----------------------------------------------------------------------------
 \subsection{Medical Image and Polyp Segmentation}
-Automated lesion segmentation from colonoscopy video frames plays a vital role in computer-aided detection (CADe) and diagnosis (CADx) systems~\cite{siegel2023colorectal, leufkens2012factors}. Beginning with the foundational U-Net architecture~\cite{ronneberger2015unet} and its multi-scale variants such as UNet++~\cite{zhou2018unetplusplus} and ResUNet~\cite{zhang2018road}, deep convolutional networks have established standard benchmarks in biomedical segmentation. To better capture subtle boundary transitions, attention-guided models have been proposed, including Attention U-Net~\cite{oktay2018attention}, PraNet~\cite{fan2020pranet} (which utilizes parallel reverse attention to model polyp contours), and HarDNet-MSEG~\cite{huang2021hardnet}. More recently, vision transformers such as TransUNet~\cite{chen2021transunet}, Swin-Unet~\cite{cao2022swin}, and Polyp-PVT~\cite{dong2021polyp} have leveraged self-attention to model long-range spatial dependencies. 
+Automated lesion segmentation from colonoscopy video frames plays a vital
+role in computer-aided detection (CADe) and diagnosis (CADx)
+systems~\cite{siegel2023colorectal, leufkens2012factors}. Beginning with
+the foundational U-Net architecture~\cite{ronneberger2015unet} and its
+multi-scale variants such as UNet++~\cite{zhou2018unetplusplus} and
+ResUNet~\cite{zhang2018road}, deep convolutional networks have established
+standard benchmarks in biomedical segmentation. To better capture subtle
+boundary transitions, attention-guided models have been proposed, including
+Attention U-Net~\cite{oktay2018attention}, PraNet~\cite{fan2020pranet}
+(which utilizes parallel reverse attention to model polyp contours), and
+HarDNet-MSEG~\cite{huang2021hardnet}. More recently, vision transformers
+such as TransUNet~\cite{chen2021transunet}, Swin-Unet~\cite{cao2022swin},
+and Polyp-PVT~\cite{dong2021polyp} have leveraged self-attention to model
+long-range spatial dependencies.
 
-However, standard feedforward architectures remain inherently single-pass: intermediate representations cannot be iteratively re-examined or refined in light of downstream contextual decisions. In sessile polyp segmentation, where lesions are flat and visual margins are ambiguous, single-pass feedforward models often struggle to balance sensitivity against excessive background false alarms.
+However, standard feedforward architectures remain inherently single-pass:
+intermediate representations cannot be iteratively re-examined or refined
+in light of downstream contextual decisions. In sessile polyp segmentation,
+where lesions are flat and visual margins are ambiguous, single-pass
+feedforward models often struggle to balance sensitivity against excessive
+background false alarms.
 
+% -----------------------------------------------------------------------------
 \subsection{Feedback and Recurrent Refinement Networks}
-In biological vision, anatomical feedback projections from higher cortical areas to early visual processing stages outnumber feedforward projections by a significant margin~\cite{felleman1991distributed, gilbert2013top}. Inspired by this principle, recurrent feedback networks have been developed to simulate iterative cognitive refinement in artificial neural networks~\cite{liang2015recurrent, zamir2017feedback}. In general computer vision, Feedback Networks~\cite{zamir2017feedback} and recurrent convolutional networks (RCNN)~\cite{pinheiro2014recurrent} demonstrate that re-routing higher-level predictions to lower-level feature extractors improves object localization and contextual disambiguation.
+In biological vision, anatomical feedback projections from higher cortical
+areas to early visual processing stages outnumber feedforward projections
+by a significant margin~\cite{felleman1991distributed, gilbert2013top}.
+Inspired by this principle, recurrent feedback networks have been developed
+to simulate iterative cognitive refinement in artificial neural
+networks~\cite{liang2015recurrent, zamir2017feedback}. In general computer
+vision, Feedback Networks~\cite{zamir2017feedback} and recurrent
+convolutional networks (RCNN)~\cite{pinheiro2014recurrent} demonstrate that
+re-routing higher-level predictions to lower-level feature extractors
+improves object localization and contextual disambiguation.
 
-In medical imaging, Recurrent U-Net~\cite{alom2018recurrent} and particularly the Feature Attention Network (FANet)~\cite{tomar2021fanet} introduced cross-epoch feedback loops. FANet introduces the \texttt{MixPool} module, reinjecting the previous epoch's binary prediction mask directly into the encoder and decoder stages to guide feature extraction. 
+In medical imaging, Recurrent U-Net~\cite{alom2018recurrent} and
+particularly the Feature Attention Network (FANet)~\cite{tomar2021fanet}
+introduced cross-epoch feedback loops. FANet introduces the \texttt{MixPool}
+module, reinjecting the previous epoch's binary prediction mask directly
+into the encoder and decoder stages to guide feature extraction.
 
-\textbf{The Overlooked Research Gap:} Existing literature in recurrent segmentation operates on the heuristic assumption that reinjecting prediction masks into intermediate layers automatically encourages iterative refinement. Crucially, these studies treat the recurrent coupling as a black box, completely overlooking the gradient dynamics of the feedback interface. In this work, we demonstrate that hard-thresholded mask injection creates a catastrophic \textit{Feedback Trap}: it attenuates gradient backpropagation by over $79\%$, paralyzes internal attention learning, and causes early encoder representations to drift uncontrollably.
+\textbf{The Overlooked Research Gap:}
+Existing literature in recurrent segmentation operates on the heuristic
+assumption that reinjecting prediction masks into intermediate layers
+automatically encourages iterative refinement. Crucially, these studies
+treat the recurrent coupling as a black box, completely overlooking the
+gradient dynamics of the feedback interface. In this work, we demonstrate
+that hard-thresholded mask injection creates a catastrophic
+\textit{Feedback Trap}: it attenuates gradient backpropagation by over
+$79\%$, paralyzes internal attention learning, and causes early encoder
+representations to drift uncontrollably.
 
+% -----------------------------------------------------------------------------
 \subsection{Loss Formulations for Imbalanced Medical Segmentation}
-Segmentation of small, irregular lesions is heavily impacted by class imbalance, where background pixels vastly outnumber foreground lesion pixels~\cite{salehi2017tversky}. Standard Cross-Entropy often biases predictions toward the background, prompting the widespread adoption of the Dice loss~\cite{milletari2016vnet} and soft Jaccard loss~\cite{rahman2016optimizing}.
+Segmentation of small, irregular lesions is heavily impacted by class
+imbalance, where background pixels vastly outnumber foreground lesion
+pixels~\cite{salehi2017tversky}. Standard Cross-Entropy often biases
+predictions toward the background, prompting the widespread adoption of
+the Dice loss~\cite{milletari2016vnet} and soft Jaccard
+loss~\cite{rahman2016optimizing}.
 
-To explicitly penalize false-positive over-segmentation or false-negative misses, asymmetric and boundary-aware loss formulations have emerged. The Tversky loss~\cite{salehi2017tversky} generalizes the Dice index by introducing weighting parameters $\alpha$ and $\beta$ to independently penalize false positives and false negatives. The Focal Tversky loss~\cite{abraham2019novel} further modulates hard examples, while Asymmetric Unified Focal loss~\cite{yeung2022unified} adaptively balances precision and recall. 
+To explicitly penalize false-positive over-segmentation or false-negative
+misses, asymmetric and boundary-aware loss formulations have emerged. The
+Tversky loss~\cite{salehi2017tversky} generalizes the Dice index by
+introducing weighting parameters $\alpha$ and $\beta$ to independently
+penalize false positives and false negatives. The Focal Tversky
+loss~\cite{abraham2019novel} further modulates hard examples, while
+Asymmetric Unified Focal loss~\cite{yeung2022unified} adaptively balances
+precision and recall.
 
-\textbf{Our Architectural Perspective:} Contemporary research overwhelmingly attempts to suppress false positives by designing increasingly intricate loss functions. However, our factorial experiments reveal that such loss engineering is entirely neutralized when paired with conventional recurrent feedback loops. Rather than proposing another loss formulation, our work addresses the structural root of the problem: by redesigning the recurrent gating mechanism to eliminate zero gradients and detach corruptive feedback paths, we \textbf{unleash the latent corrective power of existing asymmetric loss functions}, enabling them to suppress over-segmentation effectively.
+\textbf{Our Architectural Perspective:}
+Contemporary research overwhelmingly attempts to suppress false positives
+by designing increasingly intricate loss functions. However, our factorial
+experiments reveal that such loss engineering is entirely neutralized when
+paired with conventional recurrent feedback loops. Rather than proposing
+another loss formulation, our work addresses the structural root of the
+problem: by redesigning the recurrent gating mechanism to eliminate zero
+gradients and detach corruptive feedback paths, we \textbf{unleash the
+latent corrective power of existing asymmetric loss functions}, enabling
+them to suppress over-segmentation effectively.

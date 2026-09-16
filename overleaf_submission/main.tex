@@ -1,64 +1,121 @@
-% ==============================================================================
+% =============================================================================
 % Breaking the Feedback Trap: Detached Soft-Gating Restores Gradient Flow
 % in Recurrent Medical Image Segmentation
 %
-% Formatted for Springer LNCS (MICCAI) / Adaptable for IEEE TMI
-% ==============================================================================
+% Formatted for IEEE two-column journal (IEEEtran)
+% =============================================================================
 \documentclass[journal, 10pt]{IEEEtran}
 
+% --- Graphics & Floats -------------------------------------------------------
 \usepackage{graphicx}
 \usepackage{float}
-\usepackage{amsmath,amssymb}
+\usepackage{stfloats}       % improved two-column float placement (table*/figure*)
+
+% --- Math --------------------------------------------------------------------
+\usepackage{amsmath, amssymb}
+\usepackage{amsthm}
+\newtheorem{theorem}{Theorem}
+% NOTE: proof environment is provided automatically by amsthm (with QED tombstone)
+
+% --- Tables ------------------------------------------------------------------
 \usepackage{booktabs}
 \usepackage{multirow}
 \usepackage{tabularx}
+
+% --- Fonts & Micro-typography ------------------------------------------------
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage{microtype}
-\usepackage{stfloats}  % improved two-column float placement
 
-\usepackage{amsthm}
-\newtheorem{theorem}{Theorem}
-% proof environment provided by amsthm (with automatic QED)
-
+% --- Color, References, Hyperlinks -------------------------------------------
 \usepackage{xcolor}
 \usepackage{cite}
-\usepackage[pagebackref=true,breaklinks=true,colorlinks,bookmarks=false,citecolor=blue,linkcolor=red]{hyperref}
+\usepackage[
+  pagebackref=true,
+  breaklinks=true,
+  colorlinks,
+  bookmarks=false,
+  citecolor=blue,
+  linkcolor=red
+]{hyperref}
 
+% =============================================================================
 \begin{document}
 
-\title{Breaking the Feedback Trap: Detached Soft-Gating Restores Gradient Flow in Recurrent Medical Image Segmentation}
-\author{Anonymous Authors
-\thanks{Anonymous Institute / Affiliation. Email: anonymous@domain.edu}}
+\title{Breaking the Feedback Trap: Detached Soft-Gating Restores Gradient
+       Flow in Recurrent Medical Image Segmentation}
+
+\author{%
+  Anonymous Authors%
+  \thanks{Anonymous Institute / Affiliation. Email: anonymous@domain.edu}%
+}
 
 \maketitle
 
+% -----------------------------------------------------------------------------
 \begin{abstract}
-Accurate medical image segmentation, particularly for subtle colorectal lesions such as sessile polyps, requires precise boundary discrimination against visually similar healthy mucosa. Recurrent feedback architectures, exemplified by Feature Attention Networks (FANet), promise iterative refinement by reinjecting past prediction masks into early encoder features across training epochs. However, these architectures frequently suffer from chronic false-positive over-segmentation. Strikingly, while dedicated asymmetric boundary loss functions (e.g., Tversky loss) effectively suppress over-segmentation in feedforward backbones, their remedial effect is completely neutralized once recurrent feedback is engaged.
+Accurate medical image segmentation, particularly for subtle colorectal
+lesions such as sessile polyps, requires precise boundary discrimination
+against visually similar healthy mucosa. Recurrent feedback architectures,
+exemplified by Feature Attention Networks (FANet), promise iterative
+refinement by reinjecting past prediction masks into early encoder features
+across training epochs. However, these architectures frequently suffer from
+chronic false-positive over-segmentation. Strikingly, while dedicated
+asymmetric boundary loss functions (e.g., Tversky loss) effectively suppress
+over-segmentation in feedforward backbones, their remedial effect is
+completely neutralized once recurrent feedback is engaged.
 
-In this work, we present a rigorous \textbf{mechanistic study} diagnosing the root cause of this failure: the \textit{Feedback Trap}. Rather than competing on generic benchmark leaderboards, our goal is to dissect the internal mathematical dynamics of recurrent feedback in biomedical vision. We reveal that conventional hard binary gating---expressed as $\max(\mathbb{I}(\text{fmask} > 0.5), m_{\text{fg}})$---yields zero gradients almost everywhere for the learnable attention branch, while simultaneously transmitting unchecked recurrent errors that attenuate gradient magnitude by over $79\%$, permanently locking the encoder into hallucinated background lesions.
+In this work, we present a rigorous \textbf{mechanistic study} diagnosing
+the root cause of this failure: the \textit{Feedback Trap}. Rather than
+competing on generic benchmark leaderboards, our goal is to dissect the
+internal mathematical dynamics of recurrent feedback in biomedical vision.
+We reveal that conventional hard binary gating---expressed as
+$\max(\mathbb{I}(\text{fmask} > 0.5), m_{\text{fg}})$---yields zero
+gradients almost everywhere for the learnable attention branch, while
+simultaneously transmitting unchecked recurrent errors that attenuate
+gradient magnitude by over $79\%$, permanently locking the encoder into
+hallucinated background lesions.
 
-To resolve this dilemma, we propose \textbf{Detached Soft-OR Gating}, a mathematically elegant, zero-parameter reformulation. Our method substitutes discontinuous thresholding with a probabilistic smooth union while detaching the recurrent feedback tensor from backward automatic differentiation. Analytically, the gradient with respect to the learnable mask becomes strictly proportional to background uncertainty ($\frac{\partial \text{keep}}{\partial \text{fmask}} = 1 - m_{\text{fg}}$), dynamically channeling updates into ambiguous boundary zones while severing the corruptive feedback loop.
+To resolve this dilemma, we propose \textbf{Detached Soft-OR Gating}, a
+mathematically elegant, zero-parameter reformulation. Our method substitutes
+discontinuous thresholding with a probabilistic smooth union while detaching
+the recurrent feedback tensor from backward automatic differentiation.
+Analytically, the gradient with respect to the learnable mask becomes
+strictly proportional to background uncertainty
+($\frac{\partial \text{keep}}{\partial \text{fmask}} = 1 - m_{\text{fg}}$),
+dynamically channeling updates into ambiguous boundary zones while severing
+the corruptive feedback loop.
 
-Benchmarked across 5 independent seeds ($200$ epochs each) on Kvasir-SEG (Sessile), our approach slashes False Positive Rate by \textbf{$42.8\%$} (down to $2.46\%$), elevates mean Dice score by \textbf{$+4.77$ pp} (to $29.95\%$), increases Precision by \textbf{$+7.50$ pp}, reduces inter-seed variance by \textbf{$66.5\%$}, and establishes complete immunity against catastrophic representation collapse (paired Wilcoxon $W = 4,055.0$, $p < 0.001$). Furthermore, zero-shot cross-center evaluation on the unseen CVC-ClinicDB dataset ($N = 612$) demonstrates sustained out-of-distribution superiority, improving Dice by \textbf{$+2.67$ pp} ($p = 1.61 \times 10^{-15}$) and elevating recall by \textbf{$+6.48$ pp} with a $41.1\%$ reduction in inter-seed variance.
+Benchmarked across 5 independent seeds ($200$ epochs each) on Kvasir-SEG
+(Sessile), our approach slashes False Positive Rate by \textbf{$42.8\%$}
+(down to $2.46\%$), elevates mean Dice score by \textbf{$+4.77$\,pp}
+(to $29.95\%$), increases Precision by \textbf{$+7.50$\,pp}, reduces
+inter-seed variance by \textbf{$66.5\%$}, and establishes complete immunity
+against catastrophic representation collapse
+(paired Wilcoxon $W = 4{,}055.0$, $p < 0.001$). Furthermore, zero-shot
+cross-center evaluation on the unseen CVC-ClinicDB dataset ($N = 612$)
+demonstrates sustained out-of-distribution superiority, improving Dice by
+\textbf{$+2.67$\,pp} ($p = 1.61 \times 10^{-15}$) and elevating recall by
+\textbf{$+6.48$\,pp} with a $41.1\%$ reduction in inter-seed variance.
 
 \begin{IEEEkeywords}
-Recurrent Feedback, Medical Image Segmentation, Polyp Segmentation, Feedback Trap, Detached Soft-OR, Zero-Shot Cross-Center Generalization
+  Recurrent Feedback, Medical Image Segmentation, Polyp Segmentation,
+  Feedback Trap, Detached Soft-OR, Zero-Shot Cross-Center Generalization
 \end{IEEEkeywords}
 \end{abstract}
 
-% ------------------------------------------------------------------------------
+% -----------------------------------------------------------------------------
 % SECTIONS
-% ------------------------------------------------------------------------------
+% -----------------------------------------------------------------------------
 \input{sections/01_intro.tex}
 \input{sections/02_related.tex}
 \input{sections/03_method.tex}
 \input{sections/04_experiments.tex}
 \input{sections/05_conclusion.tex}
 
-% ------------------------------------------------------------------------------
+% -----------------------------------------------------------------------------
 % REFERENCES
-% ------------------------------------------------------------------------------
+% -----------------------------------------------------------------------------
 \bibliographystyle{IEEEtran}
 \bibliography{refs}
 

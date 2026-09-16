@@ -1,32 +1,60 @@
 \section{Experiments and Empirical Results}
 \label{sec:experiments}
 
-To evaluate the empirical validity of our theoretical analysis, we conduct comprehensive experiments across two distinct clinical colonoscopy benchmarks:
+To evaluate the empirical validity of our theoretical analysis, we
+conduct comprehensive experiments across two distinct clinical
+colonoscopy benchmarks:
 \begin{enumerate}
-    \item \textbf{Kvasir-SEG (Sessile):} A specialized cohort of 200 sessile and flat colorectal lesions (Paris IIa/IIb) from Oslo University Hospital~\cite{jha2020kvasir}, divided into an official train set (160 images) and test/validation set (40 images).
-    \item \textbf{CVC-ClinicDB:} An external out-of-distribution benchmark comprising 612 colonoscopy frames from Hospital Clinic, Barcelona, Spain~\cite{bernal2017comparative}, used for zero-shot cross-center evaluation.
+  \item \textbf{Kvasir-SEG (Sessile):} A specialized cohort of 200
+        sessile and flat colorectal lesions (Paris IIa/IIb) from Oslo
+        University Hospital~\cite{jha2020kvasir}, divided into an
+        official train set (160 images) and test/validation set
+        (40 images).
+  \item \textbf{CVC-ClinicDB:} An external out-of-distribution
+        benchmark comprising 612 colonoscopy frames from Hospital
+        Clinic, Barcelona, Spain~\cite{bernal2017comparative}, used
+        for zero-shot cross-center evaluation.
 \end{enumerate}
 
-\subsection{Diagnostic Verification: Gradient Restoration and Representation Alignment}
-We first perform a $2 \times 2$ factorial diagnostic study to isolate the interaction between recurrent feedback and loss engineering. We define four architectural configurations:
+% -----------------------------------------------------------------------------
+\subsection{Diagnostic Verification: Gradient Restoration and
+            Representation Alignment}
+We first perform a $2 \times 2$ factorial diagnostic study to isolate
+the interaction between recurrent feedback and loss engineering. We
+define four architectural configurations:
 \begin{itemize}
-    \item $M_{00}$: Feedforward baseline (No feedback) + Standard DiceBCE loss.
-    \item $M_{01}$: Feedforward baseline (No feedback) + Asymmetric Tversky loss ($\alpha=0.7, \beta=0.3$).
-    \item $M_{11}$: Recurrent Feedback with conventional Hard Gating [Feedback Trap].
-    \item $M_{12}$: Recurrent Feedback with proposed Detached Soft-OR Gating [Ours].
+  \item $M_{00}$: Feedforward baseline (No feedback)
+        + Standard DiceBCE loss.
+  \item $M_{01}$: Feedforward baseline (No feedback)
+        + Asymmetric Tversky loss ($\alpha=0.7,\,\beta=0.3$).
+  \item $M_{11}$: Recurrent Feedback with conventional Hard Gating
+        [Feedback Trap].
+  \item $M_{12}$: Recurrent Feedback with proposed Detached Soft-OR
+        Gating [Ours].
 \end{itemize}
 
 \begin{table*}[t!]
 \centering
-\caption{Factorial Diagnostic of Recurrent Pathologies and Gradient Restoration. $\Delta$BN Drift ($D_{\text{KL}}$) measures encoder distribution shift; Saturation (\%) denotes confident predictions ($p > 0.9$ or $p < 0.1$); Bottleneck Cosine Similarity measures feature margin between boundary and background; Mask Grad Norm tracks gradient flow through the mask branch.}
+\caption{%
+  Factorial Diagnostic of Recurrent Pathologies and Gradient
+  Restoration. $\Delta$BN Drift ($D_{\text{KL}}$) measures encoder
+  distribution shift; Saturation (\%) denotes confident predictions
+  ($p > 0.9$ or $p < 0.1$); Bottleneck Cosine Similarity measures
+  feature margin between boundary and background; Mask Grad Norm
+  tracks gradient flow through the mask branch.%
+}
 \label{tab:diagnostic}
 \begin{tabularx}{\textwidth}{l l c c c c}
 \toprule
-\textbf{Model} & \textbf{Configuration} & \textbf{$\Delta$BN Drift ($D_{\text{KL}}$)} & \textbf{Saturation (\%)} & \textbf{Bottleneck CosSim} & \textbf{Mask Grad Norm} \\
+\textbf{Model} & \textbf{Configuration}
+  & \textbf{$\Delta$BN Drift ($D_{\text{KL}}$)}
+  & \textbf{Saturation (\%)}
+  & \textbf{Bottleneck CosSim}
+  & \textbf{Mask Grad Norm} \\
 \midrule
-$M_{00}$ & No-FB + DiceBCE (Ref)      & 0.00 & 0.00\% & 0.8637 & 3,247.49 \\
-$M_{01}$ & No-FB + Tversky            & 0.49 & 0.91\% & 0.8217 & 3,689.58 \\
-$M_{11}$ & FB + Hard Gate [Trap]      & 2.03 & 1.13\% & 0.7981 & 663.43 \\
+$M_{00}$ & No-FB + DiceBCE (Ref)      & 0.00 & 0.00\%       & 0.8637          & 3{,}247.49       \\
+$M_{01}$ & No-FB + Tversky            & 0.49 & 0.91\%       & 0.8217          & 3{,}689.58       \\
+$M_{11}$ & FB + Hard Gate [Trap]      & 2.03 & 1.13\%       & 0.7981          &   663.43         \\
 $M_{12}$ & FB + Soft-OR Detach [Ours] & \textbf{3.94} & \textbf{97.20\%} & \textbf{0.9339} & \textbf{53.62} \\
 \bottomrule
 \end{tabularx}
@@ -35,113 +63,289 @@ $M_{12}$ & FB + Soft-OR Detach [Ours] & \textbf{3.94} & \textbf{97.20\%} & \text
 \begin{figure*}[t!]
 \centering
 \includegraphics[width=\textwidth]{figures/bn_drift_violin.png}
-\caption{Distribution of Batch Normalization statistics drift (measured via $D_{\text{KL}}$). $M_{11}$ suffers from representational collapse as the feedback loop forces the encoder to memorize recurrent background hallucinations. $M_{12}$ (Detached Soft-OR) breaks this cycle, resulting in separated background/foreground features.}
+\caption{%
+  Distribution of Batch Normalization statistics drift (measured via
+  $D_{\text{KL}}$). $M_{11}$ suffers from representational collapse
+  as the feedback loop forces the encoder to memorize recurrent
+  background hallucinations. $M_{12}$ (Detached Soft-OR) breaks this
+  cycle, resulting in separated background/foreground features.%
+}
 \label{fig:bn_drift}
 \end{figure*}
 
 As shown in Table~\ref{tab:diagnostic} and Fig.~\ref{fig:bn_drift}:
 \begin{itemize}
-    \item \textbf{Severing Toxic Gradient Flow:} In $M_{11}$, backpropagating through the feedback loop attenuates mask gradient norm by over $79\%$ (from $3,247.49$ down to $663.43$). In $M_{12}$, detaching the feedback tensor inside \texttt{MixPool} reduces the mask gradient norm to a residual baseline of $53.62$ (originating solely from the final prediction head skip-connection), preventing corruptive feedback loops from distorting early encoder layers.
-    \item \textbf{Feature Separation and Confident Convergence:} In $M_{11}$, the bottleneck cosine similarity between boundary features and background deteriorated to $0.7981$, indicating representational collapse. $M_{12}$ elevates cosine similarity to \textbf{$0.9339$} and achieves a prediction saturation rate of \textbf{$97.20\%$}, cleanly separating lesions from healthy background mucosa.
+  \item \textbf{Severing Toxic Gradient Flow:}
+        In $M_{11}$, backpropagating through the feedback loop
+        attenuates mask gradient norm by over $79\%$ (from
+        $3{,}247.49$ down to $663.43$). In $M_{12}$, detaching the
+        feedback tensor inside \texttt{MixPool} reduces the mask
+        gradient norm to a residual baseline of $53.62$ (originating
+        solely from the final prediction head skip-connection),
+        preventing corruptive feedback loops from distorting early
+        encoder layers.
+  \item \textbf{Feature Separation and Confident Convergence:}
+        In $M_{11}$, the bottleneck cosine similarity between boundary
+        features and background deteriorated to $0.7981$, indicating
+        representational collapse. $M_{12}$ elevates cosine similarity
+        to \textbf{$0.9339$} and achieves a prediction saturation rate
+        of \textbf{$97.20\%$}, cleanly separating lesions from healthy
+        background mucosa.
 \end{itemize}
 
+% -----------------------------------------------------------------------------
 \subsection{Quantitative Segmentation Performance: Multi-Seed Robustness}
-To verify that our architectural fix provides consistent empirical superiority, we conduct a full 5-seed benchmark ($S \in \{7, 42, 99, 1337, 2024\}$) trained for 200 epochs each under identical conditions.
+To verify that our architectural fix provides consistent empirical
+superiority, we conduct a full 5-seed benchmark
+($S \in \{7, 42, 99, 1337, 2024\}$) trained for 200 epochs each under
+identical conditions.
 
 \begin{table*}[t!]
 \centering
-\caption{Quantitative 5-Seed Benchmark on Kvasir-SEG (Sessile): Baseline $M_{11}$ (Feedback Trap) vs. Proposed $M_{12}$ (Detached Soft-OR). All models evaluated using standard 4-iteration recurrent inference with Otsu initialization.}
+\caption{%
+  Quantitative 5-Seed Benchmark on Kvasir-SEG (Sessile): Baseline
+  $M_{11}$ (Feedback Trap) vs.\ Proposed $M_{12}$ (Detached Soft-OR).
+  All models evaluated using standard 4-iteration recurrent inference
+  with Otsu initialization.%
+}
 \label{tab:kvasir_benchmark}
 \begin{tabularx}{\textwidth}{l c c c c c c}
 \toprule
-\textbf{Seed} & \textbf{$M_{11}$ Dice} & \textbf{$M_{12}$ Dice} & \textbf{$\Delta$ Dice (pp)} & \textbf{$M_{11}$ FPR (\%)} & \textbf{$M_{12}$ FPR (\%)} & \textbf{$\Delta$ FPR (pp)} \\
+\textbf{Seed}
+  & \textbf{$M_{11}$ Dice}
+  & \textbf{$M_{12}$ Dice}
+  & \textbf{$\Delta$ Dice (pp)}
+  & \textbf{$M_{11}$ FPR (\%)}
+  & \textbf{$M_{12}$ FPR (\%)}
+  & \textbf{$\Delta$ FPR (pp)} \\
 \midrule
-7             & 0.2712 & 0.3420 & +7.08 pp & 3.65\% & 5.54\% & +1.89 pp \\
-42            & 0.2585 & 0.2971 & +3.86 pp & 2.69\% & 2.18\% & -0.51 pp \\
-99            & 0.3583 & 0.2603 & -9.80 pp & 3.15\% & 1.31\% & -1.84 pp \\
-1337          & 0.0928 & 0.2779 & +18.51 pp & 3.13\% & 2.47\% & -0.66 pp \\
-2024          & 0.2779 & 0.3201 & +4.22 pp & 8.88\% & 0.80\% & -8.08 pp \\
+7    & 0.2712 & 0.3420 & $+7.08$ pp  & 3.65\% & 5.54\% & $+1.89$ pp  \\
+42   & 0.2585 & 0.2971 & $+3.86$ pp  & 2.69\% & 2.18\% & $-0.51$ pp  \\
+99   & 0.3583 & 0.2603 & $-9.80$ pp  & 3.15\% & 1.31\% & $-1.84$ pp  \\
+1337 & 0.0928 & 0.2779 & $+18.51$ pp & 3.13\% & 2.47\% & $-0.66$ pp  \\
+2024 & 0.2779 & 0.3201 & $+4.22$ pp  & 8.88\% & 0.80\% & $-8.08$ pp  \\
 \midrule
-\textbf{Mean $\pm$ Std} & \textbf{0.2517 $\pm$ .087} & \textbf{0.2995 $\pm$ .029} & \textbf{+4.77 pp} & \textbf{4.30\% $\pm$ 2.31\%} & \textbf{2.46\% $\pm$ 1.65\%} & \textbf{-1.84 pp} \\
-\textbf{Rel. Change}    & -- & -- & \textbf{+19.0\%} & -- & -- & \textbf{-42.8\%} \\
+\textbf{Mean $\pm$ Std}
+  & \textbf{0.2517 $\pm$ .087}
+  & \textbf{0.2995 $\pm$ .029}
+  & \textbf{$+4.77$ pp}
+  & \textbf{4.30\% $\pm$ 2.31\%}
+  & \textbf{2.46\% $\pm$ 1.65\%}
+  & \textbf{$-1.84$ pp} \\
+\textbf{Rel.\ Change}
+  & -- & -- & \textbf{$+19.0\%$}
+  & -- & -- & \textbf{$-42.8\%$} \\
 \bottomrule
 \end{tabularx}
 \end{table*}
 
 As detailed in Table~\ref{tab:kvasir_benchmark}:
 \begin{itemize}
-    \item \textbf{Systematic Over-Segmentation Suppression:} $M_{12}$ reduces the average False Positive Rate from $4.30\%$ to $2.46\%$, achieving an aggregate \textbf{$42.8\%$ reduction} in over-segmented background area. In Seed 2024, where $M_{11}$ suffered severe runaway over-segmentation ($8.88\%$ FPR), $M_{12}$ suppresses FPR to \textbf{$0.80\%$} (a tenfold reduction). Mean Precision increases from $0.3143$ to $0.3893$ ($+23.9\%$ relative gain).
-    \item \textbf{Elevation of Overlap Fidelity:} Across all 5 seeds, $M_{12}$ elevates mean Dice from $0.2517$ to \textbf{$0.2995$} ($+4.77$ pp absolute gain, $+19.0\%$ relative improvement).
-    \item \textbf{Immunity to Collapse and Variance Reduction:} Under $M_{11}$, Seed 1337 suffered catastrophic collapse ($\text{Dice} = 0.0928$). $M_{12}$ converged steadily to $\text{Dice} = 0.2779$. Inter-seed standard deviation plummeted by \textbf{$66.5\%$} ($\sigma = 0.0869 \to 0.0291$).
+  \item \textbf{Systematic Over-Segmentation Suppression:}
+        $M_{12}$ reduces the average False Positive Rate from $4.30\%$
+        to $2.46\%$, achieving an aggregate \textbf{$42.8\%$ reduction}
+        in over-segmented background area. In Seed 2024, where $M_{11}$
+        suffered severe runaway over-segmentation ($8.88\%$ FPR),
+        $M_{12}$ suppresses FPR to \textbf{$0.80\%$} (a tenfold
+        reduction). Mean Precision increases from $0.3143$ to $0.3893$
+        ($+23.9\%$ relative gain).
+  \item \textbf{Elevation of Overlap Fidelity:}
+        Across all 5 seeds, $M_{12}$ elevates mean Dice from $0.2517$
+        to \textbf{$0.2995$} ($+4.77$ pp absolute gain, $+19.0\%$
+        relative improvement).
+  \item \textbf{Immunity to Collapse and Variance Reduction:}
+        Under $M_{11}$, Seed 1337 suffered catastrophic collapse
+        ($\text{Dice} = 0.0928$). $M_{12}$ converged steadily to
+        $\text{Dice} = 0.2779$. Inter-seed standard deviation
+        plummeted by \textbf{$66.5\%$}
+        ($\sigma = 0.0869 \to 0.0291$).
 \end{itemize}
 
 \begin{figure*}[t!]
 \centering
 \includegraphics[width=\textwidth]{figures/qualitative_comparison_fixed.pdf}
-\caption{Qualitative comparison between $M_{11}$ (Feedback Trap baseline) and $M_{12}$ (Proposed Detached Soft-OR) across representative sessile polyp validation cases. Columns: (a) Input frame, (b) Ground truth annotation, (c) $M_{11}$ prediction, and (d) $M_{12}$ prediction. Color coding: \textcolor{green}{Green} = True Positive (Polyp Match); \textcolor{red}{Red} = False Positive (Over-segmentation / Bleeding); \textcolor{orange}{Yellow} = False Negative (Missed Region); White contour = Ground Truth boundary. Notice the preservation of dominant True Positive polyp bodies (\textcolor{green}{Green}) alongside the massive eradication of spurious background halos (\textcolor{red}{Red}) in $M_{12}$.}
+\caption{%
+  Qualitative comparison between $M_{11}$ (Feedback Trap baseline) and
+  $M_{12}$ (Proposed Detached Soft-OR) across representative sessile
+  polyp validation cases. Columns: (a) Input frame, (b) Ground truth
+  annotation, (c) $M_{11}$ prediction, and (d) $M_{12}$ prediction.
+  Color coding:
+  \textcolor{green}{Green} = True Positive (Polyp Match);
+  \textcolor{red}{Red} = False Positive (Over-segmentation / Bleeding);
+  \textcolor{orange}{Yellow} = False Negative (Missed Region);
+  White contour = Ground Truth boundary.
+  Notice the preservation of dominant True Positive polyp bodies
+  (\textcolor{green}{Green}) alongside the massive eradication of
+  spurious background halos (\textcolor{red}{Red}) in $M_{12}$.%
+}
 \label{fig:qualitative}
 \end{figure*}
 
-\subsection{Qualitative Comparison: Delineation vs. Trivial Background Collapse}
-A critical concern when evaluating false-positive reduction is the risk of \textit{trivial background collapse}---where an algorithm reduces false alarms simply by predicting empty masks ($\text{Dice} = 0$, yielding exclusively false negatives).
+% -----------------------------------------------------------------------------
+\subsection{Qualitative Comparison: Delineation vs.\ Trivial Background
+            Collapse}
+A critical concern when evaluating false-positive reduction is the risk
+of \textit{trivial background collapse}---where an algorithm reduces
+false alarms simply by predicting empty masks ($\text{Dice} = 0$,
+yielding exclusively false negatives).
 
-As visualized in Fig.~\ref{fig:qualitative}, our proposed Detached Soft-OR model ($M_{12}$) achieves genuine morphological boundary delineation:
+As visualized in Fig.~\ref{fig:qualitative}, our proposed Detached
+Soft-OR model ($M_{12}$) achieves genuine morphological boundary
+delineation:
 \begin{itemize}
-    \item \textbf{Case 1 (\texttt{cju40jl7...}):} $M_{11}$ locates the lesion but bleeds $21,699\text{ px}$ of false alarms into healthy mucosa ($\text{Dice} = 0.645$). $M_{12}$ maintains a prominent True Positive core (\textcolor{green}{Green}), boosting Dice to \textbf{$0.742$} while eliminating \textbf{$12,280\text{ px}$} of false alarms ($\Delta\text{FP} = -12,280\text{ px}$).
-    \item \textbf{Case 2 (\texttt{cju886ry...}):} $M_{11}$ generates $13,544\text{ px}$ of false alarms ($\text{Dice} = 0.553$). $M_{12}$ sharply constrains the prediction to the true histological boundary, surging Dice to \textbf{$0.728$} and purging $9,312\text{ px}$ of false alarms.
-    \item \textbf{Case 3 (\texttt{cju1c0qb...}):} In this subtle lesion, $M_{11}$ expands $5,128\text{ px}$ beyond the ground truth ($\text{Dice} = 0.766$). $M_{12}$ achieves an exceptional Dice of \textbf{$0.769$}, pruning nearly $80\%$ of the false positive halo down to just $1,113\text{ px}$ ($\Delta\text{FP} = -4,015\text{ px}$).
-    \item \textbf{Case 4 (\texttt{ck2bxpfg...}):} Confronted with low-contrast mucosal folds, $M_{11}$ produces a diffuse false-positive cloud ($15,633\text{ px}$ FP, $\text{Dice} = 0.358$). $M_{12}$ anchors directly to the polyp core, surging Dice to \textbf{$0.593$} ($+23.5$ pp) while shearing off $10,171\text{ px}$ of background noise.
-    \item \textbf{Case 5 (\texttt{cju7f6cq...}):} $M_{11}$ accumulates $12,658\text{ px}$ of over-segmented perimeter. $M_{12}$ preserves full polyp coverage ($\text{Dice} = 0.497$) while pruning $5,116\text{ px}$ of erroneous margins.
+  \item \textbf{Case 1 (\texttt{cju40jl7...}):}
+        $M_{11}$ locates the lesion but bleeds $21{,}699\text{ px}$
+        of false alarms into healthy mucosa ($\text{Dice} = 0.645$).
+        $M_{12}$ maintains a prominent True Positive core
+        (\textcolor{green}{Green}), boosting Dice to \textbf{$0.742$}
+        while eliminating \textbf{$12{,}280\text{ px}$} of false alarms
+        ($\Delta\text{FP} = -12{,}280\text{ px}$).
+  \item \textbf{Case 2 (\texttt{cju886ry...}):}
+        $M_{11}$ generates $13{,}544\text{ px}$ of false alarms
+        ($\text{Dice} = 0.553$). $M_{12}$ sharply constrains the
+        prediction to the true histological boundary, surging Dice to
+        \textbf{$0.728$} and purging $9{,}312\text{ px}$ of false alarms.
+  \item \textbf{Case 3 (\texttt{cju1c0qb...}):}
+        In this subtle lesion, $M_{11}$ expands $5{,}128\text{ px}$
+        beyond the ground truth ($\text{Dice} = 0.766$). $M_{12}$
+        achieves an exceptional Dice of \textbf{$0.769$}, pruning
+        nearly $80\%$ of the false positive halo down to just
+        $1{,}113\text{ px}$ ($\Delta\text{FP} = -4{,}015\text{ px}$).
+  \item \textbf{Case 4 (\texttt{ck2bxpfg...}):}
+        Confronted with low-contrast mucosal folds, $M_{11}$ produces
+        a diffuse false-positive cloud ($15{,}633\text{ px}$ FP,
+        $\text{Dice} = 0.358$). $M_{12}$ anchors directly to the polyp
+        core, surging Dice to \textbf{$0.593$} ($+23.5$ pp) while
+        shearing off $10{,}171\text{ px}$ of background noise.
+  \item \textbf{Case 5 (\texttt{cju7f6cq...}):}
+        $M_{11}$ accumulates $12{,}658\text{ px}$ of over-segmented
+        perimeter. $M_{12}$ preserves full polyp coverage
+        ($\text{Dice} = 0.497$) while pruning $5{,}116\text{ px}$ of
+        erroneous margins.
 \end{itemize}
-In all cases, $M_{12}$ sustains high Dice ($0.50$ to $0.77$) while surgical detachment of the feedback path severs the recurrent error loop, preventing the hallucinated lesions that cripple $M_{11}$.
+In all cases, $M_{12}$ sustains high Dice ($0.50$ to $0.77$) while
+surgical detachment of the feedback path severs the recurrent error
+loop, preventing the hallucinated lesions that cripple $M_{11}$.
 
+% -----------------------------------------------------------------------------
 \begin{table*}[t!]
 \centering
-\caption{Multi-Seed Zero-Shot Cross-Center Generalization on CVC-ClinicDB ($N = 612$ images, 5 Seeds). Models evaluated without retraining or fine-tuning.}
+\caption{%
+  Multi-Seed Zero-Shot Cross-Center Generalization on CVC-ClinicDB
+  ($N = 612$ images, 5 Seeds). Models evaluated without retraining
+  or fine-tuning.%
+}
 \label{tab:zero_shot}
 \begin{tabularx}{\textwidth}{l c c c c}
 \toprule
-\textbf{Metric} & \textbf{$M_{11}$ (Feedback Trap)} & \textbf{$M_{12}$ (Detached Soft-OR)} & \textbf{Difference ($\Delta$)} & \textbf{Rel. Change} \\
+\textbf{Metric}
+  & \textbf{$M_{11}$ (Feedback Trap)}
+  & \textbf{$M_{12}$ (Detached Soft-OR)}
+  & \textbf{Difference ($\Delta$)}
+  & \textbf{Rel.\ Change} \\
 \midrule
-Dice Score (DSC)          & 0.2375 $\pm$ 0.0639 & \textbf{0.2641 $\pm$ 0.0377} & \textbf{+0.0267 (+2.67 pp)} & \textbf{+11.2\%} \\
-mIoU (Jaccard Index)      & 0.1614 $\pm$ 0.0452 & \textbf{0.1751 $\pm$ 0.0266} & \textbf{+0.0137 (+1.37 pp)} & \textbf{+8.5\%} \\
-Precision                 & 0.2282 $\pm$ 0.0393 & \textbf{0.2476 $\pm$ 0.0137} & \textbf{+0.0195 (+1.95 pp)} & \textbf{+8.5\%} \\
-Recall (Sensitivity)      & 0.4540 $\pm$ 0.1490 & \textbf{0.5188 $\pm$ 0.1432} & \textbf{+0.0648 (+6.48 pp)} & \textbf{+14.3\%} \\
-Inter-Seed Variance (Std) & 0.0639              & \textbf{0.0377}              & \textbf{-0.0262}            & \textbf{-41.1\%} \\
+Dice Score (DSC)
+  & $0.2375 \pm 0.0639$
+  & \textbf{$0.2641 \pm 0.0377$}
+  & \textbf{$+0.0267$ (+2.67 pp)}
+  & \textbf{$+11.2\%$} \\
+mIoU (Jaccard Index)
+  & $0.1614 \pm 0.0452$
+  & \textbf{$0.1751 \pm 0.0266$}
+  & \textbf{$+0.0137$ (+1.37 pp)}
+  & \textbf{$+8.5\%$}  \\
+Precision
+  & $0.2282 \pm 0.0393$
+  & \textbf{$0.2476 \pm 0.0137$}
+  & \textbf{$+0.0195$ (+1.95 pp)}
+  & \textbf{$+8.5\%$}  \\
+Recall (Sensitivity)
+  & $0.4540 \pm 0.1490$
+  & \textbf{$0.5188 \pm 0.1432$}
+  & \textbf{$+0.0648$ (+6.48 pp)}
+  & \textbf{$+14.3\%$} \\
+Inter-Seed Variance (Std)
+  & $0.0639$
+  & \textbf{$0.0377$}
+  & \textbf{$-0.0262$}
+  & \textbf{$-41.1\%$} \\
 \midrule
-\multicolumn{5}{l}{Sample-Level Wilcoxon Signed-Rank Test: \textbf{Dice $p = 1.61 \times 10^{-15}$***} (Significant across $N = 612$)} \\
+\multicolumn{5}{l}{%
+  Sample-Level Wilcoxon Signed-Rank Test:
+  \textbf{Dice $p = 1.61 \times 10^{-15}$***}
+  (Significant across $N = 612$)} \\
 \bottomrule
 \end{tabularx}
 \end{table*}
 
+% -----------------------------------------------------------------------------
 \subsection{Competitive Analysis: State-of-the-Art (SOTA) Baselines}
-To benchmark $M_{12}$ against contemporary paradigms, we evaluated standard feedforward segmentation architectures (U-Net and DeepLabV3+ with ResNet-50 backbones) on the exact same 40-image Kvasir-Sessile validation set. While our primary aim is mechanistic, Table~\ref{tab:sota_compare} demonstrates that curing the Feedback Trap elevates the recurrent FANet architecture to highly competitive SOTA performance, outperforming robust standard baselines on this extremely difficult subset.
+To benchmark $M_{12}$ against contemporary paradigms, we evaluated
+standard feedforward segmentation architectures (U-Net and DeepLabV3+
+with ResNet-50 backbones) on the exact same 40-image Kvasir-Sessile
+validation set. While our primary aim is mechanistic,
+Table~\ref{tab:sota_compare} demonstrates that curing the Feedback Trap
+elevates the recurrent FANet architecture to highly competitive SOTA
+performance, outperforming robust standard baselines on this extremely
+difficult subset.
 
 \begin{table}[h]
 \centering
-\caption{Competitive Analysis on Kvasir-Sessile (Validation). Standard baselines evaluated zero-shot (ImageNet weights) vs. our trained recurrent models.}
+\caption{%
+  Competitive Analysis on Kvasir-Sessile (Validation). Standard
+  baselines evaluated zero-shot (ImageNet weights) vs.\ our trained
+  recurrent models.%
+}
 \label{tab:sota_compare}
 \begin{tabular}{l c c}
 \toprule
-\textbf{Model Architecture} & \textbf{Dice Score} & \textbf{FPR (\%)} \\
+\textbf{Model Architecture}                    & \textbf{Dice Score} & \textbf{FPR (\%)} \\
 \midrule
-U-Net (ResNet-50) & 0.0006 & 0.86\% \\
-DeepLabV3+ (ResNet-50) & 0.1325 & 100.00\% \\
-FPN (ResNet-50) & 0.1201 & 31.84\% \\
-$M_{11}$ (Recurrent Baseline) & 0.2517 & 4.30\% \\
+U-Net (ResNet-50)                              & 0.0006              & 0.86\%            \\
+DeepLabV3+ (ResNet-50)                         & 0.1325              & 100.00\%          \\
+FPN (ResNet-50)                                & 0.1201              & 31.84\%           \\
+$M_{11}$ (Recurrent Baseline)                  & 0.2517              & 4.30\%            \\
 \midrule
-\textbf{$M_{12}$ (Detached Soft-OR) [Ours]} & \textbf{0.2995} & \textbf{2.46\%} \\
+\textbf{$M_{12}$ (Detached Soft-OR) [Ours]}   & \textbf{0.2995}     & \textbf{2.46\%}   \\
 \bottomrule
 \end{tabular}
 \end{table}
 
+% -----------------------------------------------------------------------------
 \subsection{Zero-Shot Cross-Center Generalization: CVC-ClinicDB}
-To evaluate whether the benefits of Detached Soft-OR generalize beyond the training cohort, we conduct an external \textbf{Zero-Shot Cross-Center Evaluation} on the CVC-ClinicDB benchmark (Hospital Clinic, Barcelona, Spain)~\cite{bernal2017comparative}. CVC-ClinicDB comprises 612 colonoscopy frames acquired under different optical resolutions and illumination conditions compared to Kvasir-SEG. Models trained exclusively on Kvasir-SEG (Sessile) across all 5 seeds were directly evaluated on CVC-ClinicDB with zero retraining or fine-tuning ($N = 5 \times 612 = 3,060$ recurrent inference evaluations).
+To evaluate whether the benefits of Detached Soft-OR generalize beyond
+the training cohort, we conduct an external \textbf{Zero-Shot
+Cross-Center Evaluation} on the CVC-ClinicDB benchmark (Hospital
+Clinic, Barcelona, Spain)~\cite{bernal2017comparative}. CVC-ClinicDB
+comprises 612 colonoscopy frames acquired under different optical
+resolutions and illumination conditions compared to Kvasir-SEG. Models
+trained exclusively on Kvasir-SEG (Sessile) across all 5 seeds were
+directly evaluated on CVC-ClinicDB with zero retraining or fine-tuning
+($N = 5 \times 612 = 3{,}060$ recurrent inference evaluations).
 
 As summarized in Table~\ref{tab:zero_shot}:
 \begin{itemize}
-    \item \textbf{Generalization Superiority:} Without any adaptation on CVC-ClinicDB, $M_{12}$ achieves consistent improvements across all primary segmentation metrics, elevating mean Dice from $0.2375$ to \textbf{$0.2641$} ($+11.2\%$ relative gain) and mIoU from $0.1614$ to \textbf{$0.1751$} ($+8.5\%$).
-    \item \textbf{Elevated Lesion Sensitivity (+6.48 pp Recall):} Crucially, $M_{12}$ boosts out-of-distribution Recall from $45.40\%$ to \textbf{$51.88\%$} ($+14.3\%$ relative gain), demonstrating that uncorrupted encoder representations generalize better to unseen mucosal textures.
-    \item \textbf{Severe Variance Compression (-41.1\%):} In $M_{11}$, random initialization induced massive cross-center instability (Seed 42 collapsed to $\text{Dice} = 0.1431$). $M_{12}$ achieves stable transfer across all seeds (Seed 42 reaching $\text{Dice} = 0.2493$, a $+10.6$ pp jump), compressing inter-seed standard deviation by $41.1\%$ ($\sigma = 0.0639 \to 0.0377$).
-    \item \textbf{Statistical Significance:} Paired Wilcoxon testing across all 612 patient frames yields $p = 1.61 \times 10^{-15} \ll 0.001$, decisively refuting the hypothesis that Detached Soft-OR overfits to the Kvasir-SEG training distribution.
+  \item \textbf{Generalization Superiority:}
+        Without any adaptation on CVC-ClinicDB, $M_{12}$ achieves
+        consistent improvements across all primary segmentation
+        metrics, elevating mean Dice from $0.2375$ to
+        \textbf{$0.2641$} ($+11.2\%$ relative gain) and mIoU from
+        $0.1614$ to \textbf{$0.1751$} ($+8.5\%$).
+  \item \textbf{Elevated Lesion Sensitivity (+6.48 pp Recall):}
+        Crucially, $M_{12}$ boosts out-of-distribution Recall from
+        $45.40\%$ to \textbf{$51.88\%$} ($+14.3\%$ relative gain),
+        demonstrating that uncorrupted encoder representations
+        generalize better to unseen mucosal textures.
+  \item \textbf{Severe Variance Compression ($-41.1\%$):}
+        In $M_{11}$, random initialization induced massive cross-center
+        instability (Seed 42 collapsed to $\text{Dice} = 0.1431$).
+        $M_{12}$ achieves stable transfer across all seeds (Seed 42
+        reaching $\text{Dice} = 0.2493$, a $+10.6$ pp jump),
+        compressing inter-seed standard deviation by $41.1\%$
+        ($\sigma = 0.0639 \to 0.0377$).
+  \item \textbf{Statistical Significance:}
+        Paired Wilcoxon testing across all 612 patient frames yields
+        $p = 1.61 \times 10^{-15} \ll 0.001$, decisively refuting the
+        hypothesis that Detached Soft-OR overfits to the Kvasir-SEG
+        training distribution.
 \end{itemize}
