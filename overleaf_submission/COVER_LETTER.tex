@@ -1,0 +1,73 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{charter}
+\usepackage{xcolor}
+
+\begin{document}
+
+\noindent
+\textbf{To:} The Program Chairs / Area Chairs / Editor-in-Chief\\
+\textit{Medical Image Computing and Computer Assisted Intervention (MICCAI) / IEEE TMI}\\[0.5em]
+\textbf{Date:} September 16, 2026\\[0.5em]
+\textbf{Subject:} Submission of Original Research Article:\\
+\textit{``Breaking the Feedback Trap: Detached Soft-Gating Restores Gradient Flow in Recurrent Medical Image Segmentation''}
+
+\vspace{1.5em}
+
+\noindent
+Dear Program Chairs, Area Chairs, and Editorial Board,
+
+\vspace{1em}
+\noindent
+We are pleased to submit our original research manuscript entitled \textbf{``Breaking the Feedback Trap: Detached Soft-Gating Restores Gradient Flow in Recurrent Medical Image Segmentation''} for consideration as a regular paper in your esteemed venue.
+
+\vspace{0.8em}
+\noindent
+\textbf{A Mechanistic Foundational Study Rather Than Parameter Bloat:}\\
+In recent years, the medical image segmentation community has witnessed an influx of increasingly complex hybrid architectures competing for marginal leaderboard gains. However, the foundational architectural mechanics of \textbf{recurrent feedback networks}---which mimic biological top-down cortical refinement by iteratively re-feeding past predictions into early encoder representations---have remained poorly understood and treated largely as empirical black boxes.
+
+In this work, we present a rigorous \textbf{mechanistic study} diagnosing a pervasive mathematical pathology in recurrent medical vision architectures, which we term the \textbf{Feedback Trap}. Specifically, we examine why recurrent feedback networks (such as FANet) consistently suffer from rampant false-positive over-segmentation (over $84\%$ of error mass bleeding into healthy mucosa), and why modern asymmetric loss functions (e.g., Tversky loss) are completely neutralized once recurrent loops are activated.
+
+Through systematic gradient and representational auditing, we uncover two structural flaws in conventional hard binary gating ($\max(\mathbb{I}(\text{fmask} > 0.5), m_{\text{fg}})$):
+\begin{enumerate}
+    \item \textbf{Internal Gradient Paralysis:} The indicator function yields zero gradients almost everywhere ($\frac{\partial \text{keep}}{\partial \text{fmask}} \equiv 0$), depriving the learnable attention branch of direct task supervision.
+    \item \textbf{Toxic Error Accumulation:} Recursive backpropagation through the unvalidated feedback mask tensor attenuates gradient magnitudes by over $79\%$ and induces severe encoder distribution drift ($D_{\text{KL}} = 33.63$), trapping the model in an echo chamber of its own past mistakes.
+\end{enumerate}
+
+\vspace{0.8em}
+\noindent
+\textbf{Principled Zero-Parameter Solution (Detached Soft-OR):}\\
+To cure this pathology without discarding the multi-pass refinement benefits of recurrent networks, we introduce \textbf{Detached Soft-OR Gating}. Our reformulation relaxes the logical disjunction into continuous probabilistic space ($a + m - am$) while applying the stop-gradient operator ($\text{detach}(m_{\text{fg}})$) to the feedback prior. We prove analytically that this transformation:
+\begin{itemize}
+    \item Restores continuous, non-zero gradient flow strictly scaled by background uncertainty: $\frac{\partial \text{keep}}{\partial \text{fmask}} = 1 - m_{\text{fg}}$, maximally supervising ambiguous boundary margins.
+    \item Completely severs degenerate recursive error propagation ($\frac{\partial \text{keep}}{\partial m_{\text{fg}}} \equiv 0$).
+    \item Requires \textbf{exactly zero additional learnable parameters} ($\Delta \Theta = 0$).
+\end{itemize}
+
+\vspace{0.8em}
+\noindent
+\textbf{Decisive Empirical Hard Numbers and Multi-Center Generalization:}\\
+Our extensive empirical evaluation across multiple datasets establishes overwhelming statistical superiority:
+\begin{itemize}
+    \item \textbf{Over-Segmentation Suppression:} On Kvasir-SEG (Sessile), Detached Soft-OR slashes the False Positive Rate by \textbf{$42.8\%$} (dropping from $4.30\%$ to $2.46\%$, and from $21.39\%$ to $7.55\%$ at inference), while elevating mean Dice by \textbf{$+4.77$ pp} ($+19.0\%$ relative gain) and Precision by \textbf{$+7.50$ pp} ($+23.9\%$).
+    \item \textbf{Variance Compression and Stability:} Across 5 random seeds ($200$ epochs each), inter-seed standard deviation plummets by \textbf{$66.5\%$} ($\sigma = 0.0869 \to 0.0291$), completely eliminating catastrophic collapse. Paired Wilcoxon signed-rank tests across $N = 200$ instances confirm over-segmentation suppression at \textbf{$p < 0.001$} ($W = 4,055.0$).
+    \item \textbf{True Morphological Delineation (No Background Collapse):} Qualitative analysis confirms that false-positive reduction occurs while preserving dominant, high-fidelity True Positive regions ($\text{Dice} = 0.50 - 0.77$) matching true polyp bodies, rather than collapsing trivially to empty masks.
+    \item \textbf{External Zero-Shot Generalization on CVC-ClinicDB ($N = 612$):} When tested zero-shot on an unseen clinical center (Hospital Clinic, Barcelona) without any retraining or adaptation, our model achieves a statistically significant Dice improvement of \textbf{$+2.67$ pp} ($+11.2\%$ relative gain, \textbf{$p = 1.61 \times 10^{-15}$}), enhances out-of-distribution Recall by \textbf{$+6.48$ pp} ($+14.3\%$), and compresses inter-seed variance by \textbf{$41.1\%$}.
+\end{itemize}
+
+\vspace{0.8em}
+\noindent
+This manuscript represents entirely original work and is not under consideration for publication elsewhere. All code, trained checkpoints, and experimental pipelines will be made publicly available upon acceptance to ensure complete reproducibility.
+
+We thank you and the reviewers for your time and constructive consideration of our submission.
+
+\vspace{1.5em}
+\noindent
+Sincerely,\\[0.5em]
+\textbf{The Authors}\\
+\textit{FANet Research Team}\\
+Correspondence Email: \texttt{anonymous@domain.edu}
+
+\end{document}

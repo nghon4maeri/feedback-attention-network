@@ -1,0 +1,109 @@
+\section{Methodology: Breaking the Feedback Trap}
+\label{sec:method}
+
+In this section, we dissect the internal mechanics of the recurrent feature aggregation module (\texttt{MixPool}), derive the mathematical paralysis inherent in conventional hard gating, and formulate our proposed Detached Soft-OR architecture.
+
+\subsection{The Classical MixPool: Architecture and The Hard-Gating Flaw}
+The Feature Attention Network incorporates recurrent refinement across four encoder stages ($e_1, e_2, e_3, e_4$) and four decoder stages ($d_1, d_2, d_3, d_4$). At each level, intermediate feature tensors $x \in \mathbb{R}^{B \times C \times H \times W}$ and the recurrent feedback mask $m \in \mathbb{R}^{B \times 1 \times H_{\text{in}} \times W_{\text{in}}}$ are processed through a \texttt{MixPool} block.
+
+Within \texttt{MixPool}, input feature $x$ is first routed to a lightweight convolutional attention sub-network $\mathcal{F}_{\text{att}}$, generating a continuous single-channel attention prior:
+\begin{equation}
+\label{eq:fmask_def}
+\text{fmask} = \sigma\left(\text{Conv}_{1 \times 1}\left(\text{ReLU}\left(\text{BN}\left(\text{Conv}_{3 \times 3}(x)\right)\right)\right)\right) \in [0, 1]^{B \times 1 \times H \times W}.
+\end{equation}
+Simultaneously, the feedback mask $m$ is spatially downsampled via max pooling to match the spatial resolution $(H, W)$ of the current layer, yielding $m_{\text{fg}} \in [0, 1]^{B \times 1 \times H \times W}$.
+
+In the original formulation~\cite{tomar2021fanet}, these two spatial gates are fused into a single binary selection mask $\text{keep}_{\text{hard}}$ via a hard thresholding operator:
+\begin{equation}
+\label{eq:keep_hard}
+\text{keep}_{\text{hard}} = \max\left(\mathbb{I}(\text{fmask} > 0.5), m_{\text{fg}}\right).
+\end{equation}
+
+The gated features are then split across dual convolutional pathways and recombined:
+\begin{equation}
+x_1 = \text{Conv}_1\left(x \odot \text{keep}_{\text{hard}}\right), \quad x_2 = \text{Conv}_2(x),
+\end{equation}
+\begin{equation}
+\text{MixPool}(x, m) = \left[x_1 \,\|\, x_2\right] \in \mathbb{R}^{B \times C \times H \times W}.
+\end{equation}
+
+\subsubsection{The Calculus of Failure: Zero-Gradient and Toxic Coupling}
+Let $\mathcal{L}$ denote the scalar segmentation objective. Applying the chain rule to backpropagate gradients from $x_1$ back to the parameters $\theta_{\text{att}}$ of the attention generator $\mathcal{F}_{\text{att}}$:
+\begin{equation}
+\label{eq:chain_rule}
+\frac{\partial \mathcal{L}}{\partial \theta_{\text{att}}} = \frac{\partial \mathcal{L}}{\partial x_1} \cdot \frac{\partial x_1}{\partial \text{keep}_{\text{hard}}} \cdot \frac{\partial \text{keep}_{\text{hard}}}{\partial \text{fmask}} \cdot \frac{\partial \text{fmask}}{\partial \theta_{\text{att}}}.
+\end{equation}
+
+Because $\text{keep}_{\text{hard}}$ utilizes the indicator function $\mathbb{I}(\text{fmask} > 0.5)$, the distributional derivative of the Heaviside step function is the Dirac delta:
+\begin{equation}
+\frac{\partial}{\partial u}\mathbb{I}(u > 0.5) = \delta(u - 0.5) = 0 \quad \forall u \neq 0.5.
+\end{equation}
+Consequently, the third factor in Eq.~(\ref{eq:chain_rule}) evaluates to:
+\begin{equation}
+\frac{\partial \text{keep}_{\text{hard}}}{\partial \text{fmask}} \equiv 0 \quad \text{almost everywhere}.
+\end{equation}
+As a direct consequence, \textbf{zero gradient reaches the parameters $\theta_{\text{att}}$ of the attention generator}. The network cannot adapt its internal spatial feature selector in response to task-specific segmentation errors.
+
+Simultaneously, the recurrent branch receives backward gradients through automatic differentiation:
+\begin{equation}
+\frac{\partial \mathcal{L}}{\partial m_{\text{fg}}} = \frac{\partial \mathcal{L}}{\partial x_1} \cdot \frac{\partial x_1}{\partial \text{keep}_{\text{hard}}} \cdot \frac{\partial \text{keep}_{\text{hard}}}{\partial m_{\text{fg}}} \neq 0.
+\end{equation}
+When the network produces an early false-positive prediction, this erroneous mask is reinjected into the encoder. Because gradients flow through $m_{\text{fg}}$ back into the recursive history without internal attention guidance, the encoder parameters are updated to maximize consistency with past errors rather than anatomical boundaries. This causes the internal feature representations of healthy background mucosa to collapse into lesion-like embeddings.
+
+\subsection{Proposed Solution: Detached Soft-OR Gating}
+To eradicate the Feedback Trap while preserving the inductive bias of iterative multi-pass refinement, we propose \textbf{Detached Soft-OR Gating}. Our method redesigns the gating operator along two dimensions:
+
+\subsubsection{Continuous Boolean Relaxation via Soft-OR}
+Instead of discontinuous hard thresholding, we relax the logical disjunction ($A \lor B$) into continuous probabilistic space. In probability theory, the union of two independent events $A$ and $B$ is given by:
+\begin{equation}
+P(A \cup B) = P(A) + P(B) - P(A \cap B) = 1 - (1 - P(A))(1 - P(B)).
+\end{equation}
+Applying this formulation directly to the continuous attention activations $a \in [0, 1]$ and downsampled feedback mask $m_{\text{fg}} \in [0, 1]$:
+\begin{equation}
+\label{eq:soft_or}
+\text{keep}_{\text{soft}} = a + m_{\text{fg}} - (a \odot m_{\text{fg}}) = 1 - (1 - a)\odot(1 - m_{\text{fg}}),
+\end{equation}
+where $\odot$ denotes element-wise Hadamard multiplication.
+
+\subsubsection{Severing the Degenerate Loop via Gradient Detachment}
+To prevent erroneous recurrent priors from corrupting early encoder layers via recursive backpropagation, we enforce the stop-gradient operator on the recurrent mask tensor inside all \texttt{MixPool} modules:
+\begin{equation}
+\label{eq:detached_soft_or}
+\text{keep}_{\text{detached}} = a + \text{detach}(m_{\text{fg}}) - a \odot \text{detach}(m_{\text{fg}}).
+\end{equation}
+
+\subsection{Theoretical Properties and Analytical Guarantees}
+Our proposed Detached Soft-OR formulation provides three analytical guarantees:
+
+\begin{theorem}[Continuous Gradient Flow with Dynamic Uncertainty Scaling]
+Under the Detached Soft-OR formulation (Eq.~\ref{eq:detached_soft_or}), the gradient of the feature gate with respect to the internal attention map $\text{fmask}$ is strictly non-zero, continuous, and dynamically proportional to background uncertainty:
+\begin{equation}
+\frac{\partial \text{keep}_{\text{detached}}}{\partial \text{fmask}} = 1 - m_{\text{fg}} \ge 0.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Taking the partial derivative of Eq.~(\ref{eq:detached_soft_or}) with respect to $a \equiv \text{fmask}$:
+\begin{equation}
+\frac{\partial \text{keep}_{\text{detached}}}{\partial a} = \frac{\partial}{\partial a} \left[a + \text{detach}(m_{\text{fg}}) - a \cdot \text{detach}(m_{\text{fg}})\right] = 1 - \text{detach}(m_{\text{fg}}).
+\end{equation}
+Because $\text{detach}(\cdot)$ behaves as an identity in forward evaluation and zero in backward differentiation, the effective backward derivative is $1 - m_{\text{fg}}$. Since $m_{\text{fg}} \in [0, 1]$, this quantity is strictly non-negative and bounded in $[0, 1]$. \qed
+\end{proof}
+
+\textbf{Clinical Intuition of the Derivative:}
+\begin{itemize}
+    \item When $m_{\text{fg}} \to 1$ (high-confidence past lesion interior), $\frac{\partial \text{keep}}{\partial \text{fmask}} \to 0$. The internal attention branch does not waste gradient capacity refining already-confident lesion cores.
+    \item When $m_{\text{fg}} \to 0$ (ambiguous boundary or healthy background mucosa), $\frac{\partial \text{keep}}{\partial \text{fmask}} \to 1$. The internal attention branch receives maximum gradient magnitude, empowering the network to learn precise boundary discrimination and prune false positives.
+\end{itemize}
+
+\begin{theorem}[Complete Severance of Degenerate Error Propagation]
+Under Detached Soft-OR, backward automatic differentiation through the recurrent mask branch is identically zero:
+\begin{equation}
+\frac{\partial \text{keep}_{\text{detached}}}{\partial m_{\text{fg}}} \equiv 0.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Direct consequence of applying the stop-gradient operator $\text{detach}(\cdot)$ on $m_{\text{fg}}$. \qed
+\end{proof}
+
+\textbf{Zero Parameter Overhead:} The entire transformation in Eq.~(\ref{eq:detached_soft_or}) requires exactly \textbf{zero learnable parameters} ($\Delta \Theta = 0$) and introduces zero additional FLOPs beyond elementary tensor arithmetic.

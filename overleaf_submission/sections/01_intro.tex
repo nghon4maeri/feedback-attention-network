@@ -1,0 +1,37 @@
+\section{Introduction}
+\label{sec:intro}
+
+Colorectal cancer (CRC) represents one of the leading causes of cancer-related mortality worldwide, with early detection and endoscopic resection of precancerous polyps serving as the clinical gold standard for prevention~\cite{siegel2023colorectal, leufkens2012factors}. Among varied morphology types, \textbf{sessile and flat polyps} (Paris Classification Types IIa and IIb) present the highest diagnostic hazard during colonoscopy~\cite{paris2003endoscopic}. Due to their low height profile, irregular borders, and textural indistinguishability from surrounding healthy mucosa, these subtle lesions are frequently missed or inaccurately delineated by automated segmentation algorithms~\cite{jha2020kvasir, bernal2017comparative}.
+
+To address these challenges, deep learning architectures have evolved from standard feedforward encoder-decoder paradigms (e.g., U-Net~\cite{ronneberger2015unet}, PraNet~\cite{fan2020pranet}) toward \textbf{recurrent attention networks}~\cite{tomar2021fanet, liang2015recurrent}. A prominent example is the Feature Attention Network (FANet)~\cite{tomar2021fanet}, which introduces cross-epoch recurrent feedback. In FANet, the binary prediction mask generated in epoch $t-1$ is reintroduced as an auxiliary input to the encoder blocks at epoch $t$. The theoretical premise is compelling: by iteratively re-feeding intermediate segmentations through specialized pooling modules (\texttt{MixPool}), the network should progressively refine feature maps, pruning false positives and sharpening ambiguous boundaries through multi-pass self-guidance~\cite{tomar2021fanet, tomar2021ddanet}.
+
+\subsection{The Empirical Paradox: Over-Segmentation and Loss Neutralization}
+Despite theoretical appeal, practical deployment of recurrent feedback architectures in medical image segmentation exhibits a severe, persistent failure mode: \textbf{severe over-segmentation}. In clinical colonoscopy datasets, empirical error auditing reveals that over $84\%$ of FANet's error mass is concentrated in false positives---bleeding predictions far into non-lesion backgrounds (extending up to $40.7\text{ pixels}$ beyond the true polyp margin).
+
+Standard deep learning intuition suggests addressing false-positive bias via \textbf{asymmetric loss functions} (such as the Tversky loss~\cite{salehi2017tversky} or asymmetric Focal loss~\cite{yeung2022unified}), which assign disproportionately higher penalties to false positives ($\alpha > \beta$). Indeed, when evaluated in a purely feedforward setting (with feedback disconnected), asymmetric Tversky loss delivers an immediate, statistically significant reduction in false positives ($-3.25\text{ pp}$, $p = 0.005$). 
+
+However, our extensive factorial experiments uncover a baffling empirical paradox: \textbf{as soon as recurrent feedback is activated, the beneficial effect of asymmetric loss is completely abolished} (exhibiting a detrimental interaction effect of $+4.17\text{ pp}$). Rather than eliminating spurious boundaries, the recurrent feedback network traps the model in an echo chamber of its own past mistakes, rendering modern loss engineering entirely ineffective.
+
+\subsection{Uncovering the ``Feedback Trap''}
+Through systematic representational and gradient diagnostics, we identify the exact mechanical failure causing this phenomenon, which we term the \textbf{Feedback Trap}. The flaw originates within the core \texttt{MixPool} module. In standard recurrent implementations, the feature gating operator combines the learnable internal attention map $\text{fmask}$ with the downsampled recurrent mask $m_{\text{fg}}$ via a hard binary threshold:
+\begin{equation}
+\label{eq:hard_gate_intro}
+\text{keep}_{\text{hard}} = \max\left(\mathbb{I}(\text{fmask} > 0.5), m_{\text{fg}}\right).
+\end{equation}
+
+This formulation produces two fatal mathematical and representational pathologies:
+\begin{enumerate}
+    \item \textbf{Gradient Vanishing in Internal Attention:} Because the indicator function $\mathbb{I}(\cdot > 0.5)$ has a derivative of zero almost everywhere, $\frac{\partial \text{keep}}{\partial \text{fmask}} \equiv 0$. The learnable convolutional layers tasked with extracting local lesion attention receive zero direct supervision from the segmentation loss.
+    \item \textbf{Toxic Recurrent Backpropagation:} Concurrently, non-zero gradients backpropagate through the recurrent mask branch ($m_{\text{fg}}$). When the network makes an early false-positive error, that erroneous prior is reintroduced in the next epoch. Because the network backpropagates through this unvalidated recursive loop, early encoder Batch Normalization distributions drift catastrophically ($D_{\text{KL}} = 33.63$ at \texttt{e1.r1.bn3}), and mask gradient norms collapse by $79.6\%$. The network becomes permanently over-committed to hallucinated lesions, overpowering any loss-level penalty.
+\end{enumerate}
+
+\subsection{Framing: A Mechanistic Study of Recurrent Feedback}
+\textbf{Disentangling Mechanistic Principles from SOTA Chasing:} We explicitly frame this paper as a \textbf{mechanistic foundational study} rather than an engineering effort to surpass state-of-the-art leaderboards on omnibus polyp challenges. Our explicit scientific goal is to isolate and resolve a fundamental mathematical pathology in recurrent medical vision architectures. By holding the backbone, augmentation pipeline, and training regime strictly constant, we ensure that every measured difference is attributable directly to the gating mechanics and gradient routing within \texttt{MixPool}.
+
+\subsection{Contributions of This Work}
+To break the Feedback Trap without discarding the intrinsic benefits of recurrent refinement, we propose \textbf{Detached Soft-OR Gating}---a principled reformulation grounded in Boolean continuous relaxation and gradient path analysis. Our contributions are threefold:
+\begin{enumerate}
+    \item \textbf{Diagnostic Formulation of the Feedback Trap:} We provide the first systematic diagnosis of gradient paralysis and loss neutralization in recurrent medical segmentation networks, combining empirical layer-wise BatchNorm drift, representational cosine similarity, and gradient norm tracking.
+    \item \textbf{Zero-Parameter Detached Soft-OR Formulation:} We redesign the \texttt{MixPool} gating operator using smooth probabilistic union coupled with gradient detachment ($\text{detach}(m_{\text{fg}})$). We prove analytically that this transformation guarantees continuous gradient flow to the internal attention branch, strictly proportional to the uncertainty of past predictions ($\frac{\partial \text{keep}}{\partial \text{fmask}} = 1 - m_{\text{fg}}$), requiring zero additional learnable parameters.
+    \item \textbf{Multi-Seed and Cross-Center Empirical Validation:} Through a 5-seed benchmark on Kvasir-SEG (Sessile), we demonstrate that our method reduces the False Positive Rate by \textbf{$42.8\%$} (dropping from $4.30\%$ to $2.46\%$), elevates mean Dice by \textbf{$+4.77$ pp} (to $29.95\%$), improves Precision by \textbf{$+7.50$ pp}, compresses inter-seed standard deviation by \textbf{$66.5\%$}, and eradicates catastrophic representation collapse ($p < 0.001$). Furthermore, in zero-shot cross-center validation on CVC-ClinicDB ($N = 612$), our method demonstrates robust multi-center generalization, achieving a statistically significant Dice increase ($+2.67$ pp, $p = 1.61 \times 10^{-15}$) and reducing inter-seed variance by $41.1\%$.
+\end{enumerate}
