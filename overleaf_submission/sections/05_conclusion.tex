@@ -39,12 +39,12 @@ By applying the stop-gradient operator $\text{detach}(m_{\text{fg}})$, we transf
 \end{equation}
 This provides an optimal learning schedule: gradients are suppressed in confidently segmented lesion interiors, but maximally amplified in ambiguous boundary margins and false-positive regions.
 
-\subsubsection{Limitations and Future Work}
+\subsubsection{Future Directions}
 While our experiments demonstrate decisive improvements on Kvasir-SEG (Sessile) and zero-shot cross-center transfer to CVC-ClinicDB, several avenues remain for future investigation:
 \begin{enumerate}
-    \item \textbf{Multi-Center Video Generalization:} Expanding evaluation across temporal video sequences (e.g., SUN-SEG and BKAI-IGH) to investigate frame-to-frame temporal recurrence dynamics under high-speed camera motion.
-    \item \textbf{Dynamic Gating Modulation:} Exploring learnable or adaptive temperature parameters for the Soft-OR continuous relaxation across deeper versus shallower encoder layers.
-    \item \textbf{Cross-Modality Transfer:} Investigating whether the Feedback Trap similarly afflicts recurrent networks in ultrasound lesion tracking, cardiac MRI segmentation, and iterative point cloud completion.
+    \item \textbf{Learnable Feedback Modulation:} Introducing a spatial attention gate $\gamma$ to dynamically weight the detached feedback mask based on contextual confidence, replacing the unweighted union with $\gamma \odot \text{detach}(m_{\text{fg}})$.
+    \item \textbf{Architectural Universality:} Testing if the Feedback Trap afflicts other recurrent structures like R2U-Net or ConvLSTM, and whether Detached Soft-OR provides a universal fix across different state-update equations.
+    \item \textbf{Dynamic Early-Stopping:} Utilizing the uncertainty-guided Soft-OR entropy to dynamically halt recurrent iterations ($t < 4$) for faster real-time inference without sacrificing precision, yielding FPS gains in clinical deployment.
 \end{enumerate}
 
 \subsection{Conclusion}

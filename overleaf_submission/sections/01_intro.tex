@@ -26,7 +26,9 @@ This formulation produces two fatal mathematical and representational pathologie
 \end{enumerate}
 
 \subsection{Framing: A Mechanistic Study of Recurrent Feedback}
-\textbf{Disentangling Mechanistic Principles from SOTA Chasing:} We explicitly frame this paper as a \textbf{mechanistic foundational study} rather than an engineering effort to surpass state-of-the-art leaderboards on omnibus polyp challenges. Our explicit scientific goal is to isolate and resolve a fundamental mathematical pathology in recurrent medical vision architectures. By holding the backbone, augmentation pipeline, and training regime strictly constant, we ensure that every measured difference is attributable directly to the gating mechanics and gradient routing within \texttt{MixPool}.
+\textbf{Disentangling Mechanistic Principles from SOTA Chasing:} We explicitly frame this paper as a \textbf{mechanistic foundational study} rather than an empirical effort to chase multi-modality benchmark leaderboards. Our explicit scientific goal is to isolate and resolve a fundamental mathematical pathology in recurrent medical vision architectures. By holding the backbone, augmentation pipeline, and training regime strictly constant, we ensure that every measured difference is attributable directly to the gating mechanics and gradient routing within \texttt{MixPool}.
+
+\textbf{Justifying Kvasir-SEG (Sessile):} To stress-test this pathology, we focus exclusively on the Kvasir-SEG Sessile subset. Flat, poorly demarcated sessile polyps represent the ultimate adversarial environment where the Feedback Trap---characterized by runaway false-positive over-segmentation---is most destructive. By curing the trap in this highly ambiguous regime, we prove the fundamental robustness of the architectural fix.
 
 \subsection{Contributions of This Work}
 To break the Feedback Trap without discarding the intrinsic benefits of recurrent refinement, we propose \textbf{Detached Soft-OR Gating}---a principled reformulation grounded in Boolean continuous relaxation and gradient path analysis. Our contributions are threefold:

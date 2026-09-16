@@ -14,10 +14,10 @@
 \backcite {zhang2018road}{{2}{\mbox {II-A}}{subsection.2.1}}
 \backcite {oktay2018attention}{{2}{\mbox {II-A}}{subsection.2.1}}
 \backcite {fan2020pranet}{{2}{\mbox {II-A}}{subsection.2.1}}
-\backcite {huang2021hardnet}{{2}{\mbox {II-A}}{subsection.2.1}}
-\backcite {chen2021transunet}{{2}{\mbox {II-A}}{subsection.2.1}}
-\backcite {cao2022swin}{{2}{\mbox {II-A}}{subsection.2.1}}
-\backcite {dong2021polyp}{{2}{\mbox {II-A}}{subsection.2.1}}
+\backcite {huang2021hardnet}{{3}{\mbox {II-A}}{subsection.2.1}}
+\backcite {chen2021transunet}{{3}{\mbox {II-A}}{subsection.2.1}}
+\backcite {cao2022swin}{{3}{\mbox {II-A}}{subsection.2.1}}
+\backcite {dong2021polyp}{{3}{\mbox {II-A}}{subsection.2.1}}
 \backcite {felleman1991distributed, gilbert2013top}{{3}{\mbox {II-B}}{subsection.2.2}}
 \backcite {liang2015recurrent, zamir2017feedback}{{3}{\mbox {II-B}}{subsection.2.2}}
 \backcite {zamir2017feedback}{{3}{\mbox {II-B}}{subsection.2.2}}
@@ -32,8 +32,8 @@
 \backcite {yeung2022unified}{{3}{\mbox {II-C}}{subsection.2.3}}
 \backcite {tomar2021fanet}{{3}{\mbox {III-A}}{equation.3.2}}
 \backcite {jha2020kvasir}{{4}{1}{Item.6}}
-\backcite {bernal2017comparative}{{4}{2}{Item.7}}
-\backcite {bernal2017comparative}{{6}{\mbox {IV-D}}{subsection.4.4}}
-\backcite {leufkens2012factors, mori2019real}{{7}{\mbox {V-A}1}{subsubsection.5.1.1}}
-\backcite {mori2019real, hassan2021overcoming}{{7}{\mbox {V-A}1}{subsubsection.5.1.1}}
+\backcite {bernal2017comparative}{{5}{2}{Item.7}}
+\backcite {bernal2017comparative}{{6}{\mbox {IV-E}}{subsection.4.5}}
+\backcite {leufkens2012factors, mori2019real}{{8}{\mbox {V-A}1}{subsubsection.5.1.1}}
+\backcite {mori2019real, hassan2021overcoming}{{8}{\mbox {V-A}1}{subsubsection.5.1.1}}
 \backcite {rex2017colorectal}{{8}{\mbox {V-A}1}{subsubsection.5.1.1}}
