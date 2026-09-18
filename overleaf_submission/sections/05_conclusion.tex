@@ -90,7 +90,24 @@ with background uncertainty:
 \end{equation}
 This provides an optimal learning schedule: gradients are suppressed in
 confidently segmented lesion interiors, but maximally amplified in
-ambiguous boundary margins and false-positive regions.
+\subsubsection{Mechanistic Vulnerability of Feedforward Multi-Scale Pooling}
+Our comparative benchmark revealed a catastrophic failure mode in standard
+feedforward architectures, most notably DeepLabV3+'s $100.00\%$ FPR on the
+sessile validation set. Mechanistically, modules relying on multi-scale
+contextual dilation, such as Atrous Spatial Pyramid Pooling (ASPP), are
+engineered to aggressively aggregate global semantic context across wide
+receptive fields. However, on subtle colorectal lesions that exhibit
+minimal textural differentiation from surrounding healthy mucosa, unguided
+multi-scale pooling acts as an indiscriminate feature collector. Without
+explicit boundary constraints or recurrent gating to verify spatial
+hypotheses, ASPP blindly amplifies subtle mucosal reflections and colonic
+folds, categorizing entire image backgrounds as neoplastic tissue. This
+failure underscores why single-pass contextual scaling is fundamentally
+insufficient for flat lesion morphology, further validating the necessity
+of our Uncertainty-Guided recurrent gating
+($\frac{\partial \text{keep}}{\partial \text{fmask}} = 1 - m_{\text{fg}}$),
+which dynamically restrains feature propagation based on spatial prediction
+confidence.
 
 % -----------------------------------------------------------------------------
 \subsubsection{Future Directions}

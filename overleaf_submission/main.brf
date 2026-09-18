@@ -12,8 +12,8 @@
 \backcite {ronneberger2015unet}{{2}{\mbox {II-A}}{subsection.2.1}}
 \backcite {zhou2018unetplusplus}{{2}{\mbox {II-A}}{subsection.2.1}}
 \backcite {zhang2018road}{{2}{\mbox {II-A}}{subsection.2.1}}
-\backcite {oktay2018attention}{{2}{\mbox {II-A}}{subsection.2.1}}
-\backcite {fan2020pranet}{{2}{\mbox {II-A}}{subsection.2.1}}
+\backcite {oktay2018attention}{{3}{\mbox {II-A}}{subsection.2.1}}
+\backcite {fan2020pranet}{{3}{\mbox {II-A}}{subsection.2.1}}
 \backcite {huang2021hardnet}{{3}{\mbox {II-A}}{subsection.2.1}}
 \backcite {chen2021transunet}{{3}{\mbox {II-A}}{subsection.2.1}}
 \backcite {cao2022swin}{{3}{\mbox {II-A}}{subsection.2.1}}
@@ -31,9 +31,9 @@
 \backcite {abraham2019novel}{{3}{\mbox {II-C}}{subsection.2.3}}
 \backcite {yeung2022unified}{{3}{\mbox {II-C}}{subsection.2.3}}
 \backcite {tomar2021fanet}{{3}{\mbox {III-A}}{equation.3.2}}
-\backcite {jha2020kvasir}{{4}{1}{Item.6}}
+\backcite {jha2020kvasir}{{5}{1}{Item.6}}
 \backcite {bernal2017comparative}{{5}{2}{Item.7}}
 \backcite {bernal2017comparative}{{6}{\mbox {IV-E}}{subsection.4.5}}
-\backcite {leufkens2012factors, mori2019real}{{7}{\mbox {V-A}1}{subsubsection.5.1.1}}
+\backcite {leufkens2012factors, mori2019real}{{8}{\mbox {V-A}1}{subsubsection.5.1.1}}
 \backcite {mori2019real, hassan2021overcoming}{{8}{\mbox {V-A}1}{subsubsection.5.1.1}}
 \backcite {rex2017colorectal}{{8}{\mbox {V-A}1}{subsubsection.5.1.1}}
