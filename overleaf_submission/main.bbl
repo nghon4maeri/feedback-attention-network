@@ -49,19 +49,6 @@ J.~Bernal, N.~Tajkbaksh, F.~J. Sanchez, B.~J. Matuszewski, H.~Chen, L.~Leong,
   endoscopic vision challenge,'' \emph{IEEE Transactions on Medical Imaging},
   vol.~36, no.~6, pp. 1231--1249, 2017.
 
-\bibitem{ronneberger2015unet}
-O.~Ronneberger, P.~Fischer, and T.~Brox, ``U-net: Convolutional networks for
-  biomedical image segmentation,'' in \emph{International Conference on Medical
-  Image Computing and Computer-Assisted Intervention (MICCAI)}.\hskip 1em plus
-  0.5em minus 0.4em\relax Springer, 2015, pp. 234--241.
-
-\bibitem{fan2020pranet}
-D.-P. Fan, G.-P. Ji, T.~Zhou, G.~Chen, H.~Fu, J.~Shen, and L.~Shao, ``Pranet:
-  Parallel reverse attention network for polyp segmentation,'' in
-  \emph{International Conference on Medical Image Computing and
-  Computer-Assisted Intervention (MICCAI)}.\hskip 1em plus 0.5em minus
-  0.4em\relax Springer, 2020, pp. 263--273.
-
 \bibitem{tomar2021fanet}
 N.~K. Tomar, D.~Jha, U.~Bagci, and S.~Ali, ``Fanet: A feature attention network
   for semantic segmentation of medical images,'' in \emph{2021 IEEE
@@ -72,6 +59,11 @@ N.~K. Tomar, D.~Jha, U.~Bagci, and S.~Ali, ``Fanet: A feature attention network
 M.~Liang and X.~Hu, ``Recurrent convolutional neural network for object
   recognition,'' in \emph{Proceedings of the IEEE Conference on Computer Vision
   and Pattern Recognition (CVPR)}, 2015, pp. 3367--3375.
+
+\bibitem{alom2018recurrent}
+M.~Z. Alom, M.~Hasan, C.~Yakopcic, T.~M. Taha, and V.~K. Asari, ``Recurrent
+  residual convolutional neural network based on u-net (r2u-net) for medical
+  image segmentation,'' \emph{arXiv preprint arXiv:1802.06955}, 2018.
 
 \bibitem{tomar2021ddanet}
 N.~K. Tomar, D.~Jha, S.~Ali, H.~D. Johansen, D.~Johansen, M.~A. Riegler, and
@@ -92,6 +84,12 @@ M.~Yeung, E.~Sala, C.-B. Sch{\"o}nlieb, and L.~Rundo, ``Unified focal loss:
   medical image segmentation,'' \emph{Computerized Medical Imaging and
   Graphics}, vol.~95, p. 102026, 2022.
 
+\bibitem{ronneberger2015unet}
+O.~Ronneberger, P.~Fischer, and T.~Brox, ``U-net: Convolutional networks for
+  biomedical image segmentation,'' in \emph{International Conference on Medical
+  Image Computing and Computer-Assisted Intervention (MICCAI)}.\hskip 1em plus
+  0.5em minus 0.4em\relax Springer, 2015, pp. 234--241.
+
 \bibitem{zhou2018unetplusplus}
 Z.~Zhou, M.~M.~R. Siddiquee, N.~Tajbakhsh, and J.~Liang, ``Unet++: A nested
   u-net architecture for medical image segmentation,'' \emph{Deep Learning in
@@ -108,6 +106,13 @@ O.~Oktay, J.~Schlemper, L.~L. Folgoc, M.~Lee, M.~Heinrich, K.~Misawa, K.~Mori,
   S.~McDonagh, N.~Y. Hammerla, B.~Kainz \emph{et~al.}, ``Attention u-net:
   Learning where to look for the pancreas,'' \emph{arXiv preprint
   arXiv:1804.03999}, 2018.
+
+\bibitem{fan2020pranet}
+D.-P. Fan, G.-P. Ji, T.~Zhou, G.~Chen, H.~Fu, J.~Shen, and L.~Shao, ``Pranet:
+  Parallel reverse attention network for polyp segmentation,'' in
+  \emph{International Conference on Medical Image Computing and
+  Computer-Assisted Intervention (MICCAI)}.\hskip 1em plus 0.5em minus
+  0.4em\relax Springer, 2020, pp. 263--273.
 
 \bibitem{huang2021hardnet}
 C.-H. Huang, H.-Y. Wu, and Y.-L. Lin, ``Hardnet-mseg: A simple encoder-decoder
@@ -149,11 +154,6 @@ P.~Pinheiro and R.~Collobert, ``Recurrent convolutional neural networks for
   scene labeling,'' in \emph{International Conference on Machine Learning
   (ICML)}, 2014, pp. 82--90.
 
-\bibitem{alom2018recurrent}
-M.~Z. Alom, M.~Hasan, C.~Yakopcic, T.~M. Taha, and V.~K. Asari, ``Recurrent
-  residual convolutional neural network based on u-net (r2u-net) for medical
-  image segmentation,'' \emph{arXiv preprint arXiv:1802.06955}, 2018.
-
 \bibitem{milletari2016vnet}
 F.~Milletari, N.~Navab, and S.-A. Ahmadi, ``V-net: Fully convolutional neural
   networks for volumetric medical image segmentation,'' in \emph{2016 Fourth
@@ -171,6 +171,24 @@ N.~Abraham and N.~M. Khan, ``A novel focal tversky loss function with improved
   attention u-net for lesion segmentation,'' in \emph{2019 IEEE 16th
   International Symposium on Biomedical Imaging (ISBI)}.\hskip 1em plus 0.5em
   minus 0.4em\relax IEEE, 2019, pp. 683--687.
+
+\bibitem{chen2021exploring}
+X.~Chen and K.~He, ``Exploring simple siamese representation learning,'' in
+  \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern
+  Recognition (CVPR)}, 2021, pp. 15\,750--15\,758.
+
+\bibitem{grill2020bootstrap}
+J.-B. Grill, F.~Strub, F.~Altch{\'e}, C.~Tallec, P.~Richemond, E.~Buchatskaya,
+  C.~Doersch, B.~Avila~Pires, Z.~Guo, M.~Gheshlaghi~Azar \emph{et~al.},
+  ``Bootstrap your own latent-a new approach to self-supervised learning,'' in
+  \emph{Advances in Neural Information Processing Systems (NeurIPS)}, vol.~33,
+  2020, pp. 21\,271--21\,284.
+
+\bibitem{mnih2015human}
+V.~Mnih, K.~Kavukcuoglu, D.~Silver, A.~A. Rusu, J.~Veness, M.~G. Bellemare,
+  A.~Graves, M.~Riedmiller, A.~K. Fidjeland, G.~Ostrovski \emph{et~al.},
+  ``Human-level control through deep reinforcement learning,'' \emph{Nature},
+  vol. 518, no. 7540, pp. 529--533, 2015.
 
 \bibitem{mori2019real}
 Y.~Mori, S.-e. Kudo, N.~Mohmed, and M.~Misawa, ``Real-time use of artificial

@@ -1,10 +1,11 @@
-\section{Methodology: Breaking the Feedback Trap}
+\section{Methodology: Gradient Decoupling and the Feedback Firewall}
 \label{sec:method}
 
-In this section, we dissect the internal mechanics of the recurrent
-feature aggregation module (\texttt{MixPool}), derive the mathematical
-paralysis inherent in conventional hard gating, and formulate our
-proposed Detached Soft-OR architecture.
+In this section, we dissect the internal gradient mechanics of recurrent
+feature aggregation, prove the mathematical paralysis inherent in conventional
+coupled gating, and formulate our proposed \textbf{Feedback Firewall}
+and \textbf{Detached Soft-OR} architecture.
+
 
 % -----------------------------------------------------------------------------
 \subsection{The Classical MixPool: Architecture and The Hard-Gating Flaw}

@@ -120,11 +120,9 @@ avenues remain for future investigation:
         weight the detached feedback mask based on contextual
         confidence, replacing the unweighted union with
         $\gamma \odot \text{detach}(m_{\text{fg}})$.
-  \item \textbf{Architectural Universality:}
-        Testing if the Feedback Trap afflicts other recurrent
-        structures like R2U-Net or ConvLSTM, and whether Detached
-        Soft-OR provides a universal fix across different state-update
-        equations.
+  \item \textbf{Dynamic Temporal Gating:}
+        Exploring adaptive temporal scaling where the Feedback Firewall
+        dynamically adjusts the guidance magnitude across recurrence steps ($t$).
   \item \textbf{Dynamic Early-Stopping:}
         Utilizing the uncertainty-guided Soft-OR entropy to dynamically
         halt recurrent iterations ($t < 4$) for faster real-time
@@ -134,28 +132,26 @@ avenues remain for future investigation:
 
 % -----------------------------------------------------------------------------
 \subsection{Conclusion}
-In this paper, we identified, diagnosed, and resolved the
-\textbf{Feedback Trap}---a pervasive architectural pathology in recurrent
-medical image segmentation that paralyses internal attention gradients,
-causes severe false-positive over-segmentation, and completely
-neutralizes modern asymmetric loss engineering.
+In this paper, we identified, diagnosed, and resolved the \textbf{Feedback Trap}---a
+pervasive structural pathology in recurrent medical image segmentation where
+prediction history acting simultaneously as forward spatial guidance and backward
+optimization causes catastrophic error amplification, severe false-positive
+over-segmentation, and complete neutralization of asymmetric loss functions.
 
-To cure this defect, we introduced \textbf{Detached Soft-OR Gating}, an
-analytically elegant, zero-parameter reformulation of the classical
-\texttt{MixPool} module. By replacing discontinuous thresholding with
-continuous probabilistic union and detaching the feedback tensor from
-the backward graph, our approach restores smooth gradient flow, channels
-supervision into uncertain boundary regions
-($\frac{\partial \text{keep}}{\partial \text{fmask}} = 1 - m_{\text{fg}}$),
-and severs degenerate error loops.
+To solve this dilemma, we formulated the \textbf{Feedback Firewall} principle:
+\textit{forward spatial guidance must be strictly decoupled from backward gradient optimization}.
+We realized this via \textbf{Detached Soft-OR Gating}, a zero-parameter reformulation
+combining continuous Boolean relaxation with gradient detachment. Analytically,
+our method guarantees continuous gradient flow to internal spatial attention
+proportional to background uncertainty ($\frac{\partial \text{keep}}{\partial \text{fmask}} = 1 - m_{\text{fg}}$),
+while strictly severing degenerate recurrent error loops ($\frac{\partial \text{keep}}{\partial m_{\text{fg}}} \equiv 0$).
 
-Extensive multi-seed benchmarks and rigorous Wilcoxon statistical testing
-($N = 200$, $p < 0.001$) confirm that our method slashes False Positive
-Rates by $42.8\%$, improves Dice scores by $+4.77$ pp, increases
-Precision by $+7.50$ pp, reduces variance by $66.5\%$, and eliminates
-catastrophic collapse. Furthermore, external zero-shot cross-center
-evaluation on CVC-ClinicDB ($N = 612$, $p = 1.61 \times 10^{-15}$)
-demonstrates robust out-of-distribution transfer without any retraining.
-Our work provides both a cautionary lesson regarding recurrent gradient
-coupling and a practical, drop-in design pattern for robust recurrent
-segmentation in clinical computer vision.
+Extensive empirical evaluations---including a $3 \times 2$ factorial loss
+neutralization benchmark, a 4-way mechanism ablation, multi-seed statistical testing
+($p < 0.001$), external cross-center zero-shot generalization ($N = 612$,
+$p = 1.61 \times 10^{-15}$), and architectural universality on R2U-Net---demonstrate
+that our approach slashes False Positive Rates by $42.8\%$, elevates Dice by $+4.77$\,pp,
+reduces variance by $66.5\%$, and reactivates asymmetric loss optimization.
+Our work establishes Gradient Decoupling as an essential, foundational design
+pattern for robust recurrent vision learning across biomedical engineering.
+

@@ -83,3 +83,21 @@ problem: by redesigning the recurrent gating mechanism to eliminate zero
 gradients and detach corruptive feedback paths, we \textbf{unleash the
 latent corrective power of existing asymmetric loss functions}, enabling
 them to suppress over-segmentation effectively.
+
+% -----------------------------------------------------------------------------
+\subsection{Gradient Routing and Stop-Gradient Dynamics in Deep Learning}
+In deep representation learning, the stop-gradient operator ($\text{detach}(\cdot)$)
+has played a pivotal role in preventing degenerate representational collapse,
+most notably in Siamese self-supervised learning (e.g., SimSiam~\cite{chen2021exploring},
+BYOL~\cite{grill2020bootstrap}). In these frameworks, severing the backward
+computation graph along one pathway prevents trivial constant solutions and
+asymmetric drift without requiring negative sampling or complex architectures.
+Similarly, in reinforcement learning and actor-critic methods, target networks
+and detached value estimators are essential to stabilize recursive temporal-difference
+updates~\cite{mnih2015human}. Despite its transformative impact in these domains,
+the principle of \textbf{gradient decoupling} has been largely overlooked in
+recurrent biomedical vision networks, where recurrent predictions have historically
+been permitted to flow unconstrained into the backward computation graph. Our work
+establishes the first rigorous theoretical and empirical application of the
+Feedback Firewall in recurrent medical vision.
+

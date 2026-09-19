@@ -6,11 +6,11 @@ The Program Chairs / Area Chairs / Editor-in-Chief
 
 **Date:** September 16, 2026  
 **Subject:** Submission of Original Research Article:  
-*"Breaking the Feedback Trap: Detached Soft-Gating Restores Gradient Flow in Recurrent Medical Image Segmentation"*
+*"Breaking the Feedback Trap: Understanding and Stabilizing Recurrent Feedback Learning in Medical Image Segmentation"*
 
 Dear Program Chairs, Area Chairs, and Editorial Board,
 
-We are pleased to submit our original research manuscript entitled **"Breaking the Feedback Trap: Detached Soft-Gating Restores Gradient Flow in Recurrent Medical Image Segmentation"** for consideration as a regular paper in your esteemed venue.
+We are pleased to submit our original research manuscript entitled **"Breaking the Feedback Trap: Understanding and Stabilizing Recurrent Feedback Learning in Medical Image Segmentation"** for consideration as a regular paper in your esteemed venue.
 
 ### Mechanistic Foundational Study Rather Than Parameter Bloat
 In recent years, the medical image segmentation community has witnessed an influx of increasingly complex hybrid architectures and massive vision transformers competing for marginal gains on benchmark leaderboards. However, the foundational architectural mechanics of **recurrent feedback networks**---which mimic biological top-down cortical refinement by iteratively re-feeding past predictions into early encoder representations---have remained poorly understood and treated largely as empirical black boxes.

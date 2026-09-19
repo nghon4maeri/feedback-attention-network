@@ -1,17 +1,15 @@
 \backcite {siegel2023colorectal, leufkens2012factors}{{1}{I}{section.1}}
 \backcite {paris2003endoscopic}{{1}{I}{section.1}}
 \backcite {jha2020kvasir, bernal2017comparative}{{1}{I}{section.1}}
-\backcite {ronneberger2015unet}{{1}{I}{section.1}}
-\backcite {fan2020pranet}{{1}{I}{section.1}}
-\backcite {tomar2021fanet, liang2015recurrent}{{1}{I}{section.1}}
+\backcite {tomar2021fanet, liang2015recurrent, alom2018recurrent}{{1}{I}{section.1}}
 \backcite {tomar2021fanet}{{1}{I}{section.1}}
 \backcite {tomar2021fanet, tomar2021ddanet}{{1}{I}{section.1}}
 \backcite {salehi2017tversky}{{1}{\mbox {I-A}}{subsection.1.1}}
 \backcite {yeung2022unified}{{1}{\mbox {I-A}}{subsection.1.1}}
-\backcite {siegel2023colorectal, leufkens2012factors}{{2}{\mbox {II-A}}{subsection.2.1}}
-\backcite {ronneberger2015unet}{{2}{\mbox {II-A}}{subsection.2.1}}
-\backcite {zhou2018unetplusplus}{{2}{\mbox {II-A}}{subsection.2.1}}
-\backcite {zhang2018road}{{2}{\mbox {II-A}}{subsection.2.1}}
+\backcite {siegel2023colorectal, leufkens2012factors}{{3}{\mbox {II-A}}{subsection.2.1}}
+\backcite {ronneberger2015unet}{{3}{\mbox {II-A}}{subsection.2.1}}
+\backcite {zhou2018unetplusplus}{{3}{\mbox {II-A}}{subsection.2.1}}
+\backcite {zhang2018road}{{3}{\mbox {II-A}}{subsection.2.1}}
 \backcite {oktay2018attention}{{3}{\mbox {II-A}}{subsection.2.1}}
 \backcite {fan2020pranet}{{3}{\mbox {II-A}}{subsection.2.1}}
 \backcite {huang2021hardnet}{{3}{\mbox {II-A}}{subsection.2.1}}
@@ -30,10 +28,15 @@
 \backcite {salehi2017tversky}{{3}{\mbox {II-C}}{subsection.2.3}}
 \backcite {abraham2019novel}{{3}{\mbox {II-C}}{subsection.2.3}}
 \backcite {yeung2022unified}{{3}{\mbox {II-C}}{subsection.2.3}}
-\backcite {tomar2021fanet}{{3}{\mbox {III-A}}{equation.3.2}}
+\backcite {chen2021exploring}{{3}{\mbox {II-D}}{subsection.2.4}}
+\backcite {grill2020bootstrap}{{3}{\mbox {II-D}}{subsection.2.4}}
+\backcite {mnih2015human}{{3}{\mbox {II-D}}{subsection.2.4}}
+\backcite {tomar2021fanet}{{4}{\mbox {III-A}}{equation.3.2}}
 \backcite {jha2020kvasir}{{5}{1}{Item.6}}
 \backcite {bernal2017comparative}{{5}{2}{Item.7}}
-\backcite {bernal2017comparative}{{6}{\mbox {IV-E}}{subsection.4.5}}
-\backcite {leufkens2012factors, mori2019real}{{8}{\mbox {V-A}1}{subsubsection.5.1.1}}
-\backcite {mori2019real, hassan2021overcoming}{{8}{\mbox {V-A}1}{subsubsection.5.1.1}}
-\backcite {rex2017colorectal}{{8}{\mbox {V-A}1}{subsubsection.5.1.1}}
+\backcite {alom2018recurrent}{{5}{3}{Item.8}}
+\backcite {bernal2017comparative}{{9}{\mbox {IV-G}}{subsection.4.7}}
+\backcite {alom2018recurrent}{{9}{1}{Item.12}}
+\backcite {leufkens2012factors, mori2019real}{{9}{\mbox {V-A}1}{subsubsection.5.1.1}}
+\backcite {mori2019real, hassan2021overcoming}{{9}{\mbox {V-A}1}{subsubsection.5.1.1}}
+\backcite {rex2017colorectal}{{9}{\mbox {V-A}1}{subsubsection.5.1.1}}
