@@ -129,8 +129,8 @@ def main():
                         choices=["binary", "ste", "soft"],
                         help="(legacy) MixPool gate mode")
     parser.add_argument("--gating-mode", type=str, default=None,
-                        choices=["hard", "hard_ste", "soft_max", "soft_or"],
-                        help="Phase-7B MixPool gating mode. Overrides --gate when set.")
+                        choices=["hard", "hard_ste", "soft_max", "soft_or", "learned_residual"],
+                        help="Phase-7C MixPool gating mode. Overrides --gate when set.")
     parser.add_argument("--detach-feedback", action="store_true", default=None,
                         help="Phase-7B: detach m_fg from gradient graph (severs Feedback Trap)")
     parser.add_argument("--dual-path", action="store_true",

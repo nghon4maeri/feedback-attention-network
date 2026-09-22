@@ -73,6 +73,8 @@ class MixPool(nn.Module):
         "soft_max"  - identical to gate="soft"
         "soft_or"   - Smooth Probabilistic OR: 1-(1-fmask)(1-m_fg)
                       Fully differentiable; saturates gracefully near 0/1.
+        "learned_residual" - Phase 7C: Solves Monotonicity Trap. Uses a learned 
+                             1x1 Conv gate allowing network to suppress prior False Positives.
 
     detach_feedback:
         False  - original: m_fg participates in backward graph  [DEFAULT]
@@ -86,7 +88,7 @@ class MixPool(nn.Module):
         True  - mask m is [B,2,H,W] = [m_fg, m_bg]
     """
     _GATE_ALIAS = {"binary": "hard", "ste": "hard_ste", "soft": "soft_max"}
-    _VALID_MODES = ("hard", "hard_ste", "soft_max", "soft_or")
+    _VALID_MODES = ("hard", "hard_ste", "soft_max", "soft_or", "learned_residual")
 
     def __init__(self, in_c, out_c, gate="binary", dual_path=False,
                  gating_mode=None, detach_feedback=False):
@@ -113,6 +115,13 @@ class MixPool(nn.Module):
             nn.BatchNorm2d(out_c),
             nn.ReLU(inplace=True),
             nn.Conv2d(out_c, 1, kernel_size=1, padding=0),
+            nn.Sigmoid()
+        )
+
+        # Phase 7C: Learned Residual Gate (1x1 Conv)
+        # We instantiate this regardless of gating mode to keep state_dict compatible
+        self.learned_gate = nn.Sequential(
+            nn.Conv2d(2, 1, kernel_size=1, bias=True),
             nn.Sigmoid()
         )
 
@@ -163,7 +172,7 @@ class MixPool(nn.Module):
             # Soft max (old "soft" gate) — continuous element-wise max
             keep = torch.maximum(fmask, m_fg)
 
-        else:  # "soft_or"
+        elif self.gating_mode == "soft_or":
             # Smooth Probabilistic OR:  keep = 1 - (1-p)(1-q)
             # Properties:
             #   • keep=0 only when BOTH p=0 AND q=0
@@ -173,6 +182,21 @@ class MixPool(nn.Module):
             #     → gradient scales inversely with prior mask confidence,
             #     so the network is pushed hardest where mask is uncertain.
             keep = 1.0 - (1.0 - fmask) * (1.0 - m_fg)
+
+        elif self.gating_mode == "learned_residual":
+            # Phase 7C: Learned Residual Decoupling (Solves Monotonicity Trap)
+            # Instead of a monotonic mathematical OR gate, we let a 1x1 conv learn
+            # a dynamic spatial attention map that can both augment AND suppress (prune).
+            # We strictly preserve the gradient decoupling by passing m_fg (which is detached)
+            combined = torch.cat([fmask, m_fg], dim=1)
+            dynamic_gate = self.learned_gate(combined)
+            
+            # The gate modulates the prior mask, and we add the backbone's feature mask
+            # This allows the network to zero-out the prior (prune) when dynamic_gate -> 0
+            keep = (dynamic_gate * m_fg) + fmask
+            
+            # Clamp to [0,1] to maintain valid probability range
+            keep = torch.clamp(keep, 0.0, 1.0)
 
         # ── Feature Map Probing Hook ──────────────────────────────────────
         if getattr(self, 'probe_heatmaps', False):

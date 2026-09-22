@@ -107,107 +107,39 @@ causes the internal feature representations of healthy background mucosa
 to collapse into lesion-like embeddings.
 
 % -----------------------------------------------------------------------------
-\subsection{Proposed Solution: Detached Soft-OR Gating}
-To eradicate the Feedback Trap while preserving the inductive bias of
-iterative multi-pass refinement, we propose
-\textbf{Detached Soft-OR Gating}. Our method redesigns the gating
-operator along two dimensions:
+\subsection{The Monotonicity Trap of Mathematical Gating}
+To eradicate the Feedback Trap, our initial design (Phase 7B) explored a \textbf{Detached Soft-OR Gating} mechanism:
+\begin{equation}
+  \text{keep}_{\text{soft\_or}} = 1.0 - (1.0 - a) \odot (1.0 - \text{detach}(m_{\text{fg}})),
+\end{equation}
+where $a$ is the internal spatial attention map and $m_{\text{fg}}$ is the recurrent feedback mask. While gradient detachment successfully severed the toxic recursive gradient loop, empirical temporal tracking (FPR evaluation across iterations $t=0$ to $t=3$) revealed a catastrophic flaw: the False Positive Rate exploded to $52.31\%$.
 
-\subsubsection{Continuous Boolean Relaxation via Soft-OR}
-Instead of discontinuous hard thresholding, we relax the logical
-disjunction ($A \lor B$) into continuous probabilistic space. In
-probability theory, the union of two independent events $A$ and $B$
-is given by:
-\begin{equation}
-  \begin{split}
-    P(A \cup B) &= P(A) + P(B) - P(A \cap B) \\
-                &= 1 - (1 - P(A))(1 - P(B)).
-  \end{split}
-\end{equation}
-Applying this formulation directly to the continuous attention activations
-$a \in [0, 1]$ and downsampled feedback mask $m_{\text{fg}} \in [0, 1]$:
-\begin{equation}
-  \label{eq:soft_or}
-  \begin{split}
-    \text{keep}_{\text{soft}}
-      &= a + m_{\text{fg}} - (a \odot m_{\text{fg}}) \\
-      &= 1 - (1 - a) \odot (1 - m_{\text{fg}}),
-  \end{split}
-\end{equation}
-where $\odot$ denotes element-wise Hadamard multiplication.
-
-\subsubsection{Severing the Degenerate Loop via Gradient Detachment}
-To prevent erroneous recurrent priors from corrupting early encoder
-layers via recursive backpropagation, we enforce the stop-gradient
-operator on the recurrent mask tensor inside all \texttt{MixPool} modules:
-\begin{equation}
-  \label{eq:detached_soft_or}
-  \text{keep}_{\text{detached}}
-    = a + \text{detach}(m_{\text{fg}})
-        - a \odot \text{detach}(m_{\text{fg}}).
-\end{equation}
+We diagnose this failure as the \textbf{Soft-OR Monotonicity Trap}. The Soft-OR gate $A \lor B$ is mathematically a strictly monotonically increasing operator with respect to the prior mask $B$. Given that the initialization mask ($t=0$, generated via Otsu thresholding) frequently yields massive false positives in boundary-ambiguous flat polyps, the Soft-OR gate ensures that $\text{keep}_{\text{soft\_or}} \ge m_{\text{fg}}$. 
+Consequently, the network is physically paralyzed---it is mathematically incapable of subtracting, pruning, or suppressing the noisy false positives inherited from previous iterations.
 
 % -----------------------------------------------------------------------------
-\subsection{Theoretical Properties and Analytical Guarantees}
-Our proposed Detached Soft-OR formulation provides three analytical
-guarantees:
+\subsection{Proposed Solution: Phase 7C Learned Residual Decoupling}
+To overcome the Monotonicity Trap, the gating mechanism must be fully differentiable, structurally decoupled from recursive gradient flow, and capable of both augmenting and \textit{pruning} the prior mask.
 
-\begin{theorem}[Continuous Gradient Flow with Dynamic Uncertainty Scaling]
-Under the Detached Soft-OR formulation (Eq.~\ref{eq:detached_soft_or}),
-the gradient of the feature gate with respect to the internal attention
-map $\text{fmask}$ is strictly non-zero, continuous, and dynamically
-proportional to background uncertainty:
-\begin{align}
-  \frac{\partial \text{keep}_{\text{detached}}}{\partial \text{fmask}}
-    &= 1 - m_{\text{fg}} \ge 0.
-\end{align}
-\end{theorem}
+We propose \textbf{Learned Residual Decoupling}. We discard rigid Boolean mathematics and instead introduce a low-parameter dynamic $1\times 1$ convolutional spatial attention gate:
+\begin{equation}
+  \text{combined} = [a \;\|\; \text{detach}(m_{\text{fg}})],
+\end{equation}
+\begin{equation}
+  G = \sigma\Big(\text{Conv}_{1 \times 1}(\text{combined})\Big),
+\end{equation}
+where $G \in (0, 1)^{B \times 1 \times H \times W}$ acts as a spatial modulating gate. The final feature selection tensor is computed via a residual addition:
+\begin{equation}
+  \label{eq:learned_residual}
+  \text{keep}_{\text{proposed}} = (G \odot \text{detach}(m_{\text{fg}})) + a.
+\end{equation}
 
-\begin{proof}
-Taking the partial derivative of Eq.~(\ref{eq:detached_soft_or}) with
-respect to $a \equiv \text{fmask}$:
-\begin{align}
-  \frac{\partial \text{keep}_{\text{detached}}}{\partial a}
-    &= \frac{\partial}{\partial a}
-       \left[
-         a + \text{detach}(m_{\text{fg}})
-           - a \cdot \text{detach}(m_{\text{fg}})
-       \right] \nonumber \\
-    &= 1 - \text{detach}(m_{\text{fg}}).
-\end{align}
-Because $\text{detach}(\cdot)$ behaves as an identity in forward
-evaluation and zero in backward differentiation, the effective backward
-derivative is $1 - m_{\text{fg}}$. Since $m_{\text{fg}} \in [0, 1]$,
-this quantity is strictly non-negative and bounded in $[0, 1]$.
-\end{proof}
+\subsubsection{Theoretical Advantages}
+Our Phase 7C architecture possesses three critical properties:
+\begin{enumerate}
+    \item \textbf{Non-Monotonicity (Pruning Capability):} Unlike the OR-gate, if the network detects a false positive in the recurrent prior $m_{\text{fg}}$, it can actively push the learned gate $G \to 0$ and $a \to 0$, forcing $\text{keep}_{\text{proposed}} \to 0$. This fully restores the network's ability to prune historical errors.
+    \item \textbf{Gradient Preservation:} Because the $1 \times 1$ convolution is continuous and differentiable, dense gradients flow back into the feature mask $a$.
+    \item \textbf{Structural Decoupling:} We strictly preserve $\text{detach}(m_{\text{fg}})$. The recurrent gradient loop remains severed, forcing the internal feature encoder $a$ (and the learned gate $G$) to take absolute responsibility for minimizing false positives.
+\end{enumerate}
 
-\textbf{Clinical Intuition of the Derivative:}
-\begin{itemize}
-  \item When $m_{\text{fg}} \to 1$ (high-confidence past lesion
-        interior), $\frac{\partial \text{keep}}{\partial \text{fmask}}
-        \to 0$. The internal attention branch does not waste gradient
-        capacity refining already-confident lesion cores.
-  \item When $m_{\text{fg}} \to 0$ (ambiguous boundary or healthy
-        background mucosa), $\frac{\partial \text{keep}}{\partial
-        \text{fmask}} \to 1$. The internal attention branch receives
-        maximum gradient magnitude, empowering the network to learn
-        precise boundary discrimination and prune false positives.
-\end{itemize}
-
-\begin{theorem}[Complete Severance of Degenerate Error Propagation]
-Under Detached Soft-OR, backward automatic differentiation through the
-recurrent mask branch is identically zero:
-\begin{align}
-  \frac{\partial \text{keep}_{\text{detached}}}{\partial m_{\text{fg}}}
-    &\equiv 0.
-\end{align}
-\end{theorem}
-\begin{proof}
-Direct consequence of applying the stop-gradient operator
-$\text{detach}(\cdot)$ on $m_{\text{fg}}$.
-\end{proof}
-
-\textbf{Zero Parameter Overhead:}
-The entire transformation in Eq.~(\ref{eq:detached_soft_or}) requires
-exactly \textbf{zero learnable parameters} ($\Delta \Theta = 0$) and
-introduces zero additional FLOPs beyond elementary tensor arithmetic.
+To ensure the network utilizes its new pruning capabilities, we combine this architecture with a \textbf{Curriculum Adaptive Tversky Loss}, placing heavy asymmetric penalties on False Positives ($\alpha=0.7$, $\beta=0.3$) once the network reaches basic stability.
