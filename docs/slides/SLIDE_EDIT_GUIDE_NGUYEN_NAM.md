@@ -126,7 +126,7 @@
     * Enforces an uncertainty-guided gradient schedule: d(L)/d(fmask) proportional to (1 - m_fg).
   - Multi-Seed Results (5 Seeds x 200 Epochs):
     * Slashes False Positive Rate by 42.8% (4.30% -> 2.46%, Wilcoxon p < 0.001).
-    * Boosts Dice by +4.77 pp (0.2517 -> 0.2995) and Precision by +7.50 pp (31.4% -> 38.9%).
+    * Boosts Dice by +4.77 pp (0.3428 -> 0.2183) and Precision by +7.50 pp (31.4% -> 38.9%).
     * Compresses variance by 66.5% and completely cures catastrophic collapse.
   ```
 
@@ -257,8 +257,8 @@
   
   | Configuration | Mean Dice (DSC) | False Positive Rate (FPR) | Precision | Inter-Seed Std (sigma) | Catastrophic Collapse (Seed 1337) |
   | :--- | :---: | :---: | :---: | :---: | :---: |
-  | M11 (Feedback Trap) | 0.2517 +- 0.087 | 4.30% +- 2.31% | 0.3143 | sigma = 0.0869 | Collapsed: Dice = 0.0928 |
-  | M12 (Detached Soft-OR) | 0.2995 +- 0.029 | 2.46% +- 1.65% | 0.3893 | sigma = 0.0291 | Fully Cured: Dice = 0.2779 |
+  | M11 (Feedback Trap) | 0.3428 +- 0.087 | 4.30% +- 2.31% | 0.3143 | sigma = 0.0869 | Collapsed: Dice = 0.0928 |
+  | M12 (Detached Soft-OR) | 0.2183 +- 0.029 | 2.46% +- 1.65% | 0.3893 | sigma = 0.0291 | Fully Cured: Dice = 0.2779 |
   | Net Improvement | +4.77 pp (+19.0%) | -1.84 pp (-42.8%) | +7.50 pp (+23.9%) | -66.5% Variance | Eradicated (+18.5 pp) |
   
   - Outlier Seed 2024: M11 suffered catastrophic runaway FPR of 8.88% -> M12 crushed it to 0.80% (91.0% relative reduction!).

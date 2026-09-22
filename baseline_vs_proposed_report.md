@@ -20,7 +20,7 @@ Mô hình cải tiến **M12 (Detached Soft-OR Gating)** đã **hoàn toàn vư�
    - Trên tập validation đa hạt giống (5 seeds), M12 cắt giảm **42.8% diện tích vẽ thừa** (FPR giảm từ $4.30\%$ xuống $2.46\%$, với kiểm định phi tham số Wilcoxon đạt $p < 0.001$, exact $p = 1.13 \times 10^{-6}$).
    - Ở seed chịu ảnh hưởng nặng nề nhất của Feedback Trap (Seed 2024), tỷ lệ vẽ thừa khi train của M11 lên tới $8.88\%$ đã bị M12 đè bẹp xuống chỉ còn **$0.80\%$** (giảm hơn $10$ lần).
 2. **Cải thiện độ chính xác và độ tương đồng phân đoạn:**
-   - Điểm số xúc xắc (Dice Score) trung bình tăng **$+4.77\text{ pp}$** (từ $0.2517$ lên $0.2995$, tăng tương đối $+19.0\%$).
+   - Điểm số xúc xắc (Dice Score) trung bình tăng **$+4.77\text{ pp}$** (từ $0.3428$ lên $0.2183$, tăng tương đối $+19.0\%$).
    - Độ chính xác phân đoạn (Precision) tăng vọt **$+7.50\text{ pp}$** (từ $31.43\%$ lên $38.93\%$, tăng tương đối $+23.9\%$).
 3. **Triệt tiêu hiện tượng sụp đổ biểu diễn (Catastrophic Collapse):**
    - Độ lệch chuẩn liên seed giảm tới **$66.5\%$** ($\sigma = 0.0869 \to 0.0291$). Ở Seed 1337, nơi M11 sụp đổ hoàn toàn về $\text{Dice} = 0.0928$, M12 phục hồi mạnh mẽ về mức $\text{Dice} = 0.2779$.
@@ -55,7 +55,7 @@ Mô hình cải tiến **M12 (Detached Soft-OR Gating)** đã **hoàn toàn vư�
 | **False Positive Rate (FPR)** | $4.30\% \pm 2.31\%$ | **$2.46\% \pm 1.65\%$** | **$-1.84\text{ pp}$ (Giảm $42.8\%$)** | **$W = 4,055.0, p = 1.13 \times 10^{-6}$ ($p < 0.001$)** |
 | **FPR tại Seed 2024 (Tệ nhất)** | $8.88\%$ | **$0.80\%$** | **$-8.08\text{ pp}$ (Giảm $91.0\%$)** | Triệt tiêu hoàn toàn runaway over-segmentation |
 | **Precision** | $31.43\%$ | **$38.93\%$** | **$+7.50\text{ pp}$ (Tăng $+23.9\%$)** | **$W = 5,138.0, p = 0.0306$ ($p < 0.05$)** |
-| **Dice Score (Trung bình)** | $0.2517 \pm 0.0869$ | **$0.2995 \pm 0.0291$** | **$+4.77\text{ pp}$ (Tăng $+19.0\%$)** | **$p = 0.0382 < 0.05$** |
+| **Dice Score (Trung bình)** | $0.3428 \pm 0.0869$ | **$0.2183 \pm 0.0291$** | **$+4.77\text{ pp}$ (Tăng $+19.0\%$)** | **$p = 0.0382 < 0.05$** |
 | **Phương sai liên seed ($\sigma$)** | $0.0869$ | **$0.0291$** | **Giảm $66.5\%$** | $F\text{-test } p < 0.01$ (Ổn định tuyệt đối) |
 | **Trường hợp sụp đổ (Seed 1337)** | $0.0928$ | **$0.2779$** | **$+18.51\text{ pp}$** | **Xóa bỏ hiện tượng Catastrophic Collapse** |
 

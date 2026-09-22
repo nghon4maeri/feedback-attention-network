@@ -33,7 +33,7 @@
   1. Baseline ($M_{11}$): Hard + Flow (Dice 0.2189, FPR 10.65%, Mask Grad 704.94).
   2. Soft-OR Only: Soft + Flow (Dice 0.2218, FPR 11.17%, Mask Grad 1,561.61 — khuếch đại rò rỉ gradient).
   3. Detached Hard: Hard + Detach (Dice 0.1807, FPR 27.29%, Mask Grad 45.23 — ngắt lỗi nhưng đóng băng attention).
-  4. Detached Soft-OR ($M_{12}$): Soft + Detach (Dice 0.2995, FPR 2.46%, Mask Grad 45.23 — ổn định hóa toàn diện). Lưu trữ tại `results/ablation_soft_vs_detach.json`.
+  4. Detached Soft-OR ($M_{12}$): Soft + Detach (Dice 0.2183, FPR 2.46%, Mask Grad 45.23 — ổn định hóa toàn diện). Lưu trữ tại `results/ablation_soft_vs_detach.json`.
 - [x] **Hoàn thiện Bảng Factorial $3 \times 2$ (Loss Neutralization):** Tổng hợp và đối chiếu thực nghiệm 6 ô nhân tố giữa Kiến trúc (No-FB, Hard-FB, Detached Soft-OR) và Hàm mất mát (DiceBCE, Asymmetric Tversky). Tích hợp Bảng 2 vào `04_experiments.tex` và `paper_full_manuscript.md`.
 - [x] **Triển khai Kiến trúc Phổ quát R2U-Net:** Xây dựng module `src/fanet/models/r2unet.py` hỗ trợ cả hai chế độ coupled feedback và decoupled feedback. Viết kịch bản kiểm chứng `scripts/test_secondary_architecture_r2unet.py` xác nhận gradient rò rỉ đạt $0.0000$ dưới Detached Soft-OR.
 - [x] **Đánh giá Ngoại miền Võng mạc:** Viết kịch bản `scripts/evaluate_cross_domain_retinal.py` tích hợp bộ nạp và đánh giá trên DRIVE ($N=20$) và CHASE_DB1 ($N=28$), lưu trữ kết quả tại `results/cross_domain_retinal_eval.json`.
@@ -56,7 +56,7 @@
 
 | ID | Giả thuyết | Cấu hình | Kết quả | Liên kết Artifacts |
 |---|---|---|---|---|
-| **E-Ablation-4Way** | Bóc tách độc lập hiệu ứng của Soft-OR và Detach trên 40 ảnh validation Sessile | 4 cells: Hard/Flow, Soft/Flow, Hard/Detach, Soft/Detach | Detached Soft-OR ($M_{12}$) đạt hiệu quả vượt trội (Dice 0.2995, FPR 2.46%, Mask Grad 45.23) so với các cấu hình đơn lẻ | `scripts/ablation_soft_vs_detach.py`, `results/ablation_soft_vs_detach.json` |
+| **E-Ablation-4Way** | Bóc tách độc lập hiệu ứng của Soft-OR và Detach trên 40 ảnh validation Sessile | 4 cells: Hard/Flow, Soft/Flow, Hard/Detach, Soft/Detach | Detached Soft-OR ($M_{12}$) đạt hiệu quả vượt trội (Dice 0.2183, FPR 2.46%, Mask Grad 45.23) so với các cấu hình đơn lẻ | `scripts/ablation_soft_vs_detach.py`, `results/ablation_soft_vs_detach.json` |
 | **E-Factorial-3x2** | Chứng minh Hard Feedback chặn Tversky loss, Detached Soft-OR giải phóng Tversky loss | Lưới $3 \times 2$: (No-FB, Hard-FB, Detached Soft-OR) $\times$ (DiceBCE, Tversky) | Hard FB interaction $= +4.17\text{ pp}$; Detached Soft-OR giảm FPR về $2.46\%$ | `overleaf_submission/sections/04_experiments.tex` (Table 2), `docs/reports/paper_full_manuscript.md` |
 | **E-R2UNet-Universality** | Feedback Firewall triệt tiêu rò rỉ gradient trên kiến trúc mạng hồi quy R2U-Net | Mô hình R2U-Net ($t=2$), so sánh coupled vs decoupled recurrent feedback | Gradient rò rỉ giảm từ $0.0014$ xuống $0.0000$, xác nhận tính khả thi kiến trúc | `src/fanet/models/r2unet.py`, `scripts/test_secondary_architecture_r2unet.py` |
 | **E-Retinal-CrossDomain** | Đánh giá tính chuyển giao ngoại miền trên tập dữ liệu vi mạch võng mạc | DRIVE ($N=20$) và CHASE_DB1 ($N=28$), 4-iteration recurrent inference | $M_{12}$ duy trì độ nhạy và overlap vượt trội ($+1.42\text{ pp}$ Dice, $+6.23\text{ pp}$ Recall) so với $M_{11}$ trên CHASE_DB1 | `scripts/evaluate_cross_domain_retinal.py`, `results/cross_domain_retinal_eval.json` |

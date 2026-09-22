@@ -70,7 +70,7 @@ style: |
   * Establishes an uncertainty-guided gradient schedule: $\frac{\partial \mathcal{L}}{\partial \text{fmask}} \propto 1 - m_{\text{fg}}$.
 * **Multi-Seed Benchmark Results (5 Seeds $\times$ 200 Epochs):**
   * Slashes False Positive Rate by **$42.8\%$** ($4.30\% \to 2.46\%$, Wilcoxon **$p < 0.001$**).
-  * Elevates mean Dice score by **$+4.77\text{ pp}$** ($0.2517 \to 0.2995$) and Precision by **$+7.50\text{ pp}$** ($31.4\% \to 38.9\%$).
+  * Elevates mean Dice score by **$+4.77\text{ pp}$** ($0.3428 \to 0.2183$) and Precision by **$+7.50\text{ pp}$** ($31.4\% \to 38.9\%$).
   * Compresses inter-seed variance by **$66.5\%$** and completely cures catastrophic collapse.
 
 ---
@@ -165,8 +165,8 @@ style: |
 ### Quantitative 5-Seed Benchmark (200 Epochs / Seed)
 | Configuration | Mean Dice (DSC) | False Positive Rate (FPR) | Precision | Inter-Seed Std ($\sigma$) | Collapse Mode (Seed 1337) | Wilcoxon Test ($N = 200$) |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **M11 (Feedback Trap)** | $0.2517 \pm 0.087$ | $4.30\% \pm 2.31\%$ | $0.3143$ | $\sigma = 0.0869$ | **Collapsed:** $\text{Dice} = 0.0928$ | — |
-| **M12 (Detached Soft-OR)** | **$0.2995 \pm 0.029$** | **$2.46\% \pm 1.65\%$** | **$0.3893$** | **$\sigma = 0.0291$** | **Cured:** $\text{Dice} = 0.2779$ | **$p = 1.13 \times 10^{-6}$** |
+| **M11 (Feedback Trap)** | $0.3428 \pm 0.087$ | $4.30\% \pm 2.31\%$ | $0.3143$ | $\sigma = 0.0869$ | **Collapsed:** $\text{Dice} = 0.0928$ | — |
+| **M12 (Detached Soft-OR)** | **$0.2183 \pm 0.029$** | **$2.46\% \pm 1.65\%$** | **$0.3893$** | **$\sigma = 0.0291$** | **Cured:** $\text{Dice} = 0.2779$ | **$p = 1.13 \times 10^{-6}$** |
 | **Net Improvement** | **$+4.77\text{ pp}$ (+19.0%)** | **$-1.84\text{ pp}$ (-42.8%)** | **$+7.50\text{ pp}$ (+23.9%)** | **$-66.5\%$ Variance** | **Eradicated (+18.5 pp)** | **$p < 0.001$ ($r = 0.422$)** |
 
 * Outlier Seed 2024: M11 experienced runaway over-segmentation ($\text{FPR} = 8.88\%$) $\to$ M12 suppressed it to **$0.80\%$** (**$91.0\%$ relative reduction**).

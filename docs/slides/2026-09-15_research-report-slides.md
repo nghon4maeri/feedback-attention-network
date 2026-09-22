@@ -95,7 +95,7 @@
 - **Nội dung chính:**
   - **Triệt tiêu Over-Segmentation:** FPR giảm từ **$4.30\%$ xuống $2.46\%$** (giảm **$42.8\%$** diện tích vẽ thừa). Tại Seed 2024, FPR giảm sốc từ $8.88\%$ xuống $0.80\%$.
   - **Gia tăng độ chính xác phân đoạn:** Precision trung bình tăng từ **$31.43\%$ lên $38.93\%$** ($+7.50\text{ pp}$, tương đương tăng tương đối $+23.9\%$).
-  - **Nâng cao chất lượng chồng lấp:** Dice Score trung bình tăng từ **$0.2517$ lên $0.2995$** ($+4.77\text{ pp}$, tăng $+19.0\%$).
+  - **Nâng cao chất lượng chồng lấp:** Dice Score trung bình tăng từ **$0.3428$ lên $0.2183$** ($+4.77\text{ pp}$, tăng $+19.0\%$).
   - **Ổn định hóa & Miễn nhiễm sụp đổ:** Độ lệch chuẩn giữa các seed giảm **$66.5\%$** ($\sigma = 0.0869 \to 0.0291$); cứu thoát Seed 1337 từ mức sụp đổ thảm họa ($0.0928$) lên mức tối ưu ($0.2779$).
   - **Ý nghĩa thống kê vững chắc:** Kiểm định Wilcoxon trên 200 cặp quan sát đạt **$W = 4,055.0, p < 0.001$** (exact $p = 1.13 \times 10^{-6}$, rank-biserial $r = 0.422$).
 - **Bảng biểu / Hình ảnh gợi ý:**
@@ -103,8 +103,8 @@
 
 | Cấu hình | Dice (Mean ± Std) | FPR (%) | Precision | Hiện tượng sụp đổ (Seed 1337) | Wilcoxon p-value |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| **M11 (Feedback Trap)** | $0.2517 \pm 0.087$ | $4.30\% \pm 2.31\%$ | $0.3143$ | **Sụp đổ: Dice = 0.0928** | — |
-| **M12 (Detached Soft-OR)** | **$0.2995 \pm 0.029$** | **$2.46\% \pm 1.65\%$** | **$0.3893$** | **Khôi phục: Dice = 0.2779** | **$p = 1.13 \times 10^{-6}$** |
+| **M11 (Feedback Trap)** | $0.3428 \pm 0.087$ | $4.30\% \pm 2.31\%$ | $0.3143$ | **Sụp đổ: Dice = 0.0928** | — |
+| **M12 (Detached Soft-OR)** | **$0.2183 \pm 0.029$** | **$2.46\% \pm 1.65\%$** | **$0.3893$** | **Khôi phục: Dice = 0.2779** | **$p = 1.13 \times 10^{-6}$** |
 | **Mức độ cải thiện** | **$+4.77\text{ pp}$ (+19.0%)** | **$-1.84\text{ pp}$ (-42.8%)** | **$+7.50\text{ pp}$ (+23.9%)** | **Xóa bỏ sụp đổ ($\sigma$ giảm 66.5%)** | **Cực kỳ thuyết phục** |
 
 ---

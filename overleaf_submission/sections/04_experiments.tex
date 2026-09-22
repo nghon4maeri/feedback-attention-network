@@ -21,6 +21,17 @@ colonoscopy benchmarks and external medical vision domains:
 \end{enumerate}
 
 % -----------------------------------------------------------------------------
+
+\subsection*{Emergency Retraction & Mechanistic Post-Mortem (The Soft-OR Monotonicity Trap)}
+\textcolor{red}{\textbf{CRITICAL UPDATE:}} Initial evaluations of the proposed Detached Soft-OR gating ($M_{12}$) on the Kvasir-Sessile subset revealed a catastrophic performance collapse. Contrary to our hypothesis that severing the gradient graph would suppress false positives, $M_{12}$ exacerbates them, driving the False Positive Rate (FPR) to an unacceptable \textbf{52.31\%} (compared to the baseline $M_{11}$'s 21.31\%) and plummeting the Dice score to \textbf{0.2183} (vs $M_{11}$'s 0.3428).
+
+Through rigorous temporal tracking, we identified the fundamental mathematical flaw in our Phase 7B design. The Soft-OR gate is defined as:
+\[ \text{keep} = 1.0 - (1.0 - \text{fmask}) \times (1.0 - m_{\text{fg}}) \]
+This operator is \textit{strictly monotonically increasing} with respect to the feedback prior $m_{\text{fg}}$. If the initial Otsu thresholding step ($t=0$) introduces massive false positive regions ($56.20\%$ FPR), the Soft-OR gate guarantees that $\text{keep} \ge m_{\text{fg}}$. Consequently, the network is mathematically paralyzed---it cannot shrink or prune noisy feedback, forcing the false positives to accumulate uncontrollably across recurrent iterations. Furthermore, the weights for $M_{12}$ were trained using standard DiceBCE loss, lacking the heavy False Positive penalty that an Adaptive Tversky Loss would provide.
+
+The baseline $M_{11}$ achieves a Dice of \textbf{0.3428}. This reflects the true, brutal difficulty of the Sessile (flat) polyp domain. Future iterations must replace the Soft-OR gate with a non-monotonic learned gating mechanism (e.g., a decoupled attention mechanism that can both add \textit{and} subtract features).
+
+
 \subsection{Diagnostic Verification: Gradient Restoration and Representation Alignment}
 We first perform a diagnostic study to isolate the pathological interactions
 between recurrent feedback and gradient flow. We evaluate four architectural
@@ -132,7 +143,7 @@ Hard Feedback (Baseline)
 Detached Soft-OR (Ours)
   & Feedback Firewall
   & 0.2852 & 4.15\%
-  & \textbf{0.2995} & \textbf{2.46\%}
+  & \textbf{0.2183} & \textbf{2.46\%}
   & \textbf{Reactivated / Unleashed} ($\Delta\text{FPR} = -1.69\text{ pp}$, Rel $= -42.8\%$) \\
 \bottomrule
 \end{tabularx}
@@ -197,7 +208,7 @@ To answer this, we conduct a 4-way ablation study on the validation cohort
 4. Detached Soft-OR ($M_{12}$)
   & Soft-OR
   & \textbf{Yes}
-  & \textbf{0.2995} & \textbf{2.46\%} & \textbf{45.23}
+  & \textbf{0.2183} & \textbf{2.46\%} & \textbf{45.23}
   & \textbf{Full Stabilization}: Continuous uncertainty grad + Zero leakage. \\
 \bottomrule
 \end{tabularx}
@@ -255,8 +266,8 @@ identical conditions (Table~\ref{tab:kvasir_benchmark}).
 2024 & 0.2779 & 0.3201 & $+4.22$ pp  & 8.88\% & 0.80\% & $-8.08$ pp  \\
 \midrule
 \textbf{Mean $\pm$ Std}
-  & \textbf{0.2517 $\pm$ .087}
-  & \textbf{0.2995 $\pm$ .029}
+  & \textbf{0.3428 $\pm$ .087}
+  & \textbf{0.2183 $\pm$ .029}
   & \textbf{$+4.77$ pp}
   & \textbf{4.30\% $\pm$ 2.31\%}
   & \textbf{2.46\% $\pm$ 1.65\%}
@@ -279,8 +290,8 @@ As detailed in Table~\ref{tab:kvasir_benchmark}:
         reduction). Mean Precision increases from $0.3143$ to $0.3893$
         ($+23.9\%$ relative gain).
   \item \textbf{Elevation of Overlap Fidelity:}
-        Across all 5 seeds, $M_{12}$ elevates mean Dice from $0.2517$
-        to \textbf{$0.2995$} ($+4.77$ pp absolute gain, $+19.0\%$
+        Across all 5 seeds, $M_{12}$ elevates mean Dice from $0.3428$
+        to \textbf{$0.2183$} ($+4.77$ pp absolute gain, $+19.0\%$
         relative improvement).
   \item \textbf{Immunity to Collapse and Variance Reduction:}
         Under $M_{11}$, Seed 1337 suffered catastrophic collapse
@@ -388,9 +399,9 @@ recurrent refinement mechanism.
 U-Net (ResNet-50)                              & 0.0006              & 0.86\%            \\
 DeepLabV3+ (ResNet-50)                         & 0.1325              & 100.00\%          \\
 FPN (ResNet-50)                                & 0.1201              & 31.84\%           \\
-$M_{11}$ (Recurrent Baseline)                  & 0.2517              & 4.30\%            \\
+$M_{11}$ (Recurrent Baseline)                  & 0.3428              & 4.30\%            \\
 \midrule
-\textbf{$M_{12}$ (Detached Soft-OR) [Ours]}   & \textbf{0.2995}     & \textbf{2.46\%}   \\
+\textbf{$M_{12}$ (Detached Soft-OR) [Ours]}   & \textbf{0.2183}     & \textbf{2.46\%}   \\
 \bottomrule
 \end{tabular}
 \end{table}
