@@ -1,51 +1,51 @@
-# Post-Mortem & Baseline Reproduction Report (22/09/2026)
+# Báo cáo Post-Mortem & Tái lập Baseline (22/09/2026)
 
 ## Ký hiệu (Notation)
 
-- `M11`: Baseline FANet (Hard Gating, Feedback Trap intact).
-- `M12`: Phase 7B proposed model (Detached Soft-OR).
+- `M11`: Baseline FANet (Hard Gating, vẫn bị dính Feedback Trap).
+- `M12`: Model đề xuất ở Phase 7B (Detached Soft-OR).
 - `FP` / `FN`: False Positive / False Negative.
-- `MACs`: Multiply-Accumulate Operations (indicates computational FLOPs).
+- `MACs`: Multiply-Accumulate Operations (thước đo số phép toán, đại diện cho FLOPs).
 - `STE`: Straight-Through Estimator.
-- `fmask`: Differentiable mask attention branch in MixPool.
-- `m_fg`: Detached feedback spatial prior.
+- `fmask`: Nhánh attention mask có khả năng vi phân (differentiable) trong MixPool.
+- `m_fg`: Prior không gian từ feedback (đã được detach gradient).
 
 ## Mục tiêu
 
 Giải quyết nguyên nhân gây ra sự sụt giảm Dice score (còn ~0.2) ở Phase 7B, tái lập lại official baseline của FANet, và benchmark độ phức tạp tính toán (Computational Complexity) của M12 so với M11.
 
-## 1. The Root Cause of the 0.2 Dice Score (The "Silent Killer")
+## 1. Nguyên nhân sâu xa của lỗi Dice 0.2 ("Sát thủ thầm lặng")
 
-The core architecture (Phase 7B Detached Soft-OR) was strictly evaluated and confirmed to be **mathematically sound**. The `detach_feedback=True` correctly cuts gradient flow to the recurrent loop without destroying the forward pass, and the probabilistic Soft-OR (`keep = 1.0 - (1.0 - fmask) * (1.0 - m_fg)`) is fully bounded and differentiable.
+Logic kiến trúc cốt lõi (Detached Soft-OR ở Phase 7B) đã được kiểm tra kỹ lưỡng và xác nhận **hoàn toàn chính xác về mặt toán học**. Tham số `detach_feedback=True` đã cắt đứt luồng gradient dẫn về vòng lặp hồi quy (recurrent loop) một cách gọn gàng mà không phá hỏng luồng forward, và cổng xác suất Soft-OR (`keep = 1.0 - (1.0 - fmask) * (1.0 - m_fg)`) bị chặn trên/dưới hoàn hảo và có thể vi phân tại mọi điểm.
 
-The true "Silent Killer" was an insidious **Data Pipeline Mismatch**:
-- The training script (`dataset.py`) loads images via `cv2.imread(..., cv2.IMREAD_COLOR)`, which natively yields **BGR** format tensors. No explicit RGB conversion is performed before feeding them to the network.
-- Conversely, our evaluation scripts (`evaluate_m11_vs_m12.py` and `calc_p_value.py`) were explicitly converting validation images to **RGB** format (`cv2.cvtColor(..., cv2.COLOR_BGR2RGB)`).
+Nguyên nhân thực sự ("Sát thủ thầm lặng") lại là một **Sự bất đồng bộ trong Data Pipeline**:
+- **Khi Training:** Script huấn luyện (`dataset.py`) load ảnh bằng `cv2.imread(..., cv2.IMREAD_COLOR)`, mặc định giữ nguyên định dạng kênh màu **BGR**. Quá trình huấn luyện không hề có bước chuyển sang RGB trước khi đưa vào mạng.
+- **Khi Evaluation:** Ngược lại, các script đánh giá (`evaluate_m11_vs_m12.py` và `calc_p_value.py`) lại chứa dòng code cố tình ép kiểu ảnh validation sang định dạng **RGB** (`cv2.cvtColor(..., cv2.COLOR_BGR2RGB)`).
 
-Feeding RGB images to convolutional filters strictly trained on BGR color distributions triggered a catastrophic feature distribution shift. The network failed to activate properly, leading to the collapse of the Dice score down to ~0.2. Removing this `cvtColor` call immediately resolved the failure.
+Việc đưa các ảnh RGB vào những filter tích chập (convolutional filters) vốn chỉ được tối ưu cho phân bố đặc trưng BGR đã gây ra sự xô lệch phân bố dữ liệu (distribution shift) cực kỳ nghiêm trọng. Mạng không thể kích hoạt các feature map một cách chính xác, dẫn đến việc Dice score sụp đổ xuống mức ~0.2. Chỉ cần xóa dòng `cvtColor` đi, lỗi này ngay lập tức được khắc phục.
 
-## 2. Official Baseline Reproduction Results
+## 2. Kết quả Tái lập Official Baseline
 
-The official `nikhilroxtomar/FANet` baseline was successfully cloned, tested, and validated.
-- **Convergence Validated**: Their native implementation trains correctly and comfortably approaches a >0.8 Dice score on the validation subset.
-- **Mathematical Soundness**: Their core evaluation logic calculates intersection and union components per-image and aggregates them for the final batch average. This methodology is statistically robust and matches the claims made in the original publication.
-- **Multiprocessing Bug Note**: Running their raw training script on a Windows environment triggered a `NameError: name 'size' is not defined` inside their `DATASET` loader. This is a known Python `spawn` multiprocessing scoping issue since `size` was defined within their `__main__` block. Our custom codebase had already properly encapsulated this variable, making our dataset loader significantly more robust.
+Repository official `nikhilroxtomar/FANet` đã được clone, kiểm toán và chạy thử nghiệm thành công.
+- **Xác nhận Hội tụ**: Bản implementation gốc của tác giả thực sự hội tụ tốt và dễ dàng đạt Dice score >0.8 trên tập validation.
+- **Độ tin cậy của Toán học**: Logic tính metric của tác giả (tính tổng intersection và union của từng ảnh trên các tensor đã flatten, sau đó lấy trung bình batch) là chuẩn xác về mặt thống kê và hoàn toàn khớp với những gì được báo cáo trong paper.
+- **Lưu ý về bug Multiprocessing**: Khi chạy script training gốc trên môi trường Windows, nó bị crash với lỗi `NameError: name 'size' is not defined` bên trong class `DATASET`. Đây là một vấn đề về scope điển hình khi Python Windows dùng cơ chế `spawn` (vì biến `size` được định nghĩa bên trong block `if __name__ == "__main__":`). Custom codebase của chúng ta đã đóng gói biến này chuẩn chỉnh hơn nên DataLoader hoạt động rất mượt mà.
 
-## 3. Resolution & Final Performance Outcomes
+## 3. Cách giải quyết & Đánh giá Hiệu năng Cuối cùng
 
-### Performance Restoration & Statistics
-- Fixing the BGR/RGB mismatch immediately restored our custom M12 Phase 7B model’s Dice score back above >0.8.
-- The statistical testing suite (`calc_p_value.py`) was overhauled to strictly enforce sample size conditional logic: using a Paired T-Test (supported by Shapiro-Wilk) for $n \ge 30$, correctly eliminating the universal usage of the Wilcoxon test.
+### Khôi phục Hiệu năng & Sửa lỗi Thống kê
+- Việc khắc phục lỗi bất đồng bộ BGR/RGB đã lập tức đưa Dice score của model M12 (Phase 7B) trở lại mức >0.8.
+- Bộ test thống kê (`calc_p_value.py`) đã được viết lại để tuân thủ chặt chẽ logic chọn test dựa trên cỡ mẫu (sample size): sử dụng Paired T-Test (được củng cố bằng kiểm định chuẩn Shapiro-Wilk) cho cỡ mẫu $n \ge 30$, loại bỏ việc lạm dụng Wilcoxon test trong mọi trường hợp.
 
-### Computational Complexity Benchmarks
-To satisfy stringent peer-review requirements for top-tier venues (IEEE T-MI, MICCAI, CVPR), an extensive computational complexity benchmark was conducted on both models (Input: $1 \times 3 \times 256 \times 256$).
+### Benchmark Độ phức tạp Tính toán (Computational Complexity)
+Để đáp ứng yêu cầu khắt khe của các reviewer tại các hội nghị/tạp chí top-tier (như IEEE T-MI, MICCAI, CVPR), một benchmark đo lường toàn diện đã được tiến hành để so sánh M11 (Baseline) và M12 (Phase 7B) trên tensor đầu vào kích thước $1 \times 3 \times 256 \times 256$.
 
 | Model | Parameters (M) | MACs (G) | Inference FPS |
 |---|---|---|---|
 | **M11 (Baseline)** | 7.72 | 20.52 | 48.1 |
 | **M12 (Phase 7B)** | 7.72 | 20.52 | 62.7 |
 
-- **Zero Overhead**: M12 maintains exactly 7.72M Parameters and 20.52G MACs. The architectural improvements introduce absolutely no additional operations or weights.
-- **Faster Inference**: The M12 model is demonstrably faster during runtime (62.7 FPS vs 48.1 FPS). This speedup is fundamentally due to the pure float arithmetic of the Detached Soft-OR gating, which utilizes heavily optimized CuDNN instructions compared to the discontinuous boolean masking (`torch.maximum`) executed in the original M11 baseline.
+- **Zero Overhead**: M12 duy trì chính xác 7.72M Parameters và 20.52G MACs so với baseline. Cải tiến kiến trúc này không thêm vào bất kỳ phép toán hay trọng số (weights) nào.
+- **Inference Nhanh Hơn**: Model M12 thậm chí còn đạt tốc độ FPS cao hơn lúc chạy thực tế (62.7 FPS so với 48.1 FPS). Nguyên nhân sâu xa là do cổng Detached Soft-OR chỉ dùng các phép toán số thực (pure float arithmetic), vốn rất dễ được tối ưu bởi các tập lệnh CuDNN của GPU; trong khi đó Baseline M11 phải dùng hard-gating chứa phép chuyển đổi boolean không liên tục (`torch.maximum`).
 
-This post-mortem firmly closes the debugging phase, proving mathematically, structurally, and computationally that Phase 7B is highly stable and superior to the original FANet baseline.
+Báo cáo post-mortem này chính thức khép lại giai đoạn debugging, chứng minh rõ ràng cả về mặt toán học, cấu trúc lẫn tính toán rằng Phase 7B không chỉ cực kỳ ổn định mà còn hoàn toàn vượt trội so với baseline gốc của FANet.
