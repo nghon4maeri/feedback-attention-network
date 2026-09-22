@@ -272,3 +272,42 @@ class FarWeightedIoUBCELoss(nn.Module):
         # pixels are the majority of the image)
         w_bce = F.binary_cross_entropy(inputs, targets, weight=w, reduction='mean')
         return w_iou + w_bce
+
+
+class AdaptiveTverskyLoss(nn.Module):
+    """
+    Curriculum Tversky Loss.
+    Dynamically scales the Tversky alpha (FP penalty) and beta (FN penalty) based on the training epoch.
+    Starts balanced to establish boundaries, then transitions to an FP-heavy penalty to suppress over-segmentation.
+    """
+    def __init__(self, start_alpha=0.5, start_beta=0.5, end_alpha=0.8, end_beta=0.2, 
+                 total_epochs=500, transition_start_pct=0.3, smooth=1e-6):
+        super().__init__()
+        self.start_alpha = start_alpha
+        self.start_beta = start_beta
+        self.end_alpha = end_alpha
+        self.end_beta = end_beta
+        self.total_epochs = total_epochs
+        self.transition_start_epoch = int(total_epochs * transition_start_pct)
+        self.smooth = smooth
+        self.current_epoch = 0
+
+    def set_epoch(self, epoch):
+        self.current_epoch = epoch
+
+    def forward(self, inputs, targets):
+        if self.current_epoch < self.transition_start_epoch:
+            alpha = self.start_alpha
+            beta = self.start_beta
+        else:
+            progress = min(1.0, (self.current_epoch - self.transition_start_epoch) / max(1, self.total_epochs - self.transition_start_epoch))
+            alpha = self.start_alpha + (self.end_alpha - self.start_alpha) * progress
+            beta = self.start_beta + (self.end_beta - self.start_beta) * progress
+
+        p = torch.sigmoid(inputs).view(-1)
+        g = targets.view(-1)
+        tp = (p * g).sum()
+        fp = (p * (1 - g)).sum()
+        fn = ((1 - p) * g).sum()
+        tversky = (tp + self.smooth) / (tp + alpha * fp + beta * fn + self.smooth)
+        return 1.0 - tversky

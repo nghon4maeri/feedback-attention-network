@@ -203,8 +203,7 @@ def main():
 
     for idx, (img_p, msk_p) in enumerate(zip(val_x, val_y), 1):
         img_bgr = cv2.imread(img_p)
-        img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
-        img_resized = cv2.resize(img_rgb, size)
+        img_resized = cv2.resize(img_bgr, size)
 
         msk_gray = cv2.imread(msk_p, cv2.IMREAD_GRAYSCALE)
         msk_resized = cv2.resize(msk_gray, size)

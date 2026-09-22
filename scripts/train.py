@@ -281,6 +281,10 @@ def main():
         beta  = float(tcfg.get("tversky_beta",  0.3))
         loss_fn = Phase6AsymmetricBCELoss(alpha=alpha, beta=beta, lam=0.5)
         loss_name = f"Tversky(alpha={alpha}, beta={beta}) + DiceBCE"
+    elif loss_key == "adaptive_tversky":
+        from fanet.losses import AdaptiveTverskyLoss
+        loss_fn = AdaptiveTverskyLoss(total_epochs=num_epochs)
+        loss_name = "Adaptive Tversky (Curriculum)"
     else:
         loss_fn = DiceBCELoss()
         loss_name = "DiceBCE"
@@ -298,6 +302,9 @@ def main():
     # ── Training Loop ─────────────────────────────────────────────────────
     for epoch in range(num_epochs):
         start_time = time.time()
+        
+        if hasattr(loss_fn, 'set_epoch'):
+            loss_fn.set_epoch(epoch)
 
         train_loss, return_train_mask = train(
             model, train_loader, train_mask, optimizer, loss_fn, device, size,

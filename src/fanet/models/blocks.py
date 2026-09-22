@@ -174,9 +174,16 @@ class MixPool(nn.Module):
             #     so the network is pushed hardest where mask is uncertain.
             keep = 1.0 - (1.0 - fmask) * (1.0 - m_fg)
 
+        # ── Feature Map Probing Hook ──────────────────────────────────────
+        if getattr(self, 'probe_heatmaps', False):
+            self.saved_fmask = fmask.detach().cpu()
+            self.saved_m_fg = m_fg.detach().cpu()
+            self.saved_keep = keep.detach().cpu()
+
         # ── Background suppression (dual_path only) ──────────────────────
         if self.dual_path:
             keep = keep * (1.0 - m_bg)
+
 
         # ── Split-Transform-Merge ────────────────────────────────────────
         x1 = x * keep

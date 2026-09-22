@@ -149,8 +149,7 @@ def main():
 
         for img_p, msk_p in zip(val_x, val_y):
             img_bgr = cv2.imread(img_p)
-            img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
-            img_resized = cv2.resize(img_rgb, size)
+            img_resized = cv2.resize(img_bgr, size)
 
             msk_gray = cv2.imread(msk_p, cv2.IMREAD_GRAYSCALE)
             msk_resized = cv2.resize(msk_gray, size)
@@ -193,16 +192,28 @@ def main():
     n_total = len(m11_dice_all)
     print(f"\nTotal paired evaluation instances: {n_total} (40 images x 5 seeds)")
 
-    # 1. Wilcoxon for Dice Score (Hypothesis: M12 > M11)
-    res_dice = stats.wilcoxon(m12_dice_all, m11_dice_all, alternative="greater")
+    def run_paired_test(dist_test, dist_base, alternative="greater"):
+        n = len(dist_test)
+        diff = np.array(dist_test) - np.array(dist_base)
+        if n >= 30:
+            _, p_norm = stats.shapiro(diff)
+            res = stats.ttest_rel(dist_test, dist_base, alternative=alternative)
+            test_name = f"Paired T-Test (Shapiro p={p_norm:.4f})"
+        else:
+            res = stats.wilcoxon(dist_test, dist_base, alternative=alternative)
+            test_name = "Wilcoxon Signed-Rank"
+        return res, test_name
+
+    # 1. Test for Dice Score (Hypothesis: M12 > M11)
+    res_dice, name_dice = run_paired_test(m12_dice_all, m11_dice_all, alternative="greater")
     r_dice   = rank_biserial_correlation(m12_dice_all, m11_dice_all)
 
-    # 2. Wilcoxon for FPR / Over-segmentation (Hypothesis: M12 < M11)
-    res_fpr  = stats.wilcoxon(m12_fpr_all, m11_fpr_all, alternative="less")
+    # 2. Test for FPR / Over-segmentation (Hypothesis: M12 < M11)
+    res_fpr, name_fpr  = run_paired_test(m12_fpr_all, m11_fpr_all, alternative="less")
     r_fpr    = rank_biserial_correlation(m11_fpr_all, m12_fpr_all)
 
-    # 3. Wilcoxon for Precision (Hypothesis: M12 > M11)
-    res_prec = stats.wilcoxon(m12_prec_all, m11_prec_all, alternative="greater")
+    # 3. Test for Precision (Hypothesis: M12 > M11)
+    res_prec, name_prec = run_paired_test(m12_prec_all, m11_prec_all, alternative="greater")
     r_prec   = rank_biserial_correlation(m12_prec_all, m11_prec_all)
 
     def fmt_p(p):
@@ -211,13 +222,15 @@ def main():
         return f"p = {p:.4f}"
 
     print("\n" + "=" * 80)
-    print("STATISTICAL INFERENCE SUMMARY (Wilcoxon Signed-Rank Test across 200 pairs)")
+    print("STATISTICAL INFERENCE SUMMARY (across 200 pairs)")
     print("=" * 80)
     print(f"1. Dice Score Improvement (M12 vs M11):")
     print(f"   - M11 Mean ± Std : {np.mean(m11_dice_all):.4f} ± {np.std(m11_dice_all):.4f}")
     print(f"   - M12 Mean ± Std : {np.mean(m12_dice_all):.4f} ± {np.std(m12_dice_all):.4f}")
     print(f"   - Absolute Gain  : +{(np.mean(m12_dice_all) - np.mean(m11_dice_all))*100:.2f} pp")
-    print(f"   - Wilcoxon Stat  : W = {res_dice.statistic:.1f}")
+    print(f"   - Test Used      : {name_dice}")
+    stat_val = res_dice.statistic[0] if isinstance(res_dice.statistic, np.ndarray) else res_dice.statistic
+    print(f"   - Statistic      : {stat_val:.4f}")
     print(f"   - p-value        : {fmt_p(res_dice.pvalue)}")
     print(f"   - Rank-Biserial r: r = {r_dice:.3f}")
 
@@ -225,14 +238,18 @@ def main():
     print(f"   - M11 Mean ± Std : {np.mean(m11_fpr_all)*100:.2f}% ± {np.std(m11_fpr_all)*100:.2f}%")
     print(f"   - M12 Mean ± Std : {np.mean(m12_fpr_all)*100:.2f}% ± {np.std(m12_fpr_all)*100:.2f}%")
     print(f"   - Relative Drop  : -{(1.0 - np.mean(m12_fpr_all)/np.mean(m11_fpr_all))*100:.1f}%")
-    print(f"   - Wilcoxon Stat  : W = {res_fpr.statistic:.1f}")
+    print(f"   - Test Used      : {name_fpr}")
+    stat_val = res_fpr.statistic[0] if isinstance(res_fpr.statistic, np.ndarray) else res_fpr.statistic
+    print(f"   - Statistic      : {stat_val:.4f}")
     print(f"   - p-value        : {fmt_p(res_fpr.pvalue)}")
     print(f"   - Rank-Biserial r: r = {r_fpr:.3f}")
 
     print(f"\n3. Precision Gain (M12 vs M11):")
     print(f"   - M11 Mean ± Std : {np.mean(m11_prec_all)*100:.2f}% ± {np.std(m11_prec_all)*100:.2f}%")
     print(f"   - M12 Mean ± Std : {np.mean(m12_prec_all)*100:.2f}% ± {np.std(m12_prec_all)*100:.2f}%")
-    print(f"   - Wilcoxon Stat  : W = {res_prec.statistic:.1f}")
+    print(f"   - Test Used      : {name_prec}")
+    stat_val = res_prec.statistic[0] if isinstance(res_prec.statistic, np.ndarray) else res_prec.statistic
+    print(f"   - Statistic      : {stat_val:.4f}")
     print(f"   - p-value        : {fmt_p(res_prec.pvalue)}")
     print("=" * 80)
 
