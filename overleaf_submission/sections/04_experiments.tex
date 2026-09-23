@@ -507,3 +507,11 @@ While Detached Soft-OR (Phase 7B) structurally eliminated gradient leakage, it m
 Empirical temporal tracking across recurrent iterations unequivocally demonstrates that Learned Residual Decoupling restores architectural controllability to the optimization landscape. When optimized under an aggressive False-Positive-suppressing Adaptive Tversky Loss ($\alpha=0.7, \beta=0.3$), the network successfully \textit{pruned} toxic Otsu priors, driving the temporal FPR down from .79\%$ at =0$ to a record-low .94\%$ at =3$ (surpassing the {11}$ baseline of .31\%$). Conversely, when fine-tuned under a Recall-favoring \textit{HybridRecallLoss} ($\alpha=0.3, \beta=0.7$), the identical architecture dynamically inverted its behavior, explicitly growing its predictions to recover True Positives, raising Recall to .28\%$ (vs. Baseline .12\%$).
 
 However, this bidirectionality simultaneously exposed the fundamental intrinsic limits of the Kvasir-SEG Sessile dataset. While Phase 7D successfully optimized for Recall (.28\%$), the corresponding FPR unavoidably rebounded to .38\%$ (Dice dropped to .2597$), illustrating a severe Precision-Recall tradeoff. The inability to simultaneously maximize Precision and Recall is no longer an architectural failure (as the network perfectly obeys the directional mandates of the loss function), but rather a manifestation of the theoretical Pareto Frontier imposed by the extreme boundary ambiguity of flat polyps. Pushing beyond this sessile Pareto limit will likely require multimodal priors or foundational temporal models, rather than further topological gating interventions.
+
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\linewidth]{paper_figures/pareto_frontier.pdf}
+    \caption{The Precision-Recall Pareto Frontier on Kvasir-SEG (Sessile). While Phase 7B falls into the Monotonicity Trap (uncontrollable FPR), our Learned Residual Decoupling (Phase 7C/7D) restores architectural controllability. The resulting models smoothly traverse the Pareto boundary governed by the dataset's intrinsic morphological ambiguity.}
+    \label{fig:pareto}
+\end{figure}
