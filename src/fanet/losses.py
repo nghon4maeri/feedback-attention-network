@@ -311,3 +311,13 @@ class AdaptiveTverskyLoss(nn.Module):
         fn = ((1 - p) * g).sum()
         tversky = (tp + self.smooth) / (tp + alpha * fp + beta * fn + self.smooth)
         return 1.0 - tversky
+
+
+class HybridRecallLoss(nn.Module):
+    def __init__(self, alpha=0.3, beta=0.7, smooth=1.0):
+        super().__init__()
+        self.dice_bce = DiceBCELoss()
+        self.tversky = TverskyLoss(alpha=alpha, beta=beta, smooth=smooth)
+
+    def forward(self, inputs, targets):
+        return 0.5 * self.dice_bce(inputs, targets) + 0.5 * self.tversky(inputs, targets)
