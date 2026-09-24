@@ -8,7 +8,7 @@ Reproduction + analysis of:
 
 ---
 
-## 🌟 Spotlight: Executive Summary of Scientific Contributions & Improvements
+## Spotlight: Executive Summary of Scientific Contributions & Improvements
 
 **Paper:** Breaking the Feedback Trap: Understanding and Stabilizing Recurrent Feedback Learning in Medical Image Segmentation
 
