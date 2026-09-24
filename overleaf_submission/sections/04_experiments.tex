@@ -20,7 +20,7 @@ colonoscopy benchmarks and external medical vision domains:
         evaluating architectural universality and cross-domain robustness.
 \end{enumerate}
 
-% -----------------------------------------------------------------------------
+\% -----------------------------------------------------------------------------
 
 \subsection*{Emergency Retraction & Mechanistic Post-Mortem (The Soft-OR Monotonicity Trap)}
 \textcolor{red}{\textbf{CRITICAL UPDATE:}} Initial evaluations of the proposed Detached Soft-OR gating ($M_{12}$) on the Kvasir-Sessile subset revealed a catastrophic performance collapse. Contrary to our hypothesis that severing the gradient graph would suppress false positives, $M_{12}$ exacerbates them, driving the False Positive Rate (FPR) to an unacceptable \textbf{52.31\%} (compared to the baseline $M_{11}$'s 21.31\%) and plummeting the Dice score to \textbf{0.2183} (vs $M_{11}$'s 0.3428).
@@ -45,13 +45,13 @@ configurations:
 
 \begin{table*}[t!]
 \centering
-\caption{%
+\caption{\%
   Factorial Diagnostic of Recurrent Pathologies and Gradient
   Restoration. $\Delta$BN Drift ($D_{\text{KL}}$) measures encoder
   distribution shift; Saturation (\%) denotes confident predictions
   ($p > 0.9$ or $p < 0.1$); Bottleneck Cosine Similarity measures
   feature margin between boundary and background; Mask Grad Norm
-  tracks gradient flow through the recurrent feedback branch.%
+  tracks gradient flow through the recurrent feedback branch.\%
 }
 \label{tab:diagnostic}
 \begin{tabularx}{\textwidth}{l l c c c c}
@@ -73,12 +73,12 @@ $M_{12}$ & FB + Soft-OR Detach [Ours] & \textbf{3.94} & \textbf{97.20\%} & \text
 \begin{figure*}[t!]
 \centering
 \includegraphics[width=\textwidth]{figures/bn_drift_violin.png}
-\caption{%
+\caption{\%
   Distribution of Batch Normalization statistics drift (measured via
   $D_{\text{KL}}$). $M_{11}$ suffers from representational collapse
   as the feedback loop forces the encoder to memorize recurrent
   background hallucinations. $M_{12}$ (Detached Soft-OR) breaks this
-  cycle, resulting in separated background/foreground features.%
+  cycle, resulting in separated background/foreground features.\%
 }
 \label{fig:bn_drift}
 \end{figure*}
@@ -101,7 +101,7 @@ As shown in Table~\ref{tab:diagnostic} and Fig.~\ref{fig:bn_drift}:
         background mucosa.
 \end{itemize}
 
-% -----------------------------------------------------------------------------
+\% -----------------------------------------------------------------------------
 \subsection{Loss Neutralization Evidence: The $3 \times 2$ Factorial Benchmark}
 To empirically substantiate our core claim that conventional recurrent feedback
 actively neutralizes modern loss engineering, we conduct a rigorous
@@ -110,11 +110,11 @@ two loss formulations (Table~\ref{tab:factorial_loss}).
 
 \begin{table*}[t!]
 \centering
-\caption{%
+\caption{\%
   The $3 \times 2$ Factorial Loss Neutralization Benchmark on Kvasir-SEG (Sessile).
   Evaluating the interaction between Recurrent Architecture and Loss Engineering.
   Hard Feedback traps and neutralizes Asymmetric Tversky loss (+4.17 pp interaction),
-  whereas Detached Soft-OR restores and amplifies the loss optimization benefit.%
+  whereas Detached Soft-OR restores and amplifies the loss optimization benefit.\%
 }
 \label{tab:factorial_loss}
 \begin{tabularx}{\textwidth}{l l c c c c X}
@@ -166,7 +166,7 @@ As demonstrated in Table~\ref{tab:factorial_loss}:
         aggregate $42.8\%$ reduction with superior boundary fidelity.
 \end{enumerate}
 
-% -----------------------------------------------------------------------------
+\% -----------------------------------------------------------------------------
 \subsection{The Core Mechanism Ablation: Disentangling Soft-OR from Detach}
 A critical question in mechanistic analysis is whether performance gains stem from
 continuous relaxation (Soft-OR) or gradient detachment ($\text{detach}(\cdot)$).
@@ -175,9 +175,9 @@ To answer this, we conduct a 4-way ablation study on the validation cohort
 
 \begin{table*}[t!]
 \centering
-\caption{%
+\caption{\%
   4-Way Core Mechanism Ablation: Disentangling Continuous Relaxation from Gradient Detachment.
-  Evaluating Gating Mechanics and Stop-Gradient Dynamics on Kvasir-SEG (Sessile).%
+  Evaluating Gating Mechanics and Stop-Gradient Dynamics on Kvasir-SEG (Sessile).\%
 }
 \label{tab:ablation_4way}
 \begin{tabularx}{\textwidth}{p{3.2cm} c c c c c X}
@@ -233,7 +233,7 @@ Table~\ref{tab:ablation_4way} reveals crucial mechanistic insights:
         and complete severance of recursive error propagation.
 \end{itemize}
 
-% -----------------------------------------------------------------------------
+\% -----------------------------------------------------------------------------
 \subsection{Quantitative Segmentation Performance: Multi-Seed Robustness}
 To verify that our architectural fix provides consistent empirical
 superiority across random initializations, we conduct a full 5-seed benchmark
@@ -242,11 +242,11 @@ identical conditions (Table~\ref{tab:kvasir_benchmark}).
 
 \begin{table*}[t!]
 \centering
-\caption{%
+\caption{\%
   Quantitative 5-Seed Benchmark on Kvasir-SEG (Sessile): Baseline
   $M_{11}$ (Feedback Trap) vs.\ Proposed $M_{12}$ (Detached Soft-OR).
   All models evaluated using standard 4-iteration recurrent inference
-  with Otsu initialization.%
+  with Otsu initialization.\%
 }
 \label{tab:kvasir_benchmark}
 \begin{tabularx}{\textwidth}{l c c c c c c}
@@ -304,7 +304,7 @@ As detailed in Table~\ref{tab:kvasir_benchmark}:
 \begin{figure*}[t!]
 \centering
 \includegraphics[width=\textwidth]{figures/qualitative_comparison_fixed.pdf}
-\caption{%
+\caption{\%
   Qualitative comparison on adversarial sessile polyps. Columns: (a) Input
   frame, (b) Ground truth annotation, (c) $M_{11}$ prediction (Feedback Trap
   baseline), and (d) $M_{12}$ prediction (Proposed Detached Soft-OR). Color
@@ -316,12 +316,12 @@ As detailed in Table~\ref{tab:kvasir_benchmark}:
   mucosa. Our proposed $M_{12}$ (Detached Soft-OR) successfully eradicates
   these spurious regions while rigorously preserving true-positive
   boundaries (\textcolor{green}{green}), strictly avoiding trivial background
-  collapse.%
+  collapse.\%
 }
 \label{fig:qualitative}
 \end{figure*}
 
-% -----------------------------------------------------------------------------
+\% -----------------------------------------------------------------------------
 \subsection{Qualitative Comparison: Delineation vs.\ Trivial Background Collapse}
 A critical concern when evaluating false-positive reduction is the risk
 of \textit{trivial background collapse}---where an algorithm reduces
@@ -366,7 +366,7 @@ In all cases, $M_{12}$ sustains high Dice ($0.50$ to $0.77$) while
 surgical detachment of the feedback path severs the recurrent error
 loop, preventing the hallucinated lesions that cripple $M_{11}$.
 
-% -----------------------------------------------------------------------------
+\% -----------------------------------------------------------------------------
 \subsection{Competitive Analysis: State-of-the-Art (SOTA) Baselines}
 To benchmark $M_{12}$ against contemporary paradigms, we evaluated
 standard feedforward segmentation architectures (U-Net, DeepLabV3+, and FPN
@@ -385,10 +385,10 @@ recurrent refinement mechanism.
 
 \begin{table}[t!]
 \centering
-\caption{%
+\caption{\%
   Competitive Analysis on Kvasir-Sessile (Validation). Standard
   baselines evaluated zero-shot (ImageNet weights) vs.\ our trained
-  recurrent models.%
+  recurrent models.\%
 }
 \label{tab:sota_compare}
 \setlength{\tabcolsep}{6pt}
@@ -406,7 +406,7 @@ $M_{11}$ (Recurrent Baseline)                  & 0.3428              & 4.30\%   
 \end{tabular}
 \end{table}
 
-% -----------------------------------------------------------------------------
+\% -----------------------------------------------------------------------------
 \subsection{Zero-Shot Cross-Center Generalization: CVC-ClinicDB}
 To evaluate whether the benefits of Detached Soft-OR generalize beyond
 the training cohort, we conduct an external \textbf{Zero-Shot
@@ -416,10 +416,10 @@ Clinic, Barcelona, Spain)~\cite{bernal2017comparative} ($N = 612$,
 
 \begin{table*}[t!]
 \centering
-\caption{%
+\caption{\%
   Multi-Seed Zero-Shot Cross-Center Generalization on CVC-ClinicDB
   ($N = 612$ images, 5 Seeds). Models evaluated without retraining
-  or fine-tuning.%
+  or fine-tuning.\%
 }
 \label{tab:zero_shot}
 \begin{tabularx}{\textwidth}{l c c c c}
@@ -456,7 +456,7 @@ Inter-Seed Variance (Std)
   & \textbf{$-0.0262$}
   & \textbf{$-41.1\%$} \\
 \midrule
-\multicolumn{5}{l}{%
+\multicolumn{5}{l}{\%
   Sample-Level Wilcoxon Signed-Rank Test:
   \textbf{Dice $p = 1.61 \times 10^{-15}$***}
   (Significant across $N = 612$)} \\
@@ -479,7 +479,7 @@ As summarized in Table~\ref{tab:zero_shot}:
         $p = 1.61 \times 10^{-15} \ll 0.001$, decisively refuting single-dataset overfitting.
 \end{itemize}
 
-% -----------------------------------------------------------------------------
+\% -----------------------------------------------------------------------------
 \subsection{Architectural Universality and Cross-Domain Generalization}
 To establish that the Feedback Trap and Feedback Firewall are foundational
 principles of deep learning rather than quirks of FANet:
@@ -500,18 +500,18 @@ principles of deep learning rather than quirks of FANet:
         decoupled iterative self-guidance across disparate medical imaging modalities.
 \end{enumerate}
 
-% -----------------------------------------------------------------------------
+\% -----------------------------------------------------------------------------
 \subsection{Architectural Controllability and the Sessile Pareto Frontier}
-While Detached Soft-OR (Phase 7B) structurally eliminated gradient leakage, it mathematically trapped the network into a monotonically expanding mask ( \lor B \ge B$), physically preventing the pruning of initial False Positives (FPR collapsed to .31\%$ on Kvasir-SEG Sessile). To solve this \textit{Monotonicity Trap}, we designed \textbf{Learned Residual Decoupling} (Phase 7C/7D), which combines continuous bidirectional modulation via a \times1$ Convolution Gate with the strict mathematical severance of the stop-gradient operator ($\text{detach}(m_{\text{fg}})$).
+While Detached Soft-OR (Phase 7B) structurally eliminated gradient leakage, it mathematically trapped the network into a monotonically expanding mask ($A \lor B \ge B$), physically preventing the pruning of initial False Positives (FPR collapsed to $52.31\%$ on Kvasir-SEG Sessile). To solve this \textit{Monotonicity Trap}, we designed \textbf{Learned Residual Decoupling} (Phase 7C/7D), which combines continuous bidirectional modulation via a $1\times1$ Convolution Gate with the strict mathematical severance of the stop-gradient operator ($\text{detach}(m_{\text{fg}})$).
 
-Empirical temporal tracking across recurrent iterations unequivocally demonstrates that Learned Residual Decoupling restores architectural controllability to the optimization landscape. When optimized under an aggressive False-Positive-suppressing Adaptive Tversky Loss ($\alpha=0.7, \beta=0.3$), the network successfully \textit{pruned} toxic Otsu priors, driving the temporal FPR down from .79\%$ at =0$ to a record-low .94\%$ at =3$ (surpassing the {11}$ baseline of .31\%$). Conversely, when fine-tuned under a Recall-favoring \textit{HybridRecallLoss} ($\alpha=0.3, \beta=0.7$), the identical architecture dynamically inverted its behavior, explicitly growing its predictions to recover True Positives, raising Recall to .28\%$ (vs. Baseline .12\%$).
+Empirical temporal tracking across recurrent iterations unequivocally demonstrates that Learned Residual Decoupling restores architectural controllability to the optimization landscape. When optimized under an aggressive False-Positive-suppressing Adaptive Tversky Loss ($\alpha=0.7, \beta=0.3$), the network successfully \textit{pruned} toxic Otsu priors, driving the temporal FPR down from $20.79\%$ at $t=0$ to a record-low $16.94\%$ at $t=3$ (surpassing the $M_{11}$ baseline of $21.31\%$). Conversely, when fine-tuned under a Recall-favoring \textit{HybridRecallLoss} ($\alpha=0.3, \beta=0.7$), the identical architecture dynamically inverted its behavior, explicitly `growing' its predictions to recover True Positives, raising Recall to $84.28\%$ (vs. Baseline $76.12\%$).
 
-However, this bidirectionality simultaneously exposed the fundamental intrinsic limits of the Kvasir-SEG Sessile dataset. While Phase 7D successfully optimized for Recall (.28\%$), the corresponding FPR unavoidably rebounded to .38\%$ (Dice dropped to .2597$), illustrating a severe Precision-Recall tradeoff. The inability to simultaneously maximize Precision and Recall is no longer an architectural failure (as the network perfectly obeys the directional mandates of the loss function), but rather a manifestation of the theoretical Pareto Frontier imposed by the extreme boundary ambiguity of flat polyps. Pushing beyond this sessile Pareto limit will likely require multimodal priors or foundational temporal models, rather than further topological gating interventions.
+However, this bidirectionality simultaneously exposed the fundamental intrinsic limits of the Kvasir-SEG Sessile dataset. While Phase 7D successfully optimized for Recall ($84.28\%$), the corresponding FPR unavoidably rebounded to $31.38\%$ (Dice dropped to $0.2597$), illustrating a severe Precision-Recall tradeoff. The inability to simultaneously maximize Precision and Recall is no longer an architectural failure (as the network perfectly obeys the directional mandates of the loss function), but rather a manifestation of the theoretical Pareto Frontier imposed by the extreme boundary ambiguity of flat polyps. Pushing beyond this sessile Pareto limit will likely require multimodal priors or foundational temporal models, rather than further topological gating interventions.
 
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=\linewidth]{paper_figures/pareto_frontier.pdf}
+    \includegraphics[width=\linewidth]{figures/pareto_frontier.pdf}
     \caption{The Precision-Recall Pareto Frontier on Kvasir-SEG (Sessile). While Phase 7B falls into the Monotonicity Trap (uncontrollable FPR), our Learned Residual Decoupling (Phase 7C/7D) restores architectural controllability. The resulting models smoothly traverse the Pareto boundary governed by the dataset's intrinsic morphological ambiguity.}
     \label{fig:pareto}
 \end{figure}
