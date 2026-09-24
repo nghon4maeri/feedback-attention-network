@@ -1,0 +1,782 @@
+2026-09-22 16:44:41.619910
+============================================================
+FANet Training Config
+============================================================
+  Dataset root   : data/sessile-main-Kvasir-SEG
+  Image size     : (256, 256)
+  Batch size     : 2
+  Epochs         : 200
+  LR             : 0.0001
+  Seed           : 2024
+  --- MixPool ---
+  gate (legacy)  : binary
+  gating_mode    : learned_residual
+  detach_feedback: True   <- Feedback Trap severed: True
+  dual_path      : False
+  --- Training ---
+  loss           : tversky
+  no_feedback    : False
+  --- Paths ---
+  checkpoint     : checkpoints/checkpoint_learned_residual_detach_tversky.pth
+  train_log      : logs/train_log_learned_residual_detach_tversky.txt
+============================================================
+Dataset: Train=156, Valid=40
+Loss: Tversky(alpha=0.7, beta=0.3) + DiceBCE
+  [ckpt] Saving: checkpoints/checkpoint_learned_residual_detach_tversky.pth
+Epoch: 001/200 | 0m 12s
+  Train Loss: 0.7964
+  Valid Loss: 0.7934
+  [BIN] Dice=0.2486 | Prec=0.1741 | Rec=0.8905 | FPR=0.3571
+
+  [ckpt] Saving: checkpoints/checkpoint_learned_residual_detach_tversky.pth
+Epoch: 002/200 | 0m 9s
+  Train Loss: 0.7740
+  Valid Loss: 0.7723
+  [BIN] Dice=0.2658 | Prec=0.2037 | Rec=0.7551 | FPR=0.2397
+
+Epoch: 003/200 | 0m 10s
+  Train Loss: 0.7650
+  Valid Loss: 0.7753
+  [BIN] Dice=0.2658 | Prec=0.2065 | Rec=0.7692 | FPR=0.2477
+
+  [ckpt] Saving: checkpoints/checkpoint_learned_residual_detach_tversky.pth
+Epoch: 004/200 | 0m 9s
+  Train Loss: 0.7578
+  Valid Loss: 0.7595
+  [BIN] Dice=0.2849 | Prec=0.2156 | Rec=0.7756 | FPR=0.2352
+
+Epoch: 005/200 | 0m 8s
+  Train Loss: 0.7518
+  Valid Loss: 0.7677
+  [BIN] Dice=0.2433 | Prec=0.2648 | Rec=0.5363 | FPR=0.1736
+
+  [ckpt] Saving: checkpoints/checkpoint_learned_residual_detach_tversky.pth
+Epoch: 006/200 | 0m 8s
+  Train Loss: 0.7467
+  Valid Loss: 0.7562
+  [BIN] Dice=0.2813 | Prec=0.2277 | Rec=0.7189 | FPR=0.2131
+
+Epoch: 007/200 | 0m 8s
+  Train Loss: 0.7386
+  Valid Loss: 0.7660
+  [BIN] Dice=0.2644 | Prec=0.2319 | Rec=0.6989 | FPR=0.2135
+
+  [ckpt] Saving: checkpoints/checkpoint_learned_residual_detach_tversky.pth
+Epoch: 008/200 | 0m 8s
+  Train Loss: 0.7313
+  Valid Loss: 0.7397
+  [BIN] Dice=0.3180 | Prec=0.2671 | Rec=0.7098 | FPR=0.1632
+
+  [ckpt] Saving: checkpoints/checkpoint_learned_residual_detach_tversky.pth
+Epoch: 009/200 | 0m 9s
+  Train Loss: 0.7251
+  Valid Loss: 0.7346
+  [BIN] Dice=0.2310 | Prec=0.3010 | Rec=0.3465 | FPR=0.0963
+
+  [ckpt] Saving: checkpoints/checkpoint_learned_residual_detach_tversky.pth
+Epoch: 010/200 | 0m 8s
+  Train Loss: 0.7232
+  Valid Loss: 0.7161
+  [BIN] Dice=0.2863 | Prec=0.3316 | Rec=0.3651 | FPR=0.0606
+
+  [ckpt] Saving: checkpoints/checkpoint_learned_residual_detach_tversky.pth
+Epoch: 011/200 | 0m 8s
+  Train Loss: 0.7139
+  Valid Loss: 0.7083
+  [BIN] Dice=0.2937 | Prec=0.3446 | Rec=0.3751 | FPR=0.0519
+
+  [ckpt] Saving: checkpoints/checkpoint_learned_residual_detach_tversky.pth
+Epoch: 012/200 | 0m 8s
+  Train Loss: 0.7015
+  Valid Loss: 0.7061
+  [BIN] Dice=0.2918 | Prec=0.3701 | Rec=0.3655 | FPR=0.0462
+
+Epoch: 013/200 | 0m 8s
+  Train Loss: 0.6969
+  Valid Loss: 0.7077
+  [BIN] Dice=0.1873 | Prec=0.2818 | Rec=0.2811 | FPR=0.0457
+
+  [ckpt] Saving: checkpoints/checkpoint_learned_residual_detach_tversky.pth
+Epoch: 014/200 | 0m 8s
+  Train Loss: 0.6885
+  Valid Loss: 0.6878
+  [BIN] Dice=0.3315 | Prec=0.3397 | Rec=0.5180 | FPR=0.0814
+
+  [ckpt] Saving: checkpoints/checkpoint_learned_residual_detach_tversky.pth
+Epoch: 015/200 | 0m 8s
+  Train Loss: 0.6804
+  Valid Loss: 0.6802
+  [BIN] Dice=0.3476 | Prec=0.3094 | Rec=0.6669 | FPR=0.1088
+
+  [ckpt] Saving: checkpoints/checkpoint_learned_residual_detach_tversky.pth
+Epoch: 016/200 | 0m 9s
+  Train Loss: 0.6713
+  Valid Loss: 0.6754
+  [BIN] Dice=0.3470 | Prec=0.3275 | Rec=0.6524 | FPR=0.1042
+
+Epoch: 017/200 | 0m 8s
+  Train Loss: 0.6607
+  Valid Loss: 0.6873
+  [BIN] Dice=0.2773 | Prec=0.3499 | Rec=0.3747 | FPR=0.0498
+
+Epoch: 018/200 | 0m 7s
+  Train Loss: 0.6576
+  Valid Loss: 0.6844
+  [BIN] Dice=0.2531 | Prec=0.3866 | Rec=0.2923 | FPR=0.0232
+
+Epoch: 019/200 | 0m 9s
+  Train Loss: 0.6495
+  Valid Loss: 0.6793
+  [BIN] Dice=0.3117 | Prec=0.3241 | Rec=0.4855 | FPR=0.0665
+
+  [ckpt] Saving: checkpoints/checkpoint_learned_residual_detach_tversky.pth
+Epoch: 020/200 | 0m 8s
+  Train Loss: 0.6405
+  Valid Loss: 0.6635
+  [BIN] Dice=0.3268 | Prec=0.3315 | Rec=0.5215 | FPR=0.0610
+
+Epoch: 021/200 | 0m 8s
+  Train Loss: 0.6330
+  Valid Loss: 0.6727
+  [BIN] Dice=0.3296 | Prec=0.3095 | Rec=0.6784 | FPR=0.1202
+
+  [ckpt] Saving: checkpoints/checkpoint_learned_residual_detach_tversky.pth
+Epoch: 022/200 | 0m 9s
+  Train Loss: 0.6186
+  Valid Loss: 0.6587
+  [BIN] Dice=0.3193 | Prec=0.3215 | Rec=0.4546 | FPR=0.0448
+
+  [ckpt] Saving: checkpoints/checkpoint_learned_residual_detach_tversky.pth
+Epoch: 023/200 | 0m 8s
+  Train Loss: 0.6040
+  Valid Loss: 0.6517
+  [BIN] Dice=0.3624 | Prec=0.3218 | Rec=0.7135 | FPR=0.1086
+
+Epoch: 024/200 | 0m 8s
+  Train Loss: 0.6055
+  Valid Loss: 0.6736
+  [BIN] Dice=0.3293 | Prec=0.2971 | Rec=0.7266 | FPR=0.1268
+
+Epoch: 025/200 | 0m 9s
+  Train Loss: 0.5918
+  Valid Loss: 0.6582
+  [BIN] Dice=0.3135 | Prec=0.2847 | Rec=0.5573 | FPR=0.0719
+
+  [ckpt] Saving: checkpoints/checkpoint_learned_residual_detach_tversky.pth
+Epoch: 026/200 | 0m 9s
+  Train Loss: 0.5924
+  Valid Loss: 0.6347
+  [BIN] Dice=0.3557 | Prec=0.3741 | Rec=0.5491 | FPR=0.0616
+
+Epoch: 027/200 | 0m 9s
+  Train Loss: 0.5811
+  Valid Loss: 0.6460
+  [BIN] Dice=0.3409 | Prec=0.3088 | Rec=0.6119 | FPR=0.0738
+
+Epoch: 028/200 | 0m 9s
+  Train Loss: 0.5748
+  Valid Loss: 0.6371
+  [BIN] Dice=0.3390 | Prec=0.3422 | Rec=0.5062 | FPR=0.0533
+
+Epoch: 029/200 | 0m 9s
+  Train Loss: 0.5657
+  Valid Loss: 0.6621
+  [BIN] Dice=0.3396 | Prec=0.2949 | Rec=0.6688 | FPR=0.1000
+
+  [ckpt] Saving: checkpoints/checkpoint_learned_residual_detach_tversky.pth
+Epoch: 030/200 | 0m 9s
+  Train Loss: 0.5553
+  Valid Loss: 0.6303
+  [BIN] Dice=0.3379 | Prec=0.3261 | Rec=0.5652 | FPR=0.0626
+
+Epoch: 031/200 | 0m 8s
+  Train Loss: 0.5517
+  Valid Loss: 0.6353
+  [BIN] Dice=0.3241 | Prec=0.3083 | Rec=0.5883 | FPR=0.0737
+
+Epoch: 032/200 | 0m 9s
+  Train Loss: 0.5448
+  Valid Loss: 0.6854
+  [BIN] Dice=0.1857 | Prec=0.2829 | Rec=0.2229 | FPR=0.0157
+
+Epoch: 033/200 | 0m 9s
+  Train Loss: 0.5654
+  Valid Loss: 0.6467
+  [BIN] Dice=0.2821 | Prec=0.3782 | Rec=0.3703 | FPR=0.0354
+
+Epoch: 034/200 | 0m 9s
+  Train Loss: 0.5351
+  Valid Loss: 0.6552
+  [BIN] Dice=0.2716 | Prec=0.3817 | Rec=0.3297 | FPR=0.0290
+
+Epoch: 035/200 | 0m 9s
+  Train Loss: 0.5282
+  Valid Loss: 0.6311
+  [BIN] Dice=0.3451 | Prec=0.3342 | Rec=0.5791 | FPR=0.0705
+
+  [ckpt] Saving: checkpoints/checkpoint_learned_residual_detach_tversky.pth
+Epoch: 036/200 | 0m 9s
+  Train Loss: 0.5256
+  Valid Loss: 0.6173
+  [BIN] Dice=0.3517 | Prec=0.3485 | Rec=0.5475 | FPR=0.0642
+
+Epoch: 037/200 | 0m 8s
+  Train Loss: 0.5075
+  Valid Loss: 0.6264
+  [BIN] Dice=0.3549 | Prec=0.3338 | Rec=0.5792 | FPR=0.0728
+
+Epoch: 038/200 | 0m 9s
+  Train Loss: 0.5033
+  Valid Loss: 0.6221
+  [BIN] Dice=0.3594 | Prec=0.3431 | Rec=0.5767 | FPR=0.0649
+
+Epoch: 039/200 | 0m 9s
+  Train Loss: 0.5032
+  Valid Loss: 0.6204
+  [BIN] Dice=0.3047 | Prec=0.3828 | Rec=0.3829 | FPR=0.0322
+
+Epoch: 040/200 | 0m 8s
+  Train Loss: 0.4904
+  Valid Loss: 0.6352
+  [BIN] Dice=0.3410 | Prec=0.3424 | Rec=0.5880 | FPR=0.0791
+
+Epoch: 041/200 | 0m 9s
+  Train Loss: 0.4846
+  Valid Loss: 0.6726
+  [BIN] Dice=0.3076 | Prec=0.3313 | Rec=0.5910 | FPR=0.0961
+
+Epoch: 042/200 | 0m 9s
+  Train Loss: 0.4995
+  Valid Loss: 0.6515
+  [BIN] Dice=0.3407 | Prec=0.3058 | Rec=0.6197 | FPR=0.0910
+
+Epoch: 043/200 | 0m 9s
+  Train Loss: 0.4802
+  Valid Loss: 0.6239
+  [BIN] Dice=0.3613 | Prec=0.3507 | Rec=0.5816 | FPR=0.0710
+
+Epoch: 044/200 | 0m 8s
+  Train Loss: 0.4546
+  Valid Loss: 0.6264
+  [BIN] Dice=0.3587 | Prec=0.3770 | Rec=0.5504 | FPR=0.0641
+
+Epoch: 045/200 | 0m 9s
+  Train Loss: 0.4433
+  Valid Loss: 0.6280
+  [BIN] Dice=0.3569 | Prec=0.3649 | Rec=0.5405 | FPR=0.0612
+
+Epoch: 046/200 | 0m 9s
+  Train Loss: 0.4352
+  Valid Loss: 0.6265
+  [BIN] Dice=0.3459 | Prec=0.3788 | Rec=0.5181 | FPR=0.0561
+
+Epoch: 047/200 | 0m 9s
+  Train Loss: 0.4240
+  Valid Loss: 0.6343
+  [BIN] Dice=0.3368 | Prec=0.3603 | Rec=0.5286 | FPR=0.0610
+
+Epoch: 048/200 | 0m 9s
+  Train Loss: 0.4300
+  Valid Loss: 0.6369
+  [BIN] Dice=0.3339 | Prec=0.3620 | Rec=0.5217 | FPR=0.0611
+
+Epoch: 049/200 | 0m 9s
+  Train Loss: 0.4204
+  Valid Loss: 0.6294
+  [BIN] Dice=0.3390 | Prec=0.3744 | Rec=0.5102 | FPR=0.0560
+
+Epoch: 050/200 | 0m 9s
+  Train Loss: 0.4262
+  Valid Loss: 0.6334
+  [BIN] Dice=0.3374 | Prec=0.3665 | Rec=0.5206 | FPR=0.0600
+
+Epoch: 051/200 | 0m 9s
+  Train Loss: 0.4167
+  Valid Loss: 0.6330
+  [BIN] Dice=0.3377 | Prec=0.3672 | Rec=0.5179 | FPR=0.0590
+
+Epoch: 052/200 | 0m 9s
+  Train Loss: 0.4249
+  Valid Loss: 0.6305
+  [BIN] Dice=0.3379 | Prec=0.3720 | Rec=0.5122 | FPR=0.0571
+
+Epoch: 053/200 | 0m 8s
+  Train Loss: 0.4191
+  Valid Loss: 0.6290
+  [BIN] Dice=0.3393 | Prec=0.3780 | Rec=0.5060 | FPR=0.0552
+
+Epoch: 054/200 | 0m 9s
+  Train Loss: 0.4117
+  Valid Loss: 0.6287
+  [BIN] Dice=0.3421 | Prec=0.3801 | Rec=0.5055 | FPR=0.0545
+
+Epoch: 055/200 | 0m 9s
+  Train Loss: 0.4178
+  Valid Loss: 0.6357
+  [BIN] Dice=0.3392 | Prec=0.3632 | Rec=0.5298 | FPR=0.0620
+
+Epoch: 056/200 | 0m 8s
+  Train Loss: 0.4055
+  Valid Loss: 0.6273
+  [BIN] Dice=0.3410 | Prec=0.3835 | Rec=0.5010 | FPR=0.0532
+
+Epoch: 057/200 | 0m 9s
+  Train Loss: 0.4046
+  Valid Loss: 0.6344
+  [BIN] Dice=0.3414 | Prec=0.3627 | Rec=0.5330 | FPR=0.0616
+
+Epoch: 058/200 | 0m 9s
+  Train Loss: 0.4162
+  Valid Loss: 0.6297
+  [BIN] Dice=0.3405 | Prec=0.3745 | Rec=0.5143 | FPR=0.0564
+
+Epoch: 059/200 | 0m 9s
+  Train Loss: 0.4146
+  Valid Loss: 0.6329
+  [BIN] Dice=0.3436 | Prec=0.3659 | Rec=0.5284 | FPR=0.0600
+
+Epoch: 060/200 | 0m 9s
+  Train Loss: 0.4224
+  Valid Loss: 0.6336
+  [BIN] Dice=0.3402 | Prec=0.3679 | Rec=0.5256 | FPR=0.0606
+
+Epoch: 061/200 | 0m 9s
+  Train Loss: 0.4113
+  Valid Loss: 0.6280
+  [BIN] Dice=0.3420 | Prec=0.3808 | Rec=0.5057 | FPR=0.0545
+
+Epoch: 062/200 | 0m 9s
+  Train Loss: 0.4135
+  Valid Loss: 0.6287
+  [BIN] Dice=0.3410 | Prec=0.3823 | Rec=0.5024 | FPR=0.0534
+
+Epoch: 063/200 | 0m 9s
+  Train Loss: 0.4191
+  Valid Loss: 0.6287
+  [BIN] Dice=0.3406 | Prec=0.3823 | Rec=0.5045 | FPR=0.0545
+
+Epoch: 064/200 | 0m 9s
+  Train Loss: 0.4149
+  Valid Loss: 0.6279
+  [BIN] Dice=0.3413 | Prec=0.3830 | Rec=0.5014 | FPR=0.0537
+
+Epoch: 065/200 | 0m 9s
+  Train Loss: 0.4132
+  Valid Loss: 0.6287
+  [BIN] Dice=0.3414 | Prec=0.3795 | Rec=0.5056 | FPR=0.0547
+
+Epoch: 066/200 | 0m 9s
+  Train Loss: 0.4220
+  Valid Loss: 0.6287
+  [BIN] Dice=0.3418 | Prec=0.3764 | Rec=0.5121 | FPR=0.0553
+
+Epoch: 067/200 | 0m 9s
+  Train Loss: 0.4189
+  Valid Loss: 0.6283
+  [BIN] Dice=0.3430 | Prec=0.3758 | Rec=0.5135 | FPR=0.0560
+
+Epoch: 068/200 | 0m 9s
+  Train Loss: 0.4067
+  Valid Loss: 0.6307
+  [BIN] Dice=0.3408 | Prec=0.3736 | Rec=0.5150 | FPR=0.0571
+
+Epoch: 069/200 | 0m 9s
+  Train Loss: 0.4093
+  Valid Loss: 0.6268
+  [BIN] Dice=0.3429 | Prec=0.3825 | Rec=0.5047 | FPR=0.0536
+
+Epoch: 070/200 | 0m 9s
+  Train Loss: 0.4281
+  Valid Loss: 0.6311
+  [BIN] Dice=0.3412 | Prec=0.3718 | Rec=0.5176 | FPR=0.0575
+
+Epoch: 071/200 | 0m 9s
+  Train Loss: 0.4222
+  Valid Loss: 0.6283
+  [BIN] Dice=0.3410 | Prec=0.3800 | Rec=0.5064 | FPR=0.0545
+
+Epoch: 072/200 | 0m 9s
+  Train Loss: 0.4182
+  Valid Loss: 0.6261
+  [BIN] Dice=0.3442 | Prec=0.3856 | Rec=0.5018 | FPR=0.0528
+
+Epoch: 073/200 | 0m 8s
+  Train Loss: 0.4186
+  Valid Loss: 0.6287
+  [BIN] Dice=0.3401 | Prec=0.3827 | Rec=0.5021 | FPR=0.0538
+
+Epoch: 074/200 | 0m 9s
+  Train Loss: 0.4133
+  Valid Loss: 0.6296
+  [BIN] Dice=0.3396 | Prec=0.3796 | Rec=0.5047 | FPR=0.0546
+
+Epoch: 075/200 | 0m 9s
+  Train Loss: 0.4053
+  Valid Loss: 0.6317
+  [BIN] Dice=0.3410 | Prec=0.3692 | Rec=0.5230 | FPR=0.0595
+
+Epoch: 076/200 | 0m 9s
+  Train Loss: 0.4196
+  Valid Loss: 0.6316
+  [BIN] Dice=0.3404 | Prec=0.3701 | Rec=0.5206 | FPR=0.0585
+
+Epoch: 077/200 | 0m 8s
+  Train Loss: 0.4190
+  Valid Loss: 0.6275
+  [BIN] Dice=0.3406 | Prec=0.3831 | Rec=0.5005 | FPR=0.0532
+
+Epoch: 078/200 | 0m 9s
+  Train Loss: 0.4152
+  Valid Loss: 0.6313
+  [BIN] Dice=0.3406 | Prec=0.3725 | Rec=0.5151 | FPR=0.0571
+
+Epoch: 079/200 | 0m 9s
+  Train Loss: 0.4118
+  Valid Loss: 0.6310
+  [BIN] Dice=0.3400 | Prec=0.3721 | Rec=0.5177 | FPR=0.0578
+
+Epoch: 080/200 | 0m 8s
+  Train Loss: 0.4120
+  Valid Loss: 0.6322
+  [BIN] Dice=0.3420 | Prec=0.3686 | Rec=0.5232 | FPR=0.0588
+
+Epoch: 081/200 | 0m 9s
+  Train Loss: 0.4133
+  Valid Loss: 0.6275
+  [BIN] Dice=0.3409 | Prec=0.3833 | Rec=0.5016 | FPR=0.0534
+
+Epoch: 082/200 | 0m 9s
+  Train Loss: 0.4260
+  Valid Loss: 0.6270
+  [BIN] Dice=0.3419 | Prec=0.3821 | Rec=0.5037 | FPR=0.0536
+
+Epoch: 083/200 | 0m 9s
+  Train Loss: 0.4235
+  Valid Loss: 0.6322
+  [BIN] Dice=0.3409 | Prec=0.3668 | Rec=0.5251 | FPR=0.0595
+
+Epoch: 084/200 | 0m 9s
+  Train Loss: 0.4091
+  Valid Loss: 0.6284
+  [BIN] Dice=0.3423 | Prec=0.3796 | Rec=0.5098 | FPR=0.0553
+
+Epoch: 085/200 | 0m 9s
+  Train Loss: 0.4183
+  Valid Loss: 0.6285
+  [BIN] Dice=0.3420 | Prec=0.3767 | Rec=0.5118 | FPR=0.0555
+
+Epoch: 086/200 | 0m 9s
+  Train Loss: 0.4184
+  Valid Loss: 0.6277
+  [BIN] Dice=0.3420 | Prec=0.3814 | Rec=0.5038 | FPR=0.0540
+
+Epoch: 087/200 | 0m 8s
+  Train Loss: 0.4220
+  Valid Loss: 0.6356
+  [BIN] Dice=0.3408 | Prec=0.3630 | Rec=0.5294 | FPR=0.0617
+
+Epoch: 088/200 | 0m 7s
+  Train Loss: 0.4089
+  Valid Loss: 0.6336
+  [BIN] Dice=0.3417 | Prec=0.3635 | Rec=0.5331 | FPR=0.0618
+
+Epoch: 089/200 | 0m 7s
+  Train Loss: 0.4135
+  Valid Loss: 0.6315
+  [BIN] Dice=0.3406 | Prec=0.3753 | Rec=0.5120 | FPR=0.0562
+
+Epoch: 090/200 | 0m 7s
+  Train Loss: 0.4088
+  Valid Loss: 0.6284
+  [BIN] Dice=0.3412 | Prec=0.3785 | Rec=0.5079 | FPR=0.0550
+
+Epoch: 091/200 | 0m 8s
+  Train Loss: 0.4176
+  Valid Loss: 0.6351
+  [BIN] Dice=0.3385 | Prec=0.3644 | Rec=0.5250 | FPR=0.0603
+
+Epoch: 092/200 | 0m 9s
+  Train Loss: 0.4179
+  Valid Loss: 0.6315
+  [BIN] Dice=0.3398 | Prec=0.3692 | Rec=0.5203 | FPR=0.0583
+
+Epoch: 093/200 | 0m 9s
+  Train Loss: 0.4171
+  Valid Loss: 0.6284
+  [BIN] Dice=0.3406 | Prec=0.3803 | Rec=0.5064 | FPR=0.0547
+
+Epoch: 094/200 | 0m 9s
+  Train Loss: 0.4143
+  Valid Loss: 0.6283
+  [BIN] Dice=0.3423 | Prec=0.3789 | Rec=0.5088 | FPR=0.0551
+
+Epoch: 095/200 | 0m 8s
+  Train Loss: 0.4159
+  Valid Loss: 0.6290
+  [BIN] Dice=0.3423 | Prec=0.3797 | Rec=0.5085 | FPR=0.0550
+
+Epoch: 096/200 | 0m 8s
+  Train Loss: 0.4189
+  Valid Loss: 0.6284
+  [BIN] Dice=0.3405 | Prec=0.3807 | Rec=0.5040 | FPR=0.0540
+
+Epoch: 097/200 | 0m 9s
+  Train Loss: 0.4274
+  Valid Loss: 0.6278
+  [BIN] Dice=0.3417 | Prec=0.3796 | Rec=0.5074 | FPR=0.0542
+
+Epoch: 098/200 | 0m 9s
+  Train Loss: 0.4276
+  Valid Loss: 0.6342
+  [BIN] Dice=0.3399 | Prec=0.3651 | Rec=0.5273 | FPR=0.0604
+
+Epoch: 099/200 | 0m 9s
+  Train Loss: 0.4135
+  Valid Loss: 0.6270
+  [BIN] Dice=0.3427 | Prec=0.3829 | Rec=0.5037 | FPR=0.0533
+
+Epoch: 100/200 | 0m 9s
+  Train Loss: 0.4264
+  Valid Loss: 0.6393
+  [BIN] Dice=0.3403 | Prec=0.3609 | Rec=0.5359 | FPR=0.0635
+
+Epoch: 101/200 | 0m 9s
+  Train Loss: 0.4146
+  Valid Loss: 0.6300
+  [BIN] Dice=0.3412 | Prec=0.3774 | Rec=0.5090 | FPR=0.0555
+
+Epoch: 102/200 | 0m 9s
+  Train Loss: 0.4146
+  Valid Loss: 0.6278
+  [BIN] Dice=0.3405 | Prec=0.3811 | Rec=0.5047 | FPR=0.0540
+
+Epoch: 103/200 | 0m 9s
+  Train Loss: 0.4175
+  Valid Loss: 0.6324
+  [BIN] Dice=0.3401 | Prec=0.3699 | Rec=0.5184 | FPR=0.0583
+
+Epoch: 104/200 | 0m 9s
+  Train Loss: 0.4149
+  Valid Loss: 0.6284
+  [BIN] Dice=0.3417 | Prec=0.3793 | Rec=0.5076 | FPR=0.0547
+
+Epoch: 105/200 | 0m 9s
+  Train Loss: 0.4087
+  Valid Loss: 0.6297
+  [BIN] Dice=0.3422 | Prec=0.3740 | Rec=0.5147 | FPR=0.0566
+
+Epoch: 106/200 | 0m 9s
+  Train Loss: 0.4183
+  Valid Loss: 0.6294
+  [BIN] Dice=0.3420 | Prec=0.3758 | Rec=0.5133 | FPR=0.0562
+
+Epoch: 107/200 | 0m 9s
+  Train Loss: 0.4218
+  Valid Loss: 0.6317
+  [BIN] Dice=0.3396 | Prec=0.3709 | Rec=0.5159 | FPR=0.0576
+
+Epoch: 108/200 | 0m 9s
+  Train Loss: 0.4153
+  Valid Loss: 0.6274
+  [BIN] Dice=0.3433 | Prec=0.3814 | Rec=0.5068 | FPR=0.0543
+
+Epoch: 109/200 | 0m 9s
+  Train Loss: 0.4115
+  Valid Loss: 0.6296
+  [BIN] Dice=0.3415 | Prec=0.3764 | Rec=0.5109 | FPR=0.0555
+
+Epoch: 110/200 | 0m 8s
+  Train Loss: 0.4217
+  Valid Loss: 0.6300
+  [BIN] Dice=0.3417 | Prec=0.3752 | Rec=0.5157 | FPR=0.0571
+
+Epoch: 111/200 | 0m 9s
+  Train Loss: 0.4123
+  Valid Loss: 0.6256
+  [BIN] Dice=0.3415 | Prec=0.3943 | Rec=0.4861 | FPR=0.0497
+
+Epoch: 112/200 | 0m 9s
+  Train Loss: 0.4161
+  Valid Loss: 0.6312
+  [BIN] Dice=0.3398 | Prec=0.3709 | Rec=0.5180 | FPR=0.0577
+
+Epoch: 113/200 | 0m 8s
+  Train Loss: 0.4191
+  Valid Loss: 0.6306
+  [BIN] Dice=0.3409 | Prec=0.3738 | Rec=0.5141 | FPR=0.0571
+
+Epoch: 114/200 | 0m 9s
+  Train Loss: 0.4120
+  Valid Loss: 0.6315
+  [BIN] Dice=0.3395 | Prec=0.3729 | Rec=0.5135 | FPR=0.0571
+
+Epoch: 115/200 | 0m 9s
+  Train Loss: 0.4079
+  Valid Loss: 0.6257
+  [BIN] Dice=0.3419 | Prec=0.3910 | Rec=0.4918 | FPR=0.0508
+
+Epoch: 116/200 | 0m 9s
+  Train Loss: 0.4080
+  Valid Loss: 0.6289
+  [BIN] Dice=0.3431 | Prec=0.3741 | Rec=0.5178 | FPR=0.0573
+
+Epoch: 117/200 | 0m 8s
+  Train Loss: 0.4153
+  Valid Loss: 0.6279
+  [BIN] Dice=0.3428 | Prec=0.3797 | Rec=0.5082 | FPR=0.0546
+
+Epoch: 118/200 | 0m 9s
+  Train Loss: 0.4145
+  Valid Loss: 0.6297
+  [BIN] Dice=0.3417 | Prec=0.3762 | Rec=0.5109 | FPR=0.0560
+
+Epoch: 119/200 | 0m 9s
+  Train Loss: 0.4118
+  Valid Loss: 0.6299
+  [BIN] Dice=0.3422 | Prec=0.3718 | Rec=0.5194 | FPR=0.0578
+
+Epoch: 120/200 | 0m 9s
+  Train Loss: 0.4195
+  Valid Loss: 0.6298
+  [BIN] Dice=0.3425 | Prec=0.3739 | Rec=0.5155 | FPR=0.0569
+
+Epoch: 121/200 | 0m 9s
+  Train Loss: 0.4190
+  Valid Loss: 0.6285
+  [BIN] Dice=0.3422 | Prec=0.3790 | Rec=0.5081 | FPR=0.0548
+
+Epoch: 122/200 | 0m 9s
+  Train Loss: 0.4120
+  Valid Loss: 0.6282
+  [BIN] Dice=0.3411 | Prec=0.3802 | Rec=0.5064 | FPR=0.0545
+
+Epoch: 123/200 | 0m 9s
+  Train Loss: 0.4181
+  Valid Loss: 0.6338
+  [BIN] Dice=0.3391 | Prec=0.3682 | Rec=0.5222 | FPR=0.0599
+
+Epoch: 124/200 | 0m 9s
+  Train Loss: 0.4176
+  Valid Loss: 0.6321
+  [BIN] Dice=0.3432 | Prec=0.3668 | Rec=0.5277 | FPR=0.0600
+
+Epoch: 125/200 | 0m 9s
+  Train Loss: 0.4128
+  Valid Loss: 0.6301
+  [BIN] Dice=0.3411 | Prec=0.3725 | Rec=0.5182 | FPR=0.0574
+
+Epoch: 126/200 | 0m 9s
+  Train Loss: 0.4175
+  Valid Loss: 0.6293
+  [BIN] Dice=0.3410 | Prec=0.3769 | Rec=0.5105 | FPR=0.0557
+
+Epoch: 127/200 | 0m 9s
+  Train Loss: 0.4167
+  Valid Loss: 0.6304
+  [BIN] Dice=0.3412 | Prec=0.3755 | Rec=0.5139 | FPR=0.0567
+
+Epoch: 128/200 | 0m 9s
+  Train Loss: 0.4148
+  Valid Loss: 0.6323
+  [BIN] Dice=0.3399 | Prec=0.3672 | Rec=0.5259 | FPR=0.0601
+
+Epoch: 129/200 | 0m 9s
+  Train Loss: 0.4094
+  Valid Loss: 0.6302
+  [BIN] Dice=0.3410 | Prec=0.3716 | Rec=0.5189 | FPR=0.0580
+
+Epoch: 130/200 | 0m 9s
+  Train Loss: 0.4113
+  Valid Loss: 0.6345
+  [BIN] Dice=0.3397 | Prec=0.3645 | Rec=0.5283 | FPR=0.0611
+
+Epoch: 131/200 | 0m 8s
+  Train Loss: 0.4112
+  Valid Loss: 0.6332
+  [BIN] Dice=0.3412 | Prec=0.3665 | Rec=0.5256 | FPR=0.0601
+
+Epoch: 132/200 | 0m 9s
+  Train Loss: 0.4105
+  Valid Loss: 0.6352
+  [BIN] Dice=0.3413 | Prec=0.3643 | Rec=0.5307 | FPR=0.0619
+
+Epoch: 133/200 | 0m 9s
+  Train Loss: 0.4138
+  Valid Loss: 0.6298
+  [BIN] Dice=0.3414 | Prec=0.3771 | Rec=0.5117 | FPR=0.0559
+
+Epoch: 134/200 | 0m 9s
+  Train Loss: 0.4028
+  Valid Loss: 0.6301
+  [BIN] Dice=0.3409 | Prec=0.3762 | Rec=0.5118 | FPR=0.0562
+
+Epoch: 135/200 | 0m 9s
+  Train Loss: 0.4157
+  Valid Loss: 0.6294
+  [BIN] Dice=0.3419 | Prec=0.3748 | Rec=0.5164 | FPR=0.0572
+
+Epoch: 136/200 | 0m 9s
+  Train Loss: 0.4169
+  Valid Loss: 0.6290
+  [BIN] Dice=0.3418 | Prec=0.3753 | Rec=0.5132 | FPR=0.0561
+
+Epoch: 137/200 | 0m 9s
+  Train Loss: 0.4094
+  Valid Loss: 0.6303
+  [BIN] Dice=0.3405 | Prec=0.3735 | Rec=0.5145 | FPR=0.0565
+
+Epoch: 138/200 | 0m 9s
+  Train Loss: 0.4200
+  Valid Loss: 0.6350
+  [BIN] Dice=0.3401 | Prec=0.3653 | Rec=0.5272 | FPR=0.0607
+
+Epoch: 139/200 | 0m 9s
+  Train Loss: 0.4066
+  Valid Loss: 0.6281
+  [BIN] Dice=0.3431 | Prec=0.3800 | Rec=0.5087 | FPR=0.0547
+
+Epoch: 140/200 | 0m 9s
+  Train Loss: 0.4091
+  Valid Loss: 0.6299
+  [BIN] Dice=0.3410 | Prec=0.3766 | Rec=0.5109 | FPR=0.0559
+
+Epoch: 141/200 | 0m 9s
+  Train Loss: 0.4086
+  Valid Loss: 0.6269
+  [BIN] Dice=0.3422 | Prec=0.3888 | Rec=0.4953 | FPR=0.0521
+
+Epoch: 142/200 | 0m 9s
+  Train Loss: 0.4094
+  Valid Loss: 0.6310
+  [BIN] Dice=0.3407 | Prec=0.3735 | Rec=0.5146 | FPR=0.0571
+
+Epoch: 143/200 | 0m 9s
+  Train Loss: 0.4102
+  Valid Loss: 0.6273
+  [BIN] Dice=0.3426 | Prec=0.3798 | Rec=0.5088 | FPR=0.0547
+
+Epoch: 144/200 | 0m 9s
+  Train Loss: 0.4166
+  Valid Loss: 0.6299
+  [BIN] Dice=0.3400 | Prec=0.3758 | Rec=0.5107 | FPR=0.0557
+
+Epoch: 145/200 | 0m 9s
+  Train Loss: 0.4151
+  Valid Loss: 0.6275
+  [BIN] Dice=0.3425 | Prec=0.3812 | Rec=0.5057 | FPR=0.0540
+
+Epoch: 146/200 | 0m 9s
+  Train Loss: 0.4125
+  Valid Loss: 0.6269
+  [BIN] Dice=0.3425 | Prec=0.3812 | Rec=0.5051 | FPR=0.0540
+
+Epoch: 147/200 | 0m 9s
+  Train Loss: 0.4145
+  Valid Loss: 0.6281
+  [BIN] Dice=0.3413 | Prec=0.3831 | Rec=0.5027 | FPR=0.0537
+
+Epoch: 148/200 | 0m 8s
+  Train Loss: 0.4162
+  Valid Loss: 0.6328
+  [BIN] Dice=0.3402 | Prec=0.3675 | Rec=0.5243 | FPR=0.0599
+

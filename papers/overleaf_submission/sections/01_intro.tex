@@ -1,0 +1,149 @@
+\section{Introduction}
+\label{sec:intro}
+
+Colorectal cancer (CRC) represents one of the leading causes of
+cancer-related mortality worldwide, with early endoscopic detection and
+resection of precancerous polyps serving as the clinical gold standard
+for prevention~\cite{siegel2023colorectal, leufkens2012factors}. Among
+varied morphology types, \textbf{sessile and flat polyps} (Paris
+Classification Types IIa and IIb) present the highest diagnostic hazard
+during colonoscopy~\cite{paris2003endoscopic}. Due to their low height
+profile, irregular borders, and textural indistinguishability from
+surrounding healthy mucosa, these subtle lesions are frequently missed
+or inaccurately delineated by automated segmentation
+algorithms~\cite{jha2020kvasir, bernal2017comparative}.
+
+To address these subtle boundary ambiguities, deep learning architectures
+have increasingly adopted \textbf{recurrent feedback mechanisms}~\cite{tomar2021fanet,
+liang2015recurrent, alom2018recurrent}. A prominent exemplar is the Feature
+Attention Network (FANet)~\cite{tomar2021fanet}, which introduces cross-epoch
+recurrent feedback. In recurrent vision networks, intermediate or past
+prediction masks ($m$) generated in preceding passes are re-injected as
+auxiliary attention priors to early encoder feature representations. The
+theoretical premise is compelling: by iteratively processing intermediate
+hypotheses through spatial gating modules (\texttt{MixPool}), the network
+should progressively sharpen ambiguous contours and prune false positives
+through multi-pass self-guidance~\cite{tomar2021fanet, tomar2021ddanet}.
+
+% -----------------------------------------------------------------------------
+\subsection{The Empirical Paradox: Over-Segmentation and Loss Neutralization}
+Despite theoretical promise, deploying recurrent feedback architectures in
+biomedical segmentation reveals a severe, paradoxical failure mode:
+\textbf{chronic false-positive over-segmentation}. In clinical colonoscopy
+cohorts, error audits reveal that over $84\%$ of recurrent network errors
+are concentrated in false positives---bleeding predictions far into non-lesion
+mucosa (extending up to $40.7\text{ pixels}$ beyond the true histological boundary).
+
+Standard machine learning intuition suggests rectifying false-positive bias
+via \textbf{asymmetric loss functions} (such as the Tversky
+loss~\cite{salehi2017tversky} or asymmetric Focal loss~\cite{yeung2022unified}),
+which assign disproportionately higher penalties to false positives ($\alpha > \beta$).
+Indeed, when evaluated in a purely feedforward setting (with recurrent feedback
+disconnected), asymmetric Tversky loss delivers an immediate, statistically
+significant reduction in false positives ($-3.25\text{ pp}$, $p = 0.005$).
+
+However, our extensive factorial experiments uncover a baffling empirical
+paradox: \textbf{the moment recurrent feedback is engaged, the beneficial
+effect of asymmetric loss is completely abolished} (exhibiting a detrimental
+interaction effect of $+4.17\text{ pp}$). Rather than eliminating spurious
+boundaries, the recurrent feedback network traps the model in an echo chamber
+of its own past mistakes, rendering modern loss engineering entirely
+ineffective.
+
+% -----------------------------------------------------------------------------
+\subsection{The Discovery: The Dual-Role Pathology (The Feedback Trap)}
+Through systematic representational and gradient diagnostics, we identify
+the exact mechanical pathology causing this phenomenon, which we term the
+\textbf{Feedback Trap}. The core failure stems from a pervasive design flaw
+in recurrent feedback learning: \textbf{forcing prediction history to act
+simultaneously as forward spatial guidance and as an unconstrained backward
+optimization path}.
+
+In conventional implementations, the spatial feature gating operator combines
+the learnable internal attention map $\text{fmask}$ with the downsampled
+recurrent mask $m_{\text{fg}}$ via a hard thresholding operator:
+\begin{equation}
+  \label{eq:hard_gate_intro}
+  \text{keep}_{\text{hard}} =
+    \max\left(\mathbb{I}(\text{fmask} > 0.5),\; m_{\text{fg}}\right).
+\end{equation}
+This formulation triggers two catastrophic mathematical failures:
+\begin{enumerate}
+  \item \textbf{Gradient Paralysis of Internal Attention:}
+        Because the indicator function $\mathbb{I}(\cdot > 0.5)$ has a
+        derivative of zero almost everywhere,
+        $\frac{\partial \text{keep}}{\partial \text{fmask}} \equiv 0$.
+        The learnable convolutional layers dedicated to extracting internal
+        spatial attention receive zero direct supervision from the segmentation
+        loss objective.
+  \item \textbf{Toxic Recurrent Backpropagation and Error Amplification:}
+        Concurrently, non-zero gradients backpropagate freely through the
+        recurrent mask branch ($m_{\text{fg}}$). When the network produces an
+        early false-positive hallucination, that erroneous mask is reinjected
+        in the subsequent iteration. Because the network backpropagates
+        through this unvalidated recursive loop, early encoder Batch
+        Normalization distributions drift catastrophically ($D_{\text{KL}} = 33.63$
+        at \texttt{e1.r1.bn3}), and mask gradient norms collapse by $79.6\%$.
+        The network optimizes its representations to validate its own past
+        predictions rather than ground-truth anatomy, permanently overpowering
+        any loss-level penalty.
+\end{enumerate}
+
+% -----------------------------------------------------------------------------
+\subsection{Framing: A Mechanistic Study of Recurrent Gradient Decoupling}
+\textbf{Disentangling Mechanistic Principles from SOTA Chasing:}
+We explicitly frame this paper as a \textbf{mechanistic deep learning study}
+rather than an empirical effort to chase leaderboards. Our explicit scientific
+goal is to isolate, diagnose, and resolve the dual-role structural flaw of
+recurrent feedback in biomedical vision. We formulate the foundational
+\textbf{Feedback Firewall} principle:
+\begin{center}
+  \textit{Forward spatial guidance must be strictly decoupled from backward gradient optimization.}
+\end{center}
+By enforcing gradient detachment on recurrent feedback tensors ($\text{detach}(m_{\text{fg}})$),
+the recurrent prediction functions purely as an uncorrupted forward spatial prior,
+completely preventing recursive error amplification.
+
+\textbf{Justifying Adversarial Stress-Testing:}
+To stress-test this pathology, we benchmark our method on the Kvasir-SEG
+Sessile subset. Flat, poorly demarcated sessile lesions represent the ultimate
+adversarial environment where the Feedback Trap---characterized by runaway
+false-positive over-segmentation---is most destructive. By curing the trap in
+this ambiguous regime, we demonstrate the fundamental robustness of the
+architectural principle.
+
+% -----------------------------------------------------------------------------
+\subsection{Contributions of This Work}
+To break the Feedback Trap without discarding the intrinsic benefits of
+recurrent self-guidance, we propose \textbf{Detached Soft-OR Gating}---a
+principled formulation combining continuous Boolean relaxation with the
+Feedback Firewall. Our contributions are threefold:
+\begin{enumerate}
+  \item \textbf{Discovery and Diagnosis of the Feedback Trap:}
+        We provide the first systematic diagnosis of gradient paralysis and
+        loss neutralization in recurrent medical segmentation networks, proving
+        that unconstrained recurrent backpropagation creates an echo chamber
+        of amplified errors documented via layer-wise BatchNorm drift,
+        feature cosine similarity, and gradient tracking.
+  \item \textbf{The Feedback Firewall and Detached Soft-OR Formulation:}
+        We formulate the Gradient Decoupling principle and realize it via
+        Detached Soft-OR gating with zero learnable parameters ($\Delta \Theta = 0$).
+        We prove analytically that this guarantees continuous gradient flow
+        strictly proportional to background uncertainty
+        ($\frac{\partial \text{keep}}{\partial \text{fmask}} = 1 - m_{\text{fg}}$)
+        while strictly severing degenerate recurrent error loops
+        ($\frac{\partial \text{keep}}{\partial m_{\text{fg}}} \equiv 0$).
+  \item \textbf{Empirical Disentanglement, Generalization, and Universality:}
+        Through a comprehensive $3 \times 2$ factorial analysis, we empirically
+        prove that our method reactivates asymmetric loss optimization. A 4-way
+        ablation study strictly disentangles the benefits of continuous
+        relaxation from gradient detachment. On Kvasir-SEG (Sessile) across 5
+        seeds, our approach cuts False Positive Rate by \textbf{$42.8\%$}
+        ($4.30\% \to 2.46\%$), elevates mean Dice by \textbf{$+4.77$\,pp}
+        ($p < 0.001$), and reduces variance by $66.5\%$. Crucially, external
+        zero-shot cross-center evaluation on CVC-ClinicDB ($N = 612$,
+        $p = 1.61 \times 10^{-15}$) proves robust out-of-distribution transfer,
+        while verification on Recurrent Residual U-Net (R2U-Net) confirms
+        that our Feedback Firewall is a universal stabilization principle for
+        recurrent vision architectures.
+\end{enumerate}
