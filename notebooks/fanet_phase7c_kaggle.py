@@ -350,9 +350,10 @@ class KvasirDataset(Dataset):
             img, msk = aug["image"], aug["mask"]
         img = cv2.resize(img, self.size)
         img = np.transpose(img, (2, 0, 1)) / 255.0
-        msk = cv2.resize(msk, self.size)
-        msk = np.expand_dims(msk, axis=0) / 255.0
-        return img.astype(np.float32), msk.astype(np.float32)
+        msk = cv2.resize(msk, self.size, interpolation=cv2.INTER_NEAREST)
+        msk = np.expand_dims(msk, axis=0)
+        msk = (msk > 127).astype(np.float32)
+        return img.astype(np.float32), msk
 
     def __len__(self):
         return len(self.img_paths)
