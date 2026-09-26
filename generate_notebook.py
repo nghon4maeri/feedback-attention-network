@@ -46,7 +46,7 @@ IMG_SUBDIR = 'images'
 MASK_SUBDIR = 'masks'
 
 # 2. ISIC 2018 Task 1 (2594 images) - Uncomment to use ISIC 2018!
-# DATA_DIR = '/kaggle/input/isic-2018-challenge-task-1'
+# DATA_DIR = '/kaggle/input/isic2018-challenge-task1-data-segmentation'
 # IMG_SUBDIR = 'ISIC2018_Task1-2_Training_Input'
 # MASK_SUBDIR = 'ISIC2018_Task1_Training_GroundTruth'
 '''
