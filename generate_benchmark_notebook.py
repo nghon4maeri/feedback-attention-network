@@ -73,6 +73,11 @@ MASK_SUBDIR = "masks"
 # IMG_SUBDIR = "images"
 # MASK_SUBDIR = "masks"
 
+# DATASET_NAME = "EM-Dataset"
+# DATA_DIR = "/kaggle/input/electron-microscopy-3d-segmentation"
+# IMG_SUBDIR = "images" 
+# MASK_SUBDIR = "masks"
+
 # ==============================================================================
 # BƯỚC 2: CẤU HÌNH TRAINING
 # ==============================================================================
