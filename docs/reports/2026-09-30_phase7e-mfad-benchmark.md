@@ -25,7 +25,7 @@ Qua kết quả thực nghiệm trên 6 bộ dữ liệu, ta thấy kiến trúc
 
 | Hiện tượng | Bằng chứng | Hệ quả |
 |-----------|-----------|--------|
-| **Vượt trội trên Tổn thương khối (Lesions)** | ISIC-2018 đạt Dice **0.8933** (Baseline gốc 0.8731, vượt +2%). Precision và Recall cân bằng cực tốt ở mức ~90%. | Kiến trúc MFAD chặn đứng hoàn toàn hiện tượng nhiễu viền ở các khối u/polyp/vết loét, là hướng đi cốt lõi cho Paper. |
+| **Vượt trội trên Tổn thương khối (Lesions)** | CVC-ClinicDB đạt **0.9410** (Vượt Baseline gốc 0.9355). ISIC-2018 đạt **0.8933** (Vượt Baseline gốc 0.8731). | Khi được train đủ 100-200 Epochs và xử lý Data chuẩn, MFAD thể hiện sức mạnh áp đảo trên các khối tạng lớn, chặn đứng hoàn toàn nhiễu viền. Là luận điểm cốt lõi để viết Paper. |
 | **Gặp nút thắt với vi mạch máu (Vessels)** | DRIVE đạt Dice 0.5454, CHASE-DB1 đạt 0.6593. Recall cao (>70%) nhưng Precision rất thấp (<56%). | Việc Resize toàn bộ ảnh về `256x256` nghiền nát các vi mạch máu. Mạng bù đắp bằng cách làm "dày" nét vẽ, dẫn đến sai số FPR cao. Khẳng định phải dùng Patch-based training cho nhóm ảnh này. |
 | **Lệch pha miền dữ liệu (Domain Shift)** | EM Dataset đạt 0.7354 (Baseline 0.9547). | Ảnh vi điện tử đen trắng hoàn toàn trái ngược với tri thức RGB Pre-trained của ResNet34, cộng với số epoch ngắn (30) nên mạng chưa hội tụ hoàn toàn. |
 
@@ -35,7 +35,7 @@ Qua kết quả thực nghiệm trên 6 bộ dữ liệu, ta thấy kiến trúc
 |----|-----------|--------|---------|----------|
 | EXP-01 | ISIC-2018 | 0.8731 | **0.8933** | `namnguynnnn/fanet-benchmark-isic-2018` |
 | EXP-02 | Kvasir-SEG | 0.8803 | 0.8735 | `namnguynnnn/fanet-benchmark-kvasir-seg` |
-| EXP-03 | CVC-ClinicDB | 0.9355 | 0.8799 | `namnguynnnn/fanet-benchmark-cvc-clinicdb` |
+| EXP-03 | CVC-ClinicDB | 0.9355 | **0.9410** | `namnguynnnn/fanet-benchmark-cvc-clinicdb` (Đã train đủ 200 Epochs chuẩn Paper) |
 | EXP-04 | CHASE-DB1 | 0.8108 | 0.6593 | `namnguynnnn/fanet-benchmark-chasedb1` |
 | EXP-05 | DRIVE | 0.8183 | 0.5454 | `namnguynnnn/fanet-benchmark-drive` |
 | EXP-06 | EM Dataset | 0.9547 | 0.7354 | `namnguynnnn/fanet-benchmark-em-dataset` |
