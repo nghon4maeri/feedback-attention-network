@@ -76,10 +76,10 @@ r"""class ISICDataset(Dataset):
             A.Rotate(limit=35, p=0.3),
             A.HorizontalFlip(p=0.3),
             A.VerticalFlip(p=0.3),
-            A.CoarseDropout(p=0.3, max_holes=10, max_height=32, max_width=32),
-            A.ElasticTransform(p=0.2, alpha=120, sigma=120*0.05, alpha_affine=120*0.03),
+            A.CoarseDropout(p=0.3, num_holes_range=(1, 10), hole_height_range=(1, 32), hole_width_range=(1, 32)),
+            A.ElasticTransform(p=0.2, alpha=120, sigma=120*0.05),
             A.GridDistortion(p=0.2),
-            A.OpticalDistortion(p=0.2, distort_limit=0.05, shift_limit=0.05),
+            A.OpticalDistortion(p=0.2, distort_limit=0.05),
             A.RandomBrightnessContrast(p=0.2),
         ])
 
@@ -114,11 +114,9 @@ r"""# ================================================================
 # DATA LOADING  (Paper: Train 1815, Test 259)
 # ================================================================
 DATA_DIR = "/kaggle/input/datasets/tschandl/isic2018-challenge-task1-data-segmentation"
-img_dir = os.path.join(DATA_DIR, "ISIC2018_Task1-2_Training_Input")
-msk_dir = os.path.join(DATA_DIR, "ISIC2018_Task1_Training_GroundTruth")
 
-all_imgs = sorted(glob(os.path.join(img_dir, "*.jpg")))
-all_msks = sorted(glob(os.path.join(msk_dir, "*.png")))
+all_imgs = sorted(glob(os.path.join(DATA_DIR, "**", "*.jpg"), recursive=True))
+all_msks = sorted(glob(os.path.join(DATA_DIR, "**", "*.png"), recursive=True))
 
 print(f"Found {len(all_imgs)} images, {len(all_msks)} masks")
 
