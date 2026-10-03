@@ -12,6 +12,16 @@ NB = {
 }
 OUT = os.path.join(ROOT, "kaggle", "benchmark_kernels")
 
+def ensure_kernelspec(path):
+    j = json.load(open(path, encoding="utf-8"))
+    md = j.setdefault("metadata", {})
+    md["kernelspec"] = {"display_name": "Python 3", "language": "python", "name": "python3"}
+    md["language_info"] = {"name": "python", "file_extension": ".py", "mimetype": "text/x-python"}
+    json.dump(j, open(path, "w", encoding="utf-8", newline="\n"), indent=1, ensure_ascii=False)
+
+for _f in NB.values():
+    ensure_kernelspec(os.path.join(ROOT, "notebooks", _f))
+
 # patch DSB zip discovery (competition mount path differs between Kaggle layouts)
 p = os.path.join(ROOT, "notebooks", NB["dsb2018"])
 nbj = json.load(open(p, encoding="utf-8"))
