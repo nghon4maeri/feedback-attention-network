@@ -825,7 +825,7 @@ EPOCHS = 200
 BATCH_SIZE = 8
 LR = 1e-4
 
-DATA_DIR = "/kaggle/input/cvc-clinicdb"
+DATA_DIR = "/kaggle/input/datasets/namnguynnnn/cvc-clinicdb"
 IMG_SUBDIR = "Original"
 MASK_SUBDIR = "Ground Truth"
 
@@ -901,7 +901,7 @@ EPOCHS = 100
 BATCH_SIZE = 8
 LR = 1e-4
 
-DATA_DIR = "/kaggle/input/isic2018-challenge-task1-data-segmentation"
+DATA_DIR = "/kaggle/input/datasets/tschandl/isic2018-challenge-task1-data-segmentation"
 
 N_TRAIN = 1815
 N_TEST = 259
@@ -963,7 +963,7 @@ EPOCHS = 200
 BATCH_SIZE = 2
 LR = 1e-3
 
-DATA_DIR = "/kaggle/input/drive-digital-retinal-images-for-vessel-extraction"
+DATA_DIR = "/kaggle/input/datasets/namnguynnnn/drive-vessel"
 
 # DRIVE standard structure:
 #   training/images/ + training/1st_manual/ (GT)
@@ -1033,7 +1033,7 @@ EPOCHS = 200
 BATCH_SIZE = 2
 LR = 1e-3
 
-DATA_DIR = "/kaggle/input/chase-db1"
+DATA_DIR = "/kaggle/input/datasets/namnguynnnn/chase-db1"
 
 N_TRAIN = 20
 N_TEST = 8
@@ -1100,7 +1100,7 @@ EPOCHS = 100
 BATCH_SIZE = 2
 LR = 1e-4
 
-DATA_DIR = "/kaggle/input/electron-microscopy-3d-segmentation"
+DATA_DIR = "/kaggle/input/datasets/kmader/electron-microscopy-3d-segmentation"
 
 train_vol = tiff.imread(os.path.join(DATA_DIR, "training.tif"))
 train_gt  = tiff.imread(os.path.join(DATA_DIR, "training_groundtruth.tif"))
@@ -1144,7 +1144,7 @@ EPOCHS = 200
 BATCH_SIZE = 8
 LR = 1e-4
 
-DATA_DIR = "/kaggle/input/kvasir-seg"
+DATA_DIR = "/kaggle/input/datasets/namnguynnnn/kvasir-seg"
 
 N_TRAIN = 880
 N_TEST = 120
@@ -1217,7 +1217,7 @@ EPOCHS = 200
 BATCH_SIZE = 8
 LR = 1e-4
 
-DATA_DIR = "/kaggle/input/sessile-main-kvasir-seg"
+DATA_DIR = "/kaggle/input/datasets/namnguynnnn/kvasir/kvasir-sessile/sessile-main-Kvasir-SEG"
 
 # Find images and masks
 exts = ['*.jpg', '*.png', '*.jpeg']
