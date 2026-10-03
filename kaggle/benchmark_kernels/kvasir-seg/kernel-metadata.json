@@ -1,7 +1,7 @@
 {
   "id": "namnguynnnn/fanet-benchmark-kvasir-seg",
   "title": "fanet-benchmark-kvasir-seg",
-  "code_file": "fanet_benchmark_kvasir_seg.ipynb",
+  "code_file": "fanet_vs_mfad_kvasir_seg.ipynb",
   "language": "python",
   "kernel_type": "notebook",
   "is_private": false,

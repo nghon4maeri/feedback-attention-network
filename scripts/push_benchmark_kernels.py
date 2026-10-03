@@ -2,13 +2,13 @@ import json, os, shutil, subprocess, sys, glob
 
 ROOT = os.getcwd()
 NB = {
-    "chasedb1":     "fanet_benchmark_chase_db1.ipynb",
-    "cvc-clinicdb": "fanet_benchmark_cvc_clinicdb.ipynb",
-    "drive":        "fanet_benchmark_drive.ipynb",
-    "dsb2018":      "fanet_benchmark_dsb2018.ipynb",
-    "em-dataset":   "fanet_benchmark_em_dataset.ipynb",
-    "isic-2018":    "fanet_benchmark_isic_2018.ipynb",
-    "kvasir-seg":   "fanet_benchmark_kvasir_seg.ipynb",
+    "chasedb1":     "benchmark_v2/fanet_vs_mfad_chase_db1.ipynb",
+    "cvc-clinicdb": "benchmark_v2/fanet_vs_mfad_cvc_clinicdb.ipynb",
+    "drive":        "benchmark_v2/fanet_vs_mfad_drive.ipynb",
+    "dsb2018":      "benchmark_v2/fanet_vs_mfad_dsb2018.ipynb",
+    "em-dataset":   "benchmark_v2/fanet_vs_mfad_em_dataset.ipynb",
+    "isic-2018":    "benchmark_v2/fanet_vs_mfad_isic_2018.ipynb",
+    "kvasir-seg":   "benchmark_v2/fanet_vs_mfad_kvasir_seg.ipynb",
 }
 OUT = os.path.join(ROOT, "kaggle", "benchmark_kernels")
 
@@ -45,7 +45,7 @@ for slug in only:
     meta.update({
         "id": f"namnguynnnn/fanet-benchmark-{slug}",
         "title": f"fanet-benchmark-{slug}",
-        "code_file": NB[slug],
+        "code_file": os.path.basename(NB[slug]),
         "language": "python", "kernel_type": "notebook",
         "is_private": False, "enable_gpu": True, "enable_internet": True,
         "machine_shape": "NvidiaTeslaT4",
@@ -54,6 +54,6 @@ for slug in only:
         meta["competition_sources"] = ["data-science-bowl-2018"]
     meta.pop("id_no", None)
     json.dump(meta, open(os.path.join(d, "kernel-metadata.json"), "w", encoding="utf-8"), indent=2)
-    shutil.copy(os.path.join(ROOT, "notebooks", NB[slug]), os.path.join(d, NB[slug]))
+    shutil.copy(os.path.join(ROOT, "notebooks", NB[slug]), os.path.join(d, os.path.basename(NB[slug])))
     r = subprocess.run(["kaggle", "kernels", "push", "-p", d], capture_output=True, text=True)
     print(slug, "->", (r.stdout + r.stderr).strip().replace("\n", " | "))
