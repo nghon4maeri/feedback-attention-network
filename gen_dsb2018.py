@@ -43,7 +43,20 @@ MERGED_MASK_DIR = "/kaggle/working/dsb2018_masks"
 
 # ── Cell 3: Preprocessing (Merge Masks) ──
 nb.cells.append(nbf.v4.new_code_cell(
-r"""os.makedirs(MERGED_MASK_DIR, exist_ok=True)
+r"""import zipfile
+
+ZIP_PATH = "/kaggle/input/data-science-bowl-2018/stage1_train.zip"
+ORIG_DIR = "/kaggle/working/stage1_train"
+
+if os.path.exists(ZIP_PATH) and not os.path.exists(ORIG_DIR):
+    print(f"Đang giải nén {ZIP_PATH}...")
+    os.makedirs(ORIG_DIR, exist_ok=True)
+    with zipfile.ZipFile(ZIP_PATH, 'r') as zip_ref:
+        zip_ref.extractall(ORIG_DIR)
+elif not os.path.exists(ZIP_PATH) and not os.path.exists(ORIG_DIR):
+    print("LỖI: Bạn chưa Add data-science-bowl-2018 vào Input Kaggle!")
+
+os.makedirs(MERGED_MASK_DIR, exist_ok=True)
 
 all_imgs = []
 all_msks = []
@@ -75,8 +88,6 @@ if os.path.exists(ORIG_DIR):
             
         all_imgs.append(img_file)
         all_msks.append(merged_path)
-else:
-    print(f"LỖI: Không tìm thấy thư mục {ORIG_DIR}. Hãy chắc chắn bạn đã Add Data -> data-science-bowl-2018 vào Kaggle notebook!")
 
 print(f"Tổng số ảnh hợp lệ: {len(all_imgs)}")
 """))
