@@ -2,16 +2,25 @@ import nbformat as nbf
 import os
 
 nb = nbf.v4.new_notebook()
-nb.cells = []
+
+# Markdown Header
+nb.cells.append(nbf.v4.new_markdown_cell(
+    "# FANet-MFAD Benchmark: DSB-2018\n"
+    "**Architecture:** ResNet-34 Encoder + MFAD Decoder (Ours)\n"
+    "**Loss:** 0.5xBCE + 0.5xDice  |  **Scheduler:** ReduceLROnPlateau\n"
+    "**Pipeline:** Matches original FANet paper exactly"
+))
 
 # ── Cell 1: Install & Imports ──
 nb.cells.append(nbf.v4.new_code_cell(
 r"""!pip install -q albumentations
 
-import os, random, cv2, glob
+import os, random, cv2, glob, zipfile
 import numpy as np
-from PIL import Image
+import pandas as pd
+import matplotlib.pyplot as plt
 from tqdm import tqdm
+from PIL import Image
 import albumentations as A
 
 import torch
@@ -24,7 +33,7 @@ import warnings
 warnings.filterwarnings('ignore')
 """))
 
-# ── Cell 2: Config & Constants ──
+# ── Cell 2: Dataset Config & Preprocessing ──
 nb.cells.append(nbf.v4.new_code_cell(
 r"""DATASET_NAME = "DSB-2018"
 IMAGE_SIZE = (256, 256)
@@ -36,17 +45,9 @@ DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 CKPT_RESUME = "/kaggle/working/fanet_mfad_DSB2018_resume.pth"
 CKPT_BEST   = "/kaggle/working/fanet_mfad_DSB2018_best.pth"
 
-# Kaggle input path for competition
-ORIG_DIR = "/kaggle/input/data-science-bowl-2018/stage1_train"
-MERGED_MASK_DIR = "/kaggle/working/dsb2018_masks"
-"""))
-
-# ── Cell 3: Preprocessing (Merge Masks) ──
-nb.cells.append(nbf.v4.new_code_cell(
-r"""import zipfile
-
 ZIP_PATH = "/kaggle/input/data-science-bowl-2018/stage1_train.zip"
 ORIG_DIR = "/kaggle/working/stage1_train"
+MERGED_MASK_DIR = "/kaggle/working/dsb2018_masks"
 
 if os.path.exists(ZIP_PATH) and not os.path.exists(ORIG_DIR):
     print(f"Đang giải nén {ZIP_PATH}...")
@@ -92,7 +93,7 @@ if os.path.exists(ORIG_DIR):
 print(f"Tổng số ảnh hợp lệ: {len(all_imgs)}")
 """))
 
-# ── Cell 4: Dataset & Dataloader (80:20 Split) ──
+# ── Cell 3: Dataset Class & Dataloader (80:20 Split) ──
 nb.cells.append(nbf.v4.new_code_cell(
 r"""random.seed(42)
 indices = list(range(len(all_imgs)))
@@ -121,7 +122,7 @@ class DSBDataset(Dataset):
         ])
 
     def __getitem__(self, idx):
-        # Ảnh gốc có kênh Alpha (RGBA), bắt buộc convert RGB
+        # Ảnh gốc DSB có kênh Alpha (RGBA), bắt buộc convert RGB
         img = np.array(Image.open(self.images[idx]).convert('RGB'))
         msk = np.array(Image.open(self.masks[idx]).convert('L'))
         
@@ -155,7 +156,7 @@ valid_loader = DataLoader(
 print(f"DSB 2018 Loaded: Train={len(train_idx)}, Test={len(test_idx)}")
 """))
 
-# ── Cell 5: Model & Loss ──
+# ── Cell 4: Model (FANet-MFAD) ──
 nb.cells.append(nbf.v4.new_code_cell(
 r"""class ConvBlock(nn.Module):
     def __init__(self, in_c, out_c):
@@ -222,8 +223,11 @@ class FANet_MFAD(nn.Module):
         d4 = self.d4(torch.cat([self.up4(d3), s1], 1)); d4 = self._mfad(d4, prev_mask, self.att4)
         d5 = self.d5(self.up5(d4));                     d5 = self._mfad(d5, prev_mask, self.att5)
         return self.out(d5)
+"""))
 
-class DiceBCELoss(nn.Module):
+# ── Cell 5: Loss & Metrics ──
+nb.cells.append(nbf.v4.new_code_cell(
+r"""class DiceBCELoss(nn.Module):
     def forward(self, inputs, targets, smooth=1):
         inputs_s, targets_f = torch.sigmoid(inputs).view(-1), targets.view(-1)
         intersection = (inputs_s * targets_f).sum()
@@ -232,13 +236,18 @@ class DiceBCELoss(nn.Module):
         return 0.5 * bce + 0.5 * dice_loss
 
 def calc_metrics(y_true, y_pred):
-    yt, yp = y_true.detach().cpu().numpy(), (torch.sigmoid(y_pred).detach().cpu().numpy() > 0.5).astype(np.float32)
-    tp, fp = np.sum((yt==1)&(yp==1)), np.sum((yt==0)&(yp==1))
-    fn, tn = np.sum((yt==1)&(yp==0)), np.sum((yt==0)&(yp==0))
-    return (2*tp)/(2*tp+fp+fn+1e-8)
+    yt = y_true.detach().cpu().numpy()
+    yp = (torch.sigmoid(y_pred).detach().cpu().numpy() > 0.5).astype(np.float32)
+    tp = np.sum((yt==1)&(yp==1)); fp = np.sum((yt==0)&(yp==1))
+    fn = np.sum((yt==1)&(yp==0)); tn = np.sum((yt==0)&(yp==0))
+    dice = (2*tp)/(2*tp+fp+fn+1e-8)
+    prec = tp/(tp+fp+1e-8)
+    rec  = tp/(tp+fn+1e-8)
+    fpr  = fp/(fp+tn+1e-8)
+    return dice, prec, rec, fpr
 """))
 
-# ── Cell 6: Training Loop ──
+# ── Cell 6: Training Loop (With AMP & Resume) ──
 nb.cells.append(nbf.v4.new_code_cell(
 r"""model = FANet_MFAD().to(DEVICE)
 criterion = DiceBCELoss()
@@ -249,13 +258,14 @@ use_amp = DEVICE.type == 'cuda'
 
 start_epoch, best_dice = 0, 0.0
 
-# Nếu load Kaggle Input từ output của phiên chạy trước để Resume
+# Resume từ Kaggle Input nếu phiên trước bị ngắt
 RESUME_INPUT_DIR = "/kaggle/input/fanet-mfad-dsb2018-output"
 if os.path.exists(os.path.join(RESUME_INPUT_DIR, "fanet_mfad_DSB2018_resume.pth")):
     import shutil
-    print("Tìm thấy file Resume từ Kaggle Input, đang copy sang working...")
+    print("Đã tìm thấy checkpoint cũ từ phiên trước, đang chép sang ổ working...")
     shutil.copy(os.path.join(RESUME_INPUT_DIR, "fanet_mfad_DSB2018_resume.pth"), CKPT_RESUME)
-    shutil.copy(os.path.join(RESUME_INPUT_DIR, "fanet_mfad_DSB2018_best.pth"), CKPT_BEST)
+    if os.path.exists(os.path.join(RESUME_INPUT_DIR, "fanet_mfad_DSB2018_best.pth")):
+        shutil.copy(os.path.join(RESUME_INPUT_DIR, "fanet_mfad_DSB2018_best.pth"), CKPT_BEST)
 
 if os.path.exists(CKPT_RESUME):
     print(f"Loading checkpoint from {CKPT_RESUME}...")
@@ -289,7 +299,8 @@ for epoch in range(start_epoch, EPOCHS):
                 out = model(x, torch.sigmoid(out))
                 loss = criterion(out, y)
             val_loss += loss.item()
-            val_dice += calc_metrics(y, out)
+            d, _, _, _ = calc_metrics(y, out)
+            val_dice += d
 
     train_loss /= len(train_loader); val_loss /= len(valid_loader); val_dice /= len(valid_loader)
     print(f"Epoch {epoch+1} | LR {optimizer.param_groups[0]['lr']:.6f} | TrL {train_loss:.4f} | VL {val_loss:.4f} | VDice {val_dice:.4f}")
