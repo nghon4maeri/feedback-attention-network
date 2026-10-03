@@ -207,7 +207,7 @@ CELL_FANET_ORIGINAL = r"""
 # Input: [image, mask] as a list
 # ================================================================
 class SELayer(nn.Module):
-    #Squeeze-and-Excitation channel attention.#
+    '''Squeeze-and-Excitation channel attention.'''
     def __init__(self, channel, reduction=16):
         super().__init__()
         self.avg_pool = nn.AdaptiveAvgPool2d(1)
@@ -226,7 +226,7 @@ class SELayer(nn.Module):
 
 
 class ResidualBlock(nn.Module):
-    #3x3->3x3 Residual block with SE attention.#
+    '''3x3->3x3 Residual block with SE attention.'''
     def __init__(self, in_c, out_c):
         super().__init__()
         self.conv1 = nn.Conv2d(in_c, out_c, kernel_size=3, padding=1)
@@ -246,7 +246,7 @@ class ResidualBlock(nn.Module):
 
 
 class MixPool_Original(nn.Module):
-    #MixPool with HARD BINARY gating (original FANet behaviour).#
+    '''MixPool with HARD BINARY gating (original FANet behaviour).'''
     def __init__(self, in_c, out_c):
         super().__init__()
         self.fmask = nn.Sequential(
@@ -317,7 +317,7 @@ class DecoderBlock_Orig(nn.Module):
 
 
 class FANet_Original(nn.Module):
-    #FANet with hard binary MixPool gating — exact paper reproduction.#
+    '''FANet with hard binary MixPool gating — exact paper reproduction.'''
     def __init__(self):
         super().__init__()
         self.e1 = EncoderBlock_Orig(3, 32)
@@ -370,14 +370,14 @@ class ConvBlock(nn.Module):
 
 
 class FANet_MFAD(nn.Module):
-    #Multi-scale Feedback Attention Decoder with Gradient Decoupling.
+    '''Multi-scale Feedback Attention Decoder with Gradient Decoupling.
     
     Key innovations:
       1. ResNet-34 pre-trained encoder (transfer learning)
       2. 4-channel input (RGB + detached prev_mask) for spatial guidance
       3. Learned gate on prev_mask with .detach() — Feedback Firewall
       4. Multi-scale attention: feat * (1 + att(mask)) at every decoder level
-    #
+    '''
     def __init__(self):
         super().__init__()
         resnet = models.resnet34(weights=models.ResNet34_Weights.IMAGENET1K_V1)
@@ -426,7 +426,7 @@ class FANet_MFAD(nn.Module):
         self.learned_gate = nn.Conv2d(1, 1, 1)
 
     def _mfad(self, feat, prev_mask, att_layer):
-        #Multi-scale Feedback Attention: feat * (1 + att(mask))#
+        '''Multi-scale Feedback Attention: feat * (1 + att(mask))'''
         m = F.interpolate(prev_mask, size=feat.shape[2:], mode='nearest')
         return feat * (1 + att_layer(m))
 
@@ -473,7 +473,9 @@ CELL_LOSS_METRICS = r"""
 # Loss: 0.5*BCE + 0.5*Dice (matches original FANet paper exactly)
 # ================================================================
 class DiceBCELoss(nn.Module):
+    @torch.autocast(device_type='cuda', enabled=False)  # BCE is unsafe under autocast -> run loss in fp32
     def forward(self, inputs, targets, smooth=1):
+        inputs, targets = inputs.float(), targets.float()
         probs = torch.sigmoid(inputs).view(-1)
         tgt   = targets.view(-1)
         bce   = F.binary_cross_entropy(probs, tgt, reduction='mean')
@@ -486,14 +488,14 @@ class DiceBCELoss(nn.Module):
 # Metrics — per-image, computed on binarised predictions
 # ================================================================
 def compute_metrics(y_true_np, y_pred_np):
-    #Compute Dice, mIoU, Sensitivity, Specificity, FPR.
+    '''Compute Dice, mIoU, Sensitivity, Specificity, FPR.
     
     Args:
         y_true_np: binary GT mask [H, W] or [1, H, W]
         y_pred_np: binary pred mask [H, W] or [1, H, W]
     Returns:
         dict with keys: dice, miou, sensitivity, specificity, fpr, precision
-    #
+    '''
     yt = y_true_np.flatten().astype(np.float32)
     yp = y_pred_np.flatten().astype(np.float32)
     
@@ -608,7 +610,7 @@ CELL_EVAL_VIS = r"""
 # Full Evaluation — loads best checkpoint, computes all metrics
 # ================================================================
 def evaluate_model(model, ckpt_path, valid_loader, model_name, device=DEVICE):
-    #Load best checkpoint and compute per-image metrics on val set.#
+    '''Load best checkpoint and compute per-image metrics on val set.'''
     model.load_state_dict(torch.load(ckpt_path, map_location=device,
                                      weights_only=True))
     model.eval()
@@ -645,7 +647,7 @@ def evaluate_model(model, ckpt_path, valid_loader, model_name, device=DEVICE):
 
 
 def print_results(name, agg):
-    #Pretty-print aggregated results.#
+    '''Pretty-print aggregated results.'''
     print(f"\n{'='*60}")
     print(f"  {name} — Final Results on {DATASET_NAME}")
     print(f"{'='*60}")
@@ -700,7 +702,7 @@ def plot_comparison(images_orig, gts_orig, preds_orig,
 # Save results to CSV
 # ================================================================
 def save_benchmark_csv(agg_orig, agg_mfad, dataset_name):
-    #Save benchmark results to CSV.#
+    '''Save benchmark results to CSV.'''
     csv_path = f'benchmark_results_{dataset_name.replace(" ", "_")}.csv'
     with open(csv_path, 'w', newline='') as f:
         writer = csv.writer(f)

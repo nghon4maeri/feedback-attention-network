@@ -205,7 +205,9 @@ CELL_LOSS = r"""
 # Loss & Metrics  (Paper: 0.5*BCE + 0.5*Dice)
 # ================================================================
 class DiceBCELoss(nn.Module):
+    @torch.autocast(device_type='cuda', enabled=False)  # BCE is unsafe under autocast -> run loss in fp32
     def forward(self, inputs, targets, smooth=1):
+        inputs, targets = inputs.float(), targets.float()
         inputs_s = torch.sigmoid(inputs).view(-1)
         targets_f = targets.view(-1)
         intersection = (inputs_s * targets_f).sum()
@@ -227,13 +229,17 @@ def calc_metrics(y_true, y_pred):
 
 CELL_TRAIN = r"""
 # ================================================================
-# Training Loop  (Paper: Adam, ReduceLROnPlateau, 500 epochs)
+# Training Loop  (AMP for speed, ReduceLROnPlateau, Paper pipeline)
 # ================================================================
 model = FANet_MFAD().to(DEVICE)
 criterion = DiceBCELoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=LR)
 scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
-    optimizer, mode='min', factor=0.5, patience=5, verbose=True, min_lr=1e-6)
+    optimizer, mode='min', factor=0.5, patience=5, min_lr=1e-6)
+
+# Mixed Precision for ~2x speedup on Kaggle T4/P100
+scaler = torch.amp.GradScaler('cuda')
+use_amp = DEVICE.type == 'cuda'
 
 best_dice = 0.0
 ckpt = f"fanet_mfad_{DATASET_NAME.replace(' ','_')}_best.pth"
@@ -244,10 +250,13 @@ for epoch in range(EPOCHS):
     for x, y in tqdm(train_loader, desc=f'E{epoch+1}/{EPOCHS} Train'):
         x, y = x.to(DEVICE), y.to(DEVICE)
         optimizer.zero_grad()
-        out = model(x)
-        out = model(x, torch.sigmoid(out))
-        loss = criterion(out, y)
-        loss.backward(); optimizer.step()
+        with torch.amp.autocast('cuda', enabled=use_amp):
+            out = model(x)
+            out = model(x, torch.sigmoid(out))
+            loss = criterion(out, y)
+        scaler.scale(loss).backward()
+        scaler.step(optimizer)
+        scaler.update()
         train_loss += loss.item()
 
     # --- VALID ---
@@ -255,9 +264,10 @@ for epoch in range(EPOCHS):
     with torch.no_grad():
         for x, y in tqdm(valid_loader, desc=f'E{epoch+1}/{EPOCHS} Valid'):
             x, y = x.to(DEVICE), y.to(DEVICE)
-            out = model(x)
-            out = model(x, torch.sigmoid(out))
-            loss = criterion(out, y)
+            with torch.amp.autocast('cuda', enabled=use_amp):
+                out = model(x)
+                out = model(x, torch.sigmoid(out))
+                loss = criterion(out, y)
             val_loss += loss.item()
             d, _, _, _ = calc_metrics(y, out)
             val_dice += d
