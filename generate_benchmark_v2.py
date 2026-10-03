@@ -1279,7 +1279,95 @@ print(f"Kvasir-Sessile: Train={len(train_dataset)}, Val={len(valid_dataset)}")
 # NOTEBOOK BUILDER
 # ════════════════════════════════════════════════════════════════
 
+def config_dsb2018():
+    return r"""
+# ================================================================
+# Data Science Bowl 2018 (DSB-2018) — Nuclei Segmentation
+# ~670 images, ~80:20 split
+# Image size: 256x256
+# Masks are provided as separate images per nucleus -> need merging
+# ================================================================
+import zipfile
+import shutil
+
+DATASET_NAME = "DSB-2018"
+IMAGE_SIZE = (256, 256)
+EPOCHS = 200
+BATCH_SIZE = 16
+LR = 1e-4
+
+ZIP_PATH = "/kaggle/input/data-science-bowl-2018/stage1_train.zip"
+ORIG_DIR = "/kaggle/working/stage1_train"
+MERGED_MASK_DIR = "/kaggle/working/dsb2018_masks"
+
+if os.path.exists(ZIP_PATH) and not os.path.exists(ORIG_DIR):
+    print(f"Extracting {ZIP_PATH}...")
+    os.makedirs(ORIG_DIR, exist_ok=True)
+    with zipfile.ZipFile(ZIP_PATH, 'r') as zip_ref:
+        zip_ref.extractall(ORIG_DIR)
+elif not os.path.exists(ZIP_PATH) and not os.path.exists(ORIG_DIR):
+    print("WARNING: data-science-bowl-2018 dataset is not added to Kaggle Input!")
+
+os.makedirs(MERGED_MASK_DIR, exist_ok=True)
+
+all_imgs = []
+all_msks = []
+
+print("Merging individual nucleus masks...")
+if os.path.exists(ORIG_DIR):
+    folder_names = sorted(os.listdir(ORIG_DIR))
+    for folder in tqdm(folder_names, desc="Merging Masks"):
+        folder_path = os.path.join(ORIG_DIR, folder)
+        if not os.path.isdir(folder_path): continue
+
+        img_file = os.path.join(folder_path, "images", folder + ".png")
+        mask_files = glob(os.path.join(folder_path, "masks", "*.png"))
+
+        if not os.path.exists(img_file) or len(mask_files) == 0: continue
+
+        merged_path = os.path.join(MERGED_MASK_DIR, folder + ".png")
+        
+        if not os.path.exists(merged_path):
+            merged = None
+            for mf in mask_files:
+                m = np.array(Image.open(mf).convert('L'))
+                if merged is None:
+                    merged = m
+                else:
+                    merged = np.maximum(merged, m)
+            Image.fromarray(merged).save(merged_path)
+            
+        all_imgs.append(img_file)
+        all_msks.append(merged_path)
+
+images = all_imgs
+masks = all_msks
+
+assert len(images) > 0, "No images found!"
+
+random.seed(42)
+combined = list(zip(images, masks))
+random.shuffle(combined)
+images, masks = zip(*combined)
+
+total = len(images)
+split = max(1, int(total * 0.8))
+train_x, train_y = list(images[:split]), list(masks[:split])
+valid_x, valid_y = list(images[split:]), list(masks[split:])
+
+train_dataset = UniversalDataset(train_x, train_y, IMAGE_SIZE, is_train=True)
+valid_dataset = UniversalDataset(valid_x, valid_y, IMAGE_SIZE, is_train=False)
+train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True,
+                          num_workers=2, pin_memory=True)
+valid_loader = DataLoader(valid_dataset, batch_size=1, shuffle=False,
+                          num_workers=2, pin_memory=True)
+
+print(f"DSB-2018: Train={len(train_dataset)}, Val={len(valid_dataset)}")
+"""
+
+
 DATASETS = {
+    "dsb2018":         {"title": "DSB-2018",          "config_fn": config_dsb2018},
     "cvc_clinicdb":    {"title": "CVC-ClinicDB",    "config_fn": config_cvc_clinicdb},
     "isic_2018":       {"title": "ISIC-2018",        "config_fn": config_isic2018},
     "drive":           {"title": "DRIVE",             "config_fn": config_drive},
