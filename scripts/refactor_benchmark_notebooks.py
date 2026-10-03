@@ -102,6 +102,10 @@ CKPT_VAR = {  # variable holding the best-checkpoint path in each notebook's tra
     'cvc_clinicdb': 'ckpt_name',
     'isic_2018': 'CKPT_BEST',
     'kvasir_seg': 'ckpt',
+    'chase_db1': 'ckpt',
+    'drive': 'ckpt',
+    'dsb2018': 'CKPT_BEST',
+    'em_dataset': 'ckpt',
 }
 
 def md(text):
