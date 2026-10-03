@@ -11,7 +11,7 @@ SETUP_MD = """# Colab (A100) runner - {title}
 Checkpoints / `benchmark_results.csv` / figures are written to Google Drive (`WORK_DIR`) so a disconnect can be resumed:
 just re-run all cells, training continues from `*_resume.pth`.
 
-Kaggle data download needs credentials: add Colab *Secrets* `KAGGLE_USERNAME` + `KAGGLE_KEY` (recommended) or upload `kaggle.json` when asked."""
+Kaggle data download needs credentials: add Colab *Secrets* `KAGGLE_USERNAME` + `KAGGLE_KEY` (left sidebar, key icon, enable notebook access)."""
 
 SETUP_CODE = '''# ================================================================
 # [Colab Setup]  Drive, GPU, deps, dataset download
@@ -22,7 +22,7 @@ drive.mount('/content/drive')
 
 WORK_DIR = "/content/drive/MyDrive/FANet_runs/{slug}"
 os.makedirs(WORK_DIR, exist_ok=True)
-DATA_ROOT = "/content/data/{slug}"        # local SSD = fast IO (data is NOT kept on Drive)
+DATA_ROOT = "/content/{slug}"        # local SSD = fast IO (data is NOT kept on Drive)
 os.makedirs(DATA_ROOT, exist_ok=True)
 
 subprocess.run([sys.executable, "-m", "pip", "install", "-q", "albumentations", "tifffile", "opencv-python-headless"], check=True)
@@ -32,23 +32,13 @@ print("CUDA:", torch.cuda.is_available(), "|", torch.cuda.get_device_name(0) if 
 torch.backends.cudnn.benchmark = True        # fixed input size -> faster convs on A100
 NUM_WORKERS = min(8, os.cpu_count() or 2)
 
-# ---- Kaggle credentials ----
-try:
-    from google.colab import userdata
-    os.environ["KAGGLE_USERNAME"] = userdata.get("KAGGLE_USERNAME")
-    os.environ["KAGGLE_KEY"] = userdata.get("KAGGLE_KEY")
-except Exception:
-    if not os.path.exists(os.path.expanduser("~/.kaggle/kaggle.json")):
-        from google.colab import files
-        up = files.upload()                      # upload kaggle.json
-        os.makedirs(os.path.expanduser("~/.kaggle"), exist_ok=True)
-        shutil.move(list(up.keys())[0], os.path.expanduser("~/.kaggle/kaggle.json"))
-        os.chmod(os.path.expanduser("~/.kaggle/kaggle.json"), 0o600)
-
-# ---- Dataset download (skipped if already present) ----
-if not any(True for _ in os.scandir(DATA_ROOT)):
-    subprocess.run([sys.executable, "-m", "pip", "install", "-q", "kaggle"], check=True)
-    subprocess.run(["kaggle", "datasets", "download", "-d", "{kaggle_ds}", "-p", DATA_ROOT, "--unzip"], check=True)
+# ---- Kaggle data (colab Secrets: KAGGLE_USERNAME / KAGGLE_KEY) ----
+from google.colab import userdata
+os.environ['KAGGLE_USERNAME'] = userdata.get('KAGGLE_USERNAME')
+os.environ['KAGGLE_KEY'] = userdata.get('KAGGLE_KEY')
+if not os.path.isdir(DATA_ROOT) or not os.listdir(DATA_ROOT):   # skip re-download on re-run
+    !mkdir -p {{DATA_ROOT}}
+    !kaggle datasets download -d {kaggle_ds} -p {{DATA_ROOT}} --unzip
 print("Data ready:", DATA_ROOT, "| entries:", len(os.listdir(DATA_ROOT)))
 '''
 
@@ -104,7 +94,7 @@ def build(name):
     }
     for c in nb['cells']:
         if c['cell_type'] == 'code':
-            ast.parse('\n'.join('pass' if l.strip().startswith(('!', '%')) else l for l in src(c).split('\n')))
+            ast.parse('\n'.join((l[:len(l) - len(l.lstrip())] + 'pass') if l.strip().startswith(('!', '%')) else l for l in src(c).split('\n')))
     os.makedirs('notebooks/colab', exist_ok=True)
     out = f'notebooks/colab/fanet_benchmark_{name}_colab.ipynb'
     json.dump(nb, open(out, 'w', encoding='utf-8', newline='\n'), indent=1, ensure_ascii=False)
