@@ -1,7 +1,7 @@
 {
   "id": "namnguynnnn/fanet-benchmark-cvc-clinicdb",
   "title": "fanet-benchmark-cvc-clinicdb",
-  "code_file": "fanet_benchmark_cvc_clinicdb.ipynb",
+  "code_file": "fanet_vs_mfad_cvc_clinicdb.ipynb",
   "language": "python",
   "kernel_type": "notebook",
   "is_private": false,
