@@ -1,0 +1,25 @@
+{
+  "id": "namnguynnnn/fanet-phase7c",
+  "id_no": 135359147,
+  "title": "fanet-phase7c",
+  "code_file": "fanet-phase7c.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": false,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "keywords": [
+    "gpu"
+  ],
+  "dataset_sources": [
+    "namnguynnnn/cvc-clinicdb",
+    "namnguynnnn/kvasir-sessile",
+    "namnguynnnn/kvasir-seg"
+  ],
+  "kernel_sources": [],
+  "competition_sources": [],
+  "model_sources": [],
+  "docker_image": "gcr.io/kaggle-private-byod/python@sha256:37c64f7dd9c54116ecd1bcc88817c5469b88387388fade02bfa8bf3fc647d461",
+  "machine_shape": "NvidiaTeslaT4"
+}

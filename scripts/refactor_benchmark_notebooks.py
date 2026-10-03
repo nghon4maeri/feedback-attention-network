@@ -22,7 +22,7 @@ EPS = 1e-8
 best_path = EVAL_CKPT
 assert os.path.exists(best_path), f"Checkpoint not found: {best_path}"
 model = FANet_MFAD().to(DEVICE)
-model.load_state_dict(torch.load(best_path, map_location=DEVICE))
+model.load_state_dict(torch.load(best_path, map_location=DEVICE, weights_only=False))
 model.eval()
 
 def conf_metrics(gt, pred):

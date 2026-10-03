@@ -1,0 +1,3 @@
+Dataset,Model,N_images,Dice,Dice_std,mIoU,mIoU_std,Sensitivity,Sensitivity_std,Specificity,Specificity_std,FPR,FPR_std,FPR_pixel
+DRIVE,"MFAD (pass-1, no feedback)",4,0.0153,0.02,0.0078,0.0102,0.008,0.0106,0.9981,0.0014,0.0019,0.0014,0.001899
+DRIVE,"MFAD (pass-2, feedback)",4,0.7618,0.0105,0.6154,0.0138,0.7714,0.036,0.975,0.0046,0.025,0.0046,0.025051

@@ -1,0 +1,3 @@
+Dataset,Model,N_images,Dice,Dice_std,mIoU,mIoU_std,Sensitivity,Sensitivity_std,Specificity,Specificity_std,FPR,FPR_std,FPR_pixel
+Kvasir-SEG,"MFAD (pass-1, no feedback)",120,0.9222,0.081,0.8643,0.1164,0.9383,0.0884,0.9828,0.032,0.0172,0.032,0.015394
+Kvasir-SEG,"MFAD (pass-2, feedback)",120,0.9222,0.0864,0.8654,0.1234,0.9359,0.1064,0.9849,0.0281,0.0151,0.0281,0.013854
