@@ -31,7 +31,7 @@ os.makedirs(WORK_DIR, exist_ok=True)
 os.makedirs(DATA_ROOT, exist_ok=True)
 
 subprocess.run([sys.executable, "-m", "pip", "install", "-q", "-U",
-                "kaggle", "albumentations", "tifffile", "opencv-python-headless"], check=True)
+                "albumentations", "tifffile", "opencv-python-headless"], check=True)
 
 import torch
 print("CUDA:", torch.cuda.is_available(), "|",
