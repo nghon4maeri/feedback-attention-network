@@ -62,7 +62,7 @@ def build(name):
     if name == 'isic_2018':
         replace_once(nb, cfg['data_dir_old'], 'DATA_DIR = DATA_ROOT  # downloaded by the Colab setup cell')
     elif name == 'dsb2018':
-        replace_once(nb, cfg['data_dir_old'], 'ZIP_PATH = glob.glob(os.path.join(DATA_ROOT, "stage1_train.zip"))[0] if glob.glob(os.path.join(DATA_ROOT, "stage1_train.zip")) else os.path.join(DATA_ROOT, "stage1_train.zip")')
+        replace_once(nb, cfg['data_dir_old'], 'ZIP_PATH = glob(os.path.join(DATA_ROOT, "stage1_train.zip"))[0] if glob(os.path.join(DATA_ROOT, "stage1_train.zip")) else os.path.join(DATA_ROOT, "stage1_train.zip")')
 
     replace_once(nb, "csv_path = f\"benchmark_results_{dataset_name.replace(' ', '_')}.csv\"",
                  "csv_path = os.path.join(WORK_DIR, f\"benchmark_results_{dataset_name.replace(' ', '_')}.csv\")")
