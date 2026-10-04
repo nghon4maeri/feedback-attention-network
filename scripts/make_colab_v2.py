@@ -52,9 +52,27 @@ def _unzip_all(root):
             f.extractall(root)
         os.remove(z)
 
+DRIVE_DATA = "/content/drive/MyDrive/FANet_data/{slug}"   # optional manual copy of the raw files
+for _f in _glob.glob(os.path.join(DATA_ROOT, "*")):        # leftovers of an interrupted download
+    if _f.endswith(".kaggle-partial") or (os.path.isfile(_f) and os.path.getsize(_f) == 0):
+        os.remove(_f)
 if not os.listdir(DATA_ROOT):
-    # new kaggle CLI dropped --unzip, so download then extract in Python
-    subprocess.run(["kaggle", "{kaggle_kind}", "download", "{kaggle_flag}", "{kaggle_ds}", "-p", DATA_ROOT], check=True)
+    if os.path.isdir(DRIVE_DATA) and os.listdir(DRIVE_DATA):
+        # Option A: files already on Drive (uploaded once by hand) -> no Kaggle API needed
+        print("Copying data from Drive:", DRIVE_DATA)
+        subprocess.run(["cp", "-r", DRIVE_DATA + "/.", DATA_ROOT], check=True)
+    else:
+        # Option B: Kaggle API (new CLI dropped --unzip -> extract in Python)
+        cmd = ["kaggle", "{kaggle_kind}", "download", "{kaggle_flag}", "{kaggle_ds}", "-p", DATA_ROOT] + {kaggle_extra}
+        print("$", " ".join(cmd))
+        r = subprocess.run(cmd, capture_output=True, text=True)
+        print(r.stdout[-2000:], r.stderr[-2000:])
+        if r.returncode != 0 or not os.listdir(DATA_ROOT):
+            raise RuntimeError(
+                "Kaggle download failed (see message above). Fix one of:\\n"
+                " - 401: Colab Secrets KAGGLE_USERNAME / KAGGLE_KEY wrong or 'Notebook access' not enabled\\n"
+                " - 403: accept the rules with THE SAME Kaggle account: {rules_url}\\n"
+                " - or upload the raw files once to Google Drive: " + DRIVE_DATA)
     _unzip_all(DATA_ROOT)
 print("Data ready:", DATA_ROOT, "| entries:", sorted(os.listdir(DATA_ROOT))[:10])
 '''
@@ -63,9 +81,13 @@ CONFIGS = {
     "dsb2018": dict(
         title="DSB-2018 (256x256)", slug="dsb2018",
         kaggle_kind="competitions", kaggle_flag="-c", kaggle_ds="data-science-bowl-2018",
+        kaggle_extra=["-f", "stage1_train.zip"],   # only the file the notebook uses (83 MB)
+        rules_url="https://www.kaggle.com/competitions/data-science-bowl-2018/rules",
         keep_zip=("stage1_train.zip",),   # the notebook extracts this one itself
         extra="Open https://www.kaggle.com/competitions/data-science-bowl-2018/rules and click "
-              "**I Understand and Accept** (otherwise the API returns 403).",
+              "**I Understand and Accept** with the same account as your Colab Secrets "
+              "(otherwise 403). Alternative: put `stage1_train.zip` in Drive at "
+              "`MyDrive/FANet_data/dsb2018/` and the notebook will use it without Kaggle.",
         data_edits=[
             ('_zips = glob("/kaggle/input/**/stage1_train.zip", recursive=True)',
              '_zips = glob(os.path.join(DATA_ROOT, "**", "stage1_train.zip"), recursive=True)'),
@@ -142,7 +164,9 @@ def build(name):
     assert not leftover, f"Kaggle paths left: {leftover}"
 
     fmt = dict(slug=cfg['slug'], work_dir=work_dir, kaggle_kind=cfg['kaggle_kind'],
-               kaggle_flag=cfg['kaggle_flag'], kaggle_ds=cfg['kaggle_ds'], keep_zip=cfg['keep_zip'])
+               kaggle_flag=cfg['kaggle_flag'], kaggle_ds=cfg['kaggle_ds'], keep_zip=cfg['keep_zip'],
+               kaggle_extra=repr(cfg.get('kaggle_extra', [])),
+               rules_url=cfg.get('rules_url', f"https://www.kaggle.com/datasets/{cfg['kaggle_ds']}"))
     md = {"cell_type": "markdown", "id": uuid.uuid4().hex[:8], "metadata": {},
           "source": SETUP_MD.format(title=cfg['title'], extra=cfg['extra'], work_dir=work_dir).splitlines(keepends=True)}
     code = {"cell_type": "code", "execution_count": None, "id": uuid.uuid4().hex[:8], "metadata": {},
