@@ -40,8 +40,9 @@ torch.backends.cudnn.benchmark = True
 NUM_WORKERS = min(8, os.cpu_count() or 2)
 
 os.makedirs(os.path.expanduser('~/.kaggle'), exist_ok=True)
+import json as _json
 with open(os.path.expanduser('~/.kaggle/kaggle.json'), 'w') as f:
-    f.write(f'{{"username":"{userdata.get("KAGGLE_USERNAME")}","key":"{userdata.get("KAGGLE_KEY")}"}}')
+    _json.dump({{"username": userdata.get("KAGGLE_USERNAME"), "key": userdata.get("KAGGLE_KEY")}}, f)
 os.chmod(os.path.expanduser('~/.kaggle/kaggle.json'), 0o600)
 
 def _unzip_all(root):
