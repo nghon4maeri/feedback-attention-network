@@ -52,6 +52,7 @@ for slug in only:
     })
     if slug == "dsb2018":
         meta["competition_sources"] = ["data-science-bowl-2018"]
+        meta["kernel_sources"] = ["namnguynnnn/fanet-benchmark-dsb2018"]
     elif slug == "isic-2018":
         # Mount the output of the previous run (for resuming if timeout)
         meta["kernel_sources"] = ["namnguynnnn/fanet-benchmark-isic-2018"]
