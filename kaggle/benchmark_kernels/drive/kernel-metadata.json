@@ -1,7 +1,7 @@
 {
   "id": "namnguynnnn/fanet-benchmark-drive",
   "title": "fanet-benchmark-drive",
-  "code_file": "fanet_benchmark_drive.ipynb",
+  "code_file": "fanet_vs_mfad_drive.ipynb",
   "language": "python",
   "kernel_type": "notebook",
   "is_private": false,

@@ -1,7 +1,7 @@
 {
   "id": "namnguynnnn/fanet-benchmark-dsb2018",
   "title": "fanet-benchmark-dsb2018",
-  "code_file": "fanet_benchmark_dsb2018.ipynb",
+  "code_file": "fanet_vs_mfad_dsb2018.ipynb",
   "language": "python",
   "kernel_type": "notebook",
   "is_private": false,
@@ -10,7 +10,9 @@
   "enable_internet": true,
   "keywords": [],
   "dataset_sources": [],
-  "kernel_sources": [],
+  "kernel_sources": [
+    "namnguynnnn/fanet-benchmark-dsb2018"
+  ],
   "competition_sources": [
     "data-science-bowl-2018"
   ],

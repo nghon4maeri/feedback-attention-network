@@ -1,7 +1,7 @@
 {
   "id": "namnguynnnn/fanet-benchmark-isic-2018",
   "title": "fanet-benchmark-isic-2018",
-  "code_file": "fanet_benchmark_isic_2018.ipynb",
+  "code_file": "fanet_vs_mfad_isic_2018.ipynb",
   "language": "python",
   "kernel_type": "notebook",
   "is_private": false,
@@ -14,7 +14,9 @@
   "dataset_sources": [
     "tschandl/isic2018-challenge-task1-data-segmentation"
   ],
-  "kernel_sources": [],
+  "kernel_sources": [
+    "namnguynnnn/fanet-benchmark-isic-2018"
+  ],
   "competition_sources": [],
   "model_sources": [],
   "docker_image": "gcr.io/kaggle-private-byod/python@sha256:37c64f7dd9c54116ecd1bcc88817c5469b88387388fade02bfa8bf3fc647d461",

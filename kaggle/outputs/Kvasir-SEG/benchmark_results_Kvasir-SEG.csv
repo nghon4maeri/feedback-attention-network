@@ -1,0 +1,13 @@
+Model,Metric,Mean,Std
+FANet_Original,dice,0.885266,0.152279
+FANet_Original,miou,0.818509,0.181412
+FANet_Original,sensitivity,0.891647,0.167125
+FANet_Original,specificity,0.988740,0.019932
+FANet_Original,fpr,0.011260,0.019932
+FANet_Original,precision,0.914081,0.147074
+FANet_MFAD,dice,0.910058,0.094445
+FANet_MFAD,miou,0.846167,0.130840
+FANet_MFAD,sensitivity,0.956978,0.077304
+FANet_MFAD,specificity,0.973843,0.048614
+FANet_MFAD,fpr,0.026157,0.048614
+FANet_MFAD,precision,0.882532,0.129082

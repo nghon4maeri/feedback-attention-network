@@ -542,10 +542,43 @@ def train_model(model, train_loader, valid_loader, model_name,
     use_amp = (device.type == 'cuda')
 
     ckpt_path = f"{model_name}_{DATASET_NAME.replace(' ', '_')}_best.pth"
+    latest_path = f"{model_name}_{DATASET_NAME.replace(' ', '_')}_latest.pth"
+    
     best_dice = 0.0
     history = {'train_loss': [], 'val_dice': []}
+    start_epoch = 0
 
-    for epoch in range(epochs):
+    # Resume logic
+    resume_paths = [latest_path, f"/kaggle/input/fanet-benchmark-{DATASET_NAME.lower().replace('_', '-')}/{latest_path}", f"/kaggle/input/fanet-benchmark-{DATASET_NAME.lower()}/{latest_path}"]
+    for p in resume_paths:
+        if os.path.exists(p):
+            print(f"[*] Found checkpoint: {p}. Resuming...")
+            ckpt = torch.load(p, map_location=device, weights_only=False)
+            model.load_state_dict(ckpt['model_state'])
+            optimizer.load_state_dict(ckpt['optimizer_state'])
+            scheduler.load_state_dict(ckpt['scheduler_state'])
+            best_dice = ckpt['best_dice']
+            history = ckpt['history']
+            start_epoch = ckpt['epoch']
+            
+            best_paths = [ckpt_path, f"/kaggle/input/fanet-benchmark-{DATASET_NAME.lower().replace('_', '-')}/{ckpt_path}", f"/kaggle/input/fanet-benchmark-{DATASET_NAME.lower()}/{ckpt_path}"]
+            for bp in best_paths:
+                if os.path.exists(bp):
+                    import shutil
+                    if bp != ckpt_path: shutil.copy(bp, ckpt_path)
+                    break
+            break
+
+    if start_epoch >= epochs:
+        print(f"[*] {model_name} already completed {epochs} epochs.")
+        return ckpt_path, history
+
+    import time
+    if 'GLOBAL_START' not in globals():
+        global GLOBAL_START
+        GLOBAL_START = time.time()
+
+    for epoch in range(start_epoch, epochs):
         # ---- TRAIN ----
         model.train()
         train_loss = 0.0
@@ -597,6 +630,20 @@ def train_model(model, train_loader, valid_loader, model_name,
         if val_dice > best_dice:
             best_dice = val_dice
             torch.save(model.state_dict(), ckpt_path)
+            
+        torch.save({
+            'epoch': epoch + 1,
+            'model_state': model.state_dict(),
+            'optimizer_state': optimizer.state_dict(),
+            'scheduler_state': scheduler.state_dict(),
+            'best_dice': best_dice,
+            'history': history
+        }, latest_path)
+
+        if time.time() - GLOBAL_START > 11.5 * 3600:
+            print(f"[!] KAGGLE TIME LIMIT REACHED (11.5h). Exiting gracefully.")
+            import sys
+            sys.exit(0)
 
     print(f"  [{model_name}] Best Val Dice = {best_dice:.4f}")
     return ckpt_path, history
