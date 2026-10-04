@@ -39,8 +39,10 @@ print("CUDA:", torch.cuda.is_available(), "|",
 torch.backends.cudnn.benchmark = True
 NUM_WORKERS = min(8, os.cpu_count() or 2)
 
-os.environ["KAGGLE_USERNAME"] = userdata.get("KAGGLE_USERNAME")
-os.environ["KAGGLE_KEY"] = userdata.get("KAGGLE_KEY")
+os.makedirs(os.path.expanduser('~/.kaggle'), exist_ok=True)
+with open(os.path.expanduser('~/.kaggle/kaggle.json'), 'w') as f:
+    f.write(f'{{"username":"{userdata.get("KAGGLE_USERNAME")}","key":"{userdata.get("KAGGLE_KEY")}"}}')
+os.chmod(os.path.expanduser('~/.kaggle/kaggle.json'), 0o600)
 
 def _unzip_all(root):
     """Extract every .zip under root (except {keep_zip}), then delete it."""
