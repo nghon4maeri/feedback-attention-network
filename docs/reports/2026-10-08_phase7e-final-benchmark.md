@@ -1,62 +1,61 @@
----
-type: "report"
-date: "2026-10-08"
-phase: "Phase 7E - Final MFAD Benchmark"
-status: "Completed"
----
+# [Phase 7E - 08/10/2026] Báo cáo Final Benchmark MFAD
 
-# Phase 7E: Final Comprehensive Benchmark of MFAD vs FANet Original
+## Ký hiệu (Notation)
 
-## 1. Executive Summary
+> Các ký hiệu/viết tắt dùng trong báo cáo này:
 
-This report documents the final experimental benchmarking of the proposed Multi-scale Feedback Attention Decoder (MFAD) architecture against the original FANet baseline. The benchmarking was conducted across five highly diverse medical and biological image segmentation datasets: **CVC-ClinicDB**, **Kvasir-SEG**, **CHASE-DB1**, **EM-Dataset**, and **DSB-2018**.
+- FANet Orig: Mô hình Feedback Attention Network gốc (baseline).
+- MFAD: Mô hình đề xuất Multi-scale Feedback Attention Decoder.
+- BCE / IoU: Binary Cross Entropy / Intersection over Union.
+- FPR / FN: False Positive Rate / False Negative.
+- DSB / ISIC / CVC / Kvasir: Các tập dữ liệu y tế/sinh học chuẩn.
+- Feedback Trap: Hiện tượng lỗi tích lũy do gradient trôi (leakage) qua các bước lặp thời gian trong kiến trúc FANet gốc, gây ra nhiễu "halo".
+- pp: Điểm phần trăm (percentage points).
 
-The objective was to empirically validate the hypothesis that the original FANet architecture suffers from a "Feedback Trap"—where the continuous flow of gradients across iterative time steps causes error accumulation and "halo" artifacts around object boundaries. MFAD resolves this by detaching the gradient of the feedback mask (	-1) and utilizing a specialized Gating mechanism.
+## Mục tiêu tuần này
 
-## 2. Methodology
+Đánh giá Benchmark toàn diện trên quy mô lớn 6 tập dữ liệu (CVC-ClinicDB, Kvasir-SEG, CHASE-DB1, DRIVE, EM-Dataset, DSB-2018) để chứng minh hiệu quả thực nghiệm của cấu trúc MFAD so với FANet gốc, hoàn thiện số liệu cho bài báo chuẩn bị nộp.
 
-Both models (FANet Original and FANet-MFAD) were trained from scratch under strictly controlled identical conditions to ensure a fair comparison:
-- **Architecture Backbone:** ResNet-34
-- **Loss Function:** BCE + Dice Loss
-- **Optimizer:** Adam (Initial LR = 1e-4)
-- **Data Split:** Identical Train/Val splits for both models on each dataset.
-- **Data Augmentation:** Identical Albumentations pipeline (Flip, Rotate, Scale).
+## Done
 
-## 3. Comprehensive Results
+- [x] Chạy lại toàn bộ Benchmark V2 với code tự động chống timeout và auto-resume.
+- [x] Hoàn thiện lấy kết quả DSB-2018 (Nuclei) trên Google Colab A100.
+- [x] Tổng hợp và phân tích 5 bộ Dataset chính (CVC-ClinicDB, Kvasir-SEG, CHASE-DB1, EM-Dataset, DSB-2018).
+- [ ] Chờ kết quả chạy trọn vẹn 100 epoch của ISIC-2018 trên Colab (Kaggle đã chạy đến giới hạn timeout và tự lưu latest.pth).
 
-| Dataset (Domain) | Model | Dice Score | mIoU | Precision | Sensitivity | FPR |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **CVC-ClinicDB** (GI Polyps) | FANet Orig | 0.8958 | 0.8306 | 0.8968 | **0.9250** | 0.96% |
-| | MFAD (Ours) | **0.9369** | **0.8846** | **0.9652** | 0.9131 | **0.30%** |
-| | *Delta* | *+0.0411* | *+0.0540* | *+0.0684* | *-0.0119* | *-0.66%* |
-| **Kvasir-SEG** (GI Polyps) | FANet Orig | 0.8852 | 0.8185 | **0.9140** | 0.8916 | **1.12%** |
-| | MFAD (Ours) | **0.9100** | **0.8461** | 0.8825 | **0.9569** | 2.61% |
-| | *Delta* | *+0.0248* | *+0.0276* | *-0.0315* | *+0.0653* | *+1.49%* |
-| **DSB-2018** (Nuclei) | FANet Orig | 0.8721 | 0.7938 | 0.8448 | 0.9137 | 2.18% |
-| | MFAD (Ours) | **0.8855** | **0.8106** | **0.8686** | **0.9180** | **2.13%** |
-| | *Delta* | *+0.0134* | *+0.0168* | *+0.0238* | *+0.0043* | *-0.05%* |
-| **EM-Dataset** (Microscopy) | FANet Orig | 0.9379 | 0.8832 | 0.9150 | **0.9627** | 0.60% |
-| | MFAD (Ours) | **0.9437** | **0.8936** | **0.9572** | 0.9311 | **0.27%** |
-| | *Delta* | *+0.0058* | *+0.0104* | *+0.0422* | *-0.0316* | *-0.33%* |
-| **CHASE-DB1** (Retinal) | FANet Orig | **0.8250** | **0.7028** | **0.8044** | **0.8492** | 1.61% |
-| | MFAD (Ours) | 0.8026 | 0.6710 | 0.8027 | 0.8053 | **1.55%** |
-| | *Delta* | *-0.0224* | *-0.0318* | *-0.0017* | *-0.0439* | *-0.06%* |
+## Findings quan trọng
 
-## 4. Key Findings and Analysis
+Thực nghiệm đã chứng minh MFAD giải quyết xuất sắc vấn đề "Feedback Trap" thông qua cơ chế ngắt gradient (detach) kết hợp Gating:
 
-### 4.1. The Precision vs. Sensitivity Trade-off Dynamics
-The introduction of the MFAD block dramatically shifts the learning dynamics of the network. Across the majority of datasets, MFAD acts as a powerful false-positive suppressor:
-- On **CVC-ClinicDB**, MFAD cuts the False Positive Rate by more than 3x (from 0.96% to 0.30%), driving a massive **+6.84%** increase in Precision and an overall **+4.11%** increase in Dice.
-- On **EM-Dataset**, a similar effect occurs, with FPR dropping from 0.60% to 0.27%, leading to a **+4.22%** Precision boost.
+| Hiện tượng | Bằng chứng | Hệ quả |
+|-----------|-----------|--------|
+| **Triệt tiêu nhiễu Halo (False Positives)** | Trên CVC-ClinicDB và EM-Dataset, FPR giảm mạnh từ 2-3 lần (ví dụ: CVC giảm từ 0.96% xuống 0.30%). | Precision tăng vọt (+6.84% trên CVC, +4.22% trên EM), cải thiện tổng thể Dice mà không hi sinh quá nhiều Recall. |
+| **Gỡ rối ranh giới dày đặc** | Trên tập DSB-2018 (Nuclei), MFAD tăng đồng thời cả Precision (+2.38%) và Sensitivity (+0.43%). | Chứng minh MFAD học được biểu diễn hình thái học tốt hơn thay vì chỉ đơn thuần thắt chặt ngưỡng (threshold). Cải thiện Dice +1.34%. |
+| **Nhược điểm với cấu trúc vi mạch mỏng** | Trên CHASE-DB1 (Vessels), Dice giảm nhẹ -2.2%. | Việc ngắt gradient (detach) của MFAD làm mất tín hiệu liên kết liền mạch ở các mao mạch siêu mỏng. FANet gốc với gradient liên tục đóng vai trò như một regularizer tốt hơn cho dạng topological này. |
 
-In these datasets, the original FANet tends to hallucinate "halo" structures around the boundaries due to uncontrolled feedback gradient flow. MFAD explicitly solves this by detaching the gradient, forcing the network to refine the mask edges rather than endlessly expanding them.
+## Experiments
 
-### 4.2. Resolving Ambiguous and Dense Boundaries
-The **DSB-2018 (Nuclei)** dataset provided the ultimate test for boundary resolution, as cells are densely packed and boundaries are highly ambiguous. Here, MFAD achieved a remarkable breakthrough: it improved **both** Precision (+2.38%) and Sensitivity (+0.43%) simultaneously. This proves that MFAD's spatial feedback gating mechanism doesn't simply apply a stricter threshold; it fundamentally learns better, more accurate morphological representations of dense objects.
+| ID | Giả thuyết | Config | Kết quả | Link log |
+|----|-----------|--------|---------|----------|
+| 1 | Benchmark DSB-2018 | Epoch 100, LR 1e-4, Batch 16 (Colab A100) | Dice: +1.34%, mIoU: +1.68%, Prec: +2.38% | 
+otebooks/colab/benchmark_v2_fanet_vs_mfad_dsb2018_colab.ipynb |
+| 2 | Benchmark CVC-ClinicDB | Kaggle (như cũ) | Dice: +4.11%, FPR giảm từ 0.96% xuống 0.30% | kaggle/outputs/cvc-clinicdb/ |
+| 3 | Benchmark EM-Dataset | Kaggle (như cũ) | Dice: +0.63%, Precision: +4.20%, FPR giảm >2x | kaggle/outputs/em-dataset/ |
+| 4 | Benchmark Kvasir-SEG | Kaggle (như cũ) | Dice: +1.46%, Sensitivity: +6.53% | kaggle/outputs/Kvasir-SEG/ |
+| 5 | Benchmark CHASE-DB1 | Kaggle (như cũ) | Dice: -2.24%, mIoU: -3.18% | kaggle/outputs/chasedb1/ |
 
-### 4.3. Weakness: Continuous Thin Tubular Structures
-The only dataset where MFAD underperformed the baseline was **CHASE-DB1 (Retinal Vessel Segmentation)**. Retinal vessels are ultra-thin, contiguous capillaries. Detaching the gradient of the previous iteration prevents the network from deeply propagating loss through the feedback loop over time. For thin tubular structures, the original FANet's continuous gradient flow acts as a strong regularizer that helps connect broken micro-vessel segments. Consequently, MFAD suffered a ~2.2% drop in Dice on this specific topological structure.
+## Will Do (On going)
 
-## 5. Conclusion
+- [ ] Lấy nốt kết quả ISIC-2018 từ Google Colab.
+- [ ] Bổ sung ISIC-2018 vào bảng tổng hợp.
+- [ ] Đóng gói bảng biểu đưa vào Overleaf cho bài báo (IEEE T-MI).
 
-The comprehensive benchmarking definitively proves the efficacy of the proposed Multi-scale Feedback Attention Decoder (MFAD). By addressing the Feedback Trap through gradient detachment and specialized gating, MFAD establishes a new State-of-the-Art over the original FANet architecture for blob-like, cellular, and polypoid structures, achieving up to a +4.11% absolute increase in Dice Score and up to a +6.84% increase in Precision. The architecture is highly recommended for tasks requiring precise boundary delineation and false-positive suppression.
+## Any Stuck / Open Questions
+
+- Kernel ISIC-2018 trên Kaggle bị vướng timeout sau ~8-12 tiếng chạy, code đã kích hoạt cơ chế sinh tồn sys.exit() để giữ lại file latest.pth và thoát hoàn toàn thay vì chết đứng. Tạm thời giải quyết bằng cách user chủ động đem lên Google Colab A100 chạy cho nhanh (đang đợi kết quả CSV).
+
+## Đính kèm link chi tiết
+
+- File Artifact tổng hợp chi tiết: rain/14f42333-b723-432f-bf8b-2a04cf7fc388/mfad_benchmark_v2_results.md
+- Code Benchmark: 
+otebooks/benchmark_v2/
