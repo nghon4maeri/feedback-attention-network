@@ -25,6 +25,19 @@
 
 ## Findings quan trọng
 
+
+### Bảng Tổng Hợp Kết Quả (Benchmark V2)
+
+| Tập dữ liệu | Dice Score (Orig → MFAD) | Precision (Orig → MFAD) | FPR (Orig → MFAD) |
+| :--- | :--- | :--- | :--- |
+| **CVC-ClinicDB** | 0.8958 → **0.9369** <span style="color:green">(+4.1%)</span> | 0.8968 → **0.9652** <span style="color:green">(+6.8%)</span> | 0.96% → **0.30%** <span style="color:green">(-3x)</span> |
+| **Kvasir-SEG** | 0.8852 → **0.9100** <span style="color:green">(+2.4%)</span> | **0.9140** → 0.8825 <span style="color:red">(-3.1%)</span> | **1.12%** → 2.61% |
+| **DSB-2018** | 0.8721 → **0.8855** <span style="color:green">(+1.3%)</span> | 0.8448 → **0.8686** <span style="color:green">(+2.3%)</span> | 2.18% → **2.13%** |
+| **EM-Dataset** | 0.9379 → **0.9437** <span style="color:green">(+0.5%)</span> | 0.9150 → **0.9572** <span style="color:green">(+4.2%)</span> | 0.60% → **0.27%** <span style="color:green">(-2x)</span> |
+| **CHASE-DB1** | **0.8250** → 0.8026 <span style="color:red">(-2.2%)</span> | **0.8044** → 0.8027 <span style="color:red">(-0.1%)</span> | 1.61% → **1.55%** |
+*(Ghi chú: Bộ DRIVE bị loại bỏ do Mode Collapse trên cả 2 mô hình vì thiếu data/LR quá cao).*
+
+
 Thực nghiệm đã chứng minh MFAD giải quyết xuất sắc vấn đề "Feedback Trap" thông qua cơ chế ngắt gradient (detach) kết hợp Gating:
 
 | Hiện tượng | Bằng chứng | Hệ quả |
