@@ -10,6 +10,13 @@ import sys
 import json
 import time
 
+if hasattr(sys.stdout, "reconfigure"):
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOG_FILE = os.path.join(ROOT, "results", "colab_drive_train.log")
 os.makedirs(os.path.join(ROOT, "results"), exist_ok=True)
@@ -43,21 +50,34 @@ with open(script_path, "r", encoding="utf-8") as f:
 print(f"[*] Starting DRIVE MFAD job on Colab GPU session '{sess['name']}'...")
 print(f"[*] Live log output -> {LOG_FILE}")
 
-with open(LOG_FILE, "w", encoding="utf-8") as log_f:
+with open(LOG_FILE, "w", encoding="utf-8", errors="replace") as log_f:
     log_f.write(f"=== Colab DRIVE Job Started at {time.ctime()} ===\n")
     log_f.flush()
 
     def output_hook(out):
         if out.get("output_type") == "stream":
             text = out.get("text", "")
-            sys.stdout.write(text)
-            sys.stdout.flush()
-            log_f.write(text)
-            log_f.flush()
+            try:
+                sys.stdout.write(text)
+                sys.stdout.flush()
+            except Exception:
+                pass
+            try:
+                log_f.write(text)
+                log_f.flush()
+            except Exception:
+                pass
         elif out.get("output_type") == "error":
             tb = "\n".join(out.get("traceback", []))
-            sys.stderr.write(f"\n[ERROR] {tb}\n")
-            log_f.write(f"\n[ERROR] {tb}\n")
+            try:
+                sys.stderr.write(f"\n[ERROR] {tb}\n")
+            except Exception:
+                pass
+            try:
+                log_f.write(f"\n[ERROR] {tb}\n")
+                log_f.flush()
+            except Exception:
+                pass
             log_f.flush()
 
     try:

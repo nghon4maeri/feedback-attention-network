@@ -127,12 +127,11 @@ class UniversalDataset(Dataset):
             A.HorizontalFlip(p=0.5),
             A.VerticalFlip(p=0.5),
             A.ShiftScaleRotate(shift_limit=0.1, scale_limit=0.15, rotate_limit=45, p=0.6),
-            A.ElasticTransform(p=0.3, alpha=120, sigma=120 * 0.05, alpha_affine=120 * 0.03),
+            A.ElasticTransform(p=0.3, alpha=120, sigma=120 * 0.05),
             A.GridDistortion(p=0.3),
-            A.OpticalDistortion(p=0.3, distort_limit=0.05, shift_limit=0.05),
+            A.OpticalDistortion(p=0.3, distort_limit=0.05),
             A.RandomBrightnessContrast(p=0.3),
             A.HueSaturationValue(p=0.3),
-            A.CoarseDropout(max_holes=8, max_height=32, max_width=32, p=0.2),
         ]
         if is_retinal:
             aug_list.insert(0, A.CLAHE(clip_limit=2.0, tile_grid_size=(8, 8), p=0.5))
@@ -386,12 +385,14 @@ for epoch in range(EPOCHS):
     history['train_loss'].append(train_loss)
     history['val_dice'].append(val_dice)
 
-    if (epoch + 1) % 5 == 0 or epoch == 0 or epoch == EPOCHS - 1:
-        print(f"  [Epoch {epoch+1:03d}/{EPOCHS}] Loss: {train_loss:.4f} | Val Dice: {val_dice:.4f} | LR: {lr_now:.1e}")
-
     if val_dice > best_dice:
         best_dice = val_dice
         torch.save(model.state_dict(), best_ckpt)
+        star = " *"
+    else:
+        star = ""
+
+    print(f"  [Epoch {epoch+1:03d}/{EPOCHS}] Loss: {train_loss:.4f} | Val Dice: {val_dice:.4f} | Best: {best_dice:.4f} | LR: {lr_now:.1e}{star}")
 
 print(f"\n[+] Training Complete. Best Val Dice = {best_dice:.4f}")
 
