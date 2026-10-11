@@ -30,6 +30,7 @@ Index tổng hợp các báo cáo nghiên cứu của dự án FANet (Feedback A
 | 22 | [2026-09-30_phase7e-mfad-benchmark.md](2026-09-30_phase7e-mfad-benchmark.md) | 30/09/2026 | **Phase 7E KẾT QUẢ TỔNG THỂ MFAD**: Benchmark 6 bộ dữ liệu Kaggle. Vượt trội ISIC-2018 (0.8933, +2%). Phát hiện điểm yếu giới hạn với vật thể mảnh (vessels) và lệch miền (EM Dataset). Chuẩn bị cho Limitations/Future Work. |
 | 23 | [2026-10-08_phase7e-final-benchmark.md](2026-10-08_phase7e-final-benchmark.md) | 08/10/2026 | Báo cáo Final Benchmark V2: 5/6 tập dữ liệu (CVC, Kvasir, DSB, EM, CHASE). |
 | 24 | [2026-10-11_phase7e-isic2018-benchmark-results.md](2026-10-11_phase7e-isic2018-benchmark-results.md) | 11/10/2026 | **Hoàn tất ISIC-2018 Benchmark**: 100 epoch với auto-resume; Dice +2.60 pp (0.8724→0.8984), mIoU +3.32 pp, giảm 24.1% phương sai; trọn vẹn toàn bộ 6 bộ dataset. |
+| 25 | [2026-10-11_phase7f_mfad_benchmark_v2.md](2026-10-11_phase7f_mfad_benchmark_v2.md) | 11/10/2026 | **Benchmark V2 Retrain (MFAD-Only + Enhanced Augmentation)**: Chỉ train model đề xuất với final feedback; CVC-ClinicDB đạt đỉnh 0.9427 Dice (94.27%) & 0.8960 mIoU; điều phối song song Kaggle GPU + Colab T4 (DRIVE 32x). |
 
 ## Experiment Tracking
 
