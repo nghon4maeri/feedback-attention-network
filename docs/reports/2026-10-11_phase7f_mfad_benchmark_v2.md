@@ -18,11 +18,11 @@ Huấn luyện lại duy nhất mô hình đề xuất **`FANet_MFAD`** (ResNet-
 | :--- | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **CVC-ClinicDB** | Polyp | **FANet_MFAD** | **0.9427** | **0.8960** | **0.9368** | **0.9960** | **0.40%** | **0.9514** | ✅ **COMPLETE** |
 | **CHASE-DB1** | Retinal | **FANet_MFAD** | **0.7093** | **0.5514** | **0.6064** | **0.9926** | **0.74%** | **0.8637** | ✅ **COMPLETE** |
+| **EM-Dataset** | Electron | **FANet_MFAD** | **0.9518** | **0.9083** | **0.9582** | **0.9963** | **0.37%** | **0.9464** | ✅ **COMPLETE** |
 | **DRIVE** | Retinal | **FANet_MFAD** | **0.2837** | **0.1675** | **0.3544** | **0.8872** | **11.28%** | **0.2392** | ✅ **COMPLETE** (Colab T4) |
 | **Kvasir-SEG** | Polyp | **FANet_MFAD** | *Training* | *Training* | *Training* | *Training* | *Training* | *Training* | 🚀 **RUNNING (Colab A100-40GB)** |
-| **DSB-2018** | Nuclei | **FANet_MFAD** | *Queued* | *Queued* | *Queued* | *Queued* | *Queued* | *Queued* | 🔄 RUNNING (Kaggle Slot 2) |
-| **EM-Dataset** | Electron | **FANet_MFAD** | - | - | - | - | - | - | ⏳ Queued |
-| **ISIC-2018** | Skin | **FANet_MFAD** | - | - | - | - | - | - | ⏳ Queued |
+| **DSB-2018** | Nuclei | **FANet_MFAD** | *Training* | *Training* | *Training* | *Training* | *Training* | *Training* | 🔄 **RUNNING (Kaggle Slot 1)** |
+| **ISIC-2018** | Skin | **FANet_MFAD** | *Training* | *Training* | *Training* | *Training* | *Training* | *Training* | 🚀 **RUNNING (Kaggle Slot 2)** |
 
 ---
 
@@ -45,6 +45,11 @@ Huấn luyện lại duy nhất mô hình đề xuất **`FANet_MFAD`** (ResNet-
 * **Dice Score:** **0.2837 ± 0.0758**, mIoU: **0.1675 ± 0.0493**.
 * **Đặc điểm thực nghiệm:** Đúng như y văn đối với việc huấn luyện mô hình phân giải cao (512x512) toàn khung hình (whole-image) từ đầu chỉ trên 16-20 ảnh võng mạc (không cắt patch), tỷ lệ điểm ảnh mạch máu chỉ chiếm <8% toàn ảnh gây ra mất cân bằng dữ liệu cực lớn dẫn tới Dice dao động quanh mức 0.25–0.30.
 
+### 3.4 EM-Dataset (Electron Microscopy Segmentation)
+* **Dice Score:** **0.9518 ± 0.0095** (vượt xa baseline gốc 0.7816, tăng **+17.02 pp**).
+* **mIoU:** **0.9083 ± 0.0173** (vượt xa baseline gốc 0.6480, tăng **+26.03 pp**).
+* **Kiểm soát ranh giới màng tế bào:** Specificity đạt **99.63%**, False Positive Rate giảm 4.1 lần xuống **0.37%**, Precision đạt **94.64%**. Cơ chế Multi-scale Feedback Attention với gradient decoupling giúp các gate phân giải cấu trúc màng tế bào cực kỳ chuẩn xác và không bị rò rỉ nền.
+
 ---
 
 ## 4. Nhật ký Vận hành Hệ thống
@@ -57,3 +62,7 @@ Huấn luyện lại duy nhất mô hình đề xuất **`FANet_MFAD`** (ResNet-
 - `00:16`: Colab hoàn thành huấn luyện `DRIVE` (150 epochs). Tải đầy đủ kết quả CSV, JSON và checkpoint weights. Giải phóng VM Tesla T4.
 - `00:24`: Khởi tạo phiên Colab A100 mới `fanet-a100` với GPU **NVIDIA A100-SXM4-40GB** theo đúng chỉ đạo của user.
 - `00:26`: Khởi chạy huấn luyện siêu tốc tập `Kvasir-SEG` (800 train, repeat_factor=22, BS=16) trên GPU Colab A100.
+- `01:07`: Kaggle runner kích hoạt `em-dataset` vào Slot 2.
+- `05:32`: Kaggle slot 2 hoàn thành xuất sắc tập `EM-Dataset` (Dice **95.18%**, mIoU **90.83%**). Runner tự động tải toàn bộ weights, curves và CSV về `results/benchmark_v2/em-dataset/`.
+- `05:38`: Kaggle runner tự động đẩy tiếp `isic-2018` (Skin lesion, 2,594 ảnh) vào Slot 2 trống và chuyển sang trạng thái `RUNNING`.
+
