@@ -81,7 +81,7 @@ with open(LOG_FILE, "w", encoding="utf-8", errors="replace") as log_f:
             log_f.flush()
 
     try:
-        runtime.execute_code(code, output_hook=output_hook)
+        runtime.execute_code(code, output_hook=output_hook, timeout=86400.0)
         log_f.write(f"\n=== Colab DRIVE Job Finished at {time.ctime()} ===\n")
         print("\n[+] DRIVE training and evaluation on Colab completed successfully!")
     except Exception as e:
