@@ -41,6 +41,8 @@ for slug in only:
     d = os.path.join(OUT, slug)
     os.makedirs(d, exist_ok=True)
     meta_p = os.path.join(ROOT, "scratch_fanet", f"meta_{slug}", "kernel-metadata.json")
+    if not os.path.exists(meta_p):
+        meta_p = os.path.join(d, "kernel-metadata.json")
     meta = json.load(open(meta_p, encoding="utf-8")) if os.path.exists(meta_p) else {}
     meta.update({
         "id": f"namnguynnnn/fanet-benchmark-{slug}",
