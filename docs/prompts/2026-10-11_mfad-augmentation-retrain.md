@@ -18,6 +18,6 @@
 
 **Phạm vi & Yêu cầu**:
 - 7 tập datasets: Kvasir-SEG, CHASE-DB1, DRIVE, DSB-2018, ISIC-2018, CVC-ClinicDB, EM-Dataset.
-- Đánh giá đầy đủ các độ đo: Dice, mIoU, Sensitivity, Specificity, FPR, Precision (cho cả Pass-1 không feedback và Pass-2 có feedback).
+- Đánh giá đầy đủ các độ đo: Dice, mIoU, Sensitivity, Specificity, FPR, Precision trên model MFAD duy nhất với cơ chế Final Feedback (không cần so sánh giữa 2 pha).
 - Xuất đầy đủ `benchmark_results_<DATASET>.csv`, `comparison_<DATASET>.png`, `training_curves_<DATASET>.png`.
 - Tuân thủ git workflow: commit và push ngay sau khi cập nhật file.

@@ -483,48 +483,39 @@ def train_model(model, train_loader, valid_loader, model_name,
 """
 
 CELL_EVAL_VIS = r"""# ================================================================
-# Full Two-Pass Evaluation: Pass-1 (No Feedback) vs Pass-2 (Feedback)
+# Evaluation: FANet-MFAD with Final Feedback
 # ================================================================
-def evaluate_mfad_two_pass(model, ckpt_path, valid_loader, device=DEVICE):
-    '''Load best checkpoint and compute per-image metrics for both Pass 1 and Pass 2.'''
+def evaluate_model(model, ckpt_path, valid_loader, device=DEVICE):
+    '''Load best checkpoint and compute per-image metrics on val set with final feedback.'''
     model.load_state_dict(torch.load(ckpt_path, map_location=device, weights_only=True))
     model.eval()
 
-    metrics_p1, metrics_p2 = [], []
-    all_imgs, all_gts, all_p1, all_p2 = [], [], [], []
+    all_metrics = []
+    all_imgs, all_gts, all_preds = [], [], []
 
     with torch.no_grad():
         for x, y in tqdm(valid_loader, desc='[MFAD] Evaluating Val Set', leave=False):
             x, y = x.to(device), y.to(device)
             out1 = model(x)
-            out2 = model(x, torch.sigmoid(out1))
+            out2 = model(x, torch.sigmoid(out1))  # final feedback
             
-            p1 = (torch.sigmoid(out1).cpu().numpy() > 0.5).astype(np.float32)
-            p2 = (torch.sigmoid(out2).cpu().numpy() > 0.5).astype(np.float32)
-            gt = y.cpu().numpy()
+            pred = (torch.sigmoid(out2).cpu().numpy() > 0.5).astype(np.float32)
+            gt   = y.cpu().numpy()
             imgs = x.cpu().numpy()
 
-            for b_i in range(p1.shape[0]):
-                m1 = compute_metrics(gt[b_i], p1[b_i])
-                m2 = compute_metrics(gt[b_i], p2[b_i])
-                metrics_p1.append(m1)
-                metrics_p2.append(m2)
+            for b_i in range(pred.shape[0]):
+                m = compute_metrics(gt[b_i], pred[b_i])
+                all_metrics.append(m)
                 all_imgs.append(imgs[b_i])
                 all_gts.append(gt[b_i])
-                all_p1.append(p1[b_i])
-                all_p2.append(p2[b_i])
+                all_preds.append(pred[b_i])
 
-    def aggregate(m_list):
-        agg = {}
-        for k in m_list[0]:
-            vals = [m[k] for m in m_list]
-            agg[k] = {'mean': float(np.mean(vals)), 'std': float(np.std(vals))}
-        return agg
+    agg = {}
+    for k in all_metrics[0]:
+        vals = [m[k] for m in all_metrics]
+        agg[k] = {'mean': float(np.mean(vals)), 'std': float(np.std(vals))}
 
-    agg_p1 = aggregate(metrics_p1)
-    agg_p2 = aggregate(metrics_p2)
-
-    return agg_p1, agg_p2, metrics_p1, metrics_p2, all_imgs, all_gts, all_p1, all_p2
+    return agg, all_metrics, all_imgs, all_gts, all_preds
 
 
 def print_results(name, agg):
@@ -536,24 +527,23 @@ def print_results(name, agg):
     print(f"{'='*60}\n")
 
 
-def save_benchmark_csv(agg_p1, agg_p2, dataset_name):
+def save_benchmark_csv(agg, dataset_name):
     out_prefix = OUT_DIR if 'OUT_DIR' in globals() else '.'
     csv_path = os.path.join(out_prefix, f'benchmark_results_{dataset_name.replace(" ", "_")}.csv')
     with open(csv_path, 'w', newline='') as f:
         writer = csv.writer(f)
         writer.writerow(['Model', 'Metric', 'Mean', 'Std'])
-        for model_name, agg in [('MFAD_Pass1_NoFeedback', agg_p1),
-                                ('MFAD_Pass2_Feedback', agg_p2)]:
-            for k, v in agg.items():
-                writer.writerow([model_name, k, f"{v['mean']:.6f}", f"{v['std']:.6f}"])
+        for k, v in agg.items():
+            writer.writerow(['FANet_MFAD', k, f"{v['mean']:.6f}", f"{v['std']:.6f}"])
     print(f"Results saved to {csv_path}")
     return csv_path
 
 
-def plot_comparison(images, gts, preds_p1, preds_p2, n_samples=5):
+def plot_comparison(images, gts, preds, n_samples=5):
+    '''Plot: Input Image | Ground Truth | MFAD Final Prediction.'''
     out_prefix = OUT_DIR if 'OUT_DIR' in globals() else '.'
     n = min(n_samples, len(images))
-    fig, axes = plt.subplots(n, 4, figsize=(16, 4 * n))
+    fig, axes = plt.subplots(n, 3, figsize=(12, 4 * n))
     if n == 1:
         axes = axes[np.newaxis, :]
 
@@ -561,8 +551,7 @@ def plot_comparison(images, gts, preds_p1, preds_p2, n_samples=5):
         img = np.transpose(images[i], (1, 2, 0))
         img = np.clip(img, 0, 1)
         gt  = gts[i][0]
-        p1  = preds_p1[i][0]
-        p2  = preds_p2[i][0]
+        p   = preds[i][0]
 
         axes[i, 0].imshow(img)
         axes[i, 0].set_title('Input Image' if i == 0 else '')
@@ -572,15 +561,11 @@ def plot_comparison(images, gts, preds_p1, preds_p2, n_samples=5):
         axes[i, 1].set_title('Ground Truth' if i == 0 else '')
         axes[i, 1].axis('off')
 
-        axes[i, 2].imshow(p1, cmap='gray')
-        axes[i, 2].set_title('MFAD Pass-1 (No Feedback)' if i == 0 else '')
+        axes[i, 2].imshow(p, cmap='gray')
+        axes[i, 2].set_title('MFAD Prediction' if i == 0 else '')
         axes[i, 2].axis('off')
 
-        axes[i, 3].imshow(p2, cmap='gray')
-        axes[i, 3].set_title('MFAD Pass-2 (Feedback Refined)' if i == 0 else '')
-        axes[i, 3].axis('off')
-
-    plt.suptitle(f'Qualitative Refinement — {DATASET_NAME}', fontsize=16, y=1.01)
+    plt.suptitle(f'Qualitative Results — {DATASET_NAME}', fontsize=16, y=1.01)
     plt.tight_layout()
     png_path = os.path.join(out_prefix, f'comparison_{DATASET_NAME.replace(" ", "_")}.png')
     plt.savefig(png_path, dpi=150, bbox_inches='tight')
@@ -608,7 +593,7 @@ def plot_training_curves(history, dataset_name):
 """
 
 CELL_RUN_BENCHMARK = r"""# ================================================================
-# RUN MFAD BENCHMARK: Train MFAD (Proposed) + Evaluate Pass 1 & Pass 2
+# RUN MFAD BENCHMARK: Train MFAD (Proposed) + Evaluate Final Feedback
 # ================================================================
 print(f"\n{'#'*70}")
 print(f"#  MFAD TRAINING & BENCHMARK: {DATASET_NAME}")
@@ -628,23 +613,21 @@ print("=" * 60)
 ckpt_mfad, hist_mfad = train_model(model_mfad, train_loader, valid_loader,
                                     "FANet_MFAD", epochs=EPOCHS, lr=LR)
 
-# Full Evaluation: Pass 1 (no feedback) vs Pass 2 (with feedback)
+# Final Evaluation with Final Feedback
 print("\n" + "=" * 60)
 print(f"  FINAL EVALUATION on {DATASET_NAME}")
 print("=" * 60)
 
 model_eval = FANet_MFAD().to(DEVICE)
-agg_p1, agg_p2, metrics_p1, metrics_p2, imgs, gts, preds_p1, preds_p2 = \
-    evaluate_mfad_two_pass(model_eval, ckpt_mfad, valid_loader)
+agg, all_metrics, imgs, gts, preds = evaluate_model(model_eval, ckpt_mfad, valid_loader)
 
-print_results("MFAD (Pass-1, No Feedback)", agg_p1)
-print_results("MFAD (Pass-2, Final Feedback)", agg_p2)
+print_results("FANet MFAD (Final Feedback)", agg)
 
 # Save results CSV
-csv_path = save_benchmark_csv(agg_p1, agg_p2, DATASET_NAME)
+csv_path = save_benchmark_csv(agg, DATASET_NAME)
 
 # Qualitative Comparison
-plot_comparison(imgs, gts, preds_p1, preds_p2, n_samples=5)
+plot_comparison(imgs, gts, preds, n_samples=5)
 
 # Training Curves
 plot_training_curves(hist_mfad, DATASET_NAME)
@@ -653,14 +636,11 @@ plot_training_curves(hist_mfad, DATASET_NAME)
 print(f"\n{'='*70}")
 print(f"  BENCHMARK SUMMARY — {DATASET_NAME}")
 print(f"{'='*70}")
-print(f"  {'Metric':<15s} | {'Pass-1 (No FB)':>15s} | {'Pass-2 (Final)':>15s} | {'Delta':>10s}")
-print(f"  {'-'*15}-+-{'-'*15}-+-{'-'*15}-+-{'-'*10}")
+print(f"  {'Metric':<20s} | {'Mean ± Std':>20s}")
+print(f"  {'-'*20}-+-{'-'*20}")
 for k in ['dice', 'miou', 'sensitivity', 'specificity', 'fpr', 'precision']:
-    v1 = agg_p1[k]['mean']
-    v2 = agg_p2[k]['mean']
-    delta = v2 - v1
-    sign = '+' if delta >= 0 else ''
-    print(f"  {k:<15s} | {v1:>15.4f} | {v2:>15.4f} | {sign}{delta:>9.4f}")
+    v = agg[k]
+    print(f"  {k:<20s} | {v['mean']:>8.4f} ± {v['std']:<8.4f}")
 print(f"{'='*70}")
 """
 
@@ -1227,7 +1207,7 @@ def build_kaggle_notebook(ds_key, ds_info):
 | Target Model | FANet_MFAD (Proposed Only) |
 | Loss Function | 0.5×BCE + 0.5×Dice |
 | Paper Baseline Dice | {baseline} |
-| Metrics Reported | Dice, mIoU, Sensitivity, Specificity, FPR, Precision (Pass 1 & Pass 2) |
+| Metrics Reported | Dice, mIoU, Sensitivity, Specificity, FPR, Precision (Final Feedback) |
 """
     nb.cells.append(nbf.v4.new_markdown_cell(md_header))
     nb.cells.append(nbf.v4.new_code_cell(CELL_IMPORTS.strip()))
