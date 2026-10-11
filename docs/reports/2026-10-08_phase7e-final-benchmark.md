@@ -21,7 +21,7 @@
 - [x] Chạy lại toàn bộ Benchmark V2 với code tự động chống timeout và auto-resume.
 - [x] Hoàn thiện lấy kết quả DSB-2018 (Nuclei) trên Google Colab A100.
 - [x] Tổng hợp và phân tích 5 bộ Dataset chính (CVC-ClinicDB, Kvasir-SEG, CHASE-DB1, EM-Dataset, DSB-2018).
-- [ ] Chờ kết quả chạy trọn vẹn 100 epoch của ISIC-2018 trên Colab (Kaggle đã chạy đến giới hạn timeout và tự lưu latest.pth).
+- [x] Hoàn tất và phân tích kết quả ISIC-2018 (kéo từ Kaggle về sau khi auto-resume thành công trọn vẹn 100 epoch).
 
 ## Findings quan trọng
 
@@ -30,6 +30,7 @@
 
 | Tập dữ liệu | Dice Score (Orig → MFAD) | Precision (Orig → MFAD) | FPR (Orig → MFAD) |
 | :--- | :--- | :--- | :--- |
+| **ISIC-2018** | 0.8724 → **0.8984** <span style="color:green">(+2.6%)</span> | 0.8936 → **0.9157** <span style="color:green">(+2.2%)</span> | **2.13%** → 2.55% |
 | **CVC-ClinicDB** | 0.8958 → **0.9369** <span style="color:green">(+4.1%)</span> | 0.8968 → **0.9652** <span style="color:green">(+6.8%)</span> | 0.96% → **0.30%** <span style="color:green">(-3x)</span> |
 | **Kvasir-SEG** | 0.8852 → **0.9100** <span style="color:green">(+2.4%)</span> | **0.9140** → 0.8825 <span style="color:red">(-3.1%)</span> | **1.12%** → 2.61% |
 | **DSB-2018** | 0.8721 → **0.8855** <span style="color:green">(+1.3%)</span> | 0.8448 → **0.8686** <span style="color:green">(+2.3%)</span> | 2.18% → **2.13%** |
@@ -59,13 +60,13 @@ otebooks/colab/benchmark_v2_fanet_vs_mfad_dsb2018_colab.ipynb |
 
 ## Will Do (On going)
 
-- [ ] Lấy nốt kết quả ISIC-2018 từ Google Colab.
-- [ ] Bổ sung ISIC-2018 vào bảng tổng hợp.
+- [x] Lấy kết quả ISIC-2018 từ Kaggle (hoàn thành ngày 11/10/2026).
+- [x] Bổ sung ISIC-2018 vào bảng tổng hợp (chi tiết tại [2026-10-11_phase7e-isic2018-benchmark-results.md](2026-10-11_phase7e-isic2018-benchmark-results.md)).
 - [ ] Đóng gói bảng biểu đưa vào Overleaf cho bài báo (IEEE T-MI).
 
 ## Any Stuck / Open Questions
 
-- Kernel ISIC-2018 trên Kaggle bị vướng timeout sau ~8-12 tiếng chạy, code đã kích hoạt cơ chế sinh tồn sys.exit() để giữ lại file latest.pth và thoát hoàn toàn thay vì chết đứng. Tạm thời giải quyết bằng cách user chủ động đem lên Google Colab A100 chạy cho nhanh (đang đợi kết quả CSV).
+- Không có. Vấn đề timeout của ISIC-2018 đã được giải quyết triệt để nhờ cơ chế auto-resume v8 trên Kaggle, đã kéo toàn bộ kết quả về local.
 
 ## Đính kèm link chi tiết
 
