@@ -68,6 +68,9 @@ def main():
                 still_running.append(slug)
             else:
                 print(f"    -> Slot freed by {slug} ({st})")
+                if "CANCEL" in st and slug not in queue_list:
+                    print(f"    -> {slug} was cancelled. Re-queueing to run updated MFAD version!")
+                    queue_list.append(slug)
 
         active_list = still_running
 
