@@ -38,6 +38,14 @@ def get_kernel_status(slug):
             return state
     return "UNKNOWN"
 
+def download_output(slug):
+    out_dir = os.path.join(ROOT, "results", "benchmark_v2", slug)
+    os.makedirs(out_dir, exist_ok=True)
+    kernel_id = f"namnguynnnn/fanet-benchmark-{slug}"
+    print(f"[*] Downloading output for {slug} to {out_dir}...")
+    r = subprocess.run(["kaggle", "kernels", "output", kernel_id, "-p", out_dir], capture_output=True, text=True)
+    print(f"[+] Output download result: {(r.stdout + r.stderr).strip()}")
+
 def push_kernel(slug):
     d = os.path.join(ROOT, "kaggle", "benchmark_kernels", slug)
     print(f"[*] Pushing {slug} to Kaggle...")
@@ -68,7 +76,9 @@ def main():
                 still_running.append(slug)
             else:
                 print(f"    -> Slot freed by {slug} ({st})")
-                if "CANCEL" in st and slug not in queue_list:
+                if st == "COMPLETE":
+                    download_output(slug)
+                elif "CANCEL" in st and slug not in queue_list:
                     print(f"    -> {slug} was cancelled. Re-queueing to run updated MFAD version!")
                     queue_list.append(slug)
 
