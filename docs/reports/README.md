@@ -30,7 +30,7 @@ Index tổng hợp các báo cáo nghiên cứu của dự án FANet (Feedback A
 | 22 | [2026-09-30_phase7e-mfad-benchmark.md](2026-09-30_phase7e-mfad-benchmark.md) | 30/09/2026 | **Phase 7E KẾT QUẢ TỔNG THỂ MFAD**: Benchmark 6 bộ dữ liệu Kaggle. Vượt trội ISIC-2018 (0.8933, +2%). Phát hiện điểm yếu giới hạn với vật thể mảnh (vessels) và lệch miền (EM Dataset). Chuẩn bị cho Limitations/Future Work. |
 | 23 | [2026-10-08_phase7e-final-benchmark.md](2026-10-08_phase7e-final-benchmark.md) | 08/10/2026 | Báo cáo Final Benchmark V2: 5/6 tập dữ liệu (CVC, Kvasir, DSB, EM, CHASE). |
 | 24 | [2026-10-11_phase7e-isic2018-benchmark-results.md](2026-10-11_phase7e-isic2018-benchmark-results.md) | 11/10/2026 | **Hoàn tất ISIC-2018 Benchmark**: 100 epoch với auto-resume; Dice +2.60 pp (0.8724→0.8984), mIoU +3.32 pp, giảm 24.1% phương sai; trọn vẹn toàn bộ 6 bộ dataset. |
-| 25 | [2026-10-11_phase7f_mfad_benchmark_v2.md](2026-10-11_phase7f_mfad_benchmark_v2.md) | 11/10/2026 | **Benchmark V2 Retrain (MFAD-Only + Enhanced Augmentation)**: Chỉ train model đề xuất với final feedback; CVC-ClinicDB đạt đỉnh 0.9427 Dice (94.27%) & 0.8960 mIoU; điều phối song song Kaggle GPU + Colab T4 (DRIVE 32x). |
+| 25 | [2026-10-11_phase7f_mfad_benchmark_v2.md](2026-10-11_phase7f_mfad_benchmark_v2.md) | 11/10/2026 | **Benchmark V2 Retrain (MFAD-Only + Enhanced Augmentation)**: Train model đề xuất với final feedback; CVC-ClinicDB đạt đỉnh 0.9427 Dice (94.27%); CHASE-DB1 đạt 0.7093 Dice & 99.26% Specificity; DRIVE đạt 0.2837 Dice; triển khai Kvasir-SEG trên Colab A100. |
 
 ## Experiment Tracking
 
@@ -65,6 +65,7 @@ Index tổng hợp các báo cáo nghiên cứu của dự án FANet (Feedback A
 | Phase 7E: Đánh giá Benchmark diện rộng 6 Kaggle Datasets với MFAD | ✅ Done (30/09) | Khẳng định tính hiệu quả của MFAD trên ảnh khối (ISIC-2018 Dice 0.8933, +2%). Phát hiện điểm yếu ở ảnh vi mạch máu (DRIVE 0.5454) do resize 256x256 phá vỡ pixel, và lệch domain (EM Dataset 0.7354) do Pre-trained ResNet34 RGB vs Grayscale. Đề xuất thêm Early Exit / Dynamic T cho Future Work. | `docs/reports/2026-09-30_phase7e-mfad-benchmark.md`, `notebooks/fanet_benchmark_*.ipynb` |
 | Phase 7E (Final): Comprehensive Benchmark V2 | Done (08/10) | Hoàn thành V2 Benchmark. DSB-2018: Dice +1.34%, Precision +2.38%. CVC-ClinicDB: Dice +4.11%, FPR giảm 3x. EM-Dataset: Precision +4.22%, FPR giảm >2x. CHASE-DB1 (Vessels) bị giảm nhẹ (Dice -2%). | docs/reports/2026-10-08_phase7e-final-benchmark.md |
 | Phase 7E (ISIC-2018): Benchmark V2 trọn vẹn | ✅ Done (11/10) | Auto-resume thành công sau timeout Kaggle; FANet Orig vs MFAD: Dice +2.60 pp (0.8724→0.8984), mIoU +3.32 pp (0.7958→0.8290), Precision +2.21 pp, Recall +1.80 pp, Dice std giảm từ 0.1455 xuống 0.1104 (-24.1% variance) | `results/isic2018/benchmark_results_ISIC-2018.csv`, `results/isic2018/fanet-benchmark-isic-2018.log`, `docs/reports/2026-10-11_phase7e-isic2018-benchmark-results.md` |
+| Phase 7F: Retrain MFAD-Only với Data Augmentation chuẩn Paper (7 Datasets) | 🔄 In Progress (11/10) | Nghiệm thu 3/7 datasets: CVC-ClinicDB đạt 0.9427 Dice & 0.8960 mIoU (vượt SOTA gốc 0.9355); CHASE-DB1 đạt 0.7093 Dice (Precision 86.37%, FPR 0.74%); DRIVE đạt 0.2837 Dice. Đang chạy Kvasir-SEG trên Colab A100 (Epoch 9: Dice 0.8565), DRIVE & DSB-2018 trên Kaggle. | `results/benchmark_v2/`, `docs/reports/2026-10-11_phase7f_mfad_benchmark_v2.md` |
 
 
 ## Quy trình cập nhật
