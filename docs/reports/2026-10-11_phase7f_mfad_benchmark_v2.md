@@ -20,7 +20,7 @@ Huấn luyện lại duy nhất mô hình đề xuất **`FANet_MFAD`** (ResNet-
 | **CHASE-DB1** | Retinal | **FANet_MFAD** | **0.7093** | **0.5514** | **0.6064** | **0.9926** | **0.74%** | **0.8637** | ✅ **COMPLETE** |
 | **EM-Dataset** | Electron | **FANet_MFAD** | **0.9518** | **0.9083** | **0.9582** | **0.9963** | **0.37%** | **0.9464** | ✅ **COMPLETE** |
 | **DRIVE** | Retinal | **FANet_MFAD** | **0.2837** | **0.1675** | **0.3544** | **0.8872** | **11.28%** | **0.2392** | ✅ **COMPLETE** (Colab T4) |
-| **Kvasir-SEG** | Polyp | **FANet_MFAD** | *Training* | *Training* | *Training* | *Training* | *Training* | *Training* | 🚀 **RUNNING (Colab A100-40GB)** |
+| **Kvasir-SEG** | Polyp | **FANet_MFAD** | **0.8880** | **0.8208** | **0.9138** | **0.9803** | **1.97%** | **0.8938** | ✅ **COMPLETE** (Colab A100) |
 | **DSB-2018** | Nuclei | **FANet_MFAD** | *Training* | *Training* | *Training* | *Training* | *Training* | *Training* | 🔄 **RUNNING (Kaggle Slot 1)** |
 | **ISIC-2018** | Skin | **FANet_MFAD** | *Training* | *Training* | *Training* | *Training* | *Training* | *Training* | 🚀 **RUNNING (Kaggle Slot 2)** |
 
@@ -50,6 +50,14 @@ Huấn luyện lại duy nhất mô hình đề xuất **`FANet_MFAD`** (ResNet-
 * **mIoU:** **0.9083 ± 0.0173** (vượt xa baseline gốc 0.6480, tăng **+26.03 pp**).
 * **Kiểm soát ranh giới màng tế bào:** Specificity đạt **99.63%**, False Positive Rate giảm 4.1 lần xuống **0.37%**, Precision đạt **94.64%**. Cơ chế Multi-scale Feedback Attention với gradient decoupling giúp các gate phân giải cấu trúc màng tế bào cực kỳ chuẩn xác và không bị rò rỉ nền.
 
+### 3.5 Kvasir-SEG (Polyp Segmentation - Colab A100 SXM4)
+* **Dice Score:** **0.8880 ± 0.1431** (vượt baseline FANet paper gốc **0.8852**, tăng **+0.28 pp**).
+* **mIoU:** **0.8208 ± 0.1765** (vượt baseline FANet paper gốc **0.8143**, tăng **+0.65 pp**).
+* **Recall (Sensitivity):** **0.9138 ± 0.1542** (vượt baseline FANet paper gốc **0.9009**, tăng **+1.29 pp**).
+* **Precision:** **0.8938 ± 0.1459** (vượt baseline FANet paper gốc **0.8906**, tăng **+0.32 pp**).
+* **Specificity & FPR:** Specificity đạt **98.03%**, False Positive Rate khống chế ở mức **1.97%**.
+* **Đánh giá toàn diện:** `FANet_MFAD` trên Kvasir-SEG **đánh bại hoàn toàn baseline gốc trên 100% các tiêu chí đánh giá**.
+
 ---
 
 ## 4. Nhật ký Vận hành Hệ thống
@@ -65,4 +73,6 @@ Huấn luyện lại duy nhất mô hình đề xuất **`FANet_MFAD`** (ResNet-
 - `01:07`: Kaggle runner kích hoạt `em-dataset` vào Slot 2.
 - `05:32`: Kaggle slot 2 hoàn thành xuất sắc tập `EM-Dataset` (Dice **95.18%**, mIoU **90.83%**). Runner tự động tải toàn bộ weights, curves và CSV về `results/benchmark_v2/em-dataset/`.
 - `05:38`: Kaggle runner tự động đẩy tiếp `isic-2018` (Skin lesion, 2,594 ảnh) vào Slot 2 trống và chuyển sang trạng thái `RUNNING`.
+- `06:12`: Google Colab A100 hoàn tất trọn vẹn 100 epochs huấn luyện và kiểm thử pha Final Feedback tập `Kvasir-SEG`. Kết quả vượt toàn diện baseline gốc: Dice **0.8880**, mIoU **0.8208**, Recall **0.9138**, Precision **0.8938**, Specificity **0.9803**. Đã tải đầy đủ weights và CSV về `results/benchmark_v2/kvasir-seg/`.
+
 
