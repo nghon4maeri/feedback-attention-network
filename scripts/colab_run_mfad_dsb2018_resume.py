@@ -79,9 +79,9 @@ ORIG_DIR = os.path.join(WORK_DIR, "stage1_train")
 MERGED_DIR = os.path.join(WORK_DIR, "dsb2018_masks")
 
 if not os.path.exists(ORIG_DIR):
-    print("[*] Downloading dataset from namnguynnnn/dsb2018-stage1-train...")
-    kaggle_api.dataset_download_files("namnguynnnn/dsb2018-stage1-train", path=DATA_DIR, unzip=True)
-    print("[+] Downloaded dataset from Kaggle.")
+    print("[*] Downloading stage1_train.zip from tanumoynandy/nuclei...")
+    kaggle_api.dataset_download_file("tanumoynandy/nuclei", "nuclei_datasets/nuclei_datasets/stage1_train.zip", path=DATA_DIR)
+    print("[+] Downloaded stage1_train.zip.")
 
     zip_candidates = glob.glob(os.path.join(DATA_DIR, "**", "stage1_train.zip"), recursive=True)
     if zip_candidates:
@@ -90,7 +90,7 @@ if not os.path.exists(ORIG_DIR):
         os.makedirs(ORIG_DIR, exist_ok=True)
         with zipfile.ZipFile(STAGE1_ZIP, 'r') as z:
             z.extractall(ORIG_DIR)
-        print("[+] Extracted stage1_train successfully.")
+        print(f"[+] Extracted stage1_train successfully ({len(os.listdir(ORIG_DIR))} folders).")
 
 os.makedirs(MERGED_DIR, exist_ok=True)
 
