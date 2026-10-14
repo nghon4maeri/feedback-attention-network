@@ -335,9 +335,19 @@ def compute_metrics(y_true_np, y_pred_np):
 # ------------------------------------------------------------------
 model = FANet_MFAD().to(DEVICE)
 
-# Look for ISIC-2018 pretrained checkpoint
+# Ensure ISIC-2018 pretrained checkpoint is available
+isic_main_path = "/content/FANet_MFAD_ISIC-2018_best.pth"
+if not os.path.exists(isic_main_path):
+    print("[*] Downloading ISIC-2018 pretrained weights from Kaggle into /content/...")
+    cmd = ["kaggle", "kernels", "output", "namnguynnnn/fanet-benchmark-isic-2018", "-p", "/content", "-q", "--file-pattern", ".*best\\.pth$"]
+    try:
+        subprocess.run(cmd, check=True)
+        print("[+] Downloaded ISIC-2018 weights from Kaggle.")
+    except Exception as e:
+        print(f"[!] Warning downloading ISIC weights via Kaggle CLI: {e}")
+
 isic_ckpt_candidates = [
-    "/content/FANet_MFAD_ISIC-2018_best.pth",
+    isic_main_path,
     os.path.join(DATA_DIR, "FANet_MFAD_ISIC-2018_best.pth"),
     "/kaggle/input/fanet-benchmark-isic-2018/FANet_MFAD_ISIC-2018_best.pth",
 ]
@@ -353,7 +363,7 @@ for ckpt_p in isic_ckpt_candidates:
         break
 
 if not isic_loaded:
-    print("[!] Pretrained ISIC weights not found in local candidates. Proceeding with ImageNet ResNet-34 init.")
+    raise FileNotFoundError("Pretrained ISIC-2018 weights (FANet_MFAD_ISIC-2018_best.pth) not found! Transfer learning requires ISIC weights.")
 
 criterion = DiceBCELoss()
 optimizer = torch.optim.AdamW(model.parameters(), lr=LR, weight_decay=1e-4)
