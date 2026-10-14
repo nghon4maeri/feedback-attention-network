@@ -177,102 +177,100 @@ test_loader  = DataLoader(test_dataset, batch_size=1, shuffle=False,
 print(f"[+] Dataloaders ready: {len(train_dataset)} augmented train samples per epoch")
 
 # ------------------------------------------------------------------
-# 4. Model Definition: Proposed FANet_MFAD
 # ------------------------------------------------------------------
-class FeedbackAttentionGate(nn.Module):
-    def __init__(self, in_channels):
-        super().__init__()
-        self.conv = nn.Sequential(
-            nn.Conv2d(in_channels + 1, in_channels, kernel_size=3, padding=1, bias=False),
-            nn.BatchNorm2d(in_channels),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(in_channels, in_channels, kernel_size=1, bias=False),
-            nn.BatchNorm2d(in_channels),
-            nn.Sigmoid()
-        )
-
-    def forward(self, x, prev_mask):
-        if prev_mask is None:
-            return x
-        if prev_mask.shape[2:] != x.shape[2:]:
-            prev_mask = F.interpolate(prev_mask, size=x.shape[2:], mode='bilinear', align_corners=False)
-        prev_mask_detached = prev_mask.detach()
-        alpha = self.conv(torch.cat([x, prev_mask_detached], dim=1))
-        return x + x * alpha
-
-
+# 4. Model Definition: Canonical FANet_MFAD (Matches ISIC Checkpoint)
+# ------------------------------------------------------------------
 class ConvBlock(nn.Module):
     def __init__(self, in_c, out_c):
         super().__init__()
-        self.conv = nn.Sequential(
-            nn.Conv2d(in_c, out_c, kernel_size=3, padding=1, bias=False),
-            nn.BatchNorm2d(out_c),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(out_c, out_c, kernel_size=3, padding=1, bias=False),
-            nn.BatchNorm2d(out_c),
-            nn.ReLU(inplace=True)
-        )
-    def forward(self, x):
-        return self.conv(x)
+        self.conv1 = nn.Conv2d(in_c, out_c, 3, padding=1)
+        self.bn1   = nn.BatchNorm2d(out_c)
+        self.conv2 = nn.Conv2d(out_c, out_c, 3, padding=1)
+        self.bn2   = nn.BatchNorm2d(out_c)
+        self.relu  = nn.ReLU(inplace=True)
 
-
-class UpBlock(nn.Module):
-    def __init__(self, in_c, out_c):
-        super().__init__()
-        self.up = nn.Upsample(scale_factor=2, mode='bilinear', align_corners=True)
-        self.conv = nn.Sequential(
-            nn.Conv2d(in_c, out_c, kernel_size=3, padding=1, bias=False),
-            nn.BatchNorm2d(out_c),
-            nn.ReLU(inplace=True)
-        )
     def forward(self, x):
-        return self.conv(self.up(x))
+        return self.relu(self.bn2(self.conv2(self.relu(self.bn1(self.conv1(x))))))
 
 
 class FANet_MFAD(nn.Module):
-    def __init__(self, num_classes=1):
+    '''Multi-scale Feedback Attention Decoder with Gradient Decoupling.
+    
+    Key innovations:
+      1. ResNet-34 pre-trained encoder (transfer learning)
+      2. 4-channel input (RGB + detached prev_mask) for spatial guidance
+      3. Learned gate on prev_mask with .detach() — Feedback Firewall
+      4. Multi-scale attention: feat * (1 + att(mask)) at every decoder level
+    '''
+    def __init__(self):
         super().__init__()
-        base = models.resnet34(weights=models.ResNet34_Weights.DEFAULT)
-        self.init_conv = nn.Sequential(base.conv1, base.bn1, base.relu)
-        self.maxpool   = base.maxpool
-        self.e1 = base.layer1
-        self.e2 = base.layer2
-        self.e3 = base.layer3
-        self.e4 = base.layer4
+        resnet = models.resnet34(weights=models.ResNet34_Weights.IMAGENET1K_V1)
 
-        self.b = ConvBlock(512, 512)
-        self.up1 = UpBlock(512, 256)
+        # Encoder stem: accept 4-ch input (RGB + prev_mask)
+        self.e1_conv = nn.Conv2d(4, 64, 7, stride=2, padding=3, bias=False)
+        with torch.no_grad():
+            self.e1_conv.weight[:, :3] = resnet.conv1.weight
+            self.e1_conv.weight[:, 3:4] = 0.0
+        self.e1_bn   = resnet.bn1
+        self.e1_relu = resnet.relu
+        self.pool    = resnet.maxpool
+
+        self.e2 = resnet.layer1   # 64
+        self.e3 = resnet.layer2   # 128
+        self.e4 = resnet.layer3   # 256
+        self.b  = resnet.layer4   # 512
+
+        # Decoder with skip connections
+        self.up1 = nn.ConvTranspose2d(512, 256, 2, stride=2)
         self.d1  = ConvBlock(512, 256)
-        self.up2 = UpBlock(256, 128)
+        self.att1 = nn.Sequential(nn.Conv2d(1, 256, 1),
+                                  nn.BatchNorm2d(256), nn.Sigmoid())
+
+        self.up2 = nn.ConvTranspose2d(256, 128, 2, stride=2)
         self.d2  = ConvBlock(256, 128)
-        self.up3 = UpBlock(128, 64)
+        self.att2 = nn.Sequential(nn.Conv2d(1, 128, 1),
+                                  nn.BatchNorm2d(128), nn.Sigmoid())
+
+        self.up3 = nn.ConvTranspose2d(128, 64, 2, stride=2)
         self.d3  = ConvBlock(128, 64)
-        self.up4 = UpBlock(64, 64)
+        self.att3 = nn.Sequential(nn.Conv2d(1, 64, 1),
+                                  nn.BatchNorm2d(64), nn.Sigmoid())
+
+        self.up4 = nn.ConvTranspose2d(64, 64, 2, stride=2)
         self.d4  = ConvBlock(128, 64)
-        self.up5 = UpBlock(64, 32)
+        self.att4 = nn.Sequential(nn.Conv2d(1, 64, 1),
+                                  nn.BatchNorm2d(64), nn.Sigmoid())
+
+        self.up5 = nn.ConvTranspose2d(64, 32, 2, stride=2)
         self.d5  = ConvBlock(32, 32)
+        self.att5 = nn.Sequential(nn.Conv2d(1, 32, 1),
+                                  nn.BatchNorm2d(32), nn.Sigmoid())
 
-        self.att1 = FeedbackAttentionGate(256)
-        self.att2 = FeedbackAttentionGate(128)
-        self.att3 = FeedbackAttentionGate(64)
-        self.att4 = FeedbackAttentionGate(64)
-        self.att5 = FeedbackAttentionGate(32)
+        self.out = nn.Conv2d(32, 1, 1)
+        self.learned_gate = nn.Conv2d(1, 1, 1)
 
-        self.out = nn.Conv2d(32, num_classes, kernel_size=1)
-
-    def _mfad(self, d_feat, prev_mask, att_gate):
-        if prev_mask is None:
-            return d_feat
-        return att_gate(d_feat, prev_mask)
+    def _mfad(self, feat, prev_mask, att_layer):
+        '''Multi-scale Feedback Attention: feat * (1 + att(mask))'''
+        m = F.interpolate(prev_mask, size=feat.shape[2:], mode='nearest')
+        return feat * (1 + att_layer(m))
 
     def forward(self, x, prev_mask=None):
-        init = self.init_conv(x)
-        s1 = self.e1(self.maxpool(init))
-        s2 = self.e2(s1)
+        if prev_mask is None:
+            prev_mask = torch.zeros(x.size(0), 1, x.size(2), x.size(3),
+                                    device=x.device)
+        else:
+            # GRADIENT DECOUPLING: .detach() severs the Feedback Trap
+            prev_mask = torch.sigmoid(self.learned_gate(prev_mask.detach()))
+
+        # Encoder
+        s1 = self.e1_relu(self.e1_bn(self.e1_conv(
+            torch.cat([x, prev_mask], dim=1))))
+        s2 = self.e2(self.pool(s1))
         s3 = self.e3(s2)
         s4 = self.e4(s3)
         b  = self.b(s4)
 
+        # Decoder with multi-scale feedback attention
         d1 = self.d1(torch.cat([self.up1(b), s4], 1))
         d1 = self._mfad(d1, prev_mask, self.att1)
 
