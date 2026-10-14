@@ -21,7 +21,7 @@ Huấn luyện lại duy nhất mô hình đề xuất **`FANet_MFAD`** (ResNet-
 | **EM-Dataset** | Electron | **FANet_MFAD** | **0.9518** | **0.9083** | **0.9582** | **0.9963** | **0.37%** | **0.9464** | ✅ **COMPLETE** (Vượt baseline) |
 | **Kvasir-SEG** | Polyp | **FANet_MFAD** | **0.8880** | **0.8208** | **0.9138** | **0.9803** | **1.97%** | **0.8938** | ✅ **COMPLETE** (Vượt baseline) |
 | **ISIC-2018** | Skin | **FANet_MFAD** | **0.9000** | **0.8346** | **0.8973** | **0.9714** | **2.86%** | **0.9282** | ✅ **COMPLETE** (Vượt baseline) |
-| **DSB-2018** | Nuclei | **FANet_MFAD** | *0.8773* | — | — | — | — | — | 💾 **CHECKPOINT (39 epochs)** |
+| **DSB-2018** | Nuclei | **FANet_MFAD** | **0.8953** | **0.8255** | **0.9088** | **0.9837** | **1.63%** | **0.8951** | ✅ **COMPLETE (Vượt baseline 0.8721)** |
 | **DRIVE (Scratch)**| Retinal | **FANet_MFAD** | **0.2837** | **0.1675** | **0.3544** | **0.8872** | **11.28%** | **0.2392** | ✅ **COMPLETE** (Colab T4) |
 | **DRIVE (Transfer)**| Retinal | **FANet_MFAD** | **0.7932** | **0.6575** | **0.8163** | **0.9773** | **2.27%** | **0.7755** | ✅ **COMPLETE (Vượt baseline 0.7618)** |
 
@@ -66,10 +66,17 @@ Huấn luyện lại duy nhất mô hình đề xuất **`FANet_MFAD`** (ResNet-
 * **Specificity & FPR:** Specificity đạt **97.14%**, False Positive Rate khống chế ở mức **2.86%** (giảm 18% so với baseline 3.50%).
 * **Đánh giá toàn diện:** Trọn vẹn 100 epochs hoàn tất và đánh giá trên tập kiểm thử chính thức. Checkpoint `FANet_MFAD_ISIC-2018_best.pth` (98 MB) được tải về thành công và dùng làm mạng tiền huấn luyện chuyển giao (Transfer Learning) cho tập vi mạch võng mạc DRIVE.
 
-### 3.7 DSB-2018 (Cell Nuclei Segmentation)
-* **Tiến trình Kaggle:** Huấn luyện đến epoch 39/100 thì chạm trần thời gian 11.5h của Kaggle (do mỗi epoch tốn ~17 phút khi đọc từng file ảnh đơn lẻ).
-* **Đỉnh Val Dice ghi nhận:** Đạt **0.8773** tại Epoch 39.
-* **Bảo toàn trọng số:** Checkpoint `FANet_MFAD_DSB-2018_best.pth` (98.02 MB, 335 tensors) đã được tải về và kiểm tra hợp lệ 100%.
+### 3.7 DSB-2018 (Cell Nuclei Segmentation) — [COMPLETED & VERIFIED]
+* **Tối ưu hóa In-RAM Caching trên Colab A100:** Toàn bộ 670 ảnh tế bào và mask được tiền xử lý và nạp 100% vào RAM trong 22 giây, loại bỏ hoàn toàn nút thắt I/O trên Kaggle.
+* **Tiến trình huấn luyện:** Resume từ Epoch 39 (`FANet_MFAD_DSB-2018_latest.pth`) chạy tiếp đến Epoch 100 với tốc độ ~5s/epoch.
+* **Kết quả kiểm thử chính thức (Final Feedback t=2):**
+  * **Dice Score:** **0.8953 ± 0.1201** (Paper Baseline: 0.8721 $\rightarrow$ **+2.32 pp, Vượt baseline**).
+  * **mIoU:** **0.8255 ± 0.1422** (Paper Baseline: 0.8087 $\rightarrow$ **+1.68 pp, Vượt baseline**).
+  * **Sensitivity (Recall):** **0.9088 ± 0.1101** (Paper Baseline: 0.9045 $\rightarrow$ **+0.43 pp, Vượt baseline**).
+  * **Specificity:** **0.9837 ± 0.0281** (Paper Baseline: 0.9782 $\rightarrow$ **Vượt baseline**).
+  * **False Positive Rate:** **1.63% ± 2.81%** (Paper Baseline: 2.18% $\rightarrow$ **Giảm 25% so với baseline**).
+  * **Precision:** **0.8951 ± 0.1388** (Paper Baseline: 0.8448 $\rightarrow$ **+5.03 pp, Vượt baseline**).
+* **Đánh giá:** MFAD chứng minh khả năng vượt trội trong việc bóc tách ranh giới các hạt nhân tế bào dày đặc và chồng lấn, đẩy Precision lên mức rất cao (89.51%) trong khi giữ vững Recall (>90%).
 
 ### 3.8 DRIVE Transfer Learning (Từ ISIC-2018 trên Colab A100) — [COMPLETED & VERIFIED]
 * **Khắc phục lỗi split & class imbalance:** Khởi tạo từ trọng số tiền huấn luyện `FANet_MFAD_ISIC-2018_best.pth`, tích hợp Data Augmentation chuẩn paper (Repeat factor ×32 = 640 mẫu train/epoch, CLAHE, Affine, Elastic/Grid Distortion). Huấn luyện 100 epochs trên Colab A100 (20 train, 20 test).
@@ -102,6 +109,8 @@ Huấn luyện lại duy nhất mô hình đề xuất **`FANet_MFAD`** (ResNet-
 - `13:08`: Tạo session Google Colab A100 mới `fanet-a100`.
 - `13:16`: Kích hoạt pipeline Transfer Learning cho `DRIVE` trên Colab A100: nạp trọng số ISIC-2018, data augmentation ×32.
 - `13:42`: Colab A100 hoàn thành trọn vẹn 100 epochs Transfer Learning cho `DRIVE`. Kết quả vượt baseline paper trên 100% chỉ số: Dice **0.7932**, mIoU **0.6575**, Sensitivity **0.8163**, Specificity **0.9773**, Precision **0.7755**. Đã tải trọn vẹn metrics CSV và JSON về `results/benchmark_v2/drive_transfer/`.
+- `13:57`: Khởi chạy pipeline resume DSB-2018 trên Colab A100 với kỹ thuật in-RAM caching.
+- `14:12`: Hoàn tất trọn vẹn 100 epochs và kiểm thử Final Feedback pha 2 trên 134 mẫu test. Kết quả vượt baseline paper toàn diện: Dice **0.8953**, mIoU **0.8255**, Recall **0.9088**, Precision **0.8951**, FPR **1.63%**. Đã tải trọn vẹn metrics CSV và JSON về `results/benchmark_v2/dsb2018/`.
 
 
 
