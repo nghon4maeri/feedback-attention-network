@@ -78,26 +78,19 @@ STAGE1_ZIP = os.path.join(DATA_DIR, "stage1_train.zip")
 ORIG_DIR = os.path.join(WORK_DIR, "stage1_train")
 MERGED_DIR = os.path.join(WORK_DIR, "dsb2018_masks")
 
-if not os.path.exists(STAGE1_ZIP) and not os.path.exists(ORIG_DIR):
-    print("[*] Downloading stage1_train.zip via Kaggle Python API...")
-    try:
-        kaggle_api.competition_download_file("data-science-bowl-2018", "stage1_train.zip", path=DATA_DIR)
-        print("[+] stage1_train.zip downloaded successfully.")
-    except Exception as e:
-        print(f"[!] Competition download failed ({e}), trying public datasets...")
-        kaggle_api.dataset_download_files("carlossouza/data-science-bowl-2018", path=DATA_DIR, unzip=True)
+if not os.path.exists(ORIG_DIR):
+    print("[*] Downloading dataset from namnguynnnn/dsb2018-stage1-train...")
+    kaggle_api.dataset_download_files("namnguynnnn/dsb2018-stage1-train", path=DATA_DIR, unzip=True)
+    print("[+] Downloaded dataset from Kaggle.")
 
-# Check if stage1_train.zip exists (or .zip.zip)
-if not os.path.exists(STAGE1_ZIP):
-    zips = glob.glob(os.path.join(DATA_DIR, "**", "stage1_train*.zip"), recursive=True)
-    if zips:
-        STAGE1_ZIP = zips[0]
-
-if os.path.exists(STAGE1_ZIP) and not os.path.exists(ORIG_DIR):
-    print(f"[*] Extracting {STAGE1_ZIP} -> {ORIG_DIR}...")
-    os.makedirs(ORIG_DIR, exist_ok=True)
-    with zipfile.ZipFile(STAGE1_ZIP, 'r') as z:
-        z.extractall(ORIG_DIR)
+    zip_candidates = glob.glob(os.path.join(DATA_DIR, "**", "stage1_train.zip"), recursive=True)
+    if zip_candidates:
+        STAGE1_ZIP = zip_candidates[0]
+        print(f"[*] Extracting {STAGE1_ZIP} -> {ORIG_DIR}...")
+        os.makedirs(ORIG_DIR, exist_ok=True)
+        with zipfile.ZipFile(STAGE1_ZIP, 'r') as z:
+            z.extractall(ORIG_DIR)
+        print("[+] Extracted stage1_train successfully.")
 
 os.makedirs(MERGED_DIR, exist_ok=True)
 
