@@ -16,13 +16,14 @@ Huấn luyện lại duy nhất mô hình đề xuất **`FANet_MFAD`** (ResNet-
 
 | Dataset | Type | Model | Dice | mIoU | Sensitivity | Specificity | FPR | Precision | Status |
 | :--- | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **CVC-ClinicDB** | Polyp | **FANet_MFAD** | **0.9427** | **0.8960** | **0.9368** | **0.9960** | **0.40%** | **0.9514** | ✅ **COMPLETE** |
+| **CVC-ClinicDB** | Polyp | **FANet_MFAD** | **0.9427** | **0.8960** | **0.9368** | **0.9960** | **0.40%** | **0.9514** | ✅ **COMPLETE** (Vượt baseline) |
 | **CHASE-DB1** | Retinal | **FANet_MFAD** | **0.7093** | **0.5514** | **0.6064** | **0.9926** | **0.74%** | **0.8637** | ✅ **COMPLETE** |
-| **EM-Dataset** | Electron | **FANet_MFAD** | **0.9518** | **0.9083** | **0.9582** | **0.9963** | **0.37%** | **0.9464** | ✅ **COMPLETE** |
-| **DRIVE** | Retinal | **FANet_MFAD** | **0.2837** | **0.1675** | **0.3544** | **0.8872** | **11.28%** | **0.2392** | ✅ **COMPLETE** (Colab T4) |
-| **Kvasir-SEG** | Polyp | **FANet_MFAD** | **0.8880** | **0.8208** | **0.9138** | **0.9803** | **1.97%** | **0.8938** | ✅ **COMPLETE** (Colab A100) |
-| **DSB-2018** | Nuclei | **FANet_MFAD** | *Training* | *Training* | *Training* | *Training* | *Training* | *Training* | 🔄 **RUNNING (Kaggle Slot 1)** |
-| **ISIC-2018** | Skin | **FANet_MFAD** | *Training* | *Training* | *Training* | *Training* | *Training* | *Training* | 🚀 **RUNNING (Kaggle Slot 2)** |
+| **EM-Dataset** | Electron | **FANet_MFAD** | **0.9518** | **0.9083** | **0.9582** | **0.9963** | **0.37%** | **0.9464** | ✅ **COMPLETE** (Vượt baseline) |
+| **Kvasir-SEG** | Polyp | **FANet_MFAD** | **0.8880** | **0.8208** | **0.9138** | **0.9803** | **1.97%** | **0.8938** | ✅ **COMPLETE** (Vượt baseline) |
+| **ISIC-2018** | Skin | **FANet_MFAD** | **0.9000** | **0.8346** | **0.8973** | **0.9714** | **2.86%** | **0.9282** | ✅ **COMPLETE** (Vượt baseline) |
+| **DSB-2018** | Nuclei | **FANet_MFAD** | *0.8773* | — | — | — | — | — | 💾 **CHECKPOINT (39 epochs)** |
+| **DRIVE (Scratch)**| Retinal | **FANet_MFAD** | **0.2837** | **0.1675** | **0.3544** | **0.8872** | **11.28%** | **0.2392** | ✅ **COMPLETE** (Colab T4) |
+| **DRIVE (Transfer)**| Retinal | **FANet_MFAD** | **>0.7140** | *In Prog.* | *In Prog.* | *In Prog.* | *In Prog.* | *In Prog.* | 🚀 **RUNNING (Colab A100)** |
 
 ---
 
@@ -58,6 +59,24 @@ Huấn luyện lại duy nhất mô hình đề xuất **`FANet_MFAD`** (ResNet-
 * **Specificity & FPR:** Specificity đạt **98.03%**, False Positive Rate khống chế ở mức **1.97%**.
 * **Đánh giá toàn diện:** `FANet_MFAD` trên Kvasir-SEG **đánh bại hoàn toàn baseline gốc trên 100% các tiêu chí đánh giá**.
 
+### 3.6 ISIC-2018 (Skin Lesion Segmentation)
+* **Dice Score:** **0.89996 ± 0.1246** (~**0.9000**), vượt xa baseline paper gốc (0.8724, tăng **+2.76 pp**).
+* **mIoU:** **0.8346 ± 0.1495**, tăng **+2.26 pp** so với baseline gốc (0.8120).
+* **Sensitivity & Precision:** Recall đạt **0.8973**, Precision đạt **0.9282** (vượt baseline 0.8950, tăng **+3.32 pp**).
+* **Specificity & FPR:** Specificity đạt **97.14%**, False Positive Rate khống chế ở mức **2.86%** (giảm 18% so với baseline 3.50%).
+* **Đánh giá toàn diện:** Trọn vẹn 100 epochs hoàn tất và đánh giá trên tập kiểm thử chính thức. Checkpoint `FANet_MFAD_ISIC-2018_best.pth` (98 MB) được tải về thành công và dùng làm mạng tiền huấn luyện chuyển giao (Transfer Learning) cho tập vi mạch võng mạc DRIVE.
+
+### 3.7 DSB-2018 (Cell Nuclei Segmentation)
+* **Tiến trình Kaggle:** Huấn luyện đến epoch 39/100 thì chạm trần thời gian 11.5h của Kaggle (do mỗi epoch tốn ~17 phút khi đọc từng file ảnh đơn lẻ).
+* **Đỉnh Val Dice ghi nhận:** Đạt **0.8773** tại Epoch 39.
+* **Bảo toàn trọng số:** Checkpoint `FANet_MFAD_DSB-2018_best.pth` (98.02 MB, 335 tensors) đã được tải về và kiểm tra hợp lệ 100%.
+
+### 3.8 DRIVE Transfer Learning (Từ ISIC-2018 trên Colab A100)
+* **Khắc phục lỗi split:** Thay thế bộ dữ liệu cũ bằng bộ chuẩn Kaggle `zionfuo/drive2004` (20 ảnh train + 20 ảnh test đầy đủ ground truth `1st_manual`).
+* **Chiến lược chuyển giao:** Khởi tạo từ trọng số `FANet_MFAD_ISIC-2018_best.pth`, tích hợp Data Augmentation chuẩn paper (Repeat factor ×32 = 640 mẫu train/epoch, CLAHE, Affine, Elastic/Grid Distortion).
+* **Hạ tầng:** NVIDIA A100-SXM4 (40GB VRAM).
+* **Kết quả sơ khởi:** Ngay tại Epoch 2, Val Dice đã tăng vọt lên **0.7140** (so với 0.2837 khi train scratch).
+
 ---
 
 ## 4. Nhật ký Vận hành Hệ thống
@@ -74,5 +93,9 @@ Huấn luyện lại duy nhất mô hình đề xuất **`FANet_MFAD`** (ResNet-
 - `05:32`: Kaggle slot 2 hoàn thành xuất sắc tập `EM-Dataset` (Dice **95.18%**, mIoU **90.83%**). Runner tự động tải toàn bộ weights, curves và CSV về `results/benchmark_v2/em-dataset/`.
 - `05:38`: Kaggle runner tự động đẩy tiếp `isic-2018` (Skin lesion, 2,594 ảnh) vào Slot 2 trống và chuyển sang trạng thái `RUNNING`.
 - `06:12`: Google Colab A100 hoàn tất trọn vẹn 100 epochs huấn luyện và kiểm thử pha Final Feedback tập `Kvasir-SEG`. Kết quả vượt toàn diện baseline gốc: Dice **0.8880**, mIoU **0.8208**, Recall **0.9138**, Precision **0.8938**, Specificity **0.9803**. Đã tải đầy đủ weights và CSV về `results/benchmark_v2/kvasir-seg/`.
+- `10:51 UTC (17:51)`: Kaggle hoàn tất `isic-2018`. Kết quả: Dice **0.9000** (vượt baseline), Precision **0.9282**. Đã tải toàn bộ weights và kết quả về `results/benchmark_v2/isic-2018/`.
+- `13:08`: Tạo session Google Colab A100 mới `fanet-a100`.
+- `13:16`: Kích hoạt pipeline Transfer Learning cho `DRIVE` trên Colab A100: nạp trọng số ISIC-2018, data augmentation ×32. Tiến trình fine-tuning đang diễn ra ổn định với Val Dice >0.7140 ngay từ các epoch đầu tiên.
+
 
 
