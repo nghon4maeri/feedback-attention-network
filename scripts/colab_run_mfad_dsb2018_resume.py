@@ -119,14 +119,16 @@ for folder in tqdm(all_folders, desc="Loading & Merging"):
         img = cv2.cvtColor(img, cv2.COLOR_BGRA2RGB)
     else:
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    img = cv2.resize(img, IMAGE_SIZE, interpolation=cv2.INTER_LINEAR)
 
-    # Merge masks
+    # Merge masks at native image resolution first
     merged = np.zeros(img.shape[:2], dtype=np.uint8)
     for mf in mask_files:
         m = cv2.imread(mf, cv2.IMREAD_GRAYSCALE)
         if m is not None:
             merged = np.maximum(merged, m)
+
+    # Resize both image and merged mask to IMAGE_SIZE (256, 256)
+    img = cv2.resize(img, IMAGE_SIZE, interpolation=cv2.INTER_LINEAR)
     merged = cv2.resize(merged, IMAGE_SIZE, interpolation=cv2.INTER_NEAREST)
     merged = (merged > 127).astype(np.uint8)
 
