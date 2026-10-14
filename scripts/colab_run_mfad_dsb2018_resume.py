@@ -28,6 +28,9 @@ print("  FANet-MFAD DSB-2018 Benchmark: Resume Training Epochs 40-100")
 print("  Architecture: Canonical FANet_MFAD (ResNet-34 + MFAD)")
 print("=" * 65)
 
+os.environ["KAGGLE_USERNAME"] = "namnguynnnn"
+os.environ["KAGGLE_KEY"] = "KGAT_dad33ce94fb8b25d8a9ecd4ca26ce03f"
+
 kaggle_dir = os.path.expanduser("~/.kaggle")
 os.makedirs(kaggle_dir, exist_ok=True)
 kaggle_json = os.path.join(kaggle_dir, "kaggle.json")
@@ -46,6 +49,11 @@ import matplotlib.pyplot as plt
 from PIL import Image
 from tqdm import tqdm
 import albumentations as A
+
+from kaggle.api.kaggle_api_extended import KaggleApi
+kaggle_api = KaggleApi()
+kaggle_api.authenticate()
+print("[+] Kaggle API authenticated successfully in Python.")
 
 import torch
 import torch.nn as nn
@@ -71,15 +79,13 @@ ORIG_DIR = os.path.join(WORK_DIR, "stage1_train")
 MERGED_DIR = os.path.join(WORK_DIR, "dsb2018_masks")
 
 if not os.path.exists(STAGE1_ZIP) and not os.path.exists(ORIG_DIR):
-    print("[*] Downloading stage1_train.zip from Kaggle...")
-    # Try downloading from competition first
+    print("[*] Downloading stage1_train.zip via Kaggle Python API...")
     try:
-        subprocess.run(["kaggle", "competitions", "download", "-c", "data-science-bowl-2018",
-                        "-f", "stage1_train.zip", "-p", DATA_DIR], check=True)
+        kaggle_api.competition_download_file("data-science-bowl-2018", "stage1_train.zip", path=DATA_DIR)
+        print("[+] stage1_train.zip downloaded successfully.")
     except Exception as e:
-        print(f"[!] Competition download failed ({e}), searching public datasets...")
-        subprocess.run(["kaggle", "datasets", "download", "-d", "carlossouza/data-science-bowl-2018",
-                        "-p", DATA_DIR, "--unzip"], check=True)
+        print(f"[!] Competition download failed ({e}), trying public datasets...")
+        kaggle_api.dataset_download_files("carlossouza/data-science-bowl-2018", path=DATA_DIR, unzip=True)
 
 # Check if stage1_train.zip exists (or .zip.zip)
 if not os.path.exists(STAGE1_ZIP):
