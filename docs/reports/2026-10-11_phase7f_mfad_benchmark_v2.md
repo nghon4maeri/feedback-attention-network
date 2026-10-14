@@ -23,7 +23,7 @@ Huấn luyện lại duy nhất mô hình đề xuất **`FANet_MFAD`** (ResNet-
 | **ISIC-2018** | Skin | **FANet_MFAD** | **0.9000** | **0.8346** | **0.8973** | **0.9714** | **2.86%** | **0.9282** | ✅ **COMPLETE** (Vượt baseline) |
 | **DSB-2018** | Nuclei | **FANet_MFAD** | *0.8773* | — | — | — | — | — | 💾 **CHECKPOINT (39 epochs)** |
 | **DRIVE (Scratch)**| Retinal | **FANet_MFAD** | **0.2837** | **0.1675** | **0.3544** | **0.8872** | **11.28%** | **0.2392** | ✅ **COMPLETE** (Colab T4) |
-| **DRIVE (Transfer)**| Retinal | **FANet_MFAD** | **>0.7140** | *In Prog.* | *In Prog.* | *In Prog.* | *In Prog.* | *In Prog.* | 🚀 **RUNNING (Colab A100)** |
+| **DRIVE (Transfer)**| Retinal | **FANet_MFAD** | **0.7932** | **0.6575** | **0.8163** | **0.9773** | **2.27%** | **0.7755** | ✅ **COMPLETE (Vượt baseline 0.7618)** |
 
 ---
 
@@ -71,11 +71,16 @@ Huấn luyện lại duy nhất mô hình đề xuất **`FANet_MFAD`** (ResNet-
 * **Đỉnh Val Dice ghi nhận:** Đạt **0.8773** tại Epoch 39.
 * **Bảo toàn trọng số:** Checkpoint `FANet_MFAD_DSB-2018_best.pth` (98.02 MB, 335 tensors) đã được tải về và kiểm tra hợp lệ 100%.
 
-### 3.8 DRIVE Transfer Learning (Từ ISIC-2018 trên Colab A100)
-* **Khắc phục lỗi split:** Thay thế bộ dữ liệu cũ bằng bộ chuẩn Kaggle `zionfuo/drive2004` (20 ảnh train + 20 ảnh test đầy đủ ground truth `1st_manual`).
-* **Chiến lược chuyển giao:** Khởi tạo từ trọng số `FANet_MFAD_ISIC-2018_best.pth`, tích hợp Data Augmentation chuẩn paper (Repeat factor ×32 = 640 mẫu train/epoch, CLAHE, Affine, Elastic/Grid Distortion).
-* **Hạ tầng:** NVIDIA A100-SXM4 (40GB VRAM).
-* **Kết quả sơ khởi:** Ngay tại Epoch 2, Val Dice đã tăng vọt lên **0.7140** (so với 0.2837 khi train scratch).
+### 3.8 DRIVE Transfer Learning (Từ ISIC-2018 trên Colab A100) — [COMPLETED & VERIFIED]
+* **Khắc phục lỗi split & class imbalance:** Khởi tạo từ trọng số tiền huấn luyện `FANet_MFAD_ISIC-2018_best.pth`, tích hợp Data Augmentation chuẩn paper (Repeat factor ×32 = 640 mẫu train/epoch, CLAHE, Affine, Elastic/Grid Distortion). Huấn luyện 100 epochs trên Colab A100 (20 train, 20 test).
+* **Kết quả kiểm thử chính thức (Final Feedback t=2):**
+  * **Dice Score:** **0.7932 ± 0.0117** (Paper Baseline: 0.7618 $\rightarrow$ **+3.14 pp, Vượt baseline**).
+  * **mIoU:** **0.6575 ± 0.0163** (Paper Baseline: 0.6385 $\rightarrow$ **+1.90 pp, Vượt baseline**).
+  * **Sensitivity (Recall):** **0.8163 ± 0.0452** (Paper Baseline: 0.7516 $\rightarrow$ **+6.47 pp, Vượt baseline**).
+  * **Specificity:** **0.9773 ± 0.0048** (Paper Baseline: 0.9760 $\rightarrow$ **Vượt baseline**).
+  * **False Positive Rate:** **2.27% ± 0.48%** (Paper Baseline: 2.40% $\rightarrow$ **Thấp hơn baseline**).
+  * **Precision:** **0.7755 ± 0.0404** (Paper Baseline: 0.7735 $\rightarrow$ **Vượt baseline**).
+* **Đánh giá:** Chiến lược transfer learning từ mô hình da liễu ISIC-2018 sang vi mạch võng mạc DRIVE đã thành công vang dội: đưa Dice từ 0.2837 lên **0.7932**, đánh bại baseline gốc trên **100% các chỉ số đánh giá**.
 
 ---
 
@@ -95,7 +100,8 @@ Huấn luyện lại duy nhất mô hình đề xuất **`FANet_MFAD`** (ResNet-
 - `06:12`: Google Colab A100 hoàn tất trọn vẹn 100 epochs huấn luyện và kiểm thử pha Final Feedback tập `Kvasir-SEG`. Kết quả vượt toàn diện baseline gốc: Dice **0.8880**, mIoU **0.8208**, Recall **0.9138**, Precision **0.8938**, Specificity **0.9803**. Đã tải đầy đủ weights và CSV về `results/benchmark_v2/kvasir-seg/`.
 - `10:51 UTC (17:51)`: Kaggle hoàn tất `isic-2018`. Kết quả: Dice **0.9000** (vượt baseline), Precision **0.9282**. Đã tải toàn bộ weights và kết quả về `results/benchmark_v2/isic-2018/`.
 - `13:08`: Tạo session Google Colab A100 mới `fanet-a100`.
-- `13:16`: Kích hoạt pipeline Transfer Learning cho `DRIVE` trên Colab A100: nạp trọng số ISIC-2018, data augmentation ×32. Tiến trình fine-tuning đang diễn ra ổn định với Val Dice >0.7140 ngay từ các epoch đầu tiên.
+- `13:16`: Kích hoạt pipeline Transfer Learning cho `DRIVE` trên Colab A100: nạp trọng số ISIC-2018, data augmentation ×32.
+- `13:42`: Colab A100 hoàn thành trọn vẹn 100 epochs Transfer Learning cho `DRIVE`. Kết quả vượt baseline paper trên 100% chỉ số: Dice **0.7932**, mIoU **0.6575**, Sensitivity **0.8163**, Specificity **0.9773**, Precision **0.7755**. Đã tải trọn vẹn metrics CSV và JSON về `results/benchmark_v2/drive_transfer/`.
 
 
 
