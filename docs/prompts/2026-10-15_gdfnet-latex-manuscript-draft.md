@@ -50,4 +50,7 @@
   - Tao script `scripts/generate_architec.py` xuat truc tiep `architec.png` (300 DPI) the hien day du (a) Baseline Scratch CNN voi MixPool Hard Gating va Feedback Trap va (b) Proposed GDF-Net voi Stem 4 kenh, ResNet-34 pre-trained ImageNet, va Decoupled MFAD Decoder 5 tang.
   - Cap nhat `papers/overleaf_submission/figures/architecture_tikz.tex` va `sections/03_method.tex` de nhung truc tiep `figures/architec.png` voi label `\label{fig:architecture}`.
   - Bien dich thanh cong `main.pdf` (10 trang) voi hinh anh ro net, bo cuc dep tren toan trang.
+- **De trong 2 anh architec theo yeu cau cua User:**
+  - Cap nhat `papers/overleaf_submission/figures/architecture_tikz.tex` thanh 2 hop placeholder trong suot vien net dut (TikZ dashed box) cho Subfigure (a) Baseline va Subfigure (b) Proposed GDF-Net de user tu add anh vao sau.
+  - Bien dich lai `main.pdf` (10 trang) thanh cong, layout hoan chinh va khong loi.
 
