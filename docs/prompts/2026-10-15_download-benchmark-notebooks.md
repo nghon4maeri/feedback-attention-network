@@ -3,16 +3,38 @@
 ## 1. Yêu cầu của User
 - Tải toàn bộ các file notebook/script benchmark của 7 tập dữ liệu từ Kaggle về (bao gồm các file chạy trên Colab).
 - Sắp xếp vào một thư mục riêng biệt (`benchmark_notebooks/`) để tiện theo dõi, đối chiếu và kiểm tra mã nguồn.
-- Yêu cầu bổ sung: Kiểm tra cell output, chỉ giữ lại đúng các file đã thực sự chạy thực tế và có ghi ra kết quả nghiệm thu theo từng bộ dữ liệu; loại bỏ toàn bộ các file mẫu (template) chưa chạy hoặc run lỗi/timeout.
+- Yêu cầu bổ sung:
+  1. Chỉ giữ lại đúng 7 file notebook mà người dùng đã chạy thực tế để ra kết quả.
+  2. Mỗi tập dataset phải có thêm thư mục `logs/` (chứa toàn bộ log và stdout) và thư mục `outputs/` (chứa model weights `.pth`, metric `.csv`, summary `.json`, và biểu đồ `.png` nếu có).
 
 ## 2. Thực thi
-- Dùng Kaggle API kéo log và trích xuất kết quả stdout thực tế:
-  1. `01_CVC-ClinicDB`: Giữ `fanet-benchmark-cvc-clinicdb.ipynb` (chạy 200 epoch trên Kaggle GPU T4, output Dice 0.9427).
-  2. `02_EM-Dataset`: Giữ `fanet-benchmark-em-dataset.ipynb` (chạy 100 epoch trên Kaggle GPU T4, output Dice 0.9518).
-  3. `03_Kvasir-SEG`: Giữ `colab_run_mfad_kvasir.ipynb` và `colab_run_mfad_kvasir.py` (chạy trên Google Colab A100 GPU, output Dice 0.8880).
-  4. `04_ISIC-2018`: Giữ `fanet-benchmark-isic-2018.ipynb` (chạy 100 epoch trên Kaggle GPU T4, output Dice 0.9000).
-  5. `05_CHASE-DB1`: Giữ `fanet-benchmark-chasedb1.ipynb` (chạy 100 epoch trên Kaggle GPU T4, output Spec 0.9926, Prec 0.8637).
-  6. `06_DRIVE`: Giữ `colab_run_mfad_drive_transfer.ipynb` và `colab_run_mfad_drive_transfer.py` (chạy Transfer Learning trên Colab A100, output Dice 0.7932; loại bỏ bản Kaggle train-from-scratch thất bại).
-  7. `07_DSB-2018`: Giữ `colab_run_mfad_dsb2018_resume.ipynb` và `colab_run_mfad_dsb2018_resume.py` (chạy In-RAM Caching trên Colab A100 từ epoch 40-100, output Dice 0.8953; loại bỏ bản Kaggle timeout epoch 39).
-- Bơm đầy đủ real execution cell output vào tất cả các notebook để khi mở ra người dùng thấy ngay nhật ký huấn luyện và bảng metric kiểm định cuối cùng.
-- Cập nhật tài liệu hướng dẫn và bảng tổng hợp trong `benchmark_notebooks/README.md`.
+- Cấu trúc thư mục chuẩn hóa cho từng bộ dữ liệu:
+  1. `01_CVC-ClinicDB`:
+     - Notebook: `fanet-benchmark-cvc-clinicdb.ipynb`
+     - `logs/`: `kaggle_stdout.log`, `train_and_eval.txt`
+     - `outputs/`: Model `FANet_MFAD_CVC-ClinicDB_best.pth`, `benchmark_results_CVC-ClinicDB.csv`, `comparison_CVC-ClinicDB.png`, `training_curves_CVC-ClinicDB.png`
+  2. `02_EM-Dataset`:
+     - Notebook: `fanet-benchmark-em-dataset.ipynb`
+     - `logs/`: `kaggle_stdout.log`, `train_and_eval.txt`
+     - `outputs/`: Model `FANet_MFAD_EM-Dataset_best.pth`, `benchmark_results_EM-Dataset.csv`, `benchmark_summary_EM-Dataset.json`, các file đồ thị PNG
+  3. `03_Kvasir-SEG`:
+     - Notebook: `colab_run_mfad_kvasir.ipynb`
+     - `logs/`: `colab_eval.txt`, `colab_eval.log`, `kaggle_stdout.log`, `train_and_eval.txt`
+     - `outputs/`: Model `FANet_MFAD_Kvasir-SEG_best.pth`, `benchmark_results_Kvasir-SEG.csv`, `benchmark_summary_Kvasir-SEG.json`
+  4. `04_ISIC-2018`:
+     - Notebook: `fanet-benchmark-isic-2018.ipynb`
+     - `logs/`: `fanet-benchmark-isic-2018.log` (5.7 MB), `kaggle_stdout.log`, `train_and_eval.txt`
+     - `outputs/`: Model `FANet_MFAD_ISIC-2018_best.pth`, `benchmark_results_ISIC-2018.csv`, các file đồ thị PNG
+  5. `05_CHASE-DB1`:
+     - Notebook: `fanet-benchmark-chasedb1.ipynb`
+     - `logs/`: `kaggle_stdout.log`, `train_and_eval.txt`
+     - `outputs/`: Model `FANet_MFAD_CHASE-DB1_best.pth`, `benchmark_results_CHASE-DB1.csv`, các file đồ thị PNG
+  6. `06_DRIVE`:
+     - Notebook: `colab_run_mfad_drive_transfer.ipynb`
+     - `logs/`: `colab_eval.txt`, `colab_eval.log`, `kaggle_stdout.log`, `train_and_eval.txt`
+     - `outputs/`: Model `FANet_MFAD_DRIVE_best.pth`, `benchmark_results_drive_transfer.csv`, `benchmark_summary_drive_transfer.json`
+  7. `07_DSB-2018`:
+     - Notebook: `colab_run_mfad_dsb2018_resume.ipynb`
+     - `logs/`: `colab_eval.txt`, `colab_eval.log`, `kaggle_stdout.log`, `train_and_eval.txt`
+     - `outputs/`: Model `FANet_MFAD_DSB-2018_best.pth`, `benchmark_results_dsb2018.csv`, `benchmark_summary_dsb2018.json`
+- Đồng bộ hóa tài liệu hướng dẫn `benchmark_notebooks/README.md`.

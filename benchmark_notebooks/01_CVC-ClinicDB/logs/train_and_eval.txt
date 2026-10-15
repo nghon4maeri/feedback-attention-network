@@ -1,0 +1,39 @@
+  [FANet_MFAD] Epoch 145 | LR 1.0e-06 | Loss 0.0312 | Val Dice 0.9415
+  [FANet_MFAD] Epoch 146 | LR 1.0e-06 | Loss 0.0314 | Val Dice 0.9418
+  [FANet_MFAD] Epoch 147 | LR 1.0e-06 | Loss 0.0311 | Val Dice 0.9423
+  [FANet_MFAD] Epoch 148 | LR 1.0e-06 | Loss 0.0303 | Val Dice 0.9409
+  [FANet_MFAD] Epoch 149 | LR 1.0e-06 | Loss 0.0292 | Val Dice 0.9412
+  [FANet_MFAD] Epoch 150 | LR 1.0e-06 | Loss 0.0300 | Val Dice 0.9419
+  [FANet_MFAD] Training Complete. Best Val Dice = 0.9426
+
+============================================================
+  FINAL EVALUATION on CVC-ClinicDB
+============================================================
+
+============================================================
+  FANet MFAD (Final Feedback) — Final Results on CVC-ClinicDB
+============================================================
+             dice: 0.9427 ± 0.0550
+             miou: 0.8960 ± 0.0842
+      sensitivity: 0.9368 ± 0.0612
+      specificity: 0.9960 ± 0.0067
+              fpr: 0.0040 ± 0.0067
+        precision: 0.9514 ± 0.0643
+============================================================
+
+Results saved to ./benchmark_results_CVC-ClinicDB.csv
+Saved qualitative figure -> ./comparison_CVC-ClinicDB.png
+Saved training curves -> ./training_curves_CVC-ClinicDB.png
+
+======================================================================
+  BENCHMARK SUMMARY — CVC-ClinicDB
+======================================================================
+  Metric               |           Mean ± Std
+  ---------------------+---------------------
+  dice                 |   0.9427 ± 0.0550  
+  miou                 |   0.8960 ± 0.0842  
+  sensitivity          |   0.9368 ± 0.0612  
+  specificity          |   0.9960 ± 0.0067  
+  fpr                  |   0.0040 ± 0.0067  
+  precision            |   0.9514 ± 0.0643  
+======================================================================

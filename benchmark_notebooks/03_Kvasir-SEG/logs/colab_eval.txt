@@ -1,0 +1,13 @@
+============================================================
+  FANet_MFAD Final Benchmark Evaluation — 03_Kvasir-SEG
+  Hardware: Google Colab NVIDIA A100-SXM4-40GB GPU
+  Evaluation Pass: t=2 (Final Feedback)
+============================================================
+             dice: 0.8880 ± 0.1431
+             miou: 0.8208 ± 0.1765
+      sensitivity: 0.9138 ± 0.1542
+      specificity: 0.9803 ± 0.0378
+              fpr: 0.0197 ± 0.0378
+        precision: 0.8938 ± 0.1459
+============================================================
+[+] Evaluation finished and verified against baseline.

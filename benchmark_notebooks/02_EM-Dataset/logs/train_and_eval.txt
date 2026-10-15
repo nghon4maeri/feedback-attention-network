@@ -1,0 +1,73 @@
+  [FANet_MFAD] Epoch 061 | LR 1.3e-05 | Loss 0.0180 | Val Dice 0.9380
+  [FANet_MFAD] Epoch 062 | LR 1.3e-05 | Loss 0.0179 | Val Dice 0.9366
+  [FANet_MFAD] Epoch 063 | LR 1.3e-05 | Loss 0.0179 | Val Dice 0.9392
+  [FANet_MFAD] Epoch 064 | LR 1.3e-05 | Loss 0.0178 | Val Dice 0.9396
+  [FANet_MFAD] Epoch 065 | LR 1.3e-05 | Loss 0.0177 | Val Dice 0.9391
+  [FANet_MFAD] Epoch 066 | LR 6.3e-06 | Loss 0.0177 | Val Dice 0.9412
+  [FANet_MFAD] Epoch 067 | LR 6.3e-06 | Loss 0.0176 | Val Dice 0.9410
+  [FANet_MFAD] Epoch 068 | LR 6.3e-06 | Loss 0.0176 | Val Dice 0.9401
+  [FANet_MFAD] Epoch 069 | LR 6.3e-06 | Loss 0.0176 | Val Dice 0.9399
+  [FANet_MFAD] Epoch 070 | LR 6.3e-06 | Loss 0.0176 | Val Dice 0.9413
+  [FANet_MFAD] Epoch 071 | LR 6.3e-06 | Loss 0.0176 | Val Dice 0.9408
+  [FANet_MFAD] Epoch 072 | LR 6.3e-06 | Loss 0.0175 | Val Dice 0.9418
+  [FANet_MFAD] Epoch 073 | LR 6.3e-06 | Loss 0.0175 | Val Dice 0.9414
+  [FANet_MFAD] Epoch 074 | LR 6.3e-06 | Loss 0.0175 | Val Dice 0.9401
+  [FANet_MFAD] Epoch 075 | LR 6.3e-06 | Loss 0.0175 | Val Dice 0.9385
+  [FANet_MFAD] Epoch 076 | LR 6.3e-06 | Loss 0.0175 | Val Dice 0.9411
+  [FANet_MFAD] Epoch 077 | LR 3.1e-06 | Loss 0.0173 | Val Dice 0.9401
+  [FANet_MFAD] Epoch 078 | LR 3.1e-06 | Loss 0.0175 | Val Dice 0.9401
+  [FANet_MFAD] Epoch 079 | LR 3.1e-06 | Loss 0.0173 | Val Dice 0.9408
+  [FANet_MFAD] Epoch 080 | LR 3.1e-06 | Loss 0.0173 | Val Dice 0.9399
+  [FANet_MFAD] Epoch 081 | LR 3.1e-06 | Loss 0.0173 | Val Dice 0.9396
+  [FANet_MFAD] Epoch 082 | LR 3.1e-06 | Loss 0.0173 | Val Dice 0.9414
+  [FANet_MFAD] Epoch 083 | LR 3.1e-06 | Loss 0.0174 | Val Dice 0.9392
+  [FANet_MFAD] Epoch 084 | LR 3.1e-06 | Loss 0.0172 | Val Dice 0.9394
+  [FANet_MFAD] Epoch 085 | LR 3.1e-06 | Loss 0.0173 | Val Dice 0.9394
+  [FANet_MFAD] Epoch 086 | LR 3.1e-06 | Loss 0.0172 | Val Dice 0.9405
+  [FANet_MFAD] Epoch 087 | LR 3.1e-06 | Loss 0.0172 | Val Dice 0.9397
+  [FANet_MFAD] Epoch 088 | LR 1.6e-06 | Loss 0.0173 | Val Dice 0.9406
+  [FANet_MFAD] Epoch 089 | LR 1.6e-06 | Loss 0.0172 | Val Dice 0.9403
+  [FANet_MFAD] Epoch 090 | LR 1.6e-06 | Loss 0.0172 | Val Dice 0.9395
+  [FANet_MFAD] Epoch 091 | LR 1.6e-06 | Loss 0.0172 | Val Dice 0.9403
+  [FANet_MFAD] Epoch 092 | LR 1.6e-06 | Loss 0.0172 | Val Dice 0.9401
+  [FANet_MFAD] Epoch 093 | LR 1.6e-06 | Loss 0.0172 | Val Dice 0.9403
+  [FANet_MFAD] Epoch 094 | LR 1.6e-06 | Loss 0.0172 | Val Dice 0.9411
+  [FANet_MFAD] Epoch 095 | LR 1.6e-06 | Loss 0.0172 | Val Dice 0.9409
+  [FANet_MFAD] Epoch 096 | LR 1.6e-06 | Loss 0.0172 | Val Dice 0.9403
+  [FANet_MFAD] Epoch 097 | LR 1.6e-06 | Loss 0.0172 | Val Dice 0.9395
+  [FANet_MFAD] Epoch 098 | LR 1.6e-06 | Loss 0.0171 | Val Dice 0.9410
+  [FANet_MFAD] Epoch 099 | LR 1.0e-06 | Loss 0.0172 | Val Dice 0.9398
+  [FANet_MFAD] Epoch 100 | LR 1.0e-06 | Loss 0.0172 | Val Dice 0.9401
+  [FANet_MFAD] Training Complete. Best Val Dice = 0.9518
+
+============================================================
+  FINAL EVALUATION on EM-Dataset
+============================================================
+
+============================================================
+  FANet MFAD (Final Feedback) — Final Results on EM-Dataset
+============================================================
+             dice: 0.9518 ± 0.0095
+             miou: 0.9083 ± 0.0173
+      sensitivity: 0.9582 ± 0.0215
+      specificity: 0.9963 ± 0.0019
+              fpr: 0.0037 ± 0.0019
+        precision: 0.9464 ± 0.0221
+============================================================
+
+Results saved to ./benchmark_results_EM-Dataset.csv
+Saved qualitative figure -> ./comparison_EM-Dataset.png
+Saved training curves -> ./training_curves_EM-Dataset.png
+
+======================================================================
+  BENCHMARK SUMMARY — EM-Dataset
+======================================================================
+  Metric               |           Mean ± Std
+  ---------------------+---------------------
+  dice                 |   0.9518 ± 0.0095  
+  miou                 |   0.9083 ± 0.0173  
+  sensitivity          |   0.9582 ± 0.0215  
+  specificity          |   0.9963 ± 0.0019  
+  fpr                  |   0.0037 ± 0.0019  
+  precision            |   0.9464 ± 0.0221  
+======================================================================

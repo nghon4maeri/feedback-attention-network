@@ -1,0 +1,200 @@
+Device: cuda
+GPU: Tesla T4
+CHASE-DB1: Raw Train=20, Val=8 | Repeat Factor=32
+CHASE-DB1 Dataloader ready: 640 augmented train samples per epoch
+
+######################################################################
+#  MFAD TRAINING & BENCHMARK: CHASE-DB1
+#  Image Size: (512, 512) | Epochs: 150 | LR: 0.001
+#  Train Samples (with aug): 640 | Val: 8
+######################################################################
+
+Downloading: "https://download.pytorch.org/models/resnet34-b627a593.pth" to /root/.cache/torch/hub/checkpoints/resnet34-b627a593.pth
+FANet MFAD (Proposed): 24.46M parameters
+
+============================================================
+  TRAINING: FANet MFAD (Proposed) on CHASE-DB1
+============================================================
+  [FANet_MFAD] Epoch 001 | LR 1.0e-03 | Loss 0.3954 | Val Dice 0.3814
+  [FANet_MFAD] Epoch 002 | LR 1.0e-03 | Loss 0.2174 | Val Dice 0.4473
+  [FANet_MFAD] Epoch 003 | LR 1.0e-03 | Loss 0.1937 | Val Dice 0.5464
+  [FANet_MFAD] Epoch 004 | LR 1.0e-03 | Loss 0.1839 | Val Dice 0.6459
+  [FANet_MFAD] Epoch 005 | LR 1.0e-03 | Loss 0.1788 | Val Dice 0.6266
+  [FANet_MFAD] Epoch 006 | LR 1.0e-03 | Loss 0.1757 | Val Dice 0.7091
+  [FANet_MFAD] Epoch 007 | LR 1.0e-03 | Loss 0.1744 | Val Dice 0.6605
+  [FANet_MFAD] Epoch 008 | LR 1.0e-03 | Loss 0.1714 | Val Dice 0.5709
+  [FANet_MFAD] Epoch 009 | LR 1.0e-03 | Loss 0.1687 | Val Dice 0.6086
+  [FANet_MFAD] Epoch 010 | LR 1.0e-03 | Loss 0.1671 | Val Dice 0.5969
+  [FANet_MFAD] Epoch 011 | LR 1.0e-03 | Loss 0.1670 | Val Dice 0.5521
+  [FANet_MFAD] Epoch 012 | LR 1.0e-03 | Loss 0.1646 | Val Dice 0.5234
+  [FANet_MFAD] Epoch 013 | LR 1.0e-03 | Loss 0.1635 | Val Dice 0.3146
+  [FANet_MFAD] Epoch 014 | LR 1.0e-03 | Loss 0.1621 | Val Dice 0.3251
+  [FANet_MFAD] Epoch 015 | LR 1.0e-03 | Loss 0.1604 | Val Dice 0.3826
+  [FANet_MFAD] Epoch 016 | LR 1.0e-03 | Loss 0.1599 | Val Dice 0.4114
+  [FANet_MFAD] Epoch 017 | LR 1.0e-03 | Loss 0.1578 | Val Dice 0.3160
+  [FANet_MFAD] Epoch 018 | LR 5.0e-04 | Loss 0.1524 | Val Dice 0.4893
+  [FANet_MFAD] Epoch 019 | LR 5.0e-04 | Loss 0.1502 | Val Dice 0.3951
+  [FANet_MFAD] Epoch 020 | LR 5.0e-04 | Loss 0.1490 | Val Dice 0.5215
+  [FANet_MFAD] Epoch 021 | LR 5.0e-04 | Loss 0.1472 | Val Dice 0.4474
+  [FANet_MFAD] Epoch 022 | LR 5.0e-04 | Loss 0.1457 | Val Dice 0.4648
+  [FANet_MFAD] Epoch 023 | LR 5.0e-04 | Loss 0.1445 | Val Dice 0.4470
+  [FANet_MFAD] Epoch 024 | LR 5.0e-04 | Loss 0.1425 | Val Dice 0.4382
+  [FANet_MFAD] Epoch 025 | LR 5.0e-04 | Loss 0.1410 | Val Dice 0.3914
+  [FANet_MFAD] Epoch 026 | LR 5.0e-04 | Loss 0.1381 | Val Dice 0.3462
+  [FANet_MFAD] Epoch 027 | LR 5.0e-04 | Loss 0.1373 | Val Dice 0.3148
+  [FANet_MFAD] Epoch 028 | LR 5.0e-04 | Loss 0.1354 | Val Dice 0.3225
+  [FANet_MFAD] Epoch 029 | LR 2.5e-04 | Loss 0.1303 | Val Dice 0.4360
+  [FANet_MFAD] Epoch 030 | LR 2.5e-04 | Loss 0.1284 | Val Dice 0.3865
+  [FANet_MFAD] Epoch 031 | LR 2.5e-04 | Loss 0.1267 | Val Dice 0.3623
+  [FANet_MFAD] Epoch 032 | LR 2.5e-04 | Loss 0.1259 | Val Dice 0.3664
+  [FANet_MFAD] Epoch 033 | LR 2.5e-04 | Loss 0.1252 | Val Dice 0.3941
+  [FANet_MFAD] Epoch 034 | LR 2.5e-04 | Loss 0.1236 | Val Dice 0.4056
+  [FANet_MFAD] Epoch 035 | LR 2.5e-04 | Loss 0.1238 | Val Dice 0.3698
+  [FANet_MFAD] Epoch 036 | LR 2.5e-04 | Loss 0.1223 | Val Dice 0.3552
+  [FANet_MFAD] Epoch 037 | LR 2.5e-04 | Loss 0.1211 | Val Dice 0.3467
+  [FANet_MFAD] Epoch 038 | LR 2.5e-04 | Loss 0.1201 | Val Dice 0.2984
+  [FANet_MFAD] Epoch 039 | LR 2.5e-04 | Loss 0.1194 | Val Dice 0.3101
+  [FANet_MFAD] Epoch 040 | LR 1.3e-04 | Loss 0.1181 | Val Dice 0.2764
+  [FANet_MFAD] Epoch 041 | LR 1.3e-04 | Loss 0.1171 | Val Dice 0.3230
+  [FANet_MFAD] Epoch 042 | LR 1.3e-04 | Loss 0.1166 | Val Dice 0.3185
+  [FANet_MFAD] Epoch 043 | LR 1.3e-04 | Loss 0.1156 | Val Dice 0.2899
+  [FANet_MFAD] Epoch 044 | LR 1.3e-04 | Loss 0.1158 | Val Dice 0.2960
+  [FANet_MFAD] Epoch 045 | LR 1.3e-04 | Loss 0.1153 | Val Dice 0.2985
+  [FANet_MFAD] Epoch 046 | LR 1.3e-04 | Loss 0.1147 | Val Dice 0.3239
+  [FANet_MFAD] Epoch 047 | LR 1.3e-04 | Loss 0.1146 | Val Dice 0.2761
+  [FANet_MFAD] Epoch 048 | LR 1.3e-04 | Loss 0.1141 | Val Dice 0.3294
+  [FANet_MFAD] Epoch 049 | LR 1.3e-04 | Loss 0.1137 | Val Dice 0.2812
+  [FANet_MFAD] Epoch 050 | LR 1.3e-04 | Loss 0.1133 | Val Dice 0.2702
+  [FANet_MFAD] Epoch 051 | LR 6.3e-05 | Loss 0.1122 | Val Dice 0.2938
+  [FANet_MFAD] Epoch 052 | LR 6.3e-05 | Loss 0.1120 | Val Dice 0.2666
+  [FANet_MFAD] Epoch 053 | LR 6.3e-05 | Loss 0.1118 | Val Dice 0.2729
+  [FANet_MFAD] Epoch 054 | LR 6.3e-05 | Loss 0.1114 | Val Dice 0.2786
+  [FANet_MFAD] Epoch 055 | LR 6.3e-05 | Loss 0.1114 | Val Dice 0.3039
+  [FANet_MFAD] Epoch 056 | LR 6.3e-05 | Loss 0.1113 | Val Dice 0.2943
+  [FANet_MFAD] Epoch 057 | LR 6.3e-05 | Loss 0.1109 | Val Dice 0.3160
+  [FANet_MFAD] Epoch 058 | LR 6.3e-05 | Loss 0.1106 | Val Dice 0.2785
+  [FANet_MFAD] Epoch 059 | LR 6.3e-05 | Loss 0.1101 | Val Dice 0.2606
+  [FANet_MFAD] Epoch 060 | LR 6.3e-05 | Loss 0.1104 | Val Dice 0.2711
+  [FANet_MFAD] Epoch 061 | LR 6.3e-05 | Loss 0.1101 | Val Dice 0.3004
+  [FANet_MFAD] Epoch 062 | LR 3.1e-05 | Loss 0.1094 | Val Dice 0.2912
+  [FANet_MFAD] Epoch 063 | LR 3.1e-05 | Loss 0.1090 | Val Dice 0.2982
+  [FANet_MFAD] Epoch 064 | LR 3.1e-05 | Loss 0.1094 | Val Dice 0.2701
+  [FANet_MFAD] Epoch 065 | LR 3.1e-05 | Loss 0.1090 | Val Dice 0.2809
+  [FANet_MFAD] Epoch 066 | LR 3.1e-05 | Loss 0.1087 | Val Dice 0.2626
+  [FANet_MFAD] Epoch 067 | LR 3.1e-05 | Loss 0.1087 | Val Dice 0.2803
+  [FANet_MFAD] Epoch 068 | LR 3.1e-05 | Loss 0.1086 | Val Dice 0.2609
+  [FANet_MFAD] Epoch 069 | LR 3.1e-05 | Loss 0.1087 | Val Dice 0.2883
+  [FANet_MFAD] Epoch 070 | LR 3.1e-05 | Loss 0.1086 | Val Dice 0.2804
+  [FANet_MFAD] Epoch 071 | LR 3.1e-05 | Loss 0.1081 | Val Dice 0.2776
+  [FANet_MFAD] Epoch 072 | LR 3.1e-05 | Loss 0.1076 | Val Dice 0.2834
+  [FANet_MFAD] Epoch 073 | LR 1.6e-05 | Loss 0.1078 | Val Dice 0.2775
+  [FANet_MFAD] Epoch 074 | LR 1.6e-05 | Loss 0.1077 | Val Dice 0.2718
+  [FANet_MFAD] Epoch 075 | LR 1.6e-05 | Loss 0.1080 | Val Dice 0.2828
+  [FANet_MFAD] Epoch 076 | LR 1.6e-05 | Loss 0.1078 | Val Dice 0.2834
+  [FANet_MFAD] Epoch 077 | LR 1.6e-05 | Loss 0.1074 | Val Dice 0.2646
+  [FANet_MFAD] Epoch 078 | LR 1.6e-05 | Loss 0.1075 | Val Dice 0.2804
+  [FANet_MFAD] Epoch 079 | LR 1.6e-05 | Loss 0.1076 | Val Dice 0.2656
+  [FANet_MFAD] Epoch 080 | LR 1.6e-05 | Loss 0.1075 | Val Dice 0.2613
+  [FANet_MFAD] Epoch 081 | LR 1.6e-05 | Loss 0.1069 | Val Dice 0.2746
+  [FANet_MFAD] Epoch 082 | LR 1.6e-05 | Loss 0.1070 | Val Dice 0.2677
+  [FANet_MFAD] Epoch 083 | LR 1.6e-05 | Loss 0.1071 | Val Dice 0.2574
+  [FANet_MFAD] Epoch 084 | LR 7.8e-06 | Loss 0.1073 | Val Dice 0.2547
+  [FANet_MFAD] Epoch 085 | LR 7.8e-06 | Loss 0.1068 | Val Dice 0.2529
+  [FANet_MFAD] Epoch 086 | LR 7.8e-06 | Loss 0.1070 | Val Dice 0.2555
+  [FANet_MFAD] Epoch 087 | LR 7.8e-06 | Loss 0.1068 | Val Dice 0.2714
+  [FANet_MFAD] Epoch 088 | LR 7.8e-06 | Loss 0.1068 | Val Dice 0.2645
+  [FANet_MFAD] Epoch 089 | LR 7.8e-06 | Loss 0.1072 | Val Dice 0.2501
+  [FANet_MFAD] Epoch 090 | LR 7.8e-06 | Loss 0.1069 | Val Dice 0.2730
+  [FANet_MFAD] Epoch 091 | LR 7.8e-06 | Loss 0.1067 | Val Dice 0.2432
+  [FANet_MFAD] Epoch 092 | LR 7.8e-06 | Loss 0.1069 | Val Dice 0.2551
+  [FANet_MFAD] Epoch 093 | LR 7.8e-06 | Loss 0.1067 | Val Dice 0.2504
+  [FANet_MFAD] Epoch 094 | LR 7.8e-06 | Loss 0.1067 | Val Dice 0.2525
+  [FANet_MFAD] Epoch 095 | LR 3.9e-06 | Loss 0.1068 | Val Dice 0.2647
+  [FANet_MFAD] Epoch 096 | LR 3.9e-06 | Loss 0.1065 | Val Dice 0.2761
+  [FANet_MFAD] Epoch 097 | LR 3.9e-06 | Loss 0.1065 | Val Dice 0.2432
+  [FANet_MFAD] Epoch 098 | LR 3.9e-06 | Loss 0.1065 | Val Dice 0.2514
+  [FANet_MFAD] Epoch 099 | LR 3.9e-06 | Loss 0.1068 | Val Dice 0.2663
+  [FANet_MFAD] Epoch 100 | LR 3.9e-06 | Loss 0.1064 | Val Dice 0.2499
+  [FANet_MFAD] Epoch 101 | LR 3.9e-06 | Loss 0.1065 | Val Dice 0.2624
+  [FANet_MFAD] Epoch 102 | LR 3.9e-06 | Loss 0.1063 | Val Dice 0.2773
+  [FANet_MFAD] Epoch 103 | LR 3.9e-06 | Loss 0.1061 | Val Dice 0.2393
+  [FANet_MFAD] Epoch 104 | LR 3.9e-06 | Loss 0.1063 | Val Dice 0.2462
+  [FANet_MFAD] Epoch 105 | LR 3.9e-06 | Loss 0.1065 | Val Dice 0.2583
+  [FANet_MFAD] Epoch 106 | LR 2.0e-06 | Loss 0.1067 | Val Dice 0.2652
+  [FANet_MFAD] Epoch 107 | LR 2.0e-06 | Loss 0.1067 | Val Dice 0.2520
+  [FANet_MFAD] Epoch 108 | LR 2.0e-06 | Loss 0.1066 | Val Dice 0.2399
+  [FANet_MFAD] Epoch 109 | LR 2.0e-06 | Loss 0.1062 | Val Dice 0.2640
+  [FANet_MFAD] Epoch 110 | LR 2.0e-06 | Loss 0.1065 | Val Dice 0.2470
+  [FANet_MFAD] Epoch 111 | LR 2.0e-06 | Loss 0.1062 | Val Dice 0.2455
+  [FANet_MFAD] Epoch 112 | LR 2.0e-06 | Loss 0.1064 | Val Dice 0.2574
+  [FANet_MFAD] Epoch 113 | LR 2.0e-06 | Loss 0.1062 | Val Dice 0.2426
+  [FANet_MFAD] Epoch 114 | LR 2.0e-06 | Loss 0.1060 | Val Dice 0.2574
+  [FANet_MFAD] Epoch 115 | LR 2.0e-06 | Loss 0.1062 | Val Dice 0.2548
+  [FANet_MFAD] Epoch 116 | LR 2.0e-06 | Loss 0.1064 | Val Dice 0.2583
+  [FANet_MFAD] Epoch 117 | LR 1.0e-06 | Loss 0.1064 | Val Dice 0.2274
+  [FANet_MFAD] Epoch 118 | LR 1.0e-06 | Loss 0.1060 | Val Dice 0.2577
+  [FANet_MFAD] Epoch 119 | LR 1.0e-06 | Loss 0.1062 | Val Dice 0.2388
+  [FANet_MFAD] Epoch 120 | LR 1.0e-06 | Loss 0.1059 | Val Dice 0.2478
+  [FANet_MFAD] Epoch 121 | LR 1.0e-06 | Loss 0.1062 | Val Dice 0.2495
+  [FANet_MFAD] Epoch 122 | LR 1.0e-06 | Loss 0.1062 | Val Dice 0.2552
+  [FANet_MFAD] Epoch 123 | LR 1.0e-06 | Loss 0.1061 | Val Dice 0.2415
+  [FANet_MFAD] Epoch 124 | LR 1.0e-06 | Loss 0.1066 | Val Dice 0.2489
+  [FANet_MFAD] Epoch 125 | LR 1.0e-06 | Loss 0.1062 | Val Dice 0.2502
+  [FANet_MFAD] Epoch 126 | LR 1.0e-06 | Loss 0.1064 | Val Dice 0.2567
+  [FANet_MFAD] Epoch 127 | LR 1.0e-06 | Loss 0.1064 | Val Dice 0.2602
+  [FANet_MFAD] Epoch 128 | LR 1.0e-06 | Loss 0.1062 | Val Dice 0.2356
+  [FANet_MFAD] Epoch 129 | LR 1.0e-06 | Loss 0.1063 | Val Dice 0.2462
+  [FANet_MFAD] Epoch 130 | LR 1.0e-06 | Loss 0.1064 | Val Dice 0.2413
+  [FANet_MFAD] Epoch 131 | LR 1.0e-06 | Loss 0.1063 | Val Dice 0.2520
+  [FANet_MFAD] Epoch 132 | LR 1.0e-06 | Loss 0.1062 | Val Dice 0.2559
+  [FANet_MFAD] Epoch 133 | LR 1.0e-06 | Loss 0.1064 | Val Dice 0.2490
+  [FANet_MFAD] Epoch 134 | LR 1.0e-06 | Loss 0.1064 | Val Dice 0.2513
+  [FANet_MFAD] Epoch 135 | LR 1.0e-06 | Loss 0.1059 | Val Dice 0.2405
+  [FANet_MFAD] Epoch 136 | LR 1.0e-06 | Loss 0.1059 | Val Dice 0.2412
+  [FANet_MFAD] Epoch 137 | LR 1.0e-06 | Loss 0.1060 | Val Dice 0.2584
+  [FANet_MFAD] Epoch 138 | LR 1.0e-06 | Loss 0.1061 | Val Dice 0.2507
+  [FANet_MFAD] Epoch 139 | LR 1.0e-06 | Loss 0.1063 | Val Dice 0.2503
+  [FANet_MFAD] Epoch 140 | LR 1.0e-06 | Loss 0.1063 | Val Dice 0.2454
+  [FANet_MFAD] Epoch 141 | LR 1.0e-06 | Loss 0.1059 | Val Dice 0.2471
+  [FANet_MFAD] Epoch 142 | LR 1.0e-06 | Loss 0.1064 | Val Dice 0.2269
+  [FANet_MFAD] Epoch 143 | LR 1.0e-06 | Loss 0.1060 | Val Dice 0.2601
+  [FANet_MFAD] Epoch 144 | LR 1.0e-06 | Loss 0.1061 | Val Dice 0.2458
+  [FANet_MFAD] Epoch 145 | LR 1.0e-06 | Loss 0.1063 | Val Dice 0.2666
+  [FANet_MFAD] Epoch 146 | LR 1.0e-06 | Loss 0.1060 | Val Dice 0.2485
+  [FANet_MFAD] Epoch 147 | LR 1.0e-06 | Loss 0.1059 | Val Dice 0.2541
+  [FANet_MFAD] Epoch 148 | LR 1.0e-06 | Loss 0.1060 | Val Dice 0.2483
+  [FANet_MFAD] Epoch 149 | LR 1.0e-06 | Loss 0.1061 | Val Dice 0.2527
+  [FANet_MFAD] Epoch 150 | LR 1.0e-06 | Loss 0.1060 | Val Dice 0.2449
+  [FANet_MFAD] Training Complete. Best Val Dice = 0.7091
+
+============================================================
+  FINAL EVALUATION on CHASE-DB1
+============================================================
+
+============================================================
+  FANet MFAD (Final Feedback) — Final Results on CHASE-DB1
+============================================================
+             dice: 0.7093 ± 0.0455
+             miou: 0.5514 ± 0.0540
+      sensitivity: 0.6064 ± 0.0708
+      specificity: 0.9926 ± 0.0020
+              fpr: 0.0074 ± 0.0020
+        precision: 0.8637 ± 0.0379
+============================================================
+
+Results saved to ./benchmark_results_CHASE-DB1.csv
+Saved qualitative figure -> ./comparison_CHASE-DB1.png
+Saved training curves -> ./training_curves_CHASE-DB1.png
+
+======================================================================
+  BENCHMARK SUMMARY — CHASE-DB1
+======================================================================
+  Metric               |           Mean ± Std
+  ---------------------+---------------------
+  dice                 |   0.7093 ± 0.0455  
+  miou                 |   0.5514 ± 0.0540  
+  sensitivity          |   0.6064 ± 0.0708  
+  specificity          |   0.9926 ± 0.0020  
+  fpr                  |   0.0074 ± 0.0020  
+  precision            |   0.8637 ± 0.0379  
+======================================================================

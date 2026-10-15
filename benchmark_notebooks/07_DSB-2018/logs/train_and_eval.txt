@@ -1,0 +1,56 @@
+Device: cpu
+Extracting /kaggle/input/competitions/data-science-bowl-2018/stage1_train.zip...
+DSB-2018: Train=1072 (augmented), Val=134
+
+######################################################################
+#  MFAD TRAINING & BENCHMARK: DSB-2018
+#  Image Size: (256, 256) | Epochs: 100 | LR: 0.0001
+#  Train Samples (with aug): 1072 | Val: 134
+######################################################################
+
+Downloading: "https://download.pytorch.org/models/resnet34-b627a593.pth" to /root/.cache/torch/hub/checkpoints/resnet34-b627a593.pth
+FANet MFAD (Proposed): 24.46M parameters
+
+============================================================
+  TRAINING: FANet MFAD (Proposed) on DSB-2018
+============================================================
+  [FANet_MFAD] Epoch 001 | LR 1.0e-04 | Loss 0.4145 | Val Dice 0.8254
+  [FANet_MFAD] Epoch 002 | LR 1.0e-04 | Loss 0.2571 | Val Dice 0.8250
+  [FANet_MFAD] Epoch 003 | LR 1.0e-04 | Loss 0.2232 | Val Dice 0.8180
+  [FANet_MFAD] Epoch 004 | LR 1.0e-04 | Loss 0.2056 | Val Dice 0.8600
+  [FANet_MFAD] Epoch 005 | LR 1.0e-04 | Loss 0.1911 | Val Dice 0.8500
+  [FANet_MFAD] Epoch 006 | LR 1.0e-04 | Loss 0.1800 | Val Dice 0.8495
+  [FANet_MFAD] Epoch 007 | LR 1.0e-04 | Loss 0.1657 | Val Dice 0.8650
+  [FANet_MFAD] Epoch 008 | LR 1.0e-04 | Loss 0.1639 | Val Dice 0.8569
+  [FANet_MFAD] Epoch 009 | LR 1.0e-04 | Loss 0.1544 | Val Dice 0.8653
+  [FANet_MFAD] Epoch 010 | LR 1.0e-04 | Loss 0.1487 | Val Dice 0.8781
+  [FANet_MFAD] Epoch 011 | LR 1.0e-04 | Loss 0.1418 | Val Dice 0.8748
+  [FANet_MFAD] Epoch 012 | LR 1.0e-04 | Loss 0.1336 | Val Dice 0.8751
+  [FANet_MFAD] Epoch 013 | LR 1.0e-04 | Loss 0.1363 | Val Dice 0.8755
+  [FANet_MFAD] Epoch 014 | LR 1.0e-04 | Loss 0.1372 | Val Dice 0.8692
+  [FANet_MFAD] Epoch 015 | LR 1.0e-04 | Loss 0.1316 | Val Dice 0.8780
+  [FANet_MFAD] Epoch 016 | LR 1.0e-04 | Loss 0.1242 | Val Dice 0.8657
+  [FANet_MFAD] Epoch 017 | LR 1.0e-04 | Loss 0.1220 | Val Dice 0.8804
+  [FANet_MFAD] Epoch 018 | LR 1.0e-04 | Loss 0.1204 | Val Dice 0.8858
+  [FANet_MFAD] Epoch 019 | LR 1.0e-04 | Loss 0.1200 | Val Dice 0.8783
+  [FANet_MFAD] Epoch 020 | LR 1.0e-04 | Loss 0.1253 | Val Dice 0.8872
+  [FANet_MFAD] Epoch 021 | LR 1.0e-04 | Loss 0.1166 | Val Dice 0.8842
+  [FANet_MFAD] Epoch 022 | LR 1.0e-04 | Loss 0.1123 | Val Dice 0.8829
+  [FANet_MFAD] Epoch 023 | LR 1.0e-04 | Loss 0.1127 | Val Dice 0.8828
+  [FANet_MFAD] Epoch 024 | LR 1.0e-04 | Loss 0.1151 | Val Dice 0.8733
+  [FANet_MFAD] Epoch 025 | LR 1.0e-04 | Loss 0.1110 | Val Dice 0.8860
+  [FANet_MFAD] Epoch 026 | LR 1.0e-04 | Loss 0.1161 | Val Dice 0.8579
+  [FANet_MFAD] Epoch 027 | LR 1.0e-04 | Loss 0.1128 | Val Dice 0.8850
+  [FANet_MFAD] Epoch 028 | LR 1.0e-04 | Loss 0.1094 | Val Dice 0.8859
+  [FANet_MFAD] Epoch 029 | LR 1.0e-04 | Loss 0.1105 | Val Dice 0.8870
+  [FANet_MFAD] Epoch 030 | LR 1.0e-04 | Loss 0.1095 | Val Dice 0.8796
+  [FANet_MFAD] Epoch 031 | LR 1.0e-04 | Loss 0.1053 | Val Dice 0.8839
+  [FANet_MFAD] Epoch 032 | LR 5.0e-05 | Loss 0.1055 | Val Dice 0.8724
+  [FANet_MFAD] Epoch 033 | LR 5.0e-05 | Loss 0.1013 | Val Dice 0.8774
+  [FANet_MFAD] Epoch 034 | LR 5.0e-05 | Loss 0.1031 | Val Dice 0.8850
+  [FANet_MFAD] Epoch 035 | LR 5.0e-05 | Loss 0.1052 | Val Dice 0.8741
+  [FANet_MFAD] Epoch 036 | LR 5.0e-05 | Loss 0.1007 | Val Dice 0.8748
+  [FANet_MFAD] Epoch 037 | LR 5.0e-05 | Loss 0.1057 | Val Dice 0.8785
+  [FANet_MFAD] Epoch 038 | LR 5.0e-05 | Loss 0.0995 | Val Dice 0.8755
+  [FANet_MFAD] Epoch 039 | LR 5.0e-05 | Loss 0.1051 | Val Dice 0.8773
+[!] TIME LIMIT REACHED (11.5h). Exiting gracefully.

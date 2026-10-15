@@ -1,0 +1,30 @@
+{
+  "dataset": "EM-Dataset",
+  "model": "FANet_MFAD",
+  "results": {
+    "dice": {
+      "mean": 0.951838,
+      "std": 0.009530
+    },
+    "miou": {
+      "mean": 0.908259,
+      "std": 0.017308
+    },
+    "sensitivity": {
+      "mean": 0.958173,
+      "std": 0.021454
+    },
+    "specificity": {
+      "mean": 0.996276,
+      "std": 0.001865
+    },
+    "fpr": {
+      "mean": 0.003724,
+      "std": 0.001865
+    },
+    "precision": {
+      "mean": 0.946398,
+      "std": 0.022117
+    }
+  }
+}

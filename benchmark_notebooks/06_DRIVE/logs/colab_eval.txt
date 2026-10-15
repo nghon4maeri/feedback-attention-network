@@ -1,0 +1,13 @@
+============================================================
+  FANet_MFAD Final Benchmark Evaluation — 06_DRIVE
+  Hardware: Google Colab NVIDIA A100-SXM4-40GB GPU
+  Evaluation Pass: t=2 (Final Feedback)
+============================================================
+             dice: 0.7932 ± 0.0117
+             miou: 0.6575 ± 0.0163
+      sensitivity: 0.8163 ± 0.0452
+      specificity: 0.9773 ± 0.0048
+              fpr: 0.0227 ± 0.0048
+        precision: 0.7755 ± 0.0404
+============================================================
+[+] Evaluation finished and verified against baseline.
