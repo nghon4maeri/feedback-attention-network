@@ -86,13 +86,13 @@ The stem convolution $\text{Conv}_{7 \times 7}$ accepts 4 input channels. We ini
 
 \subsubsection{Hierarchical Encoder Backbone}
 Features are extracted using a standard ResNet-34 backbone~\cite{he2016deep}, yielding five hierarchical feature representations:
+\begin{align}
+  \mathbf{e}_1 &\in \mathbb{R}^{B \times 64 \times \frac{H}{2} \times \frac{W}{2}}, \quad
+  \mathbf{e}_2 \in \mathbb{R}^{B \times 64 \times \frac{H}{4} \times \frac{W}{4}}, \\
+  \mathbf{e}_3 &\in \mathbb{R}^{B \times 128 \times \frac{H}{8} \times \frac{W}{8}}, \quad
+  \mathbf{e}_4 \in \mathbb{R}^{B \times 256 \times \frac{H}{16} \times \frac{W}{16}},
+\end{align}
 \begin{equation}
-  \mathbf{e}_1 \in \mathbb{R}^{B \times 64 \times \frac{H}{2} \times \frac{W}{2}}, \quad
-  \mathbf{e}_2 \in \mathbb{R}^{B \times 64 \times \frac{H}{4} \times \frac{W}{4}}, \quad
-  \mathbf{e}_3 \in \mathbb{R}^{B \times 128 \times \frac{H}{8} \times \frac{W}{8}},
-\end{equation}
-\begin{equation}
-  \mathbf{e}_4 \in \mathbb{R}^{B \times 256 \times \frac{H}{16} \times \frac{W}{16}}, \quad
   \mathbf{b} \in \mathbb{R}^{B \times 512 \times \frac{H}{32} \times \frac{W}{32}}.
 \end{equation}
 

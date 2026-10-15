@@ -95,23 +95,30 @@
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {III-C}1}4-Channel Decoupled Guidance Stem}{4}{subsubsection.3.3.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {III-C}2}Hierarchical Encoder Backbone}{4}{subsubsection.3.3.2}\protected@file@percent }
 \@writefile{brf}{\backcite{he2016deep}{{4}{\mbox  {III-C}2}{subsubsection.3.3.2}}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Visual comparison of the (a) Standard Feedback Trap and (b) Proposed Detached Soft-OR mechanism. Solid black arrows denote the forward representation pass. Dashed arrows trace the backward gradient path. In (a), the hard binary gate paralyzes gradient flow to the backbone (Red dashed, $\nabla \equiv 0$) while leaking toxic gradients back into the recurrent loop. In (b), our proposed \texttt  {detach()} barrier structurally severs the recurrent error loop, while the continuous Soft-OR operator restores a healthy, uncertainty-guided gradient flow (Green dashed, $\nabla \propto (1-m_{\text  {fg}})$) directly to the internal attention branch.}}{5}{figure.caption.1}\protected@file@percent }
+\citation{bernal2017comparative}
+\citation{cardona2010integrated}
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:architecture_tikz}{{1}{5}{Visual comparison of the (a) Standard Feedback Trap and (b) Proposed Detached Soft-OR mechanism. Solid black arrows denote the forward representation pass. Dashed arrows trace the backward gradient path. In (a), the hard binary gate paralyzes gradient flow to the backbone (Red dashed, $\nabla \equiv 0$) while leaking toxic gradients back into the recurrent loop. In (b), our proposed \texttt {detach()} barrier structurally severs the recurrent error loop, while the continuous Soft-OR operator restores a healthy, uncertainty-guided gradient flow (Green dashed, $\nabla \propto (1-m_{\text {fg}})$) directly to the internal attention branch}{figure.caption.1}{}}
+\newlabel{fig:arch_baseline}{{1a}{5}{\textbf {Baseline (Hard Gating / Feedback Trap):} Indicator step function induces gradient paralysis on internal attention ($\nabla \equiv 0$), while unconstrained recursive gradients leak through $m_{\text {fg}}$, triggering runaway false-positive hallucinations}{figure.caption.1}{}}
+\newlabel{sub@fig:arch_baseline}{{a}{5}{\textbf {Baseline (Hard Gating / Feedback Trap):} Indicator step function induces gradient paralysis on internal attention ($\nabla \equiv 0$), while unconstrained recursive gradients leak through $m_{\text {fg}}$, triggering runaway false-positive hallucinations}{figure.caption.1}{}}
+\newlabel{fig:arch_proposed}{{1b}{5}{\textbf {Proposed GDF-Net (Detached Soft-OR Gating):} The stop-gradient operator (\texttt {detach}) severs recursive gradient leakage (Feedback Firewall), while continuous Soft-OR modulation restores healthy, uncertainty-guided gradient backpropagation}{figure.caption.1}{}}
+\newlabel{sub@fig:arch_proposed}{{b}{5}{\textbf {Proposed GDF-Net (Detached Soft-OR Gating):} The stop-gradient operator (\texttt {detach}) severs recursive gradient leakage (Feedback Firewall), while continuous Soft-OR modulation restores healthy, uncertainty-guided gradient backpropagation}{figure.caption.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Architectural comparison of spatial feedback gating mechanisms. Solid black arrows denote forward feature propagation; dashed colored arrows represent backward gradient backpropagation. The proposed GDF-Net decouples forward guidance from backward optimization, eliminating the Feedback Trap.}}{5}{figure.caption.1}\protected@file@percent }
+\newlabel{fig:architecture_tikz}{{1}{5}{Architectural comparison of spatial feedback gating mechanisms. Solid black arrows denote forward feature propagation; dashed colored arrows represent backward gradient backpropagation. The proposed GDF-Net decouples forward guidance from backward optimization, eliminating the Feedback Trap}{figure.caption.1}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {III-C}3}Multi-Scale Gradient-Decoupled Feedback Decoder}{5}{subsubsection.3.3.3}\protected@file@percent }
-\newlabel{eq:gdf_modulation}{{17}{5}{Multi-Scale Gradient-Decoupled Feedback Decoder}{equation.3.17}{}}
+\newlabel{eq:gdf_modulation}{{18}{5}{Multi-Scale Gradient-Decoupled Feedback Decoder}{equation.3.18}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-D}}Training Objective and Multi-Pass Optimization}{5}{subsection.3.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {IV}Experiments and Benchmark Results}{5}{section.4}\protected@file@percent }
 \newlabel{sec:experiments}{{IV}{5}{Experiments and Benchmark Results}{section.4}{}}
-\citation{bernal2017comparative}
-\citation{cardona2010integrated}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Experimental Setup and Benchmark Datasets}{5}{subsection.4.1}\protected@file@percent }
+\@writefile{brf}{\backcite{bernal2017comparative}{{5}{1}{Item.13}}}
 \citation{jha2020kvasir}
 \citation{codella2019skin}
 \citation{hoover2000locating}
 \citation{staal2004ridge}
 \citation{caicedo2019nucleus}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Experimental Setup and Benchmark Datasets}{6}{subsection.4.1}\protected@file@percent }
-\@writefile{brf}{\backcite{bernal2017comparative}{{6}{1}{Item.13}}}
+\citation{leufkens2012factors,mori2019real}
+\citation{mori2019real,hassan2021overcoming}
+\citation{rex2017colorectal}
 \@writefile{brf}{\backcite{cardona2010integrated}{{6}{2}{Item.14}}}
 \@writefile{brf}{\backcite{jha2020kvasir}{{6}{3}{Item.15}}}
 \@writefile{brf}{\backcite{codella2019skin}{{6}{4}{Item.16}}}
@@ -122,32 +129,27 @@
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-A}2}Evaluation Metrics}{6}{subsubsection.4.1.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Master Benchmark Results Across All 7 Datasets}{6}{subsection.4.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Visual Analysis: Convergence Dynamics and Qualitative Comparisons}{6}{subsection.4.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}Iterative Dynamics: Analyzing Multi-Pass Refinement and Optimization Stability}{6}{subsection.4.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-E}}Ablation Studies and Mechanistic Disentanglement}{6}{subsection.4.5}\protected@file@percent }
-\citation{leufkens2012factors,mori2019real}
-\citation{mori2019real,hassan2021overcoming}
-\citation{rex2017colorectal}
-\@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces Comprehensive performance comparison across seven biomedical image segmentation datasets. Best values are boldfaced. Delta ($\Delta $) denotes percentage-point improvement over the baseline. GDF-Net outperforms the baseline across 100\% of evaluated benchmarks.}}{7}{table.caption.2}\protected@file@percent }
-\newlabel{tab:master_benchmark}{{I}{7}{Comprehensive performance comparison across seven biomedical image segmentation datasets. Best values are boldfaced. Delta ($\Delta $) denotes percentage-point improvement over the baseline. GDF-Net outperforms the baseline across 100\% of evaluated benchmarks}{table.caption.2}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces Iterative segmentation refinement across recurrent feedback passes ($t=1, 2, 4$) on representative cohorts. Without gradient decoupling, conventional feedback mechanisms stagnate ($t_1 \equiv t_4$) or suffer from divergence. GDF-Net delivers progressive, statistically significant boundary refinement at $t=2$.}}{7}{table.caption.4}\protected@file@percent }
-\newlabel{tab:iterative_dynamics}{{II}{7}{Iterative segmentation refinement across recurrent feedback passes ($t=1, 2, 4$) on representative cohorts. Without gradient decoupling, conventional feedback mechanisms stagnate ($t_1 \equiv t_4$) or suffer from divergence. GDF-Net delivers progressive, statistically significant boundary refinement at $t=2$}{table.caption.4}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces Ablation analysis on CVC-ClinicDB ($N=61$) and ISIC-2018 ($N=260$). Removing gradient decoupling ($\text  {detach}$) results in severe performance degradation and false-positive explosion.}}{7}{table.caption.5}\protected@file@percent }
-\newlabel{tab:ablation}{{III}{7}{Ablation analysis on CVC-ClinicDB ($N=61$) and ISIC-2018 ($N=260$). Removing gradient decoupling ($\text {detach}$) results in severe performance degradation and false-positive explosion}{table.caption.5}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {V}Discussion and Conclusion}{7}{section.5}\protected@file@percent }
-\newlabel{sec:conclusion}{{V}{7}{Discussion and Conclusion}{section.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}Discussion}{7}{subsection.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {V-A}1}Clinical Significance of Over-Segmentation Suppression}{7}{subsubsection.5.1.1}\protected@file@percent }
-\@writefile{brf}{\backcite{leufkens2012factors, mori2019real}{{7}{\mbox  {V-A}1}{subsubsection.5.1.1}}}
-\newlabel{fig:convergence_top}{{2a}{8}{\textbf {Top: Training Convergence Curves.} Evolution of training loss and validation Dice score across epochs on CVC-ClinicDB, EM-Dataset, ISIC-2018, and CHASE-DB1. GDF-Net demonstrates monotonic convergence and rapid stabilization, avoiding the oscillatory divergence of coupled feedback loops}{figure.caption.3}{}}
-\newlabel{sub@fig:convergence_top}{{a}{8}{\textbf {Top: Training Convergence Curves.} Evolution of training loss and validation Dice score across epochs on CVC-ClinicDB, EM-Dataset, ISIC-2018, and CHASE-DB1. GDF-Net demonstrates monotonic convergence and rapid stabilization, avoiding the oscillatory divergence of coupled feedback loops}{figure.caption.3}{}}
-\newlabel{fig:qualitative_bottom}{{2b}{8}{\textbf {Bottom: Qualitative Prediction Comparisons.} Visual segmentation overlays across representative benchmarks. Left-to-right: Raw Image, Ground Truth, Coupled Baseline, and GDF-Net (Ours). GDF-Net completely eliminates false-positive mucosal halos and thin vessel hallucinations}{figure.caption.3}{}}
-\newlabel{sub@fig:qualitative_bottom}{{b}{8}{\textbf {Bottom: Qualitative Prediction Comparisons.} Visual segmentation overlays across representative benchmarks. Left-to-right: Raw Image, Ground Truth, Coupled Baseline, and GDF-Net (Ours). GDF-Net completely eliminates false-positive mucosal halos and thin vessel hallucinations}{figure.caption.3}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Visual verification of GDF-Net across four representative biomedical imaging benchmarks. \textbf  {Top:} Training convergence curves confirming optimization stability under gradient decoupling. \textbf  {Bottom:} Qualitative segmentation predictions demonstrating sharp contour boundary alignment and robust false-positive suppression.}}{8}{figure.caption.3}\protected@file@percent }
-\newlabel{fig:convergence_and_qualitative}{{2}{8}{Visual verification of GDF-Net across four representative biomedical imaging benchmarks. \textbf {Top:} Training convergence curves confirming optimization stability under gradient decoupling. \textbf {Bottom:} Qualitative segmentation predictions demonstrating sharp contour boundary alignment and robust false-positive suppression}{figure.caption.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}Iterative Refinement and Architectural Ablation Studies}{6}{subsection.4.4}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces Comprehensive performance comparison across seven biomedical image segmentation datasets. Best values are boldfaced. Delta ($\Delta $) denotes percentage-point improvement over the baseline architecture. GDF-Net outperforms the baseline across 100\% of evaluated benchmarks without any false-positive runaway.}}{7}{table.caption.2}\protected@file@percent }
+\newlabel{tab:master_benchmark}{{I}{7}{Comprehensive performance comparison across seven biomedical image segmentation datasets. Best values are boldfaced. Delta ($\Delta $) denotes percentage-point improvement over the baseline architecture. GDF-Net outperforms the baseline across 100\% of evaluated benchmarks without any false-positive runaway}{table.caption.2}{}}
+\newlabel{fig:convergence_top}{{2a}{7}{\textbf {Top: Training Convergence Curves.} Evolution of training loss and validation Dice score across epochs on CVC-ClinicDB, EM-Dataset, ISIC-2018, and CHASE-DB1. GDF-Net demonstrates monotonic convergence and rapid stabilization, avoiding the oscillatory divergence of coupled feedback loops}{figure.caption.3}{}}
+\newlabel{sub@fig:convergence_top}{{a}{7}{\textbf {Top: Training Convergence Curves.} Evolution of training loss and validation Dice score across epochs on CVC-ClinicDB, EM-Dataset, ISIC-2018, and CHASE-DB1. GDF-Net demonstrates monotonic convergence and rapid stabilization, avoiding the oscillatory divergence of coupled feedback loops}{figure.caption.3}{}}
+\newlabel{fig:qualitative_bottom}{{2b}{7}{\textbf {Bottom: Qualitative Prediction Comparisons.} Visual segmentation overlays across representative benchmarks. Left-to-right: Raw Image, Ground Truth, Coupled Baseline, and GDF-Net (Ours). GDF-Net completely eliminates false-positive mucosal halos and thin vessel hallucinations}{figure.caption.3}{}}
+\newlabel{sub@fig:qualitative_bottom}{{b}{7}{\textbf {Bottom: Qualitative Prediction Comparisons.} Visual segmentation overlays across representative benchmarks. Left-to-right: Raw Image, Ground Truth, Coupled Baseline, and GDF-Net (Ours). GDF-Net completely eliminates false-positive mucosal halos and thin vessel hallucinations}{figure.caption.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Visual verification of GDF-Net across four representative biomedical imaging benchmarks. \textbf  {Top:} Training convergence curves confirming optimization stability under gradient decoupling. \textbf  {Bottom:} Qualitative segmentation predictions demonstrating sharp contour boundary alignment and robust false-positive suppression.}}{7}{figure.caption.3}\protected@file@percent }
+\newlabel{fig:convergence_and_qualitative}{{2}{7}{Visual verification of GDF-Net across four representative biomedical imaging benchmarks. \textbf {Top:} Training convergence curves confirming optimization stability under gradient decoupling. \textbf {Bottom:} Qualitative segmentation predictions demonstrating sharp contour boundary alignment and robust false-positive suppression}{figure.caption.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces Comprehensive Iterative Refinement Dynamics and Architectural Ablation Analysis. \textbf  {Top Tier (Cohort / Setup):} Iterative segmentation refinement across recurrent feedback passes ($t=1, 2, 4$). Without gradient decoupling, conventional feedback mechanisms stagnate ($t_1 \equiv t_4$) or suffer from representation drift. GDF-Net delivers progressive, statistically significant boundary refinement at $t=2$. \textbf  {Bottom Tier (Configuration):} Component ablation on CVC-ClinicDB ($N=61$) and ISIC-2018 ($N=260$). Removing gradient decoupling ($\text  {detach}$) results in catastrophic false-positive explosion and performance degradation.}}{8}{table.caption.4}\protected@file@percent }
+\newlabel{tab:ablation}{{II}{8}{Comprehensive Iterative Refinement Dynamics and Architectural Ablation Analysis. \textbf {Top Tier (Cohort / Setup):} Iterative segmentation refinement across recurrent feedback passes ($t=1, 2, 4$). Without gradient decoupling, conventional feedback mechanisms stagnate ($t_1 \equiv t_4$) or suffer from representation drift. GDF-Net delivers progressive, statistically significant boundary refinement at $t=2$. \textbf {Bottom Tier (Configuration):} Component ablation on CVC-ClinicDB ($N=61$) and ISIC-2018 ($N=260$). Removing gradient decoupling ($\text {detach}$) results in catastrophic false-positive explosion and performance degradation}{table.caption.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {V}Discussion and Conclusion}{8}{section.5}\protected@file@percent }
+\newlabel{sec:conclusion}{{V}{8}{Discussion and Conclusion}{section.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}Discussion}{8}{subsection.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {V-A}1}Clinical Significance of Over-Segmentation Suppression}{8}{subsubsection.5.1.1}\protected@file@percent }
+\@writefile{brf}{\backcite{leufkens2012factors, mori2019real}{{8}{\mbox  {V-A}1}{subsubsection.5.1.1}}}
 \@writefile{brf}{\backcite{mori2019real, hassan2021overcoming}{{8}{\mbox  {V-A}1}{subsubsection.5.1.1}}}
 \@writefile{brf}{\backcite{rex2017colorectal}{{8}{\mbox  {V-A}1}{subsubsection.5.1.1}}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {V-A}2}Universal Architectural Principle: Decoupling Forward Guidance from Backward Optimization}{8}{subsubsection.5.1.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {V-A}3}Addressing Low-Data Regimes via Transfer Learning}{8}{subsubsection.5.1.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {V-A}4}Limitations and Future Work}{8}{subsubsection.5.1.4}\protected@file@percent }
 \bibstyle{IEEEtran}
 \bibdata{refs}
 \bibcite{litjens2017survey}{1}
@@ -171,13 +173,12 @@
 \bibcite{zhou2018unetplusplus}{19}
 \bibcite{zhang2018road}{20}
 \bibcite{oktay2018attention}{21}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {V-A}4}Limitations and Future Work}{9}{subsubsection.5.1.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}Conclusion}{9}{subsection.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{References}{9}{section*.6}\protected@file@percent }
 \bibcite{fan2020pranet}{22}
 \bibcite{huang2021hardnet}{23}
 \bibcite{chen2021transunet}{24}
 \bibcite{cao2022swin}{25}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}Conclusion}{9}{subsection.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{References}{9}{section*.5}\protected@file@percent }
 \bibcite{dong2021polyp}{26}
 \bibcite{felleman1991distributed}{27}
 \bibcite{azad2019bi}{28}
