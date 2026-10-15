@@ -21,20 +21,22 @@
 \providecommand{\BIBdecl}{\relax}
 \BIBdecl
 
+\bibitem{litjens2017survey}
+G.~Litjens, T.~Kooi, B.~E. Bejnordi, A.~A.~A. Setio, F.~Ciompi, M.~Ghafoorian,
+  J.~A. Van Der~Laak, B.~Van~Ginneken, and C.~I. S{\'a}nchez, ``A survey on
+  deep learning in medical image analysis,'' \emph{Medical Image Analysis},
+  vol.~42, pp. 60--88, 2017.
+
+\bibitem{ronneberger2015unet}
+O.~Ronneberger, P.~Fischer, and T.~Brox, ``U-net: Convolutional networks for
+  biomedical image segmentation,'' in \emph{International Conference on Medical
+  Image Computing and Computer-Assisted Intervention (MICCAI)}.\hskip 1em plus
+  0.5em minus 0.4em\relax Springer, 2015, pp. 234--241.
+
 \bibitem{siegel2023colorectal}
 R.~L. Siegel, N.~S. Wagle, A.~Cercek, R.~A. Smith, and A.~Jemal, ``Colorectal
   cancer statistics, 2023,'' \emph{CA: A Cancer Journal for Clinicians},
   vol.~73, no.~3, pp. 233--254, 2023.
-
-\bibitem{leufkens2012factors}
-A.~Leufkens, M.~van Oijen, F.~Vleggaar, and P.~Siersema, ``Factors influencing
-  the miss rate of polyps in a prospective multicentre study,'' \emph{Gut},
-  vol.~61, no.~2, pp. 266--271, 2012.
-
-\bibitem{paris2003endoscopic}
-{The Paris Workshop}, ``The paris endoscopic classification of superficial
-  neoplastic lesions: esophagus, stomach, and colon,'' \emph{Gastrointestinal
-  Endoscopy}, vol.~58, no.~6, pp. S3--S43, 2003.
 
 \bibitem{jha2020kvasir}
 D.~Jha, P.~H. Smedsrud, M.~A. Riegler, P.~Halvorsen, T.~de~Lange, D.~Johansen,
@@ -48,6 +50,37 @@ J.~Bernal, N.~Tajkbaksh, F.~J. Sanchez, B.~J. Matuszewski, H.~Chen, L.~Leong,
   of polyp detection methods in video colonoscopy: results from the miccai 2015
   endoscopic vision challenge,'' \emph{IEEE Transactions on Medical Imaging},
   vol.~36, no.~6, pp. 1231--1249, 2017.
+
+\bibitem{codella2019skin}
+N.~Codella, V.~Rotemberg, P.~Tschandl, M.~E. Celebi, S.~Dusza, D.~Gutman,
+  B.~Helba, A.~Kalloo, K.~Liopyris, M.~Marchetti \emph{et~al.}, ``Skin lesion
+  analysis toward melanoma detection 2018: A challenge hosted by the
+  international skin imaging collaboration (isic),'' in \emph{IEEE
+  International Symposium on Biomedical Imaging (ISBI)}, 2019, pp. 168--172.
+
+\bibitem{hoover2000locating}
+A.~Hoover, V.~Kouznetsova, and M.~Goldbaum, ``Locating blood vessels in retinal
+  images by piecewise threshold probing of a matched filter response,''
+  \emph{IEEE Transactions on Medical Imaging}, vol.~19, no.~3, pp. 203--210,
+  2000.
+
+\bibitem{staal2004ridge}
+J.~Staal, M.~D. Abr{\`a}moff, M.~Niemeijer, M.~A. Viergever, and B.~v.
+  Ginneken, ``Ridge-based vessel segmentation in color images of the retina,''
+  \emph{IEEE Transactions on Medical Imaging}, vol.~23, no.~4, pp. 501--509,
+  2004.
+
+\bibitem{cardona2010integrated}
+A.~Cardona, S.~Saalfeld, S.~Preibisch, B.~Schmid, A.~Cheng, J.~Pulokas,
+  P.~Tomancak, and V.~Hartenstein, ``An integrated micro-and macroarchitectural
+  analysis of the drosophila brain by array tomography of visual circuits,''
+  \emph{PLoS Biology}, vol.~8, no.~10, p. e1000507, 2010.
+
+\bibitem{caicedo2019nucleus}
+J.~C. Caicedo, A.~Goodman, K.~W. Karhohs, B.~A. Cimini, J.~Ackerman, M.~Cesana,
+  A.~Lehmussola, C.~Miller, A.~Morales, T.~Posner \emph{et~al.}, ``Nucleus
+  segmentation across imaging experiments: the 2018 data science bowl,''
+  \emph{Nature Methods}, vol.~16, no.~12, pp. 1247--1253, 2019.
 
 \bibitem{tomar2021fanet}
 N.~K. Tomar, D.~Jha, U.~Bagci, and S.~Ali, ``Fanet: A feature attention network
@@ -72,23 +105,26 @@ N.~K. Tomar, D.~Jha, S.~Ali, H.~D. Johansen, D.~Johansen, M.~A. Riegler, and
   Recognition (ICPR)}.\hskip 1em plus 0.5em minus 0.4em\relax IEEE, 2021, pp.
   307--314.
 
+\bibitem{gilbert2013top}
+C.~D. Gilbert and W.~Li, ``Top-down influences on visual perception,''
+  \emph{Nature Reviews Neuroscience}, vol.~14, no.~5, pp. 350--363, 2013.
+
+\bibitem{kietzmann2019recurrence}
+T.~C. Kietzmann, C.~J. Spoerer, L.~K. S{\"o}rensen, R.~M. Cichy, O.~Hauk, and
+  N.~Kriegeskorte, ``Recurrence is required to capture the dynamics of visual
+  processing in the human brain,'' \emph{Proceedings of the National Academy of
+  Sciences}, vol. 116, no.~43, pp. 21\,854--21\,863, 2019.
+
 \bibitem{salehi2017tversky}
 S.~S.~M. Salehi, D.~Erdogmus, and A.~Gholipour, ``Tversky loss function for
   image segmentation using 3d fully convolutional deep networks,'' in
   \emph{International Workshop on Machine Learning in Medical Imaging
   (MLMI)}.\hskip 1em plus 0.5em minus 0.4em\relax Springer, 2017, pp. 379--387.
 
-\bibitem{yeung2022unified}
-M.~Yeung, E.~Sala, C.-B. Sch{\"o}nlieb, and L.~Rundo, ``Unified focal loss:
-  Generalising dice and cross entropy-based losses to handle class imbalanced
-  medical image segmentation,'' \emph{Computerized Medical Imaging and
-  Graphics}, vol.~95, p. 102026, 2022.
-
-\bibitem{ronneberger2015unet}
-O.~Ronneberger, P.~Fischer, and T.~Brox, ``U-net: Convolutional networks for
-  biomedical image segmentation,'' in \emph{International Conference on Medical
-  Image Computing and Computer-Assisted Intervention (MICCAI)}.\hskip 1em plus
-  0.5em minus 0.4em\relax Springer, 2015, pp. 234--241.
+\bibitem{kervadec2019boundary}
+H.~Kervadec, J.~Ji, C.~Desrosiers, M.~Tang, J.~Dolz, and I.~B. Ayed, ``Boundary
+  loss for highly unbalanced segmentation,'' in \emph{International Conference
+  on Medical Imaging with Deep Learning (MIDL)}, 2019, pp. 285--296.
 
 \bibitem{zhou2018unetplusplus}
 Z.~Zhou, M.~M.~R. Siddiquee, N.~Tajbakhsh, and J.~Liang, ``Unet++: A nested
@@ -140,10 +176,6 @@ D.~J. Felleman and D.~C. Van~Essen, ``Distributed hierarchical processing in
   the primate cerebral cortex,'' \emph{Cerebral Cortex}, vol.~1, no.~1, pp.
   1--47, 1991.
 
-\bibitem{gilbert2013top}
-C.~D. Gilbert and W.~Li, ``Top-down influences on visual perception,''
-  \emph{Nature Reviews Neuroscience}, vol.~14, no.~5, pp. 350--363, 2013.
-
 \bibitem{zamir2017feedback}
 A.~R. Zamir, Z.~L. Teed, T.~Shen, L.~J. Guibas, J.~Malik, and S.~Savarese,
   ``Feedback networks,'' in \emph{Proceedings of the IEEE Conference on
@@ -153,6 +185,11 @@ A.~R. Zamir, Z.~L. Teed, T.~Shen, L.~J. Guibas, J.~Malik, and S.~Savarese,
 P.~Pinheiro and R.~Collobert, ``Recurrent convolutional neural networks for
   scene labeling,'' in \emph{International Conference on Machine Learning
   (ICML)}, 2014, pp. 82--90.
+
+\bibitem{azad2019bi}
+R.~Azad, M.~Asadi-Aghbolaghi, M.~Fathy, and S.~Escalera, ``Bi-directional
+  convlstm u-net with densenet for medical image segmentation,'' \emph{arXiv
+  preprint arXiv:1909.00166}, 2019.
 
 \bibitem{milletari2016vnet}
 F.~Milletari, N.~Navab, and S.-A. Ahmadi, ``V-net: Fully convolutional neural
@@ -172,6 +209,12 @@ N.~Abraham and N.~M. Khan, ``A novel focal tversky loss function with improved
   International Symposium on Biomedical Imaging (ISBI)}.\hskip 1em plus 0.5em
   minus 0.4em\relax IEEE, 2019, pp. 683--687.
 
+\bibitem{yeung2022unified}
+M.~Yeung, E.~Sala, C.-B. Sch{\"o}nlieb, and L.~Rundo, ``Unified focal loss:
+  Generalising dice and cross entropy-based losses to handle class imbalanced
+  medical image segmentation,'' \emph{Computerized Medical Imaging and
+  Graphics}, vol.~95, p. 102026, 2022.
+
 \bibitem{chen2021exploring}
 X.~Chen and K.~He, ``Exploring simple siamese representation learning,'' in
   \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern
@@ -189,6 +232,16 @@ V.~Mnih, K.~Kavukcuoglu, D.~Silver, A.~A. Rusu, J.~Veness, M.~G. Bellemare,
   A.~Graves, M.~Riedmiller, A.~K. Fidjeland, G.~Ostrovski \emph{et~al.},
   ``Human-level control through deep reinforcement learning,'' \emph{Nature},
   vol. 518, no. 7540, pp. 529--533, 2015.
+
+\bibitem{he2016deep}
+K.~He, X.~Zhang, S.~Ren, and J.~Sun, ``Deep residual learning for image
+  recognition,'' in \emph{IEEE Conference on Computer Vision and Pattern
+  Recognition (CVPR)}, 2016, pp. 770--778.
+
+\bibitem{leufkens2012factors}
+A.~Leufkens, M.~van Oijen, F.~Vleggaar, and P.~Siersema, ``Factors influencing
+  the miss rate of polyps in a prospective multicentre study,'' \emph{Gut},
+  vol.~61, no.~2, pp. 266--271, 2012.
 
 \bibitem{mori2019real}
 Y.~Mori, S.-e. Kudo, N.~Mohmed, and M.~Misawa, ``Real-time use of artificial

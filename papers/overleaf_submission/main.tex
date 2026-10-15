@@ -1,8 +1,8 @@
 % =============================================================================
-% Breaking the Feedback Trap: Detached Soft-Gating Restores Gradient Flow
-% in Recurrent Medical Image Segmentation
+% GDF-Net: Breaking the Feedback Trap via Gradient Decoupling and
+% Multi-Scale Feedback Attention for Biomedical Image Segmentation
 %
-% Formatted for IEEE two-column journal (IEEEtran)
+% Formatted for IEEE Transactions on Medical Imaging (IEEEtran)
 % =============================================================================
 \documentclass[journal, 10pt]{IEEEtran}
 
@@ -10,17 +10,21 @@
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{stfloats}       % improved two-column float placement (table*/figure*)
+\usepackage{subcaption}
+\usepackage{tikz}
+\usetikzlibrary{positioning, arrows.meta, shapes.geometric}
 
 % --- Math --------------------------------------------------------------------
 \usepackage{amsmath, amssymb}
 \usepackage{amsthm}
 \newtheorem{theorem}{Theorem}
-% NOTE: proof environment is provided automatically by amsthm (with QED tombstone)
+\newtheorem{lemma}{Lemma}
 
 % --- Tables ------------------------------------------------------------------
 \usepackage{booktabs}
 \usepackage{multirow}
 \usepackage{tabularx}
+\usepackage{makecell}
 
 % --- Fonts & Micro-typography ------------------------------------------------
 \usepackage[T1]{fontenc}
@@ -36,74 +40,32 @@
   colorlinks,
   bookmarks=false,
   citecolor=blue,
-  linkcolor=red
+  linkcolor=red,
+  urlcolor=blue
 ]{hyperref}
 
 % =============================================================================
 \begin{document}
 
-\title{Breaking the Feedback Trap: Understanding and Stabilizing Recurrent
-       Feedback Learning in Medical Image Segmentation}
+\title{GDF-Net: Breaking the Feedback Trap via Gradient Decoupling and Multi-Scale Feedback Attention for Biomedical Image Segmentation}
 
 \author{%
-  Anonymous Authors%
-  \thanks{Anonymous Institute / Affiliation. Email: anonymous@domain.edu}%
+  Nguyen~Nam~and~Co-Authors%
+  \thanks{N.~Nam is with the Department of Computer Science and Biomedical Engineering. (Email: nghoofnam@gmail.com).}%
 }
 
 \maketitle
 
 % -----------------------------------------------------------------------------
 \begin{abstract}
-Recurrent feedback architectures in medical vision promise iterative
-boundary refinement by re-injecting past prediction masks into intermediate
-feature representations across training epochs. However, these networks
-frequently suffer from chronic, runaway false-positive over-segmentation.
-Crucially, while modern asymmetric boundary loss functions (e.g., Tversky loss)
-effectively suppress over-segmentation in standard feedforward backbones,
-their optimization benefit is completely neutralized once recurrent feedback
-is engaged.
+Recurrent feedback architectures in biomedical vision are designed to iteratively refine ambiguous segmentation boundaries by feeding past prediction masks back into intermediate feature representations. However, canonical feedback networks---most notably the Feature Attention Network (FANet)---suffer from a severe, pervasive pathology: the \textit{Feedback Trap}. When prediction history serves simultaneously as forward spatial guidance and as an unconstrained backward optimization path, recursive gradient loops induce severe Batch Normalization drift, lock early encoder layers into hallucinated background noise, and cause runaway false-positive over-segmentation. In this paper, we conduct a rigorous mechanistic investigation into recurrent gradient dynamics and establish the \textbf{Feedback Firewall} principle: forward spatial guidance must be mathematically decoupled from backward gradient propagation ($\text{detach}(m^{(t-1)})$).
 
-In this work, we present a foundational \textbf{mechanistic study} of
-recurrent gradient dynamics, diagnosing the structural root cause of this
-failure: the \textit{Feedback Trap}. We discover that the core vulnerability
-lies in the dual role forced upon recurrent predictions: using prediction
-history simultaneously as \textbf{forward spatial guidance} and as an
-unconstrained \textbf{backward optimization path} causes catastrophic error
-amplification. In conventional implementations, hard binary gating yields
-zero gradients almost everywhere for internal attention layers
-($\frac{\partial \text{keep}}{\partial \text{fmask}} \equiv 0$), while unchecked
-recurrent gradients induce severe Batch Normalization drift
-($D_{\text{KL}} = 33.63$) that permanently locks the encoder into hallucinated
-background noise.
-
-To resolve this pathology, we formulate the \textbf{Feedback Firewall}
-principle: forward spatial guidance must be strictly decoupled from backward
-optimization. We realize this via \textbf{Detached Soft-OR Gating}---a
-zero-parameter formulation combining continuous Boolean relaxation with the
-stop-gradient operator ($\text{detach}(m_{\text{fg}})$). This guarantees
-continuous gradient flow to internal attention proportional to background
-uncertainty ($\frac{\partial \text{keep}}{\partial \text{fmask}} = 1 - m_{\text{fg}}$)
-while completely severing recursive error propagation
-($\frac{\partial \text{keep}}{\partial m_{\text{fg}}} \equiv 0$).
-
-Through extensive multi-seed benchmarks on Kvasir-SEG (Sessile), our approach
-slashes False Positive Rate by \textbf{$42.8\%$} (from $4.30\%$ down to $2.46\%$),
-elevates mean Dice by \textbf{$+4.77$\,pp} (to $29.95\%$), and reduces
-inter-seed variance by \textbf{$66.5\%$} (paired Wilcoxon $p < 0.001$).
-A $3 \times 2$ factorial analysis empirically proves that Detached Soft-OR
-successfully breaks the trap, reactivating asymmetric loss optimization.
-Furthermore, a 4-way ablation strictly disentangles the benefits of continuous
-relaxation from gradient detachment. Finally, external zero-shot cross-center
-evaluation on CVC-ClinicDB ($N = 612$, $p = 1.61 \times 10^{-15}$) and
-architectural universality verification on Recurrent Residual U-Net (R2U-Net)
-confirm that our Gradient Decoupling principle provides a universal foundation
-for robust recurrent learning in biomedical computer vision.
+Building upon this theoretical principle, we introduce \textbf{GDF-Net} (Gradient-Decoupled Feedback Network), featuring: (1) a 4-channel input stem embedding detached prediction guidance with a learned spatial gate; (2) a pre-trained ResNet-34 transfer encoder; and (3) a Multi-scale Feedback Attention Decoder (MFAD) that modulates hierarchical features via continuous attention prior across all decoder resolutions. We validate GDF-Net across a comprehensive 7-dataset benchmark spanning endoscopy polyps (CVC-ClinicDB, Kvasir-SEG), electron microscopy cellular membranes (EM-Dataset), dermatological lesions (ISIC-2018), retinal vasculature (CHASE-DB1, DRIVE transfer), and fluorescent nuclei (DSB-2018). GDF-Net consistently surpasses original FANet baselines across 100\% of evaluated benchmarks: achieving \textbf{0.9427} Dice on CVC-ClinicDB (+4.69\,pp over baseline, beating paper best by +0.72\,pp), \textbf{0.9518} Dice on EM-Dataset (+17.02\,pp), \textbf{0.8880} Dice on Kvasir-SEG (+0.28\,pp), \textbf{0.9000} Dice on ISIC-2018 (+2.69\,pp), and slashing false positive rates by \textbf{65\%} on CHASE-DB1 (FPR down to 0.74\%). Furthermore, our forensic audit resolves historical inconsistencies in the literature, demonstrating that identical performance across feedback steps ($B_1 \equiv B_4$) in prior published tables stemmed from dormant feedback loops, while prolonged 500-epoch training induced catastrophic representation degradation. GDF-Net restores genuine iterative refinement and provides a sound, generalizable foundation for recurrent medical image segmentation.
+\end{abstract}
 
 \begin{IEEEkeywords}
-  Recurrent Feedback, Gradient Decoupling, Feedback Firewall, Medical Image
-  Segmentation, Feedback Trap, Detached Soft-OR, Mechanistic Deep Learning
+Recurrent Feedback, Gradient Decoupling, Feedback Firewall, Medical Image Segmentation, Feedback Trap, Multi-scale Attention Decoder, GDF-Net, MFAD.
 \end{IEEEkeywords}
-\end{abstract}
 
 % -----------------------------------------------------------------------------
 % SECTIONS

@@ -1,145 +1,142 @@
-\section{Methodology: Gradient Decoupling and the Feedback Firewall}
+\section{Methodology: GDF-Net Architecture and Gradient Decoupling}
 \label{sec:method}
 
-In this section, we dissect the internal gradient mechanics of recurrent
-feature aggregation, prove the mathematical paralysis inherent in conventional
-coupled gating, and formulate our proposed \textbf{Feedback Firewall}
-and \textbf{Detached Soft-OR} architecture.
-
+In this section, we formulate the mathematical mechanics of recurrent feedback learning, prove the existence of the Feedback Trap in conventional architectures, and present the theoretical derivation and architectural components of our proposed \textbf{GDF-Net} (Gradient-Decoupled Feedback Network) equipped with the \textbf{Multi-scale Feedback Attention Decoder (MFAD)}.
 
 % -----------------------------------------------------------------------------
-\subsection{The Classical MixPool: Architecture and The Hard-Gating Flaw}
-The Feature Attention Network incorporates recurrent refinement across
-four encoder stages ($e_1, e_2, e_3, e_4$) and four decoder stages
-($d_1, d_2, d_3, d_4$). At each level, intermediate feature tensors
-$x \in \mathbb{R}^{B \times C \times H \times W}$ and the recurrent
-feedback mask
-$m \in \mathbb{R}^{B \times 1 \times H_{\text{in}} \times W_{\text{in}}}$
-are processed through a \texttt{MixPool} block.
+\subsection{The Classical Feedback Formulation and the Feedback Trap}
+In canonical recurrent feedback vision networks~\cite{tomar2021fanet}, an image $\mathbf{x} \in \mathbb{R}^{B \times 3 \times H \times W}$ is processed iteratively across feedback time-steps $t \in \{1, \dots, T\}$. At step $t=1$, the network operates in an initial feedforward pass with no prior prediction ($m^{(0)} = \mathbf{0}$), generating an initial segmentation probability map $m^{(1)} = \sigma(\hat{y}^{(1)})$. At step $t > 1$, the previous prediction $m^{(t-1)}$ is recursively reinjected into the network layers to guide subsequent feature extraction.
 
-Within \texttt{MixPool}, input feature $x$ is first routed to a
-lightweight convolutional attention sub-network $\mathcal{F}_{\text{att}}$,
-generating a continuous single-channel attention prior:
-\begin{equation}
-  \label{eq:fmask_def}
-  \begin{split}
-    \text{fmask} &= \sigma\!\Big(
-      \text{Conv}_{1 \times 1}\!\Big(
-        \text{ReLU}\!\big(
-          \text{BN}\!\big(\text{Conv}_{3 \times 3}(x)\big)
-        \big)
-      \Big)
-    \Big) \\
-    &\quad \in [0, 1]^{B \times 1 \times H \times W}.
-  \end{split}
-\end{equation}
-Simultaneously, the feedback mask $m$ is spatially downsampled via max
-pooling to match the spatial resolution $(H, W)$ of the current layer,
-yielding $m_{\text{fg}} \in [0, 1]^{B \times 1 \times H \times W}$.
-
-In the original formulation~\cite{tomar2021fanet}, these two spatial
-gates are fused into a single binary selection mask
-$\text{keep}_{\text{hard}}$ via a hard thresholding operator:
+In FANet~\cite{tomar2021fanet}, this recurrent fusion is executed via the \texttt{MixPool} block. Within each encoder and decoder stage, input feature tensor $\mathbf{F} \in \mathbb{R}^{B \times C \times H' \times W'}$ is processed by an internal convolutional attention branch $\mathcal{F}_{\text{att}}$, producing an attention map $\text{fmask} \in [0, 1]^{B \times 1 \times H' \times W'}$. Simultaneously, the recurrent mask $m^{(t-1)}$ is downsampled to spatial resolution $(H', W')$, yielding $m_{\text{fg}}$. These two spatial signals are fused through a hard binary thresholding operator:
 \begin{equation}
   \label{eq:keep_hard}
-  \text{keep}_{\text{hard}} =
-    \max\!\left(\mathbb{I}(\text{fmask} > 0.5),\; m_{\text{fg}}\right).
+  \text{keep}_{\text{hard}} = \max\!\left(\mathbb{I}(\text{fmask} > 0.5),\; m_{\text{fg}}\right),
 \end{equation}
+which gates the feature representations prior to downstream processing.
 
-The gated features are then split across dual convolutional pathways
-and recombined:
+\subsubsection{Mathematical Proof of Gradient Paralysis}
+\begin{theorem}[Gradient Paralysis of Internal Attention]
+Let $\mathcal{L}$ be any differentiable segmentation loss function, and let features be gated by $\text{keep}_{\text{hard}}$ defined in Eq.~(\ref{eq:keep_hard}). The gradient of $\mathcal{L}$ with respect to the parameters $\theta_{\text{att}}$ of the attention generator $\mathcal{F}_{\text{att}}$ is zero almost everywhere:
 \begin{equation}
-  x_1 = \text{Conv}_1\!\left(x \odot \text{keep}_{\text{hard}}\right),
-  \qquad
-  x_2 = \text{Conv}_2(x),
+  \frac{\partial \mathcal{L}}{\partial \theta_{\text{att}}} \equiv 0 \quad \text{almost everywhere}.
 \end{equation}
-\begin{equation}
-  \text{MixPool}(x, m) =
-    \left[x_1 \,\|\, x_2\right]
-    \in \mathbb{R}^{B \times C \times H \times W}.
-\end{equation}
+\end{theorem}
 
-\subsubsection{The Calculus of Failure: Zero-Gradient and Toxic Coupling}
-Let $\mathcal{L}$ denote the scalar segmentation objective. Applying the
-chain rule to backpropagate gradients from $x_1$ back to the parameters
-$\theta_{\text{att}}$ of the attention generator $\mathcal{F}_{\text{att}}$:
-\begin{align}
+\begin{proof}
+By applying the multivariate chain rule across the gated feature path:
+\begin{equation}
   \label{eq:chain_rule}
-  \frac{\partial \mathcal{L}}{\partial \theta_{\text{att}}}
-    &= \frac{\partial \mathcal{L}}{\partial x_1}
-       \cdot \frac{\partial x_1}{\partial \text{keep}_{\text{hard}}}
-       \cdot \frac{\partial \text{keep}_{\text{hard}}}{\partial \text{fmask}}
-       \cdot \frac{\partial \text{fmask}}{\partial \theta_{\text{att}}}.
-\end{align}
+  \frac{\partial \mathcal{L}}{\partial \theta_{\text{att}}} = \frac{\partial \mathcal{L}}{\partial \mathbf{F}_{\text{gated}}} \cdot \frac{\partial \mathbf{F}_{\text{gated}}}{\partial \text{keep}_{\text{hard}}} \cdot \frac{\partial \text{keep}_{\text{hard}}}{\partial \text{fmask}} \cdot \frac{\partial \text{fmask}}{\partial \theta_{\text{att}}}.
+\end{equation}
+The term $\text{keep}_{\text{hard}}$ utilizes the indicator step function $\mathbb{I}(\text{fmask} > 0.5)$. The distributional derivative of the Heaviside step function is the Dirac delta function $\delta(u - 0.5)$, which vanishes for all inputs $u \neq 0.5$:
+\begin{equation}
+  \frac{\partial}{\partial u}\mathbb{I}(u > 0.5) = 0 \quad \forall\, u \in \mathbb{R} \setminus \{0.5\}.
+\end{equation}
+Consequently, $\frac{\partial \text{keep}_{\text{hard}}}{\partial \text{fmask}} = 0$ on the support of continuous activations. Substituting into Eq.~(\ref{eq:chain_rule}) yields $\frac{\partial \mathcal{L}}{\partial \theta_{\text{att}}} \equiv 0$ almost everywhere.
+\end{proof}
 
-Because $\text{keep}_{\text{hard}}$ utilizes the indicator function
-$\mathbb{I}(\text{fmask} > 0.5)$, the distributional derivative of the
-Heaviside step function is the Dirac delta:
-\begin{align}
-  \frac{\partial}{\partial u}\mathbb{I}(u > 0.5)
-    &= \delta(u - 0.5) = 0 \quad \forall\, u \neq 0.5.
-\end{align}
-Consequently, the third factor in Eq.~(\ref{eq:chain_rule}) evaluates to:
-\begin{align}
-  \frac{\partial \text{keep}_{\text{hard}}}{\partial \text{fmask}}
-    &\equiv 0 \quad \text{almost everywhere.}
-\end{align}
-As a direct consequence, \textbf{zero gradient reaches the parameters
-$\theta_{\text{att}}$ of the attention generator}. The network cannot
-adapt its internal spatial feature selector in response to task-specific
-segmentation errors.
+\textbf{Consequence:} The learnable convolutional layers dedicated to extracting internal spatial attention receive zero direct supervision from the segmentation objective. The attention mechanism remains virtually frozen at its random initialization.
 
-Simultaneously, the recurrent branch receives backward gradients through
-automatic differentiation:
-\begin{align}
-  \frac{\partial \mathcal{L}}{\partial m_{\text{fg}}}
-    &= \frac{\partial \mathcal{L}}{\partial x_1}
-       \cdot \frac{\partial x_1}{\partial \text{keep}_{\text{hard}}}
-       \cdot \frac{\partial \text{keep}_{\text{hard}}}{\partial m_{\text{fg}}}
-       \neq 0.
-\end{align}
-When the network produces an early false-positive prediction, this
-erroneous mask is reinjected into the encoder. Because gradients flow
-through $m_{\text{fg}}$ back into the recursive history without internal
-attention guidance, the encoder parameters are updated to maximize
-consistency with past errors rather than anatomical boundaries. This
-causes the internal feature representations of healthy background mucosa
-to collapse into lesion-like embeddings.
+\subsubsection{Unconstrained Recursive Backpropagation and Error Amplification}
+While the internal attention branch receives zero gradient, automatic differentiation propagates non-zero gradients freely through the recurrent mask branch:
+\begin{equation}
+  \frac{\partial \mathcal{L}}{\partial m_{\text{fg}}} = \frac{\partial \mathcal{L}}{\partial \mathbf{F}_{\text{gated}}} \cdot \frac{\partial \mathbf{F}_{\text{gated}}}{\partial \text{keep}_{\text{hard}}} \cdot \frac{\partial \text{keep}_{\text{hard}}}{\partial m_{\text{fg}}} \neq 0.
+\end{equation}
+Because prediction $m^{(t-1)}$ is a direct function of encoder-decoder parameters $\Theta$, backpropagating through $m_{\text{fg}}$ creates an unconstrained recursive dependency:
+\begin{equation}
+  \nabla_\Theta \mathcal{L}^{(t)} = \frac{\partial \mathcal{L}^{(t)}}{\partial \hat{y}^{(t)}} \left[ \frac{\partial \hat{y}^{(t)}}{\partial \Theta} + \frac{\partial \hat{y}^{(t)}}{\partial m^{(t-1)}} \cdot \frac{\partial m^{(t-1)}}{\partial \Theta} \right].
+\end{equation}
+When the network generates a false positive at step $t-1$, that error is injected into the forward pass. In the backward pass, the second term forces the encoder to optimize for consistency with past errors rather than anatomical truth. This causes catastrophic Batch Normalization drift, shifts intermediate feature representations, and locks the model into an irreversible cycle of false-positive over-segmentation (the \textit{Feedback Trap}).
 
 % -----------------------------------------------------------------------------
-\subsection{The Monotonicity Trap of Mathematical Gating}
-To eradicate the Feedback Trap, our initial design (Phase 7B) explored a \textbf{Detached Soft-OR Gating} mechanism:
+\subsection{The Feedback Firewall Principle (Gradient Decoupling)}
+To resolve the Feedback Trap, we establish the \textbf{Feedback Firewall} principle:
+\begin{center}
+  \textit{Forward prediction history must provide spatial guidance without permitting backward recursive gradient propagation.}
+\end{center}
+Mathematically, we introduce the stop-gradient operator $\text{detach}(\cdot)$ at the feedback boundary:
 \begin{equation}
-  \text{keep}_{\text{soft\_or}} = 1.0 - (1.0 - a) \odot (1.0 - \text{detach}(m_{\text{fg}})),
+  \mathbf{m}_{\text{guide}} = \text{detach}\left(m^{(t-1)}\right), \quad \text{where} \quad \frac{\partial \mathbf{m}_{\text{guide}}}{\partial \Theta} \equiv 0.
 \end{equation}
-where $a$ is the internal spatial attention map and $m_{\text{fg}}$ is the recurrent feedback mask. While gradient detachment successfully severed the toxic recursive gradient loop, empirical temporal tracking (FPR evaluation across iterations $t=0$ to $t=3$) revealed a catastrophic flaw: the False Positive Rate exploded to $52.31\%$.
-
-We diagnose this failure as the \textbf{Soft-OR Monotonicity Trap}. The Soft-OR gate $A \lor B$ is mathematically a strictly monotonically increasing operator with respect to the prior mask $B$. Given that the initialization mask ($t=0$, generated via Otsu thresholding) frequently yields massive false positives in boundary-ambiguous flat polyps, the Soft-OR gate ensures that $\text{keep}_{\text{soft\_or}} \ge m_{\text{fg}}$. 
-Consequently, the network is physically paralyzed---it is mathematically incapable of subtracting, pruning, or suppressing the noisy false positives inherited from previous iterations.
+Under this operator, the gradient of the recurrent step simplifies strictly to:
+\begin{equation}
+  \nabla_\Theta \mathcal{L}^{(t)} = \frac{\partial \mathcal{L}^{(t)}}{\partial \hat{y}^{(t)}} \cdot \left. \frac{\partial \hat{y}^{(t)}}{\partial \Theta} \right|_{\mathbf{m}_{\text{guide}} = \text{const}}.
+\end{equation}
+The recurrent feedback now acts strictly as an exogenous spatial prior conditioning the feature distribution, completely severing the recursive gradient feedback loop and eliminating error amplification.
 
 % -----------------------------------------------------------------------------
-\subsection{Proposed Solution: Phase 7C Learned Residual Decoupling}
-To overcome the Monotonicity Trap, the gating mechanism must be fully differentiable, structurally decoupled from recursive gradient flow, and capable of both augmenting and \textit{pruning} the prior mask.
+\subsection{Architecture of GDF-Net}
+Building upon the Feedback Firewall principle, we construct \textbf{GDF-Net} (Gradient-Decoupled Feedback Network). The architecture comprises three integrated components: (1) a 4-channel decoupled guidance stem, (2) a pre-trained ResNet-34 encoder backbone, and (3) a Multi-scale Feedback Attention Decoder (MFAD).
 
-We propose \textbf{Learned Residual Decoupling}. We discard rigid Boolean mathematics and instead introduce a low-parameter dynamic $1\times 1$ convolutional spatial attention gate:
+\input{figures/architecture_tikz.tex}
+
+\subsubsection{4-Channel Decoupled Guidance Stem}
+At feedback step $t$, the detached mask prior $\mathbf{m}_{\text{guide}} \in [0, 1]^{B \times 1 \times H \times W}$ is first modulated by a learned $1 \times 1$ spatial convolutional gate $\mathcal{W}_{\text{gate}}$:
 \begin{equation}
-  \text{combined} = [a \;\|\; \text{detach}(m_{\text{fg}})],
+  \mathbf{x}_{\text{guide}} = \sigma\left(\mathcal{W}_{\text{gate}} * \mathbf{m}_{\text{guide}}\right).
 \end{equation}
+The modulated guidance is concatenated directly with the raw RGB image $\mathbf{x}_{\text{RGB}} \in \mathbb{R}^{B \times 3 \times H \times W}$ along the channel dimension to form a 4-channel input tensor:
 \begin{equation}
-  G = \sigma\Big(\text{Conv}_{1 \times 1}(\text{combined})\Big),
+  \mathbf{x}_{\text{in}} = \left[\mathbf{x}_{\text{RGB}} \,\|\, \mathbf{x}_{\text{guide}}\right] \in \mathbb{R}^{B \times 4 \times H \times W}.
 \end{equation}
-where $G \in (0, 1)^{B \times 1 \times H \times W}$ acts as a spatial modulating gate. The final feature selection tensor is computed via a residual addition:
+The stem convolution $\text{Conv}_{7 \times 7}$ accepts 4 input channels. We initialize the first 3 channels with pre-trained ImageNet weights from ResNet-34, while the 4th channel is initialized with zeros, ensuring stable warm-up during early iterations:
 \begin{equation}
-  \label{eq:learned_residual}
-  \text{keep}_{\text{proposed}} = (G \odot \text{detach}(m_{\text{fg}})) + a.
+  \mathcal{W}_{\text{stem}}[:, 0:3, :, :] = \mathcal{W}_{\text{ResNet}}, \quad \mathcal{W}_{\text{stem}}[:, 3, :, :] = 0.
 \end{equation}
 
-\subsubsection{Theoretical Advantages}
-Our Phase 7C architecture possesses three critical properties:
+\subsubsection{Hierarchical Encoder Backbone}
+Features are extracted using a standard ResNet-34 backbone~\cite{he2016deep}, yielding five hierarchical feature representations:
+\begin{equation}
+  \mathbf{e}_1 \in \mathbb{R}^{B \times 64 \times \frac{H}{2} \times \frac{W}{2}}, \quad
+  \mathbf{e}_2 \in \mathbb{R}^{B \times 64 \times \frac{H}{4} \times \frac{W}{4}}, \quad
+  \mathbf{e}_3 \in \mathbb{R}^{B \times 128 \times \frac{H}{8} \times \frac{W}{8}},
+\end{equation}
+\begin{equation}
+  \mathbf{e}_4 \in \mathbb{R}^{B \times 256 \times \frac{H}{16} \times \frac{W}{16}}, \quad
+  \mathbf{b} \in \mathbb{R}^{B \times 512 \times \frac{H}{32} \times \frac{W}{32}}.
+\end{equation}
+
+\subsubsection{Multi-Scale Feedback Attention Decoder (MFAD)}
+Unlike canonical FANet, which confines feedback gating to a localized module, the proposed \textbf{MFAD} integrates continuous spatial modulation across all five decoder levels $\ell \in \{1, 2, 3, 4, 5\}$.
+
+At each decoder level $\ell$, intermediate encoder skip-connection features $\mathbf{e}_\ell$ are modulated by the detached spatial prior $\mathbf{m}_{\text{guide}}$. First, $\mathbf{m}_{\text{guide}}$ is adaptively interpolated via bilinear sampling to match the spatial resolution $(H_\ell, W_\ell)$ of feature map $\mathbf{e}_\ell$:
+\begin{equation}
+  \mathbf{m}_\ell = \text{BilinearInterpolate}\left(\mathbf{m}_{\text{guide}}, (H_\ell, W_\ell)\right).
+\end{equation}
+A dedicated attention submodule $\mathcal{A}_\ell$ generates a continuous spatial weight map:
+\begin{equation}
+  \mathbf{S}_\ell = \sigma\left(\text{BN}\left(\text{Conv}_{1 \times 1}\left(\mathbf{m}_\ell\right)\right)\right) \in (0, 1)^{B \times C_\ell \times H_\ell \times W_\ell}.
+\end{equation}
+Features are modulated via a residual multiplicative attention gate:
+\begin{equation}
+  \label{eq:mfad_modulation}
+  \mathbf{e}_{\ell, \text{guided}} = \mathbf{e}_\ell \odot \left(1.0 + \mathbf{S}_\ell\right).
+\end{equation}
+Equation~(\ref{eq:mfad_modulation}) guarantees three vital mathematical properties:
 \begin{enumerate}
-    \item \textbf{Non-Monotonicity (Pruning Capability):} Unlike the OR-gate, if the network detects a false positive in the recurrent prior $m_{\text{fg}}$, it can actively push the learned gate $G \to 0$ and $a \to 0$, forcing $\text{keep}_{\text{proposed}} \to 0$. This fully restores the network's ability to prune historical errors.
-    \item \textbf{Gradient Preservation:} Because the $1 \times 1$ convolution is continuous and differentiable, dense gradients flow back into the feature mask $a$.
-    \item \textbf{Structural Decoupling:} We strictly preserve $\text{detach}(m_{\text{fg}})$. The recurrent gradient loop remains severed, forcing the internal feature encoder $a$ (and the learned gate $G$) to take absolute responsibility for minimizing false positives.
+  \item \textbf{Identity Preservation:} When prior guidance is absent or uninformative ($\mathbf{S}_\ell \to 0$), the feature reduces smoothly to the original representation $\mathbf{e}_\ell$, preventing signal attenuation.
+  \item \textbf{Dense Gradient Flow:} Unlike the discontinuous indicator function in Eq.~(\ref{eq:keep_hard}), Eq.~(\ref{eq:mfad_modulation}) is smooth and continuously differentiable everywhere:
+  \begin{equation}
+    \frac{\partial \mathbf{e}_{\ell, \text{guided}}}{\partial \mathbf{e}_\ell} = 1.0 + \mathbf{S}_\ell \ge 1.0,
+  \end{equation}
+  guaranteeing robust gradient backpropagation throughout the decoder and skip pathways.
+  \item \textbf{Multi-Resolution Refinement:} By operating from coarse bottleneck scale ($H/32$) up to full feature resolution ($H/2$), MFAD provides contextual constraints across both semantic localization and fine boundary contours.
 \end{enumerate}
 
-To ensure the network utilizes its new pruning capabilities, we combine this architecture with a \textbf{Curriculum Adaptive Tversky Loss}, placing heavy asymmetric penalties on False Positives ($\alpha=0.7$, $\beta=0.3$) once the network reaches basic stability.
+Each decoder stage synthesizes features via a transposed convolution followed by dual $3 \times 3$ convolutional blocks with Batch Normalization and ReLU activations:
+\begin{equation}
+  \mathbf{d}_\ell = \text{ConvBlock}\left(\left[\text{ConvTranspose}(\mathbf{d}_{\ell-1}) \,\|\, \mathbf{e}_{\ell, \text{guided}}\right]\right).
+\end{equation}
+The final output is projected via a $1 \times 1$ convolution to generate logit map $\hat{y}^{(t)} \in \mathbb{R}^{B \times 1 \times H \times W}$.
+
+% -----------------------------------------------------------------------------
+\subsection{Training Objective and Multi-Pass Optimization}
+The network is optimized using a compound loss function balancing region overlap and pixel-wise probability calibration:
+\begin{equation}
+  \mathcal{L}_{\text{total}} = 0.5 \cdot \mathcal{L}_{\text{BCE}}\left(\hat{y}, y\right) + 0.5 \cdot \mathcal{L}_{\text{Dice}}\left(\hat{y}, y\right),
+\end{equation}
+where $\mathcal{L}_{\text{BCE}}$ is binary cross-entropy with logits and $\mathcal{L}_{\text{Dice}}$ is defined with Laplace smoothing $\epsilon = 10^{-5}$:
+\begin{equation}
+  \mathcal{L}_{\text{Dice}}\left(\hat{y}, y\right) = 1.0 - \frac{2 \sum_i p_i y_i + \epsilon}{\sum_i p_i + \sum_i y_i + \epsilon}, \quad p_i = \sigma(\hat{y}_i).
+\end{equation}
+During training, each batch undergoes dual forward-backward passes ($T=2$). The initial pass computes $\hat{y}^{(1)} = \mathcal{M}(\mathbf{x}, \emptyset)$, and the second pass computes $\hat{y}^{(2)} = \mathcal{M}(\mathbf{x}, \sigma(\hat{y}^{(1)}))$. Backward optimization is performed on the final prediction $\hat{y}^{(2)}$, enforcing the decoupled feedback loop.
