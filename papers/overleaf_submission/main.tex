@@ -1,6 +1,6 @@
 % =============================================================================
 % GDF-Net: Breaking the Feedback Trap via Gradient Decoupling and
-% Multi-Scale Feedback Attention for Biomedical Image Segmentation
+% Multi-Scale Feedback Guidance for Biomedical Image Segmentation
 %
 % Formatted for IEEE Transactions on Medical Imaging (IEEEtran)
 % =============================================================================
@@ -47,7 +47,7 @@
 % =============================================================================
 \begin{document}
 
-\title{GDF-Net: Breaking the Feedback Trap via Gradient Decoupling and Multi-Scale Feedback Attention for Biomedical Image Segmentation}
+\title{GDF-Net: Breaking the Feedback Trap via Gradient Decoupling and Multi-Scale Feedback Guidance for Biomedical Image Segmentation}
 
 \author{%
   Nguyen~Nam~and~Co-Authors%
@@ -58,13 +58,13 @@
 
 % -----------------------------------------------------------------------------
 \begin{abstract}
-Recurrent feedback architectures in biomedical vision are designed to iteratively refine ambiguous segmentation boundaries by feeding past prediction masks back into intermediate feature representations. However, canonical feedback networks---most notably the Feature Attention Network (FANet)---suffer from a severe, pervasive pathology: the \textit{Feedback Trap}. When prediction history serves simultaneously as forward spatial guidance and as an unconstrained backward optimization path, recursive gradient loops induce severe Batch Normalization drift, lock early encoder layers into hallucinated background noise, and cause runaway false-positive over-segmentation. In this paper, we conduct a rigorous mechanistic investigation into recurrent gradient dynamics and establish the \textbf{Feedback Firewall} principle: forward spatial guidance must be mathematically decoupled from backward gradient propagation ($\text{detach}(m^{(t-1)})$).
+Recurrent feedback architectures in biomedical vision are designed to iteratively refine ambiguous segmentation boundaries by routing past prediction masks back into intermediate representations. However, conventional feedback networks suffer from a severe, pervasive pathology: the \textit{Feedback Trap}. When prediction history serves simultaneously as forward spatial guidance and as an unconstrained backward optimization path, recursive gradient loops induce severe Batch Normalization drift, lock early encoder layers into hallucinated background noise, and cause runaway false-positive over-segmentation. In this paper, we conduct a rigorous mechanistic investigation into recurrent gradient dynamics and establish the \textbf{Feedback Firewall} principle: forward spatial guidance must be mathematically decoupled from backward gradient propagation ($\text{detach}(m^{(t-1)})$).
 
-Building upon this theoretical principle, we introduce \textbf{GDF-Net} (Gradient-Decoupled Feedback Network), featuring: (1) a 4-channel input stem embedding detached prediction guidance with a learned spatial gate; (2) a pre-trained ResNet-34 transfer encoder; and (3) a Multi-scale Feedback Attention Decoder (MFAD) that modulates hierarchical features via continuous attention prior across all decoder resolutions. We validate GDF-Net across a comprehensive 7-dataset benchmark spanning endoscopy polyps (CVC-ClinicDB, Kvasir-SEG), electron microscopy cellular membranes (EM-Dataset), dermatological lesions (ISIC-2018), retinal vasculature (CHASE-DB1, DRIVE transfer), and fluorescent nuclei (DSB-2018). GDF-Net consistently surpasses original FANet baselines across 100\% of evaluated benchmarks: achieving \textbf{0.9427} Dice on CVC-ClinicDB (+4.69\,pp over baseline, beating paper best by +0.72\,pp), \textbf{0.9518} Dice on EM-Dataset (+17.02\,pp), \textbf{0.8880} Dice on Kvasir-SEG (+0.28\,pp), \textbf{0.9000} Dice on ISIC-2018 (+2.69\,pp), and slashing false positive rates by \textbf{65\%} on CHASE-DB1 (FPR down to 0.74\%). Furthermore, our forensic audit resolves historical inconsistencies in the literature, demonstrating that identical performance across feedback steps ($B_1 \equiv B_4$) in prior published tables stemmed from dormant feedback loops, while prolonged 500-epoch training induced catastrophic representation degradation. GDF-Net restores genuine iterative refinement and provides a sound, generalizable foundation for recurrent medical image segmentation.
+Building upon this theoretical principle, we introduce \textbf{GDF-Net} (Gradient-Decoupled Feedback Network), featuring: (1) a 4-channel input stem embedding detached prediction guidance with a learned spatial gate; (2) a pre-trained ResNet-34 transfer encoder; and (3) a Multi-scale Gradient-Decoupled Feedback Decoder that modulates hierarchical features via continuous spatial priors across all decoder resolutions. We validate GDF-Net across a comprehensive 7-dataset benchmark spanning endoscopy polyps (CVC-ClinicDB, Kvasir-SEG), electron microscopy cellular membranes (EM-Dataset), dermatological lesions (ISIC-2018), retinal vasculature (CHASE-DB1, DRIVE transfer), and fluorescent nuclei (DSB-2018). GDF-Net consistently surpasses standard baseline architectures across all 7 evaluated benchmarks: achieving \textbf{0.9427} Dice on CVC-ClinicDB (+4.69\,pp over baseline), \textbf{0.9518} Dice on EM-Dataset (+17.02\,pp), \textbf{0.8880} Dice on Kvasir-SEG (+0.28\,pp), \textbf{0.9000} Dice on ISIC-2018 (+2.69\,pp), and slashing false positive rates by \textbf{65\%} on CHASE-DB1 (FPR down to 0.74\%). Furthermore, our empirical and theoretical analyses demonstrate why conventional coupled feedback loops either stagnate or induce representation collapse during extended training, whereas GDF-Net enables stable, genuine iterative boundary refinement.
 \end{abstract}
 
 \begin{IEEEkeywords}
-Recurrent Feedback, Gradient Decoupling, Feedback Firewall, Medical Image Segmentation, Feedback Trap, Multi-scale Attention Decoder, GDF-Net, MFAD.
+Recurrent Feedback, Gradient Decoupling, Feedback Firewall, Medical Image Segmentation, Feedback Trap, Multi-scale Decoder, GDF-Net.
 \end{IEEEkeywords}
 
 % -----------------------------------------------------------------------------

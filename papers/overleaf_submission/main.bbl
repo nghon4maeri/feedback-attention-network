@@ -82,12 +82,6 @@ J.~C. Caicedo, A.~Goodman, K.~W. Karhohs, B.~A. Cimini, J.~Ackerman, M.~Cesana,
   segmentation across imaging experiments: the 2018 data science bowl,''
   \emph{Nature Methods}, vol.~16, no.~12, pp. 1247--1253, 2019.
 
-\bibitem{tomar2021fanet}
-N.~K. Tomar, D.~Jha, U.~Bagci, and S.~Ali, ``Fanet: A feature attention network
-  for semantic segmentation of medical images,'' in \emph{2021 IEEE
-  International Conference on Bioinformatics and Biomedicine (BIBM)}.\hskip 1em
-  plus 0.5em minus 0.4em\relax IEEE, 2021, pp. 1105--1110.
-
 \bibitem{liang2015recurrent}
 M.~Liang and X.~Hu, ``Recurrent convolutional neural network for object
   recognition,'' in \emph{Proceedings of the IEEE Conference on Computer Vision
@@ -98,12 +92,15 @@ M.~Z. Alom, M.~Hasan, C.~Yakopcic, T.~M. Taha, and V.~K. Asari, ``Recurrent
   residual convolutional neural network based on u-net (r2u-net) for medical
   image segmentation,'' \emph{arXiv preprint arXiv:1802.06955}, 2018.
 
-\bibitem{tomar2021ddanet}
-N.~K. Tomar, D.~Jha, S.~Ali, H.~D. Johansen, D.~Johansen, M.~A. Riegler, and
-  P.~Halvorsen, ``Ddanet: Dual decoder attention network for automatic polyp
-  segmentation,'' in \emph{2020 25th International Conference on Pattern
-  Recognition (ICPR)}.\hskip 1em plus 0.5em minus 0.4em\relax IEEE, 2021, pp.
-  307--314.
+\bibitem{pinheiro2014recurrent}
+P.~Pinheiro and R.~Collobert, ``Recurrent convolutional neural networks for
+  scene labeling,'' in \emph{International Conference on Machine Learning
+  (ICML)}, 2014, pp. 82--90.
+
+\bibitem{zamir2017feedback}
+A.~R. Zamir, Z.~L. Teed, T.~Shen, L.~J. Guibas, J.~Malik, and S.~Savarese,
+  ``Feedback networks,'' in \emph{Proceedings of the IEEE Conference on
+  Computer Vision and Pattern Recognition (CVPR)}, 2017, pp. 1308--1317.
 
 \bibitem{gilbert2013top}
 C.~D. Gilbert and W.~Li, ``Top-down influences on visual perception,''
@@ -175,16 +172,6 @@ B.~Dong, W.~Wang, Z.~Deng, J.~Lu, and J.~Shen, ``Polyp-pvt: Polyp segmentation
 D.~J. Felleman and D.~C. Van~Essen, ``Distributed hierarchical processing in
   the primate cerebral cortex,'' \emph{Cerebral Cortex}, vol.~1, no.~1, pp.
   1--47, 1991.
-
-\bibitem{zamir2017feedback}
-A.~R. Zamir, Z.~L. Teed, T.~Shen, L.~J. Guibas, J.~Malik, and S.~Savarese,
-  ``Feedback networks,'' in \emph{Proceedings of the IEEE Conference on
-  Computer Vision and Pattern Recognition (CVPR)}, 2017, pp. 1308--1317.
-
-\bibitem{pinheiro2014recurrent}
-P.~Pinheiro and R.~Collobert, ``Recurrent convolutional neural networks for
-  scene labeling,'' in \emph{International Conference on Machine Learning
-  (ICML)}, 2014, pp. 82--90.
 
 \bibitem{azad2019bi}
 R.~Azad, M.~Asadi-Aghbolaghi, M.~Fathy, and S.~Escalera, ``Bi-directional

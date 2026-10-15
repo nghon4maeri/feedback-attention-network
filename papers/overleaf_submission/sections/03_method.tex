@@ -1,13 +1,13 @@
 \section{Methodology: GDF-Net Architecture and Gradient Decoupling}
 \label{sec:method}
 
-In this section, we formulate the mathematical mechanics of recurrent feedback learning, prove the existence of the Feedback Trap in conventional architectures, and present the theoretical derivation and architectural components of our proposed \textbf{GDF-Net} (Gradient-Decoupled Feedback Network) equipped with the \textbf{Multi-scale Feedback Attention Decoder (MFAD)}.
+In this section, we formulate the mathematical mechanics of recurrent feedback learning, prove the existence of the Feedback Trap in conventional architectures, and present the theoretical derivation and architectural components of our proposed \textbf{GDF-Net} (Gradient-Decoupled Feedback Network) equipped with the \textbf{Multi-Scale Gradient-Decoupled Feedback Decoder}.
 
 % -----------------------------------------------------------------------------
 \subsection{The Classical Feedback Formulation and the Feedback Trap}
-In canonical recurrent feedback vision networks~\cite{tomar2021fanet}, an image $\mathbf{x} \in \mathbb{R}^{B \times 3 \times H \times W}$ is processed iteratively across feedback time-steps $t \in \{1, \dots, T\}$. At step $t=1$, the network operates in an initial feedforward pass with no prior prediction ($m^{(0)} = \mathbf{0}$), generating an initial segmentation probability map $m^{(1)} = \sigma(\hat{y}^{(1)})$. At step $t > 1$, the previous prediction $m^{(t-1)}$ is recursively reinjected into the network layers to guide subsequent feature extraction.
+In classical recurrent feedback vision networks, an image $\mathbf{x} \in \mathbb{R}^{B \times 3 \times H \times W}$ is processed iteratively across feedback time-steps $t \in \{1, \dots, T\}$. At step $t=1$, the network operates in an initial feedforward pass with no prior prediction ($m^{(0)} = \mathbf{0}$), generating an initial segmentation probability map $m^{(1)} = \sigma(\hat{y}^{(1)})$. At step $t > 1$, the previous prediction $m^{(t-1)}$ is recursively reinjected into the network layers to guide subsequent feature extraction.
 
-In FANet~\cite{tomar2021fanet}, this recurrent fusion is executed via the \texttt{MixPool} block. Within each encoder and decoder stage, input feature tensor $\mathbf{F} \in \mathbb{R}^{B \times C \times H' \times W'}$ is processed by an internal convolutional attention branch $\mathcal{F}_{\text{att}}$, producing an attention map $\text{fmask} \in [0, 1]^{B \times 1 \times H' \times W'}$. Simultaneously, the recurrent mask $m^{(t-1)}$ is downsampled to spatial resolution $(H', W')$, yielding $m_{\text{fg}}$. These two spatial signals are fused through a hard binary thresholding operator:
+In conventional recurrent feedback designs, this recurrent fusion is typically executed via hard spatial gating or max-pooling operators. Within intermediate encoder and decoder stages, an input feature tensor $\mathbf{F} \in \mathbb{R}^{B \times C \times H' \times W'}$ is processed by an internal convolutional attention branch $\mathcal{F}_{\text{att}}$, producing an attention map $\text{fmask} \in [0, 1]^{B \times 1 \times H' \times W'}$. Simultaneously, the recurrent mask $m^{(t-1)}$ is downsampled to spatial resolution $(H', W')$, yielding $m_{\text{fg}}$. These two spatial signals are fused through a hard binary thresholding operator:
 \begin{equation}
   \label{eq:keep_hard}
   \text{keep}_{\text{hard}} = \max\!\left(\mathbb{I}(\text{fmask} > 0.5),\; m_{\text{fg}}\right),
@@ -66,7 +66,7 @@ The recurrent feedback now acts strictly as an exogenous spatial prior condition
 
 % -----------------------------------------------------------------------------
 \subsection{Architecture of GDF-Net}
-Building upon the Feedback Firewall principle, we construct \textbf{GDF-Net} (Gradient-Decoupled Feedback Network). The architecture comprises three integrated components: (1) a 4-channel decoupled guidance stem, (2) a pre-trained ResNet-34 encoder backbone, and (3) a Multi-scale Feedback Attention Decoder (MFAD).
+Building upon the Feedback Firewall principle, we construct \textbf{GDF-Net} (Gradient-Decoupled Feedback Network). The architecture comprises three integrated components: (1) a 4-channel decoupled guidance stem, (2) a pre-trained ResNet-34 encoder backbone, and (3) a Multi-scale Gradient-Decoupled Feedback Decoder.
 
 \input{figures/architecture_tikz.tex}
 
@@ -96,8 +96,8 @@ Features are extracted using a standard ResNet-34 backbone~\cite{he2016deep}, yi
   \mathbf{b} \in \mathbb{R}^{B \times 512 \times \frac{H}{32} \times \frac{W}{32}}.
 \end{equation}
 
-\subsubsection{Multi-Scale Feedback Attention Decoder (MFAD)}
-Unlike canonical FANet, which confines feedback gating to a localized module, the proposed \textbf{MFAD} integrates continuous spatial modulation across all five decoder levels $\ell \in \{1, 2, 3, 4, 5\}$.
+\subsubsection{Multi-Scale Gradient-Decoupled Feedback Decoder}
+Unlike conventional feedback designs that restrict recurrent gating to isolated bottleneck layers or single stages, our proposed multi-scale decoder integrates continuous spatial modulation across all five hierarchical decoder levels $\ell \in \{1, 2, 3, 4, 5\}$.
 
 At each decoder level $\ell$, intermediate encoder skip-connection features $\mathbf{e}_\ell$ are modulated by the detached spatial prior $\mathbf{m}_{\text{guide}}$. First, $\mathbf{m}_{\text{guide}}$ is adaptively interpolated via bilinear sampling to match the spatial resolution $(H_\ell, W_\ell)$ of feature map $\mathbf{e}_\ell$:
 \begin{equation}
@@ -109,18 +109,18 @@ A dedicated attention submodule $\mathcal{A}_\ell$ generates a continuous spatia
 \end{equation}
 Features are modulated via a residual multiplicative attention gate:
 \begin{equation}
-  \label{eq:mfad_modulation}
+  \label{eq:gdf_modulation}
   \mathbf{e}_{\ell, \text{guided}} = \mathbf{e}_\ell \odot \left(1.0 + \mathbf{S}_\ell\right).
 \end{equation}
-Equation~(\ref{eq:mfad_modulation}) guarantees three vital mathematical properties:
+Equation~(\ref{eq:gdf_modulation}) guarantees three vital mathematical properties:
 \begin{enumerate}
   \item \textbf{Identity Preservation:} When prior guidance is absent or uninformative ($\mathbf{S}_\ell \to 0$), the feature reduces smoothly to the original representation $\mathbf{e}_\ell$, preventing signal attenuation.
-  \item \textbf{Dense Gradient Flow:} Unlike the discontinuous indicator function in Eq.~(\ref{eq:keep_hard}), Eq.~(\ref{eq:mfad_modulation}) is smooth and continuously differentiable everywhere:
+  \item \textbf{Dense Gradient Flow:} Unlike the discontinuous indicator function in Eq.~(\ref{eq:keep_hard}), Eq.~(\ref{eq:gdf_modulation}) is smooth and continuously differentiable everywhere:
   \begin{equation}
     \frac{\partial \mathbf{e}_{\ell, \text{guided}}}{\partial \mathbf{e}_\ell} = 1.0 + \mathbf{S}_\ell \ge 1.0,
   \end{equation}
   guaranteeing robust gradient backpropagation throughout the decoder and skip pathways.
-  \item \textbf{Multi-Resolution Refinement:} By operating from coarse bottleneck scale ($H/32$) up to full feature resolution ($H/2$), MFAD provides contextual constraints across both semantic localization and fine boundary contours.
+  \item \textbf{Multi-Resolution Refinement:} By operating from coarse bottleneck scale ($H/32$) up to full feature resolution ($H/2$), the GDF Decoder provides contextual constraints across both semantic localization and fine boundary contours.
 \end{enumerate}
 
 Each decoder stage synthesizes features via a transposed convolution followed by dual $3 \times 3$ convolutional blocks with Batch Normalization and ReLU activations:
