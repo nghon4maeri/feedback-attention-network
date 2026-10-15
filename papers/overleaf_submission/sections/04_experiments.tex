@@ -26,58 +26,24 @@ Segmentation performance is quantified using six standard metrics: Dice Similari
 
 % -----------------------------------------------------------------------------
 \subsection{Master Benchmark Results Across All 7 Datasets}
-Table~\ref{tab:master_benchmark} reports the complete performance comparison of the proposed GDF-Net against standard baseline models across all seven biomedical datasets.
+Table~\ref{tab:master_benchmark} presents the multi-metric performance of the proposed GDF-Net across all seven biomedical datasets in the final feedback phase ($t=2$).
 
 \begin{table*}[t!]
 \centering
-\caption{Comprehensive performance comparison across seven biomedical image segmentation datasets. Best values are boldfaced. Delta ($\Delta$) denotes percentage-point improvement over the baseline architecture. GDF-Net outperforms the baseline across 100\% of evaluated benchmarks without any false-positive runaway.}
+\caption{Comprehensive performance evaluation of the proposed GDF-Net ($t=2$) across seven biomedical image segmentation datasets. Results are reported as mean $\pm$ standard deviation across all test samples. GDF-Net delivers robust segmentation accuracy and consistently maintains ultra-low false-positive rates across diverse modalities.}
 \label{tab:master_benchmark}
 \resizebox{\textwidth}{!}{%
-\begin{tabular}{l l l c c c l}
+\begin{tabular}{l l c c c c c c l}
 \toprule
-\textbf{Dataset} & \makecell[l]{\textbf{Modality /}\\\textbf{Target}} & \textbf{Metric} & \makecell{\textbf{Baseline}\\\textbf{Architecture}} & \makecell{\textbf{GDF-Net}\\\textbf{(Ours, $t=2$)}} & \makecell{\textbf{Delta}\\\textbf{($\Delta$)}} & \makecell[l]{\textbf{Clinical Impact /}\\\textbf{Status}} \\
+\textbf{Dataset} & \makecell[l]{\textbf{Modality /}\\\textbf{Target Anatomy}} & \textbf{Dice (DSC)} & \textbf{mIoU} & \makecell{\textbf{Sensitivity /}\\\textbf{Recall}} & \textbf{Specificity} & \textbf{Precision} & \textbf{FPR (\%)} & \makecell[l]{\textbf{Clinical Significance /}\\\textbf{Key Characteristic}} \\
 \midrule
-\multirow{3}{*}{\textbf{CVC-ClinicDB}} 
-  & \multirow{3}{*}{Colonoscopy Polyps} 
-  & \textbf{Dice}  & 0.8958 & \textbf{0.9427 $\pm$ 0.0550} & \textbf{+4.69\,pp} & Outperforms Baseline (+4.69\,pp Dice) \\
-  & & mIoU          & 0.8267 & \textbf{0.8960 $\pm$ 0.0842} & \textbf{+6.93\,pp} & Sharp mucosal boundary adherence \\
-  & & FPR           & 0.97\% & \textbf{0.40\% $\pm$ 0.67\%} & \textbf{-0.57\,pp} & 2.4$\times$ Lower False Alarms \\
-\midrule
-\multirow{3}{*}{\textbf{EM-Dataset}} 
-  & \multirow{3}{*}{Electron Microscopy Cells} 
-  & \textbf{Dice}  & 0.7816 & \textbf{0.9518 $\pm$ 0.0095} & \textbf{+17.02\,pp} & Exceptional boundary segmentation \\
-  & & mIoU          & 0.6480 & \textbf{0.9083 $\pm$ 0.0173} & \textbf{+26.03\,pp} & Superior cell membrane tracing \\
-  & & Specificity   & 0.8096 & \textbf{0.9963 $\pm$ 0.0019} & \textbf{+18.67\,pp} & Eliminates background cytoplasm noise \\
-\midrule
-\multirow{3}{*}{\textbf{Kvasir-SEG}} 
-  & \multirow{3}{*}{Endoscopic GI Polyps} 
-  & \textbf{Dice}  & 0.8852 & \textbf{0.8880 $\pm$ 0.1431} & \textbf{+0.28\,pp} & Outperforms Baseline across all metrics \\
-  & & mIoU          & 0.8143 & \textbf{0.8208 $\pm$ 0.1765} & \textbf{+0.65\,pp} & Robust overlap across cohorts \\
-  & & Recall        & 0.9009 & \textbf{0.9138 $\pm$ 0.1542} & \textbf{+1.29\,pp} & Robust under flash reflections \\
-\midrule
-\multirow{3}{*}{\textbf{ISIC-2018}} 
-  & \multirow{3}{*}{Dermoscopic Melanoma} 
-  & \textbf{Dice}  & 0.8731 & \textbf{0.9000 $\pm$ 0.1246} & \textbf{+2.69\,pp} & Outperforms Baseline \\
-  & & mIoU          & 0.7960 & \textbf{0.8346 $\pm$ 0.1557} & \textbf{+3.86\,pp} & Sharp lesion border distinction \\
-  & & Specificity   & 0.9452 & \textbf{0.9714 $\pm$ 0.0822} & \textbf{+2.62\,pp} & Suppresses healthy skin alarms \\
-\midrule
-\multirow{3}{*}{\textbf{CHASE-DB1}} 
-  & \multirow{3}{*}{Retinal Vessel Trees} 
-  & \textbf{Precision} & 0.8170 & \textbf{0.8637 $\pm$ 0.0379} & \textbf{+4.67\,pp} & Precise retinal tree tracing \\
-  & & Specificity       & 0.9786 & \textbf{0.9926 $\pm$ 0.0020} & \textbf{+1.40\,pp} & High background cleanliness \\
-  & & \textbf{FPR}       & 2.14\% & \textbf{0.74\% $\pm$ 0.20\%} & \textbf{-1.40\,pp} & \textbf{65\% Lower False Positives} \\
-\midrule
-\multirow{3}{*}{\textbf{DRIVE (Transfer)}} 
-  & \multirow{3}{*}{Retinal Micro-Vessels} 
-  & \textbf{Dice}  & 0.7618 & \textbf{0.7932 $\pm$ 0.0117} & \textbf{+3.14\,pp} & Outperforms Baseline \\
-  & & mIoU          & 0.6385 & \textbf{0.6575 $\pm$ 0.0163} & \textbf{+1.90\,pp} & Low-data transfer learning success \\
-  & & Recall        & 0.7516 & \textbf{0.8163 $\pm$ 0.0452} & \textbf{+6.47\,pp} & Major gain in micro-vascular recall \\
-\midrule
-\multirow{3}{*}{\textbf{DSB-2018}} 
-  & \multirow{3}{*}{Fluorescent Nuclei} 
-  & \textbf{Dice}  & 0.8721 & \textbf{0.8953 $\pm$ 0.1201} & \textbf{+2.32\,pp} & Outperforms Baseline \\
-  & & mIoU          & 0.8087 & \textbf{0.8255 $\pm$ 0.1422} & \textbf{+1.68\,pp} & Accurately separates clustered nuclei \\
-  & & FPR           & 2.18\% & \textbf{1.63\% $\pm$ 2.81\%} & \textbf{-0.55\,pp} & 25\% Lower False Alarms \\
+\textbf{CVC-ClinicDB} & Colonoscopy Polyps & 0.9427 $\pm$ 0.0550 & 0.8960 $\pm$ 0.0842 & 0.9368 $\pm$ 0.0612 & 0.9960 $\pm$ 0.0067 & 0.9514 $\pm$ 0.0643 & 0.40\% $\pm$ 0.67\% & Ultra-low false alarms (FPR 0.40\%); sharp mucosal boundary \\
+\textbf{EM-Dataset}   & EM Cell Membranes   & 0.9518 $\pm$ 0.0095 & 0.9083 $\pm$ 0.0173 & 0.9582 $\pm$ 0.0215 & 0.9963 $\pm$ 0.0019 & 0.9464 $\pm$ 0.0221 & 0.37\% $\pm$ 0.19\% & Precise continuous cell membrane delineation \\
+\textbf{Kvasir-SEG}   & Endoscopic GI Polyps& 0.8880 $\pm$ 0.1431 & 0.8208 $\pm$ 0.1765 & 0.9138 $\pm$ 0.1542 & 0.9803 $\pm$ 0.0378 & 0.8938 $\pm$ 0.1459 & 1.97\% $\pm$ 3.78\% & Robust under flash specular reflections and variable sizes \\
+\textbf{ISIC-2018}    & Dermoscopic Melanoma& 0.9000 $\pm$ 0.1246 & 0.8346 $\pm$ 0.1495 & 0.8973 $\pm$ 0.1470 & 0.9714 $\pm$ 0.0822 & 0.9282 $\pm$ 0.1223 & 2.86\% $\pm$ 8.22\% & Sharp lesion perimeter delineation; suppresses benign skin noise \\
+\textbf{CHASE-DB1}    & Retinal Vessel Trees& 0.7093 $\pm$ 0.0456 & 0.5514 $\pm$ 0.0540 & 0.6064 $\pm$ 0.0708 & 0.9926 $\pm$ 0.0020 & 0.8637 $\pm$ 0.0379 & 0.74\% $\pm$ 0.20\% & Exceptional retinal background cleanliness (0.74\% FPR) \\
+\textbf{DRIVE} (Transfer) & Retinal Micro-Vessels & 0.7932 $\pm$ 0.0117 & 0.6575 $\pm$ 0.0163 & 0.8163 $\pm$ 0.0452 & 0.9773 $\pm$ 0.0048 & 0.7755 $\pm$ 0.0404 & 2.27\% $\pm$ 0.48\% & Cross-domain transfer restores high capillary recall (0.8163) \\
+\textbf{DSB-2018}     & Fluorescent Nuclei  & 0.8953 $\pm$ 0.1201 & 0.8255 $\pm$ 0.1422 & 0.9088 $\pm$ 0.1101 & 0.9837 $\pm$ 0.0281 & 0.8951 $\pm$ 0.1388 & 1.63\% $\pm$ 2.81\% & High-density clustered nuclei separation; 1.63\% false alarm rate \\
 \bottomrule
 \end{tabular}%
 }
@@ -86,36 +52,72 @@ Table~\ref{tab:master_benchmark} reports the complete performance comparison of 
 % -----------------------------------------------------------------------------
 \subsection{Visual Analysis: Convergence Dynamics and Qualitative Comparisons}
 
-In Figure~\ref{fig:convergence_and_qualitative}, we present the visual verification of GDF-Net organized in two complementary tiers:
-\begin{itemize}
-  \item \textbf{Top Tier (Training Convergence Curves):} Tracking the training loss and validation Dice progression across epochs. Under gradient decoupling, GDF-Net exhibits smooth, monotonic loss minimization without gradient explosion or oscillatory instability, converging steadily to peak validation Dice.
-  \item \textbf{Bottom Tier (Qualitative Prediction Overlays):} Visual comparisons depicting raw inputs, ground-truth masks, coupled baseline over-segmentations, and GDF-Net predictions. Across varied pathologies, GDF-Net eliminates the characteristic background halo artifacts of coupled feedback networks while accurately delineating fine boundary details.
-\end{itemize}
+In this subsection, we visually examine the optimization stability and segmentation quality of GDF-Net across representative clinical domains:
 
 \begin{figure*}[t!]
 \centering
-\begin{subfigure}{\textwidth}
+\begin{subfigure}[b]{0.49\textwidth}
   \centering
-  \includegraphics[width=0.24\textwidth]{figures/training_curves_CVC-ClinicDB.png}
-  \includegraphics[width=0.24\textwidth]{figures/training_curves_EM-Dataset.png}
-  \includegraphics[width=0.24\textwidth]{figures/training_curves_ISIC-2018.png}
-  \includegraphics[width=0.24\textwidth]{figures/training_curves_CHASE-DB1.png}
-  \caption{\textbf{Top: Training Convergence Curves.} Evolution of training loss and validation Dice score across epochs on CVC-ClinicDB, EM-Dataset, ISIC-2018, and CHASE-DB1. GDF-Net demonstrates monotonic convergence and rapid stabilization, avoiding the oscillatory divergence of coupled feedback loops.}
-  \label{fig:convergence_top}
+  \includegraphics[width=\textwidth]{figures/training_curves_CVC-ClinicDB.png}
+  \caption{CVC-ClinicDB (Colonoscopy Polyps)}
+  \label{fig:curve_cvc}
 \end{subfigure}
-\vspace{4mm}
+\hfill
+\begin{subfigure}[b]{0.49\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{figures/training_curves_EM-Dataset.png}
+  \caption{EM-Dataset (Electron Microscopy Cells)}
+  \label{fig:curve_em}
+\end{subfigure}
+\\[2mm]
+\begin{subfigure}[b]{0.49\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{figures/training_curves_ISIC-2018.png}
+  \caption{ISIC-2018 (Dermoscopic Melanoma)}
+  \label{fig:curve_isic}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.49\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{figures/training_curves_CHASE-DB1.png}
+  \caption{CHASE-DB1 (Retinal Vessel Trees)}
+  \label{fig:curve_chase}
+\end{subfigure}
+\caption{\textbf{Training Convergence Dynamics of GDF-Net across Representative Biomedical Benchmarks.} Evolution of training loss (blue) and validation Dice score (green) across epochs on (a) CVC-ClinicDB, (b) EM-Dataset, (c) ISIC-2018, and (d) CHASE-DB1. Monotonic loss minimization and rapid validation stabilization confirm that gradient decoupling eliminates representation drift and prevents runaway oscillatory divergence.}
+\label{fig:convergence_curves}
+\end{figure*}
 
-\begin{subfigure}{\textwidth}
+\begin{figure*}[t!]
+\centering
+\begin{subfigure}[b]{0.24\textwidth}
   \centering
-  \includegraphics[width=0.24\textwidth]{figures/comparison_CVC-ClinicDB.png}
-  \includegraphics[width=0.24\textwidth]{figures/comparison_EM-Dataset.png}
-  \includegraphics[width=0.24\textwidth]{figures/comparison_ISIC-2018.png}
-  \includegraphics[width=0.24\textwidth]{figures/comparison_CHASE-DB1.png}
-  \caption{\textbf{Bottom: Qualitative Prediction Comparisons.} Visual segmentation overlays across representative benchmarks. Left-to-right: Raw Image, Ground Truth, Coupled Baseline, and GDF-Net (Ours). GDF-Net completely eliminates false-positive mucosal halos and thin vessel hallucinations.}
-  \label{fig:qualitative_bottom}
+  \includegraphics[width=\textwidth]{figures/comparison_CVC-ClinicDB.png}
+  \caption{CVC-ClinicDB}
+  \label{fig:qual_cvc}
 \end{subfigure}
-\caption{Visual verification of GDF-Net across four representative biomedical imaging benchmarks. \textbf{Top:} Training convergence curves confirming optimization stability under gradient decoupling. \textbf{Bottom:} Qualitative segmentation predictions demonstrating sharp contour boundary alignment and robust false-positive suppression.}
-\label{fig:convergence_and_qualitative}
+\hfill
+\begin{subfigure}[b]{0.24\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{figures/comparison_EM-Dataset.png}
+  \caption{EM-Dataset}
+  \label{fig:qual_em}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.24\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{figures/comparison_ISIC-2018.png}
+  \caption{ISIC-2018}
+  \label{fig:qual_isic}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.24\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{figures/comparison_CHASE-DB1.png}
+  \caption{CHASE-DB1}
+  \label{fig:qual_chase}
+\end{subfigure}
+\caption{\textbf{Qualitative Segmentation Predictions across Benchmarks.} Left-to-right columns within each cohort: Raw Input Image, Ground Truth annotation, and GDF-Net Prediction (Ours). GDF-Net produces sharp contour alignment, faithfully delineates intricate capillaries and membrane boundaries, and suppresses mucosal background false-positive halos.}
+\label{fig:qualitative_results}
 \end{figure*}
 
 % -----------------------------------------------------------------------------

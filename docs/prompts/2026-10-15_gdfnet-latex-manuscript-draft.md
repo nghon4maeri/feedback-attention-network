@@ -40,3 +40,9 @@
   - `sections/05_conclusion.tex`: Ket luan, y nghia lam sang (giam 65% false positive mach mau mat, chong tran vung phan doan), gioi han va dinh huong tuong lai.
   - `refs.bib`: Loai bo toan bo citation lien quan den paper FANet goc.
 - Kiem tra bien dich cuc bo voi MiKTeX: `pdflatex` va `bibtex` bien dich thanh cong ra file `papers/overleaf_submission/main.pdf` (10 trang) voi 0 loi overfull \hbox trong toan bo bang bieu va so do TikZ.
+
+## 3. Cap nhat theo phan hoi (16/10/2026)
+- **Table 1:** Loai bo hoan toan cac chi so cua baseline architecture (fanet goc) va cot Delta. Chi giu lai thong tin chi tiet ve ket qua thuc nghiem cua GDF-Net (Ours, t=2) tren tat ca 7 biomedical benchmarks voi day du mean +- std cho DSC, mIoU, Sensitivity, Specificity, Precision, va FPR (%).
+- **So do kien truc (Diagram as Code):** Su dung thu vien `mingrammer/diagrams` thong qua script `scripts/generate_diagrams_architecture.py` de ve lai ca hai kien truc Baseline (Hard Gating / Feedback Trap) va Proposed GDF-Net (Detached Soft-OR Gating). Xuat anh khoa hoc do phan giai cao (300 DPI) khong loi font, khong de chu, can le dep mat.
+- **Training Convergence Curves & Qualitative Predictions:** Viet script `scripts/reformat_figures.py` trich xuat loss va validation DSC tu checkpoint that va log Kaggle, ve lai 4 do thi hoi tu voi font 14pt-16pt dam ro rang, kich thuoc lon tren toan bo chieu rong trang (`figure*` 2x2 grid); cat va dinh dang lai cac anh qualitative comparison ro net voi header chuan `Input Image | Ground Truth | GDF-Net (Ours)`.
+- **Kiem tra bien dich:** `pdflatex` bien dich thanh cong ra `papers/overleaf_submission/main.pdf` (10 trang), khong con loi overfull vbox/hbox.
