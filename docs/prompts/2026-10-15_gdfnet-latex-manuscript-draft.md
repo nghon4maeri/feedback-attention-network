@@ -53,4 +53,7 @@
 - **De trong 2 anh architec theo yeu cau cua User:**
   - Cap nhat `papers/overleaf_submission/figures/architecture_tikz.tex` thanh 2 hop placeholder trong suot vien net dut (TikZ dashed box) cho Subfigure (a) Baseline va Subfigure (b) Proposed GDF-Net de user tu add anh vao sau.
   - Bien dich lai `main.pdf` (10 trang) thanh cong, layout hoan chinh va khong loi.
+- **Xoa thong tin affiliation / email tac gia theo yeu cau cua User:**
+  - Da xoa dong `\thanks{...}` (N. Nam affiliation va email) trong `main.tex`, chi giu ten tac gia de user tu them thong tin sau.
+  - Bien dich lai `main.pdf` thanh cong.
 
