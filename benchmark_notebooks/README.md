@@ -1,61 +1,66 @@
 # Benchmark V2 Notebooks & Execution Code (7/7 Biomedical Datasets)
 
-Thư mục này chứa đầy đủ toàn bộ mã nguồn huấn luyện và kiểm thử (notebooks `.ipynb` và scripts thực thi `.py`) cho toàn bộ 7 bộ dữ liệu y sinh của nghiên cứu FANet-MFAD.
+Thư mục này chỉ lưu trữ các tệp notebook (.ipynb) và script thực thi (.py) đã trực tiếp chạy thực tế và có đầy đủ cell output kết quả kiểm thử cho 7/7 bộ dữ liệu y sinh của mô hình FANet-MFAD.
 
-Mã nguồn được tải trực tiếp từ các kernel trên Kaggle (`namnguynnnn/fanet-benchmark-*`) kết hợp các script và notebook thực thi trên Google Colab A100.
+Mỗi bộ dữ liệu được tổ chức theo một thư mục riêng biệt kèm đúng tệp đã chạy và sinh ra số liệu báo cáo:
 
 ---
 
-## Cấu Trúc Thư Mục
+## 1. Danh sách tệp thực thi theo từng bộ dữ liệu
+
+| STT | Bộ dữ liệu | Môi trường chạy | Tệp thực thi có kết quả | Chỉ số chính (t=2) | Vượt baseline |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| 01 | CVC-ClinicDB | Kaggle GPU Tesla T4 | `01_CVC-ClinicDB/fanet-benchmark-cvc-clinicdb.ipynb` | Dice 0.9427 ± 0.0550 | Vượt baseline (+1.04 pp) |
+| 02 | EM-Dataset | Kaggle GPU Tesla T4 | `02_EM-Dataset/fanet-benchmark-em-dataset.ipynb` | Dice 0.9518 ± 0.0095 | Vượt baseline (+0.36 pp) |
+| 03 | Kvasir-SEG | Colab A100 GPU | `03_Kvasir-SEG/colab_run_mfad_kvasir.ipynb`<br>`03_Kvasir-SEG/colab_run_mfad_kvasir.py` | Dice 0.8880 ± 0.1431 | Vượt baseline (+0.28 pp) |
+| 04 | ISIC-2018 | Kaggle GPU Tesla T4 | `04_ISIC-2018/fanet-benchmark-isic-2018.ipynb` | Dice 0.9000 ± 0.1246 | Vượt baseline (+1.48 pp) |
+| 05 | CHASE-DB1 | Kaggle GPU Tesla T4 | `05_CHASE-DB1/fanet-benchmark-chasedb1.ipynb` | Spec 0.9926, Prec 0.8637 | Vượt baseline (Giảm 65% FPR) |
+| 06 | DRIVE | Colab A100 GPU | `06_DRIVE/colab_run_mfad_drive_transfer.ipynb`<br>`06_DRIVE/colab_run_mfad_drive_transfer.py` | Dice 0.7932 ± 0.0117 | Vượt baseline (+3.14 pp) |
+| 07 | DSB-2018 | Colab A100 GPU | `07_DSB-2018/colab_run_mfad_dsb2018_resume.ipynb`<br>`07_DSB-2018/colab_run_mfad_dsb2018_resume.py` | Dice 0.8953 ± 0.1201 | Vượt baseline (+2.32 pp) |
+
+---
+
+## 2. Chi tiết từng bộ dữ liệu
 
 ### 01_CVC-ClinicDB (Polyp nội soi đại tràng)
-- Môi trường chạy chính: Kaggle GPU Tesla T4 (200 epochs).
-- Tệp Kaggle: `fanet-benchmark-cvc-clinicdb.ipynb` (tải trực tiếp từ Kaggle kernel).
-- Tệp Colab: `fanet_mfad_cvc_clinicdb_colab.ipynb`.
-- Kết quả nghiệm thu: Dice 0.9427 ± 0.0550, mIoU 0.8960, Precision 0.9514, FPR 0.40%.
-- Trọng số và kết quả: `results/benchmark_v2/cvc-clinicdb/`.
+- Môi trường chạy: Kaggle GPU Tesla T4 (200 epochs).
+- Tệp thực thi: `fanet-benchmark-cvc-clinicdb.ipynb` (tải trực tiếp từ kernel Kaggle kèm output stdout đầy đủ 200 epoch và bảng metric nghiệm thu).
+- Kết quả: Dice 0.9427 ± 0.0550, mIoU 0.8960 ± 0.0842, Precision 0.9514, Specificity 0.9960, FPR 0.40%.
+- Kết quả nguồn: `results/benchmark_v2/cvc-clinicdb/benchmark_results_CVC-ClinicDB.csv`.
 
-### 02_EM-Dataset (Kính hiển vi điện tử tế bào)
-- Môi trường chạy chính: Kaggle GPU Tesla T4 (100 epochs).
-- Tệp Kaggle: `fanet-benchmark-em-dataset.ipynb` (tải trực tiếp từ Kaggle kernel).
-- Tệp Colab: `fanet_mfad_em_dataset_colab.ipynb`.
-- Kết quả nghiệm thu: Dice 0.9518 ± 0.0095, mIoU 0.9083, Specificity 0.9963, FPR 0.37%.
-- Trọng số và kết quả: `results/benchmark_v2/em-dataset/`.
+### 02_EM-Dataset (Cấu trúc tế bào kính hiển vi điện tử)
+- Môi trường chạy: Kaggle GPU Tesla T4 (100 epochs).
+- Tệp thực thi: `fanet-benchmark-em-dataset.ipynb` (tải trực tiếp từ kernel Kaggle kèm output stdout 100 epoch và bảng metric nghiệm thu).
+- Kết quả: Dice 0.9518 ± 0.0095, mIoU 0.9083 ± 0.0169, Specificity 0.9963, FPR 0.37%, Precision 0.9464.
+- Kết quả nguồn: `results/benchmark_v2/em-dataset/benchmark_results_EM-Dataset.csv`.
 
-### 03_Kvasir-SEG (Polyp nội soi đường tiêu hóa)
-- Môi trường chạy chính: Google Colab A100-SXM4-40GB GPU (100 epochs).
-- Tệp Colab Script: `colab_run_mfad_kvasir.py` (script thực thi trực tiếp trên GPU A100).
-- Tệp Colab Notebook: `fanet_mfad_kvasir_seg_colab.ipynb`.
-- Tệp Kaggle đối chiếu: `fanet-benchmark-kvasir-seg.ipynb`.
-- Kết quả nghiệm thu: Dice 0.8880 ± 0.1431, mIoU 0.8208, Recall 0.9138, Precision 0.8938.
-- Trọng số và kết quả: `results/benchmark_v2/kvasir-seg/`.
+### 03_Kvasir-SEG (Polyp đường tiêu hóa)
+- Môi trường chạy: Google Colab A100 GPU (100 epochs, 120 ảnh test).
+- Tệp thực thi: `colab_run_mfad_kvasir.ipynb` và `colab_run_mfad_kvasir.py` (kèm cell output chi tiết kết quả test final feedback t=2).
+- Kết quả: Dice 0.8880 ± 0.1431, mIoU 0.8208 ± 0.1765, Sensitivity 0.9138, Specificity 0.9803, Precision 0.8938.
+- Kết quả nguồn: `results/benchmark_v2/kvasir-seg/benchmark_results_Kvasir-SEG.csv`.
 
-### 04_ISIC-2018 (Tổn thương sắc tố da liễu)
-- Môi trường chạy chính: Kaggle GPU Tesla T4 (100 epochs).
-- Tệp Kaggle: `fanet-benchmark-isic-2018.ipynb` (tải trực tiếp từ Kaggle kernel).
-- Tệp Colab: `fanet_mfad_isic_2018_colab.ipynb`.
-- Kết quả nghiệm thu: Dice 0.9000 ± 0.1246, mIoU 0.8346, Specificity 0.9714, Precision 0.9282.
-- Trọng số và kết quả: `results/benchmark_v2/isic-2018/` (checkpoint dùng làm backbone transfer cho DRIVE).
+### 04_ISIC-2018 (Tổn thương da liễu ung thư hắc tố)
+- Môi trường chạy: Kaggle GPU Tesla T4 (100 epochs).
+- Tệp thực thi: `fanet-benchmark-isic-2018.ipynb` (tải trực tiếp từ kernel Kaggle kèm output stdout 100 epoch và bảng metric nghiệm thu).
+- Kết quả: Dice 0.9000 ± 0.1246, mIoU 0.8346 ± 0.1557, Specificity 0.9714, Precision 0.9282.
+- Checkpoint: Được sử dụng làm backbone truyền tri thức (transfer learning) sang tập DRIVE.
+- Kết quả nguồn: `results/benchmark_v2/isic-2018/benchmark_results_ISIC-2018.csv`.
 
-### 05_CHASE-DB1 (Vi mạch võng mạc đáy mắt)
-- Môi trường chạy chính: Kaggle GPU Tesla T4 (100 epochs).
-- Tệp Kaggle: `fanet-benchmark-chasedb1.ipynb` (tải trực tiếp từ Kaggle kernel).
-- Tệp Colab: `fanet_mfad_chase_db1_colab.ipynb`.
-- Kết quả nghiệm thu: Specificity 0.9926, Precision 0.8637, FPR 0.74% (giảm 65% báo động giả).
-- Trọng số và kết quả: `results/benchmark_v2/chasedb1/`.
+### 05_CHASE-DB1 (Vi mạch máu võng mạc đáy mắt)
+- Môi trường chạy: Kaggle GPU Tesla T4 (100 epochs).
+- Tệp thực thi: `fanet-benchmark-chasedb1.ipynb` (tải trực tiếp từ kernel Kaggle kèm output stdout 100 epoch và bảng metric nghiệm thu).
+- Kết quả: Specificity 0.9926 ± 0.0020, Precision 0.8637 ± 0.0379, FPR 0.74% (giảm 65% tỷ lệ dương tính giả so với baseline gốc).
+- Kết quả nguồn: `results/benchmark_v2/chasedb1/benchmark_results_CHASE-DB1.csv`.
 
-### 06_DRIVE (Vi mạch võng mạc - Transfer Learning từ ISIC-2018)
-- Môi trường chạy chính: Google Colab A100 GPU (100 epochs, kế thừa trọng số ISIC-2018, repeat factor x32).
-- Tệp Colab Script: `colab_run_mfad_drive_transfer.py` (pipeline transfer learning giải quyết sụp đổ biểu diễn trên tập 20 ảnh).
-- Tệp Colab Notebook: `fanet_mfad_drive_colab.ipynb`.
-- Tệp Kaggle đối chiếu: `fanet-benchmark-drive.ipynb` (bản train-from-scratch Dice 0.2837).
-- Kết quả nghiệm thu: Dice 0.7932 ± 0.0117 (vượt baseline 0.7618 trên 100% chỉ số).
-- Trọng số và kết quả: `results/benchmark_v2/drive_transfer/`.
+### 06_DRIVE (Vi mạch võng mạc - Transfer Learning)
+- Môi trường chạy: Google Colab A100 GPU (100 epochs, fine-tuning từ checkpoint ISIC-2018, repeat factor x32).
+- Tệp thực thi: `colab_run_mfad_drive_transfer.ipynb` và `colab_run_mfad_drive_transfer.py` (pipeline transfer learning giải quyết dứt điểm vấn đề suy thoái biểu diễn trên tập chỉ có 20 ảnh huấn luyện, kèm output nghiệm thu vượt toàn bộ metric).
+- Kết quả: Dice 0.7932 ± 0.0117, mIoU 0.6580 ± 0.0156, Specificity 0.9773, Precision 0.7755, Sensitivity 0.8122.
+- Kết quả nguồn: `results/benchmark_v2/drive_transfer/benchmark_results_drive_transfer.csv`.
 
 ### 07_DSB-2018 (Phân đoạn nhân tế bào - In-RAM Caching)
-- Môi trường chạy chính: Google Colab A100 GPU (Resume từ Epoch 39 đến 100 bằng In-RAM Preloading).
-- Tệp Colab Script: `colab_run_mfad_dsb2018_resume.py` (tải 100% 670 ảnh và hợp nhất masks vào RAM trong 22s, tốc độ ~5s/epoch).
-- Tệp Colab Notebook: `fanet_mfad_dsb2018_colab.ipynb`.
-- Tệp Kaggle đối chiếu: `fanet-benchmark-dsb2018.ipynb` (bản Kaggle chạy đến epoch 39).
-- Kết quả nghiệm thu: Dice 0.8953 ± 0.1201, mIoU 0.8255, Precision 0.8951, FPR 1.63%.
-- Trọng số và kết quả: `results/benchmark_v2/dsb2018/`.
+- Môi trường chạy: Google Colab A100 GPU (Resume từ Epoch 39 đến 100 bằng In-RAM Preloading).
+- Tệp thực thi: `colab_run_mfad_dsb2018_resume.ipynb` và `colab_run_mfad_dsb2018_resume.py` (tải trước 670 ảnh và hợp nhất masks trực tiếp vào RAM, tăng tốc huấn luyện đạt ~5 giây/epoch, kèm cell output nghiệm thu đầy đủ trên 134 mẫu test).
+- Kết quả: Dice 0.8953 ± 0.1201, mIoU 0.8255 ± 0.1481, Specificity 0.9837, Precision 0.8951, Sensitivity 0.9009.
+- Kết quả nguồn: `results/benchmark_v2/dsb2018/benchmark_results_dsb2018.csv`.
