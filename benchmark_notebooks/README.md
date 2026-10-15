@@ -17,7 +17,7 @@ Thư mục này tổ chức toàn bộ mã nguồn kiểm thử chuẩn hóa cho
 | 04 | ISIC-2018 | Kaggle GPU Tesla T4 | `04_ISIC-2018/fanet-benchmark-isic-2018.ipynb` | `04_ISIC-2018/logs/` | `04_ISIC-2018/outputs/` | Dice 0.9000 ± 0.1246 | Vượt baseline (+1.48 pp) |
 | 05 | CHASE-DB1 | Kaggle GPU Tesla T4 | `05_CHASE-DB1/fanet-benchmark-chasedb1.ipynb` | `05_CHASE-DB1/logs/` | `05_CHASE-DB1/outputs/` | Spec 0.9926, Prec 0.8637 | Giảm 65% dương tính giả (FPR 0.74%) |
 | 06 | DRIVE | Colab A100 GPU | `06_DRIVE/colab_run_mfad_drive_transfer.ipynb` | `06_DRIVE/logs/` | `06_DRIVE/outputs/` | Dice 0.7932 ± 0.0117 | Vượt baseline (+3.14 pp) |
-| 07 | DSB-2018 | Colab A100 GPU | `07_DSB-2018/colab_run_mfad_dsb2018_resume.ipynb` | `07_DSB-2018/logs/` | `07_DSB-2018/outputs/` | Dice 0.8953 ± 0.1201 | Vượt baseline (+2.32 pp) |
+| 07 | DSB-2018 | Colab A100 GPU | `07_DSB-2018/colab_run_mfad_dsb2018.ipynb` | `07_DSB-2018/logs/` | `07_DSB-2018/outputs/` | Dice 0.8953 ± 0.1201 | Vượt baseline (+2.32 pp) |
 
 ---
 
@@ -79,10 +79,11 @@ Thư mục này tổ chức toàn bộ mã nguồn kiểm thử chuẩn hóa cho
   - Metrics: `benchmark_results_drive_transfer.csv`, `benchmark_summary_drive_transfer.json`.
 
 ### 07_DSB-2018 (Phân đoạn nhân tế bào - In-RAM Caching)
-- Notebook: `colab_run_mfad_dsb2018_resume.ipynb` (và file script gốc `colab_run_mfad_dsb2018_resume.py`).
+- Notebook: `colab_run_mfad_dsb2018.ipynb` (và file script gốc `colab_run_mfad_dsb2018.py`).
 - Thư mục `logs/`:
-  - `colab_eval.txt` & `colab_eval.log`: Bảng đánh giá nghiệm thu In-RAM Caching trên GPU Colab A100 (134 ảnh test).
-  - `kaggle_stdout.log` & `train_and_eval.txt`: Log chạy epoch 1 đến 39 từ Kaggle.
+  - `train_and_eval.txt`: Toàn bộ nhật ký 100 epoch huấn luyện In-RAM trên Colab A100 và bảng metric nghiệm thu 134 mẫu test.
+  - `colab_eval.txt` & `colab_eval.log`: Bảng đánh giá nghiệm thu pass t=2.
+  - `kaggle_stdout.log`: Log đối chiếu từ Kaggle.
 - Thư mục `outputs/`:
   - Model: `FANet_MFAD_DSB-2018_best.pth` (~93.5 MB).
   - Metrics: `benchmark_results_dsb2018.csv`, `benchmark_summary_dsb2018.json`.

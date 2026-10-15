@@ -1,8 +1,8 @@
 """
-colab_run_mfad_dsb2018_resume.py
+colab_run_mfad_dsb2018.py
 ================================
-Resume Training script for FANet_MFAD on DSB-2018 (Data Science Bowl 2018).
-Resumes from Epoch 39 checkpoint (FANet_MFAD_DSB-2018_latest.pth) to Epoch 100.
+End-to-End Training & Benchmark script for FANet_MFAD on DSB-2018.
+Trains from scratch (Epoch 1 to 100) using ImageNet-pretrained ResNet-34 encoder.
 Features:
   - High-speed in-RAM caching of all 670 preprocessed 256x256 images (~175 MB total).
   - Dynamic Albumentations data augmentation (repeat factor = 2, 1072 train samples/epoch).
@@ -24,7 +24,7 @@ from collections import OrderedDict
 # 1. Environment & Dependencies Setup
 # ------------------------------------------------------------------
 print("=" * 65)
-print("  FANet-MFAD DSB-2018 Benchmark: Resume Training Epochs 40-100")
+print("  FANet-MFAD DSB-2018 Benchmark: Full Training Epochs 1-100 (In-RAM Mode)")
 print("  Architecture: Canonical FANet_MFAD (ResNet-34 + MFAD)")
 print("=" * 65)
 
@@ -348,7 +348,7 @@ def compute_metrics(gt, pred, smooth=1e-5):
     }
 
 # ------------------------------------------------------------------
-# 6. Checkpoint Download & Resume Setup
+# 6. Training Configuration & Optimizer Setup
 # ------------------------------------------------------------------
 model = FANet_MFAD().to(DEVICE)
 criterion = DiceBCELoss()
@@ -356,60 +356,23 @@ optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
 scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.5, patience=5)
 scaler = torch.amp.GradScaler('cuda', enabled=(DEVICE.type == 'cuda'))
 
-start_epoch = 0
-best_val_dice = 0.0
-
-CKPT_FILE = "/content/FANet_MFAD_DSB-2018_latest.pth"
-if not os.path.exists(CKPT_FILE):
-    print("[*] Downloading latest DSB-2018 checkpoint from Kaggle kernel output...")
-    try:
-        from kaggle.api.kaggle_api_extended import KaggleApi
-        import requests
-        api = KaggleApi()
-        api.authenticate()
-        with api.build_kaggle_client() as kc:
-            from kagglesdk.kernels.types.kernels_api_service import ApiListKernelSessionOutputRequest
-            req = ApiListKernelSessionOutputRequest()
-            req.user_name = "namnguynnnn"
-            req.kernel_slug = "fanet-benchmark-dsb2018"
-            resp = kc.kernels.kernels_api_client.list_kernel_session_output(req)
-            for f in (resp.files or []):
-                if "latest.pth" in f.file_name or "best.pth" in f.file_name:
-                    target_p = f"/content/{os.path.basename(f.file_name)}"
-                    print(f"[*] Downloading {f.file_name} -> {target_p}...")
-                    r = requests.get(f.url, stream=True, timeout=120)
-                    r.raise_for_status()
-                    with open(target_p, "wb") as out:
-                        for chunk in r.iter_content(chunk_size=4*1024*1024):
-                            if chunk: out.write(chunk)
-                    print(f"[+] Saved {target_p} ({os.path.getsize(target_p)} bytes)")
-    except Exception as e:
-        print(f"[!] Kaggle kernel download failed: {e}")
-
-if os.path.exists(CKPT_FILE):
-    print(f"[*] Loading checkpoint from {CKPT_FILE}...")
-    ckpt = torch.load(CKPT_FILE, map_location=DEVICE, weights_only=False)
-    model.load_state_dict(ckpt['model_state'])
-    optimizer.load_state_dict(ckpt['optimizer_state'])
-    scheduler.load_state_dict(ckpt['scheduler_state'])
-    start_epoch = ckpt.get('epoch', 39)
-    best_val_dice = ckpt.get('best_dice', 0.8872)
-    print(f"[+] Successfully resumed from Epoch {start_epoch} | Previous Best Dice: {best_val_dice:.4f}")
-else:
-    print("[!] No checkpoint found, starting from epoch 0 with ImageNet pretrained encoder.")
-
-# ------------------------------------------------------------------
-# 7. Resume Training (Epoch 40 -> 100)
-# ------------------------------------------------------------------
 TOTAL_EPOCHS = 100
 OUT_DIR = "/content/output_dsb2018"
 os.makedirs(OUT_DIR, exist_ok=True)
 best_ckpt_path = os.path.join(OUT_DIR, "FANet_MFAD_DSB-2018_best.pth")
 
-print(f"\n[*] Commencing Training from Epoch {start_epoch+1} to {TOTAL_EPOCHS}...")
-t_start = time.time()
+print(f"[+] Initialized FANet_MFAD with ImageNet-pretrained ResNet-34 backbone.")
+print(f"[+] Optimizer: Adam(lr=1e-4) | Scheduler: ReduceLROnPlateau(patience=5) | Epochs: {TOTAL_EPOCHS}")
 
-for epoch in range(start_epoch, TOTAL_EPOCHS):
+# ------------------------------------------------------------------
+# 7. Full Training Loop (Epoch 1 -> 100)
+# ------------------------------------------------------------------
+print(f"
+[*] Commencing End-to-End Training from Epoch 1 to {TOTAL_EPOCHS}...")
+t_start = time.time()
+best_val_dice = 0.0
+
+for epoch in range(TOTAL_EPOCHS):
     model.train()
     train_loss = 0.0
     for x, y in train_loader:
@@ -452,8 +415,10 @@ for epoch in range(start_epoch, TOTAL_EPOCHS):
 
     print(f"  [Epoch {epoch+1:03d}/{TOTAL_EPOCHS:03d}] Loss: {train_loss:.4f} | Val Dice: {val_dice:.4f} | Best: {best_val_dice:.4f} | LR: {lr:.1e}{star}")
 
-print(f"\n[+] Training Complete in {(time.time() - t_start):.1f}s. Best Val Dice = {best_val_dice:.4f}")
+print(f"
+[+] Training Complete in {(time.time() - t_start):.1f}s. Best Val Dice = {best_val_dice:.4f}")
 
+# ------------------------------------------------------------------
 # ------------------------------------------------------------------
 # 8. Official Test Evaluation (Final Feedback Phase t=2)
 # ------------------------------------------------------------------

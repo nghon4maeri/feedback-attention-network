@@ -34,7 +34,7 @@
      - `logs/`: `colab_eval.txt`, `colab_eval.log`, `kaggle_stdout.log`, `train_and_eval.txt`
      - `outputs/`: Model `FANet_MFAD_DRIVE_best.pth`, `benchmark_results_drive_transfer.csv`, `benchmark_summary_drive_transfer.json`
   7. `07_DSB-2018`:
-     - Notebook: `colab_run_mfad_dsb2018_resume.ipynb`
-     - `logs/`: `colab_eval.txt`, `colab_eval.log`, `kaggle_stdout.log`, `train_and_eval.txt`
+     - Notebook: `colab_run_mfad_dsb2018.ipynb` (Viết hoàn chỉnh từ đầu Epoch 1-100 với In-RAM Caching, bỏ hoàn toàn resume logic)
+     - `logs/`: `train_and_eval.txt` (full 100 epochs log), `colab_eval.txt`, `colab_eval.log`, `kaggle_stdout.log`
      - `outputs/`: Model `FANet_MFAD_DSB-2018_best.pth`, `benchmark_results_dsb2018.csv`, `benchmark_summary_dsb2018.json`
 - Đồng bộ hóa tài liệu hướng dẫn `benchmark_notebooks/README.md`.
