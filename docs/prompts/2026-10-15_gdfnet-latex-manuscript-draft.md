@@ -46,3 +46,8 @@
 - **So do kien truc (Diagram as Code):** Su dung thu vien `mingrammer/diagrams` thong qua script `scripts/generate_diagrams_architecture.py` de ve lai ca hai kien truc Baseline (Hard Gating / Feedback Trap) va Proposed GDF-Net (Detached Soft-OR Gating). Xuat anh khoa hoc do phan giai cao (300 DPI) khong loi font, khong de chu, can le dep mat.
 - **Training Convergence Curves & Qualitative Predictions:** Viet script `scripts/reformat_figures.py` trich xuat loss va validation DSC tu checkpoint that va log Kaggle, ve lai 4 do thi hoi tu voi font 14pt-16pt dam ro rang, kich thuoc lon tren toan bo chieu rong trang (`figure*` 2x2 grid); cat va dinh dang lai cac anh qualitative comparison ro net voi header chuan `Input Image | Ground Truth | GDF-Net (Ours)`.
 - **Kiem tra bien dich:** `pdflatex` bien dich thanh cong ra `papers/overleaf_submission/main.pdf` (10 trang), khong con loi overfull vbox/hbox.
+- **Tu dong hoa render architec.png va nhung LaTeX (16/10/2026):**
+  - Tao script `scripts/generate_architec.py` xuat truc tiep `architec.png` (300 DPI) the hien day du (a) Baseline Scratch CNN voi MixPool Hard Gating va Feedback Trap va (b) Proposed GDF-Net voi Stem 4 kenh, ResNet-34 pre-trained ImageNet, va Decoupled MFAD Decoder 5 tang.
+  - Cap nhat `papers/overleaf_submission/figures/architecture_tikz.tex` va `sections/03_method.tex` de nhung truc tiep `figures/architec.png` voi label `\label{fig:architecture}`.
+  - Bien dich thanh cong `main.pdf` (10 trang) voi hinh anh ro net, bo cuc dep tren toan trang.
+
