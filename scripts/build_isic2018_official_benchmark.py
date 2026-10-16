@@ -13,6 +13,18 @@ import nbformat as nbf
 
 def generate_notebook(dest_path="kaggle/benchmark_kernels/isic-2018/fanet_vs_mfad_isic_2018.ipynb"):
     nb = nbf.v4.new_notebook()
+    nb.metadata = {
+        "kernelspec": {
+            "display_name": "Python 3",
+            "language": "python",
+            "name": "python3"
+        },
+        "language_info": {
+            "name": "python",
+            "file_extension": ".py",
+            "mimetype": "text/x-python"
+        }
+    }
 
     # Cell 0: Header & Documentation
     nb.cells.append(nbf.v4.new_markdown_cell(
@@ -75,13 +87,11 @@ class UniversalDataset(Dataset):
             A.HorizontalFlip(p=0.5),
             A.VerticalFlip(p=0.5),
             A.ShiftScaleRotate(shift_limit=0.1, scale_limit=0.15, rotate_limit=45, p=0.6),
-            A.ElasticTransform(p=0.3, alpha=120, sigma=120*0.05, alpha_affine=120*0.03),
+            A.ElasticTransform(p=0.3, alpha=120, sigma=120*0.05),
             A.GridDistortion(p=0.3),
-            A.OpticalDistortion(p=0.3, distort_limit=0.05, shift_limit=0.05),
+            A.OpticalDistortion(p=0.3, distort_limit=0.05),
             A.RandomBrightnessContrast(p=0.3),
             A.HueSaturationValue(p=0.3),
-            A.CoarseDropout(max_holes=8, max_height=32, max_width=32, p=0.2),
-            A.ToGray(p=0.2),
         ])
 
     def _read_image(self, path):
@@ -125,12 +135,10 @@ class UniversalDataset(Dataset):
 
         # Binarise mask -> {0, 1}
         mask = mask.astype(np.float32)
-        uv = np.unique(mask)
-        if len(uv) > 2:
+        if mask.max() > 0:
             mask = (mask > (mask.max() + mask.min()) / 2.0).astype(np.float32)
-        elif mask.max() > 0:
-            mask = (mask == mask.max()).astype(np.float32)
-        mask = np.expand_dims(mask, axis=0)
+        if mask.ndim == 2:
+            mask = np.expand_dims(mask, axis=0)
 
         return image, mask
 
@@ -152,7 +160,7 @@ LR = 1e-4
 
 def find_dir_by_name(target_name, base_search="/kaggle/input"):
     for root, dirs, files in os.walk(base_search):
-        if os.path.basename(root) == target_name:
+        if os.path.basename(root).lower() == target_name.lower():
             return root
     return None
 
@@ -368,8 +376,10 @@ def compute_metrics(gt, pred, eval_boundary=True):
     if eval_boundary and (np.sum(gt) > 0 and np.sum(pred) > 0):
         try:
             # Resize binary masks to 352x352 for standard boundary contour evaluation
-            g352 = cv2.resize(gt[0], (352, 352), interpolation=cv2.INTER_NEAREST)
-            p352 = cv2.resize(pred[0], (352, 352), interpolation=cv2.INTER_NEAREST)
+            g_2d = gt.squeeze()
+            p_2d = pred.squeeze()
+            g352 = cv2.resize(g_2d, (352, 352), interpolation=cv2.INTER_NEAREST)
+            p352 = cv2.resize(p_2d, (352, 352), interpolation=cv2.INTER_NEAREST)
 
             # Contours via Morphological Gradient
             kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
@@ -383,18 +393,19 @@ def compute_metrics(gt, pred, eval_boundary=True):
             dist_p_to_g = d_gt[p_bnd]
             dist_g_to_p = d_pred[g_bnd]
 
-            all_dists = np.concatenate([dist_p_to_g, dist_g_to_p])
-            hd95 = float(np.percentile(all_dists, 95))
-            asd  = 0.5 * (float(np.mean(dist_p_to_g)) + float(np.mean(dist_g_to_p)))
+            if len(dist_p_to_g) > 0 and len(dist_g_to_p) > 0:
+                all_dists = np.concatenate([dist_p_to_g, dist_g_to_p])
+                hd95 = float(np.percentile(all_dists, 95))
+                asd  = 0.5 * (float(np.mean(dist_p_to_g)) + float(np.mean(dist_g_to_p)))
 
-            tau = 2.0
-            p_acc = float(np.mean(dist_p_to_g <= tau))
-            r_acc = float(np.mean(dist_g_to_p <= tau))
-            bf2 = (2.0 * p_acc * r_acc) / (p_acc + r_acc + 1e-7)
+                tau = 2.0
+                p_acc = float(np.mean(dist_p_to_g <= tau))
+                r_acc = float(np.mean(dist_g_to_p <= tau))
+                bf2 = (2.0 * p_acc * r_acc) / (p_acc + r_acc + 1e-7)
 
-            res['hd95'] = hd95
-            res['asd'] = asd
-            res['bf2'] = bf2
+                res['hd95'] = hd95
+                res['asd'] = asd
+                res['bf2'] = bf2
         except Exception:
             pass
 
