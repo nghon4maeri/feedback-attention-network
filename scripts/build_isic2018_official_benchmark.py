@@ -154,7 +154,7 @@ r"""# ================================================================
 # ================================================================
 DATASET_NAME = "ISIC-2018"
 IMAGE_SIZE = (512, 512)
-EPOCHS = 60
+EPOCHS = 200      # Strictly follows BGDNet paper horizon
 BATCH_SIZE = 8
 LR = 1e-4
 
@@ -421,7 +421,7 @@ def train_model(model, train_loader, valid_loader, epochs=EPOCHS, lr=LR):
     criterion = DiceBCELoss()
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=1e-4)
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
-        optimizer, mode='max', factor=0.5, patience=5
+        optimizer, mode='max', factor=0.5, patience=8, min_lr=1e-6
     )
     scaler = torch.amp.GradScaler('cuda')
 
@@ -500,7 +500,7 @@ def train_model(model, train_loader, valid_loader, epochs=EPOCHS, lr=LR):
             'history': history
         }, latest_path)
 
-        if time.time() - start_time > 11.5 * 3600:
+        if time.time() - start_time > 8.5 * 3600:
             print("[!] Approaching Kaggle time limit. Exiting cleanly.")
             break
 
