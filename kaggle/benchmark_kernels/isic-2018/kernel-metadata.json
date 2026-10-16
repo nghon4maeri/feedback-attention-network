@@ -12,7 +12,8 @@
     "gpu"
   ],
   "dataset_sources": [
-    "tschandl/isic2018-challenge-task1-data-segmentation"
+    "tschandl/isic2018-challenge-task1-data-segmentation",
+    "mfahimhossen/isic2018-test-groundtruth"
   ],
   "kernel_sources": [],
   "competition_sources": [],
