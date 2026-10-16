@@ -243,7 +243,7 @@ r"""# ================================================================
 # ================================================================
 DATASET_NAME = "ISIC-2018"
 IMAGE_SIZE = (512, 512)
-EPOCHS = 60
+EPOCHS = 200      # Strictly follows BGDNet paper maximum optimization horizon
 BATCH_SIZE = 16   # Optimized for A100 VRAM (40GB/80GB)
 LR = 1e-4
 
