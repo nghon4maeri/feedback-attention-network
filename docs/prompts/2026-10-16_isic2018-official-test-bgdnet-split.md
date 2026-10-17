@@ -37,13 +37,18 @@
   - Tiếp tục huấn luyện từ Epoch 114 đến mốc tối đa 200 epochs theo BGDNet trên GPU NVIDIA A100-SXM4-40GB.
   - Tự động đánh giá và kết xuất bảng chỉ số chính thức khi đạt 200 epochs.
 
-## 7. Nghiệm thu Hoàn tất & Kéo Toàn bộ Output về Local (17/10/2026)
-- **Tiến trình:** Hoàn tất 200/200 epochs trên NVIDIA A100-SXM4-40GB.
+## 8. Huấn Luyện Resume Trên Kaggle (Version 14) & Nghiệm Thu Kết Quả (17/10/2026)
+- **Cấu hình:** Tiếp tục huấn luyện từ Epoch 114 đến 200 trên Kaggle Tesla T4 GPU với cơ chế Warm Restart Learning Rate (`5.0e-05`) và liên kết kernel nguồn `namnguynnnn/fanet-benchmark-isic-2018`.
+- **Diễn biến huấn luyện:**
+  - Nạp thành công checkpoint Epoch 113 với Historical Peak Val Dice đạt **0.9026**.
+  - Các epochs 114 đến 200 tiếp tục tối ưu hóa hàm mất mát từ ~0.060 xuống 0.0542, điểm Val Dice trên 260 ảnh thẩm định dao động trong dải [0.8853, 0.8993] (hội tụ ổn định, không vượt mốc đỉnh 0.9026).
+  - Checkpoint tối ưu được bảo lưu: `GDFNet_ISIC2018_best.pth` (Peak Val Dice: **0.9026**).
 - **Đánh giá trên Official Test 1,000 ảnh:**
-  - File kết quả: [`results/isic-2018_official_a100_final/benchmark_results_ISIC-2018_official_test_a100.csv`](file:///D:/User/nghonamjiwoo/My%20Project/FANet/results/isic-2018_official_a100_final/benchmark_results_ISIC-2018_official_test_a100.csv)
-  - Biểu đồ trực quan: [`results/isic-2018_official_a100_final/comparison_ISIC-2018.png`](file:///D:/User/nghonamjiwoo/My%20Project/FANet/results/isic-2018_official_a100_final/comparison_ISIC-2018.png)
-  - Checkpoint tốt nhất: `results/isic-2018_official_a100_final/GDFNet_ISIC2018_best.pth` (98 MB)
-- **Báo cáo nghiên cứu chi tiết:** [`docs/reports/2026-10-17_phase7g_isic2018_bgdnet_official_test_benchmark.md`](file:///D:/User/nghonamjiwoo/My%20Project/FANet/docs/reports/2026-10-17_phase7g_isic2018_bgdnet_official_test_benchmark.md)
+  - File kết quả: [`results/isic-2018_official_kaggle_resumed/benchmark_results_ISIC-2018_official_test.csv`](file:///D:/User/nghonamjiwoo/My%20Project/FANet/results/isic-2018_official_kaggle_resumed/benchmark_results_ISIC-2018_official_test.csv)
+  - Biểu đồ định tính: [`results/isic-2018_official_kaggle_resumed/comparison_ISIC-2018.png`](file:///D:/User/nghonamjiwoo/My%20Project/FANet/results/isic-2018_official_kaggle_resumed/comparison_ISIC-2018.png)
+  - Đồ thị hội tụ: [`results/isic-2018_official_kaggle_resumed/training_curves_ISIC-2018.png`](file:///D:/User/nghonamjiwoo/My%20Project/FANet/results/isic-2018_official_kaggle_resumed/training_curves_ISIC-2018.png)
+  - Checkpoint tốt nhất (98 MB): `results/isic-2018_official_kaggle_resumed/GDFNet_ISIC2018_best.pth`
+  - Nhật ký huấn luyện (6.3 MB): `results/isic-2018_official_kaggle_resumed/fanet-benchmark-isic-2018.log`
 
 
 

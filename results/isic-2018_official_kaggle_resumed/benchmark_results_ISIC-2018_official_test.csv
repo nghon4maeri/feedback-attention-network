@@ -1,0 +1,10 @@
+Model,Dataset,Cohort,Metric,Mean,Std
+GDF-Net,ISIC-2018,Official_Test_1000,dice,0.890643,0.118396
+GDF-Net,ISIC-2018,Official_Test_1000,miou,0.818605,0.150351
+GDF-Net,ISIC-2018,Official_Test_1000,sensitivity,0.943604,0.126367
+GDF-Net,ISIC-2018,Official_Test_1000,specificity,0.929635,0.124140
+GDF-Net,ISIC-2018,Official_Test_1000,precision,0.867074,0.134813
+GDF-Net,ISIC-2018,Official_Test_1000,fpr,0.070365,0.124140
+GDF-Net,ISIC-2018,Official_Test_1000,hd95,29.345353,44.651128
+GDF-Net,ISIC-2018,Official_Test_1000,asd,10.252982,16.300549
+GDF-Net,ISIC-2018,Official_Test_1000,bf2,0.335151,0.248604
