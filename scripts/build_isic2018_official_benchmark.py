@@ -432,15 +432,39 @@ def train_model(model, train_loader, valid_loader, epochs=EPOCHS, lr=LR):
     start_epoch = 0
 
     # Auto-resume logic
+    resume_candidate = None
     if os.path.exists(latest_path):
-        print(f"[*] Resuming from local latest checkpoint: {latest_path}")
-        ckpt = torch.load(latest_path, map_location=DEVICE, weights_only=False)
+        resume_candidate = latest_path
+    else:
+        found_latest = glob("/kaggle/input/**/GDFNet_ISIC2018_latest.pth", recursive=True)
+        if found_latest:
+            resume_candidate = found_latest[0]
+
+    if resume_candidate:
+        print(f"[*] Resuming from checkpoint: {resume_candidate}")
+        ckpt = torch.load(resume_candidate, map_location=DEVICE, weights_only=False)
         model.load_state_dict(ckpt['model_state'])
         optimizer.load_state_dict(ckpt['optimizer_state'])
         scheduler.load_state_dict(ckpt['scheduler_state'])
-        best_dice = ckpt['best_dice']
-        history = ckpt['history']
-        start_epoch = ckpt['epoch']
+        best_dice = ckpt.get('best_dice', 0.0)
+        history = ckpt.get('history', {'train_loss': [], 'val_dice': []})
+        start_epoch = ckpt.get('epoch', 0)
+
+        # Restore previous best checkpoint if exists in inputs
+        found_best = glob("/kaggle/input/**/GDFNet_ISIC2018_best.pth", recursive=True)
+        if found_best and not os.path.exists(ckpt_path):
+            import shutil
+            shutil.copy2(found_best[0], ckpt_path)
+            print(f"  [+] Restored previous best checkpoint from {found_best[0]}")
+
+        # If LR decayed to min_lr (1e-6), refresh to 5e-5 for active gradient progression
+        current_lr = optimizer.param_groups[0]['lr']
+        if current_lr <= 1.5e-6:
+            for param_group in optimizer.param_groups:
+                param_group['lr'] = 5e-5
+            print(f"  [+] Refreshed learning rate from {current_lr:.1e} to 5.0e-05 for continued optimization.")
+
+        print(f"  [+] Resumed at Epoch {start_epoch+1}/{epochs} | Historical Best Val Dice: {best_dice:.4f}")
 
     start_time = time.time()
     for epoch in range(start_epoch, epochs):
@@ -638,7 +662,9 @@ def update_metadata(dest_path="kaggle/benchmark_kernels/isic-2018/kernel-metadat
             "tschandl/isic2018-challenge-task1-data-segmentation",
             "mfahimhossen/isic2018-test-groundtruth"
         ],
-        "kernel_sources": [],
+        "kernel_sources": [
+            "namnguynnnn/fanet-benchmark-isic-2018"
+        ],
         "competition_sources": [],
         "model_sources": []
     }

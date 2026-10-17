@@ -15,7 +15,9 @@
     "tschandl/isic2018-challenge-task1-data-segmentation",
     "mfahimhossen/isic2018-test-groundtruth"
   ],
-  "kernel_sources": [],
+  "kernel_sources": [
+    "namnguynnnn/fanet-benchmark-isic-2018"
+  ],
   "competition_sources": [],
   "model_sources": []
 }
