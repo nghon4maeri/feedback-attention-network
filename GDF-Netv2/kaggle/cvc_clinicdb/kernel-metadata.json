@@ -1,0 +1,20 @@
+{
+  "id": "namnguynnnn/gdfnet-v2-cvc-clinicdb",
+  "title": "gdfnet-v2-cvc-clinicdb",
+  "code_file": "train_gdfnet_v2_cvc.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": false,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "keywords": [
+    "gpu"
+  ],
+  "dataset_sources": [
+    "namnguynnnn/cvc-clinicdb"
+  ],
+  "kernel_sources": [],
+  "competition_sources": [],
+  "model_sources": []
+}
