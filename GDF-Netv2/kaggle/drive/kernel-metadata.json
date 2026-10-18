@@ -1,0 +1,17 @@
+{
+  "id": "namnguynnnn/gdfnet-v2-drive",
+  "title": "gdfnet-v2-drive",
+  "code_file": "train_gdfnet_v2_drive.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": "true",
+  "enable_gpu": "true",
+  "enable_tpu": "false",
+  "enable_internet": "true",
+  "dataset_sources": [
+    "namnguynnnn/drive-vessel"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}
