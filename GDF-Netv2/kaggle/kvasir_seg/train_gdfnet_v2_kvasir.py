@@ -14,6 +14,7 @@ import subprocess
 import numpy as np
 import pandas as pd
 from PIL import Image
+import cv2
 from scipy.ndimage import binary_erosion, distance_transform_edt
 from scipy.spatial.distance import directed_hausdorff
 
@@ -74,27 +75,32 @@ class HierarchicalBackbone(nn.Module):
         return feats[0], feats[1], feats[2], feats[3]
 
 class FrequencyDecoupledFilter(nn.Module):
-    def __init__(self, channels, cutoff_ratio=0.35):
+    def __init__(self, in_channels, reduction=4):
         super().__init__()
-        self.channels = channels
-        self.cutoff_ratio = cutoff_ratio
-        self.gamma_low = nn.Parameter(torch.ones(1, channels, 1, 1))
-        self.gamma_high = nn.Parameter(torch.ones(1, channels, 1, 1) * 0.1)
+        mid_channels = max(in_channels // reduction, 16)
+        self.low_pass = nn.Sequential(
+            nn.AvgPool2d(kernel_size=3, stride=1, padding=1),
+            nn.Conv2d(in_channels, in_channels, kernel_size=1, bias=False),
+            nn.BatchNorm2d(in_channels)
+        )
+        self.hf_gate = nn.Sequential(
+            nn.Conv2d(in_channels, mid_channels, kernel_size=1),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(mid_channels, in_channels, kernel_size=3, padding=1, groups=mid_channels),
+            nn.Sigmoid()
+        )
+        self.fusion = nn.Sequential(
+            nn.Conv2d(in_channels * 2, in_channels, kernel_size=1, bias=False),
+            nn.BatchNorm2d(in_channels),
+            nn.ReLU(inplace=True)
+        )
 
     def forward(self, x):
-        B, C, H, W = x.shape
-        X = torch.fft.rfft2(x, norm="ortho")
-        u = torch.fft.fftfreq(H, device=x.device)
-        v = torch.fft.rfftfreq(W, device=x.device)
-        U, V = torch.meshgrid(u, v, indexing='ij')
-        dist = torch.sqrt(U**2 + V**2).unsqueeze(0).unsqueeze(0)
-        mask = (dist <= self.cutoff_ratio).float()
-
-        X_low = X * mask
-        X_high = X * (1.0 - mask)
-        x_low = torch.fft.irfft2(X_low, s=(H, W), norm="ortho")
-        x_high = torch.fft.irfft2(X_high, s=(H, W), norm="ortho")
-        return self.gamma_low * x_low + self.gamma_high * x_high
+        x_low = self.low_pass(x)
+        x_high = x - x_low
+        gate = self.hf_gate(x_low)
+        out = self.fusion(torch.cat([x_low, x_high * gate], dim=1))
+        return out + x
 
 class DifferentiableEdgeStream(nn.Module):
     def __init__(self, in_channels=3, edge_channels=32):
@@ -176,10 +182,10 @@ class GDFNetV2(nn.Module):
         self.backbone = HierarchicalBackbone(backbone_name, pretrained, in_chans)
         c1, c2, c3, c4 = self.backbone.feature_info
 
-        self.fdf1 = FrequencyDecoupledFilter(c1, cutoff_ratio=0.35)
-        self.fdf2 = FrequencyDecoupledFilter(c2, cutoff_ratio=0.35)
-        self.fdf3 = FrequencyDecoupledFilter(c3, cutoff_ratio=0.35)
-        self.fdf4 = FrequencyDecoupledFilter(c4, cutoff_ratio=0.35)
+        self.fdf1 = FrequencyDecoupledFilter(c1)
+        self.fdf2 = FrequencyDecoupledFilter(c2)
+        self.fdf3 = FrequencyDecoupledFilter(c3)
+        self.fdf4 = FrequencyDecoupledFilter(c4)
 
         self.dec4_conv = nn.Sequential(
             nn.Conv2d(c4, decoder_channels, kernel_size=3, padding=1, bias=False),
@@ -367,9 +373,20 @@ class MedicalDataset(Dataset):
         return len(self.imgs)
 
     def __getitem__(self, idx):
-        img = np.array(Image.open(self.imgs[idx]).convert('RGB'), dtype=np.float32) / 255.0
-        msk = np.array(Image.open(self.msks[idx]).convert('L'), dtype=np.float32)
-        msk = (msk > 127.0).astype(np.float32)
+        # Load image via cv2 first, fallback to PIL
+        img_bgr = cv2.imread(self.imgs[idx], cv2.IMREAD_COLOR)
+        if img_bgr is not None:
+            img = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB).astype(np.float32) / 255.0
+        else:
+            img = np.array(Image.open(self.imgs[idx]).convert('RGB'), dtype=np.float32) / 255.0
+
+        # Load mask via cv2 first, fallback to PIL
+        msk_gray = cv2.imread(self.msks[idx], cv2.IMREAD_GRAYSCALE)
+        if msk_gray is not None:
+            msk = (msk_gray.astype(np.float32) > 127.0).astype(np.float32)
+        else:
+            msk = np.array(Image.open(self.msks[idx]).convert('L'), dtype=np.float32)
+            msk = (msk > 127.0).astype(np.float32)
 
         if self.transform is not None:
             aug = self.transform(image=img, mask=msk)
