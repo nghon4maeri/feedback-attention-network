@@ -1,0 +1,22 @@
+{
+  "id": "namnguynnnn/fanet-val-official-isic2018",
+  "title": "fanet-val-official-isic2018",
+  "code_file": "fanet_val_official_isic2018.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": false,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "keywords": [
+    "gpu"
+  ],
+  "dataset_sources": [
+    "tschandl/isic2018-challenge-task1-data-segmentation"
+  ],
+  "kernel_sources": [
+    "namnguynnnn/fanet-benchmark-isic-2018"
+  ],
+  "competition_sources": [],
+  "model_sources": []
+}
