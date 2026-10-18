@@ -1,0 +1,17 @@
+{
+  "id": "namnguynnnn/gdfnet-v2-em-dataset",
+  "title": "gdfnet-v2-em-dataset",
+  "code_file": "train_gdfnet_v2_em.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": "true",
+  "enable_gpu": "true",
+  "enable_tpu": "false",
+  "enable_internet": "true",
+  "dataset_sources": [
+    "kmader/electron-microscopy-3d-segmentation"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}
