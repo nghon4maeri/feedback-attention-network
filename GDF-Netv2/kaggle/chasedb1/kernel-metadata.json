@@ -1,0 +1,17 @@
+{
+  "id": "namnguynnnn/gdfnet-v2-chasedb1",
+  "title": "gdfnet-v2-chasedb1",
+  "code_file": "train_gdfnet_v2_chase.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": "true",
+  "enable_gpu": "true",
+  "enable_tpu": "false",
+  "enable_internet": "true",
+  "dataset_sources": [
+    "namnguynnnn/chase-db1"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}
