@@ -1,0 +1,17 @@
+{
+  "id": "namnguynnnn/gdfnet-v2-dsb2018",
+  "title": "gdfnet-v2-dsb2018",
+  "code_file": "train_gdfnet_v2_dsb.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": "true",
+  "enable_gpu": "true",
+  "enable_tpu": "false",
+  "enable_internet": "true",
+  "dataset_sources": [],
+  "competition_sources": [
+    "data-science-bowl-2018"
+  ],
+  "kernel_sources": [],
+  "model_sources": []
+}
