@@ -1,0 +1,21 @@
+{
+  "id": "namnguynnnn/fanet-gdfnet-v2-isic2018",
+  "title": "fanet-gdfnet-v2-isic2018",
+  "code_file": "gdfnet_v2_isic2018.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": false,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "keywords": [
+    "gpu"
+  ],
+  "dataset_sources": [
+    "tschandl/isic2018-challenge-task1-data-segmentation",
+    "mfahimhossen/isic2018-test-groundtruth"
+  ],
+  "kernel_sources": [],
+  "competition_sources": [],
+  "model_sources": []
+}
