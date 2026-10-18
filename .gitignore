@@ -12,11 +12,10 @@ data/
 checkpoints/
 results/
 *.pth
+*.zip
+*.tar.gz
+*.7z
 
-# Phase 5 artifacts (explicitly tracked for reproducibility)
-!checkpoints_phase5/*.pth
-!kaggle/outputs_phase5/checkpoints_phase5/*.pth
-!kaggle/outputs_phase5/fanet-phase5.log
 
 # Notebooks (keep cell outputs out of git)
 notebooks/.ipynb_checkpoints/
@@ -33,12 +32,15 @@ docs/prompts/
 
 # PDF translation (VI-Translate integration)
 # Isolated runtime environment (never commit)
-papers/.vitranslate-venv/
+**/.vitranslate-venv/
+archive/**/.vitranslate-venv/
 # Generated translated PDFs (large, not versioned)
 papers/translated/*.pdf
+archive/**/translated/*.pdf
 !papers/translated/.gitkeep
 # Keep original PDFs out too unless explicitly added
 papers/original/*.pdf
+archive/**/original/*.pdf
 !papers/original/.gitkeep
 # Model weights / OCR / caches
 *.onnx

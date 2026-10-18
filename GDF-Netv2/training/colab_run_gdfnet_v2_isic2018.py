@@ -388,7 +388,7 @@ train_transform = A.Compose([
     A.ColorJitter(brightness=0.15, contrast=0.15, saturation=0.15, hue=0.05, p=0.5),
     A.OneOf([
         A.GridDistortion(num_steps=5, distort_limit=0.2, p=1.0),
-        A.ElasticTransform(alpha=1.0, sigma=50, alpha_affine=30, p=1.0),
+        A.ElasticTransform(alpha=1.0, sigma=50, p=1.0),
     ], p=0.3),
     A.CoarseDropout(num_holes_range=(1, 4), hole_height_range=(8, 32), hole_width_range=(8, 32), fill=0, p=0.25)
 ])
@@ -416,9 +416,9 @@ class MedicalDataset(Dataset):
         msk = np.expand_dims(msk, axis=0)
         return torch.from_numpy(img).float(), torch.from_numpy(msk).float()
 
-train_loader = DataLoader(MedicalDataset(train_x, train_y, train_transform), batch_size=8, shuffle=True, num_workers=4, pin_memory=True)
-val_loader   = DataLoader(MedicalDataset(val_x, val_y, val_transform), batch_size=8, shuffle=False, num_workers=4, pin_memory=True)
-test_loader  = DataLoader(MedicalDataset(test_x, test_y, val_transform), batch_size=8, shuffle=False, num_workers=4, pin_memory=True)
+train_loader = DataLoader(MedicalDataset(train_x, train_y, train_transform), batch_size=8, shuffle=True, num_workers=2, pin_memory=True)
+val_loader   = DataLoader(MedicalDataset(val_x, val_y, val_transform), batch_size=8, shuffle=False, num_workers=2, pin_memory=True)
+test_loader  = DataLoader(MedicalDataset(test_x, test_y, val_transform), batch_size=8, shuffle=False, num_workers=2, pin_memory=True)
 
 # ====================================================================
 # 6. Evaluation Function (9 Full Metrics)
@@ -484,7 +484,7 @@ def evaluate_model(model, loader):
 model = GDFNetV2(backbone_name="convnextv2_tiny", pretrained=True).to(device)
 criterion = CompositeLoss()
 optimizer = optim.AdamW(model.parameters(), lr=1e-4, weight_decay=1e-4)
-scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.5, patience=8, verbose=True)
+scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.5, patience=8)
 scaler = GradScaler()
 
 EPOCHS = 150

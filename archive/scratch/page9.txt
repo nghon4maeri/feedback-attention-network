@@ -1,0 +1,390 @@
+IEEE TRANSACTIONS ON NEURAL NETWORKS AND LEARNING SYSTEMS , VOL. XX, NO. XX, XXXX 2022
+9
+TABLE IX: Detailed ablation study of the FANet architecture. Flop is calculated in terms of GMac. “Rec” stands for Recall,
+“Prec” stands for precision, “Spec” stands for Speciﬁcity, “Acc” stands for Accuracy, and “Param” stands for total number
+parameters. B1 – B4 denote different network conﬁgurations.
+Method
+mIoU
+F1
+Rec
+Prec
+Spec
+Acc
+F2
+Param
+Flops
+FPS
+Image Size
+Dataset: Kvasir-SEG
+Baseline (FANet without MixPool,
+B1)
+0.7732
+0.8516
+0.8835
+0.8710
+0.9783
+0.9563
+0.8614
+5.76M
+70.38
+104.20
+512 × 512
+Baseline + MixPool (B2)
+0.6378
+0.7302
+0.6982
+0.9098
+0.9815
+0.9412
+0.7039
+7.72M
+94.75
+66.75
+512 × 512
+Baseline + MixPool(E1, D4) + feed-
+back (B3)
+0.7688
+0.8460
+0.9047
+0.8479
+0.9576
+0.9474
+0.8699
+5.78M
+76.53
+101.10
+512 × 512
+Baseline + MixPool + feedback (B4)
+0.8153
+0.8803
+0.9058
+0.9005
+0.9794
+0.9667
+0.8872
+7.72M
+94.75
+68.18
+512 × 512
+Dataset: CVC-ClinicDB
+Baseline (FANet without MixPool,
+B1)
+0.8619
+0.9166
+0.9310
+0.9247
+0.9934
+0.9877
+0.9194
+5.76M
+70.38
+103.46
+256 × 256
+Baseline + MixPool (B2)
+0.8541
+0.9108
+0.9026
+0.9296
+0.9943
+0.9864
+0.9048
+7.72M
+94.75
+67.490
+256 × 256
+Baseline + MixPool(E1, D4) + feed-
+back (B3)
+0.8729
+0.9162
+0.9052
+0.9462
+0.9941
+0.9889
+0.9093
+5.78M
+76.53
+99.03
+256 × 256
+Baseline + MixPool + feedback (B4)
+0.8937
+0.9355
+0.9339
+0.9401
+0.9948
+0.9916
+0.9342
+7.72M
+94.75
+67.910
+256 × 256
+Dataset: 2018 Data Science Bowl
+Baseline (FANet without MixPool,
+B1)
+0.8495
+0.9121
+0.9047
+0.9283
+0.9871
+0.9800
+0.9068
+5.76M
+70.38
+114.82
+256 × 256
+Baseline + MixPool (B2)
+0.8158
+0.8893
+0.8665
+0.9289
+0.9887
+0.9751
+0.8733
+7.72M
+94.75
+69.64
+256 × 256
+Baseline + MixPool(E1, D4) + feed-
+back (B3)
+0.8552
+0.9165
+0.9189
+0.9199
+0.9863
+0.9802
+0.9173
+5.78M
+76.53
+100.27
+256 × 256
+Baseline + MixPool + feedback (B4)
+0.8569
+0.9176
+0.9222
+0.9194
+0.9860
+0.9800
+0.9195
+7.72M
+94.75
+69.22
+256 × 256
+Dataset: ISIC 2018
+Baseline (FANet without MixPool,
+B1)
+0.7908
+0.8647
+0.9033
+0.8780
+0.9151
+0.9151
+0.8778
+5.76M
+70.38
+111.95
+512 × 512
+Baseline + MixPool (B2)
+0.7486
+0.8303
+0.8049
+0.9214
+0.9617
+0.9211
+0.8081
+7.72M
+94.75
+65.91
+512 × 512
+Baseline + MixPool(E1, D4) + feed-
+back (B3)
+0.8078
+0.8780
+0.8746
+0.9252
+0.9614
+0.9374
+0.8719
+5.78M
+76.53
+99.06
+512 × 512
+Baseline + MixPool + feedback (B4)
+0.8023
+0.8731
+0.8650
+0.9235
+0.9611
+0.9351
+0.8630
+7.72M
+94.75
+71.02
+512 × 512
+Dataset: DRIVE
+Baseline (FANet without MixPool,
+B1)
+0.6912
+0.8172
+0.8048
+0.8339
+0.9846
+0.9687
+0.8093
+5.76M
+70.38
+103.68
+512 × 512
+Baseline + MixPool (B2)
+0.6895
+0.8161
+0.8219
+0.8145
+0.9820
+0.9678
+0.8190
+7.72M
+94.75
+68.47
+512 × 512
+Baseline + MixPool(E1, D4) + feed-
+back (B3)
+0.6928
+0.8183
+0.8124
+0.8280
+0.9839
+0.9687
+0.8142
+5.78M
+76.53
+95.30
+512 × 512
+Baseline + MixPool + feedback (B4)
+0.6927
+0.8183
+0.8215
+0.8189
+0.9826
+0.9683
+0.8197
+7.72M
+94.75
+70.66
+512 × 512
+Dataset: CHASE-DB1
+Baseline (FANet without MixPool,
+B1)
+0.6419
+0.7816
+0.7876
+0.7768
+0.9848
+0.9723
+0.7850
+5.76M
+70.38
+95.77
+512 × 512
+Baseline + MixPool (B2)
+0.5419
+0.7009
+0.8116
+0.6209
+0.9664
+0.9565
+0.7625
+7.72M
+94.75
+65.03
+512 × 512
+Baseline + MixPool(E1, D4) + feed-
+back (B3)
+0.6877
+0.8147
+0.8372
+0.7948
+0.9855
+0.9760
+0.8279
+5.78M
+76.53
+99.00
+512 × 512
+Baseline + MixPool + feedback (B4)
+0.6820
+0.8108
+0.8544
+0.7722
+0.9830
+0.9749
+0.8363
+7.72M
+94.75
+71.67
+512 × 512
+Dataset: EM
+Baseline (FANet without MixPool,
+B1)
+0.9128
+0.9544
+0.9597
+0.9495
+0.7946
+0.9263
+0.9575
+5.76M
+70.38
+79.59
+512 × 512
+Baseline + MixPool (B2)
+0.9121
+0.9540
+0.9596
+0.9488
+0.7918
+0.9257
+0.9573
+7.72M
+94.75
+59.15
+512 × 512
+Baseline + MixPool(E1, D4) + feed-
+back (B3)
+0.9042
+0.9497
+0.9404
+0.9594
+0.8378
+0.9198
+0.9441
+5.78M
+76.53
+90.62
+512 × 512
+Baseline + MixPool + feedback (B4)
+0.9134
+0.9547
+0.9568
+0.9529
+0.8096
+0.9271
+0.9559
+7.72M
+94.75
+70.70
+512 × 512
+2) Optimum position of MixPool block in FANet architec-
+ture: The positioning of the MixPool is an important factor
+determining the performance of the model. In the FANet (B4),
+we integrate the MixPool block in all the encoder blocks and
+the decoder blocks. In B3, we integrate MixPool block in
+the ﬁrst encoder block and the last decoder block only. To
+evaluate the effectiveness of the integrating MixPool block,
+we compare B3 with B4 in Table IX. It can be observed that
+out of the seven datasets, on three datasets, i.e., Kvasir-SEG,
+CVC-ClinicDB, and 2018 Data Science Bowl, a signiﬁcant
+improvement in B4 is observed as compared to the B3. On the
+F1 metric, we can observe that B4 achieves an improvement
+of 3.43 % on Kvasir-SEG, 1.93 % on CVC-ClinicDB, 0.11 %
+on the 2018 Data Science Bowl, and 0.5 % on the EM dataset.
+3) Signiﬁcance of feedback during evaluation: The pro-
+posed architecture uses the feedback information (input mask)

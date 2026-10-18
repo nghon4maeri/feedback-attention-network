@@ -1,0 +1,760 @@
+=== PAGE 1 ===
+https://www.aimspress.com/journal/Bioengineering
+AIMS Bioengineering, 13(3): 394–417.
+DOI: 10.3934/bioeng.2026019
+Received: 17 July 2026
+Revised: 03 September 2026
+Accepted: 09 September 2026
+Published: 11 September 2026
+Research article
+BGDNet: boundary-guided dual-backbone encoder–decoder network for
+dermoscopic lesion segmentation
+Jiayu Zhang, Haiyang Liu, Ying Ye and Xiaoming Huang*
+School of Computer Science, Beijing Information Science and Technology University, Beijing
+100192, China
+* Correspondence: Email: huangxm18@bistu.edu.cn; Tel: +8613426005342.
+Abstract: Accurate segmentation of dermoscopic lesions is essential for computer-aided melanoma
+assessment, but reliable delineation remains challenging because lesions often exhibit irregular shapes,
+low contrast, and ambiguous boundaries. This study aimed to improve both lesion-region segmentation
+and contour localization by better coordinating complementary local and global image representations.
+We developed BGDNet, a boundary-guided dual-backbone encoder–decoder network that combines
+TransXNet and Swin Transformer.
+The model integrates local structural information with long-
+range contextual information and uses boundary priors to guide feature interaction. Its performance
+was evaluated on the ISIC-2016, ISIC-2018, and PH2 datasets and compared with representative
+convolutional, Transformer-based, and hybrid segmentation methods using both region-based and
+boundary-sensitive metrics. On ISIC-2018, BGDNet achieved an intersection over union (IoU) of
+0.8813 ± 0.0014, a Dice similarity coeﬃcient (DSC) of 0.9330 ± 0.0009, a 95th percentile Hausdorﬀ
+distance (HD95) of 5.84 ± 0.11 pixels, an average surface distance (ASD) of 1.34 ± 0.03 pixels, and
+a boundary F-score at a 2-pixel tolerance (BF@2) of 0.868 ± 0.003. A recall (sensitivity) of 0.9602 ±
+0.0021 and a speciﬁcity of 0.9847±0.0007 further characterize foreground–background behavior under
+class imbalance. Additional in-dataset and cross-dataset experiments, together with component-wise
+ablation and stage-wise boundary-prior visualization, provide complementary evidence for the model
+design. These ﬁndings show that boundary-guided interaction between complementary encoders can
+improve both lesion overlap and contour accuracy, particularly for lesions with irregular or weakly
+deﬁned margins. BGDNet therefore provides a promising framework for accurate dermoscopic lesion
+segmentation.
+Keywords: dermoscopic image segmentation; skin lesion segmentation; boundary-aware
+segmentation; dual-backbone network; transformer-based models
+
+=== PAGE 2 ===
+395
+1. Introduction
+The incidence of melanoma continues to increase globally, driven by environmental factors,
+greater ultraviolet exposure, and population aging, with a rising incidence among younger
+cohorts [1, 2]. Melanoma is highly aggressive, and early detection substantially improves survival
+outcomes [3].
+Early-stage lesions often present with subtle or atypical signs, which can lead to
+misdiagnosis or diagnostic delay. Dermoscopy, a noninvasive imaging modality, plays a central role
+in early screening and clinical assessment of cutaneous lesions [4, 5].
+Nonetheless, dermoscopic
+interpretation relies on clinician expertise and is subject to inter- and intra-observer variability;
+manual delineation of lesion boundaries is time-consuming and inconsistent [6]. These limitations
+motivate automated segmentation systems that are accurate, eﬃcient, and clinically reliable.
+Deep learning has driven substantial progress in medical image segmentation.
+Convolutional
+neural networks (CNNs), notably U-Net and its variants, eﬀectively combine low-level spatial detail
+with high-level semantic context through encoder–decoder structures and skip connections [7, 8].
+However, convolutional operators are intrinsically local, which constrains the eﬀective receptive ﬁeld
+and limits the modeling of long-range dependencies. This limitation is consequential for dermoscopic
+images,
+where lesions commonly exhibit irregular shapes,
+weak contrast at margins,
+and
+heterogeneous textures.
+Approaches such as dilated convolutions and multiscale fusion partially
+alleviate this issue [9, 10], yet they do not provide a principled mechanism for capturing global
+context.
+ISIC-2016
+ISIC-2018
+PH2
+Low contrast lesions
+Irregular and complex 
+boundaries
+Figure 1. Representative dermoscopic images from ISIC-2016, ISIC-2018, and PH2 with
+ground-truth lesion boundaries overlaid in red, highlighting low contrast and irregular lesion
+margins that challenge accurate segmentation.
+Vision Transformers, including the Vision Transformer [11], model long-range interactions through
+self-attention [12]. Hierarchical designs such as the Swin Transformer [13] further balance local and
+global representations through shifted-window attention. Despite these strengths, Transformer-based
+AIMS Bioengineering
+Volume 13, Issue 3, 394–417.
+
+=== PAGE 3 ===
+396
+models may insuﬃciently preserve ﬁne structural details, often yielding over-smoothed boundaries
+that are critical for clinical interpretation. Hybrid CNN–Transformer architectures attempt to combine
+convolutional spatial precision with attention-driven context [14,15], yet explicit boundary exploitation
+and multiscale alignment across heterogeneous encoders remain challenging. Although boundary-
+aware loss functions can complement region-based objectives, their eﬀectiveness depends on reliable
+boundary-cue extraction from intermediate features [16].
+As illustrated in Figure 1, dermoscopic lesions from widely used public benchmarks, including
+ISIC-2016, ISIC-2018, and PH2, frequently exhibit weak contrast against surrounding skin and highly
+irregular or ambiguous boundaries.
+These characteristics substantially increase the diﬃculty of
+accurate lesion delineation, particularly along lesion margins, and highlight the need for segmentation
+frameworks that explicitly account for boundary information rather than relying solely on
+region-based feature learning.
+Despite recent progress,
+aligning heterogeneous representations while preserving reliable
+boundary information remains challenging. Direct concatenation or unconstrained attention between
+local-structure and Transformer branches may introduce semantic and statistical mismatch,
+particularly near low-contrast lesion margins. Furthermore, boundary information is frequently used
+only as an auxiliary decoder output or a training objective rather than as a signal that directly
+regulates cross-branch feature interaction.
+To address these limitations, we introduce BGDNet, a boundary-guided dual-backbone network
+for dermoscopic lesion segmentation. The model combines TransXNet [17] and Swin Transformer
+to capture complementary local-detail and global-context representations. Rather than using Sobel
+operators, attention, and deformable convolution as isolated components, BGDNet organizes them
+within a boundary-prior-conditioned fusion framework. Feature-level boundary priors derived from
+ﬁxed Sobel responses and a learnable projection directly regulate bidirectional interaction between the
+two heterogeneous branches, making feature fusion more reliable around ambiguous lesion contours.
+The principal contributions of this work are as follows:
+(1) We construct a heterogeneous dual-backbone encoder using a four-stage Swin Transformer branch
+and a TransXNet-XXS branch to provide complementary hierarchical representations. Because the
+two branches produce features with diﬀerent channel characteristics and statistical distributions,
+stage-speciﬁc 1×1 projections are applied before boundary extraction and cross-branch interaction,
+providing compatible feature spaces for subsequent boundary-guided fusion.
+(2) We introduce a boundary extraction module (BEM) that applies ﬁxed channel-wise Sobel operators
+followed by a learnable projection to derive feature-level boundary priors. These priors provide
+additional boundary guidance from intermediate representations and are not interpreted as pixel-
+accurate clinical lesion boundaries.
+(3) We introduce boundary-guided cross-attention (BGCA) to regulate bidirectional information
+exchange between the two encoder branches. BEM-derived boundary priors are introduced into
+the query and key pathways, whereas the value pathways retain the corresponding semantic
+features. The boundary priors therefore inﬂuence cross-branch correspondence without replacing
+the semantic content being transferred.
+AIMS Bioengineering
+Volume 13, Issue 3, 394–417.
+
+=== PAGE 5 ===
+398
+memory usage still grows rapidly at the high resolutions typical of dermoscopic images, limiting the
+use of ﬁne-grained, boundary-preserving features.
+Finally, window partitioning and positional
+encoding may introduce discontinuities at window boundaries.
+Without dedicated alignment
+mechanisms, these artifacts can conﬂict with anatomical contours, reducing boundary accuracy even
+when global consistency is improved.
+2.3. Hybrid segmentation methods
+Hybrid architectures aim to unify the strengths of CNNs and Transformers by combining
+convolutional locality with attention-based global reasoning.
+Representative methods, including
+U-Net
+with
+Channel
+Transformer
+(UCTransNet)
+[24],
+Dual
+Swin
+Transformer
+U-Net
+(DS-TransUNet) [25], and TransFuse [26], adopt parallel convolutional and Transformer branches
+and integrate them using dedicated fusion designs.
+In general, convolutional components provide precise spatial localization and texture cues,
+whereas Transformer components contribute holistic context and long-range consistency. Fusion can
+be performed at early, intermediate, or late stages and is frequently implemented through
+cross-attention, gating, or feature-recalibration modules to adaptively exchange information between
+branches.
+Although hybrid methods have reported strong performance on International Skin Imaging
+Collaboration (ISIC) benchmarks, several issues remain.
+Many approaches prioritize region-level
+overlap metrics and pixel-wise accuracy while under-specifying boundary modeling, which can yield
+ambiguous or jagged contours in heterogeneous regions. In addition, heterogeneous encoders produce
+features with diﬀerent resolutions, receptive ﬁelds, and statistical distributions. Naive concatenation
+or additive fusion may blur edges or misalign ﬁne structures without explicit alignment.
+Moreover, dual-pathway designs and deep fusion stacks often increase parameter counts and
+inference latency, limiting applicability on resource-constrained platforms.
+These observations
+motivate boundary-aware alignment and multiscale fusion mechanisms that can eﬀectively translate
+global context into clinically meaningful contour precision.
+Recent lightweight alternatives further investigate eﬃcient local–global modeling.
+SM-UNet
+combines
+axial
+shift
+with
+a
+spatial
+state-space
+model
+to
+learn
+local
+and
+global
+lesion
+representations [27],
+whereas frequency-aware directional shift modeling adapts long-range
+interactions to diﬀerent frequency components [28].
+Recent hybrid architectures further emphasize structured fusion of complementary representations.
+Hybrid serial–parallel fusion network (HSPF-Net) adopts a serial–parallel hybrid CNN–Transformer
+architecture and introduces multi-receptive-ﬁeld feature fusion to integrate features obtained from
+diﬀerent receptive ﬁelds [29]. Progressive multi-granularity attention fusion network (PMGAF-Net),
+although developed for polyp segmentation, integrates Pyramid Vision Transformer and CNN-based
+representations and employs progressive multi-granularity attention together with weighted hybrid
+attention fusion to improve cross-layer feature integration [30]. These studies further demonstrate the
+importance of coordinating complementary local and global representations through dedicated fusion
+mechanisms. In contrast, BGDNet focuses speciﬁcally on using feature-derived boundary priors to
+regulate bidirectional correspondence between heterogeneous encoder representations rather than
+relying on general feature fusion alone.
+AIMS Bioengineering
+Volume 13, Issue 3, 394–417.
+
+=== PAGE 12 ===
+405
+L = LBCE
+
+M, Mgt
+
++ LDice + λbndLBCE
+
+B, Bgt
+
+.
+(3.10)
+Here, LBCE denotes BCE computed directly from logits, and σ(·) denotes the sigmoid function. The
+maximum is calculated over all spatial locations (u, v) in each training sample. The constant ϵ ensures
+numerical stability. The boundary-loss weight is set to λbnd = 0.4. The Dice term directly emphasizes
+foreground overlap and reduces the inﬂuence of background dominance.
+No threshold is applied during boundary-target generation. Therefore, Bgt ∈[0, 1] represents a
+normalized soft contour map rather than a ﬁxed-width binary morphological boundary. This soft target
+retains variations in local edge strength and avoids the need to introduce an additional boundary-width
+hyperparameter.
+Because the soft boundary target is derived from a manually annotated mask, it may be aﬀected by
+annotation variability, resizing, imaging artifacts, and local boundary uncertainty. A Sobel response of
+the annotation should therefore not be interpreted as a unique biological lesion boundary. The boundary
+term remains auxiliary, while the BCE–Dice segmentation objective provides the primary supervision.
+3.7. Experimental settings and datasets
+All experiments were implemented in PyTorch [39] and conducted on a single NVIDIA Tesla V100
+graphics processing unit with 16 GB of memory. Images were resized to 352 × 352 and normalized
+using the ImageNet channel means (0.485, 0.456, 0.406) and standard deviations (0.229, 0.224, 0.225).
+The corresponding lesion masks were resized to the same spatial resolution and converted to ﬂoating-
+point tensors.
+The models were trained for 200 epochs with a batch size of 4. AdamW [40] was used with an
+initial learning rate of 1 × 10−4 and a weight decay of 1 × 10−4. Parameter gradients were clipped
+element-wise to the interval [−0.5, 0.5]. The learning-rate decay factor was 0.1, and the decay epoch
+was set to 200.
+No random data augmentation was enabled in the principal experiments.
+The training loader
+shuﬄed the samples and discarded the ﬁnal incomplete batch. The Swin branch was initialized using
+the Swin-Tiny ImageNet-22K pretrained checkpoint, whereas the TransXNet branch was initialized
+from the corresponding pretrained TransXNet checkpoint. Newly introduced BEM, BGCA, decoder,
+deformable-oﬀset, and prediction-head parameters were optimized jointly with the two encoders.
+The reported optimization and loss hyperparameters were pre-speciﬁed and kept ﬁxed across the
+reported BGDNet experiments. The 200 epochs specify the maximum optimization horizon rather
+than the epoch automatically used for testing. Checkpoint selection was based on the mean validation
+Dice similarity coeﬃcient (DSC) of the lesion-mask prediction. The checkpoint with the highest
+mean validation DSC was retained for ﬁnal evaluation, and the held-out test sets did not participate in
+hyperparameter tuning or checkpoint selection. Weight decay and gradient clipping were used as
+regularization and optimization-stabilization measures.
+During inference, the segmentation and boundary logits were bilinearly interpolated to the spatial
+resolution of the corresponding ground-truth mask.
+A sigmoid function was then applied, and a
+threshold of 0.5 was used to obtain the binary lesion prediction. No morphological post-processing or
+test-time augmentation was used.
+Experiments were conducted on ISIC-2016 [41], ISIC-2018 [42], and PH2 [43]. For ISIC-2018,
+the oﬃcial 1000-image test set was retained for ﬁnal evaluation, while the original training pool was
+AIMS Bioengineering
+Volume 13, Issue 3, 394–417.
+
+=== PAGE 13 ===
+406
+divided into 2334 training images and 260 validation images. For ISIC-2016, the oﬃcial 379-image test
+set was retained, while the original training pool was divided into 810 training images and 90 validation
+images. For PH2, the 200 images were randomly divided into 140 training, 20 validation, and 40 test
+images. The resulting PH2 split was then kept ﬁxed across random seeds and model conﬁgurations.
+All repeated BGDNet experiments used the same three random seeds: 2026, 2027, and 2028.
+Repeated-run results are reported as mean ± standard deviation (SD).
+The models were trained independently on the corresponding training subset of each dataset. In
+particular, the PH2 results were obtained from models trained on PH2 and therefore represent in-
+dataset evaluation rather than zero-shot testing using ISIC-trained weights.
+The comparison results of previously published segmentation methods were collected from the
+corresponding original publications or from published comparative studies reporting the respective
+methods and datasets. These baseline values were not obtained by retraining all comparison methods
+under the BGDNet experimental pipeline.
+Consequently, diﬀerences in dataset partitioning,
+preprocessing, training strategy, pretrained initialization, and evaluation implementation among the
+source studies should be taken into account when interpreting the literature-based comparisons.
+Cross-dataset experiments were conducted separately by selecting the source-domain model using
+its source validation subset and applying the selected model directly to the held-out PH2 test subset
+without target-domain ﬁne-tuning or target-label-based model selection.
+3.8. Evaluation metrics
+The region-based evaluation includes intersection over union (IoU), DSC, recall (sensitivity), and
+speciﬁcity. For every test image, the prediction logits are bilinearly interpolated to the ground-truth
+resolution, converted to probabilities using the sigmoid function, and binarized using a threshold of
+0.5.
+Let TP, FP, FN, and TN denote the numbers of true-positive, false-positive, false-negative, and
+true-negative pixels, respectively. The region-based metrics are deﬁned as
+IoU =
+TP + 1
+TP + FP + FN + 1,
+DSC =
+2TP + 1
+2TP + FP + FN + 1,
+Recall (Sensitivity) =
+TP
+TP + FN,
+Speciﬁcity =
+TN
+TN + FP.
+(3.11)
+All region-based metrics are calculated independently for each image and subsequently averaged
+over the complete test set. Consequently, the reported mean IoU and mean DSC do not necessarily
+satisfy the exact algebraic conversion that applies when pixel counts are pooled globally.
+The additive constant 1 in IoU and DSC follows the evaluation implementation and prevents
+undeﬁned values for empty foreground masks.
+Recall, also termed sensitivity in binary segmentation, quantiﬁes the proportion of lesion pixels
+correctly recovered, whereas speciﬁcity measures the proportion of background pixels correctly
+rejected.
+These
+two
+metrics
+are
+additionally
+reported
+on
+ISIC-2018
+to
+characterize
+foreground–background behavior under class imbalance.
+Because BGDNet is designed to improve lesion contours, the 95th percentile Hausdorﬀdistance
+(HD95), average surface distance (ASD), and boundary F-score at a 2-pixel tolerance (BF@2) are
+additionally reported.
+For boundary-sensitive evaluation, both the predicted binary mask and the
+AIMS Bioengineering
+Volume 13, Issue 3, 394–417.
+
+=== PAGE 14 ===
+407
+ground-truth mask are resized to 352 × 352 before their contours are extracted. Nearest-neighbor
+interpolation is used for this binary-mask resizing. HD95 and ASD are therefore reported in pixels at
+the 352 × 352 evaluation resolution.
+Let ∂P and ∂G denote the predicted and ground-truth boundaries. For a boundary point x and a
+boundary set S, the point-to-set distance is
+d(x, S) = min
+y∈S ∥x −y∥2.
+Let D denote the multiset containing distances from every point in ∂P to ∂G and from every point
+in ∂G to ∂P. Repeated distance values are retained.
+For a tolerance τ, Pbnd denotes the proportion of predicted boundary pixels located within τ pixels
+of the ground-truth boundary, whereas Rbnd denotes the proportion of ground-truth boundary pixels
+located within τ pixels of the predicted boundary. The boundary-sensitive metrics are deﬁned as
+HD95 = Percentile95(D) ,
+ASD = 1
+2
+
+1
+|∂P|
+X
+p∈∂P
+d(p, ∂G) +
+1
+|∂G|
+X
+g∈∂G
+d(g, ∂P)
+,
+BF@2 =
+2PbndRbnd
+Pbnd + Rbnd + ϵ ,
+τ = 2.
+(3.12)
+Lower HD95 and ASD and higher BF@2 indicate better boundary localization. The constant ϵ in
+BF@2 is used only for numerical stability when both boundary precision and boundary recall are zero.
+4. Results
+4.1. Quantitative comparison
+Table 1 reports the main comparison on ISIC-2018 using both region-based and boundary-sensitive
+metrics.
+BGDNet achieves strong performance in both region-overlap and boundary-sensitive evaluation.
+On ISIC-2018, BGDNet obtains an IoU of 0.8813 ± 0.0014, a DSC of 0.9330 ± 0.0009, an HD95 of
+5.84 ± 0.11 pixels, an ASD of 1.34 ± 0.03 pixels, and a BF@2 of 0.868 ± 0.003. Its recall (sensitivity)
+is 0.9602 ± 0.0021, while the speciﬁcity is 0.9847 ± 0.0007. The comparison values for previously
+published methods are literature-reported values collected from their original publications or
+published comparative studies where available. Because these values may follow diﬀerent dataset
+partitions, preprocessing procedures, and evaluation protocols, the cross-method comparison should
+be interpreted as a literature-based performance comparison rather than a strictly controlled
+reimplementation study.
+To examine whether the performance observed on ISIC-2018 is maintained on additional datasets,
+Table 2 reports the BGDNet results together with literature-reported comparisons on ISIC-2016 and
+PH2.
+As shown in Table 2, BGDNet achieves the best listed region-overlap and boundary-localization
+results on both ISIC-2016 and PH2. Together with the ISIC-2018 results, these ﬁndings show that the
+performance improvements are maintained across the three evaluated datasets.
+AIMS Bioengineering
+Volume 13, Issue 3, 394–417.
+
+=== PAGE 15 ===
+408
+Table 1. Quantitative comparison on ISIC-2018. HD95 and ASD are measured in pixels.
+Higher IoU, DSC, BF@2, recall (sensitivity), and speciﬁcity are better, whereas lower HD95
+and ASD are better. BGDNet is reported as mean ± SD over three runs.
+Method
+IoU ↑
+DSC ↑
+HD95 ↓
+ASD ↓
+BF@2 ↑
+recall ↑
+speciﬁcity ↑
+U-Net [7]
+0.7733
+0.8545
+12.84
+3.12
+0.741
+0.8813
+0.9643
+nnU-Net [44]
+0.8379
+0.9016
+9.31
+2.34
+0.789
+0.9102
+0.9736
+BATFormer [45]
+0.8464
+0.9076
+8.74
+2.10
+0.801
+0.9122
+0.9748
+TransUNet [14]
+0.8462
+0.9102
+9.02
+2.18
+0.796
+0.9132
+0.9751
+TransFuse [26]
+0.8465
+0.9108
+8.46
+2.03
+0.808
+0.9139
+0.9756
+PVT-GCASCADE [46]
+0.8553
+0.9146
+7.82
+1.86
+0.821
+0.9266
+0.9762
+D-LKA [47]
+0.8564
+0.9164
+7.44
+1.79
+0.828
+0.9194
+0.9773
+MSDUNet [36]
+0.8553
+0.9168
+7.16
+1.71
+0.834
+0.9203
+0.9781
+SM-UNet [27]
+0.8250
+0.9023
+9.68
+2.41
+0.782
+0.8942
+0.9721
+FMLP-UNet [28]
+0.8618
+0.9258
+6.42
+1.52
+0.847
+0.9186
+0.9802
+BGDNet (ours)
+0.8813 ± 0.0014 0.9330 ± 0.0009 5.84 ± 0.11 1.34 ± 0.03 0.868 ± 0.003 0.9602 ± 0.0021 0.9847 ± 0.0007
+Table 2. In-dataset evaluation on ISIC-2016 and PH2. HD95 and ASD are measured in
+pixels. Higher IoU, DSC, and BF@2 are better, whereas lower HD95 and ASD are better.
+BGDNet is reported as mean ± SD over three runs.
+Method
+ISIC-2016
+PH2
+IoU ↑
+DSC ↑
+HD95 ↓
+ASD ↓
+BF@2 ↑
+IoU ↑
+DSC ↑
+HD95 ↓
+ASD ↓
+BF@2 ↑
+TransUNet [14]
+0.8489
+0.9126
+8.21
+1.96
+0.814
+0.8411
+0.9098
+7.44
+1.82
+0.826
+TransFuse [26]
+0.8619
+0.9203
+7.52
+1.78
+0.827
+0.8546
+0.9183
+6.81
+1.65
+0.841
+D-LKA [47]
+0.8715
+0.9283
+6.98
+1.63
+0.839
+0.8529
+0.9165
+6.94
+1.69
+0.837
+MSDUNet [36]
+0.8763
+0.9308
+6.61
+1.55
+0.846
+0.8630
+0.9240
+6.32
+1.52
+0.849
+BGDNet (ours) 0.9091 ± 0.0015 0.9450 ± 0.0011 4.98 ± 0.14 1.15 ± 0.03 0.883 ± 0.003 0.9246 ± 0.0019 0.9564 ± 0.0013 4.08 ± 0.15 0.99 ± 0.04 0.898 ± 0.004
+4.2. Cross-dataset generalization
+Table 3 reports cross-dataset performance on the held-out PH2 test subset using the evaluation
+protocol described in Section 3.7.
+Cross-dataset performance is lower than the in-dataset PH2 result, as expected under dataset shift.
+Nevertheless, both source-trained models retain useful lesion-overlap and boundary-localization
+performance on the unseen PH2 test subset without target-domain ﬁne-tuning. These results support
+partial cross-dataset robustness rather than complete domain invariance.
+Table 3. Cross-dataset generalization to the held-out PH2 test subset without target-domain
+ﬁne-tuning. Results are mean ± SD over three runs.
+Source
+Target
+IoU ↑
+DSC ↑
+HD95 ↓
+ASD ↓
+BF@2 ↑
+ISIC-2018
+PH2 test
+0.8578 ± 0.0027
+0.9234 ± 0.0018
+7.66 ± 0.21
+1.79 ± 0.05
+0.833 ± 0.004
+ISIC-2016
+PH2 test
+0.8462 ± 0.0031
+0.9167 ± 0.0022
+8.14 ± 0.27
+1.92 ± 0.06
+0.821 ± 0.005
+AIMS Bioengineering
+Volume 13, Issue 3, 394–417.
+
+=== PAGE 16 ===
+409
+4.3. Boundary-focused ablation and prior analysis
+Table 4 evaluates the eﬀects of the dual encoders, bidirectional cross-attention, BEM, and BGCA
+while keeping MSDC ﬁxed as the common reconstruction pathway in all ablation conﬁgurations. The
+baseline consists of a U-Net-based single-encoder segmentation framework coupled with the same
+MSDC used in the remaining conﬁgurations. This design keeps the reconstruction pathway unchanged
+so that the subsequent comparisons primarily examine the eﬀects of encoder conﬁguration and cross-
+branch boundary-guided interaction. “Bi-CA” denotes the same bidirectional interaction structure as
+BGCA but without BEM-derived boundary-prior conditioning. In the BEM-only conﬁguration, each
+BEM prior is added to its corresponding projected encoder feature before dual-branch concatenation.
+Table 4. Boundary-focused ablation study on ISIC-2018. Higher IoU, DSC, and BF@2 are
+better, whereas lower HD95 and ASD are better.
+Setting
+Dual Enc. Bi-CA BEM BGCA
+IoU ↑
+DSC ↑
+HD95 ↓
+ASD ↓
+BF@2 ↑
+U-Net + MSDC baseline
+–
+–
+–
+–
+0.8142 ± 0.0008 0.8882 ± 0.0005 11.10 ± 0.15
+2.76 ± 0.19
+0.749 ± 0.013
+Dual encoders
+✓
+–
+–
+–
+0.8389 ± 0.0009 0.9059 ± 0.0006
+9.30 ± 0.12
+2.27 ± 0.12
+0.781 ± 0.009
+Dual + Bi-CA
+✓
+✓
+–
+–
+0.8265 ± 0.0009 0.8964 ± 0.0005 10.04 ± 0.11
+2.49 ± 0.08
+0.766 ± 0.007
+Dual + BEM
+✓
+–
+✓
+–
+0.8669 ± 0.0011 0.9241 ± 0.0007
+6.91 ± 0.13
+1.630 ± 0.009 0.839 ± 0.002
+Full BGDNet
+✓
+–
+✓
+✓
+0.8813 ± 0.0014 0.9330 ± 0.0009
+5.84 ± 0.11
+1.34 ± 0.03
+0.868 ± 0.003
+Compared with the U-Net + MSDC baseline, introducing the heterogeneous dual encoders improves
+both region-based and boundary-sensitive performance. Conventional Bi-CA does not improve the
+dual-encoder conﬁguration, whereas direct incorporation of BEM priors produces a clear gain. The
+complete BGDNet achieves the best results, indicating that the improvement does not arise only from
+adding boundary priors; using the priors to guide cross-branch interaction provides a further beneﬁt.
+To examine the ﬁxed Sobel design, the Sobel branches in BEM were replaced by learnable
+depthwise 3 × 3 convolutions while keeping the remaining architecture, data split, training protocol,
+and random seeds unchanged. The learnable version achieved an IoU of 0.8765 ± 0.0006, a DSC of
+0.9297 ± 0.0004, an HD95 of 6.18 ± 0.07 pixels, an ASD of 1.44 ± 0.02 pixels, and a BF@2 of
+0.859 ± 0.002.
+The ﬁxed Sobel conﬁguration retained slightly better performance under this
+controlled setting, supporting the adopted ﬁxed prior without implying that ﬁxed operators are
+universally superior.
+To examine how the BEM priors change with encoder depth, responses from all four stages of
+both encoder branches are visualized in Figure 5. For visualization only, the multi-channel responses
+are averaged across channels, independently normalized, and upsampled to the input resolution; these
+display operations do not alter the inference pipeline.
+The displayed cases show ﬁner lesion-related transitions in shallow stages and progressively
+coarser responses with increasing depth. Stage 4 may also contain artifact-related activations. These
+observations support interpreting deep BEM outputs as feature-level boundary priors for attention
+guidance rather than pixel-accurate lesion contours.
+AIMS Bioengineering
+Volume 13, Issue 3, 394–417.
+
+=== PAGE 19 ===
+412
+BEM outputs should therefore be interpreted as feature-level boundary priors for attention guidance
+rather than as pixel-accurate lesion contours.
+The boundary-supervision target is generated using a normalized Sobel gradient magnitude. This
+soft target avoids the need to select a ﬁxed morphological boundary width, but it remains dependent on
+the quality and interpolation of the original segmentation annotation. Annotation uncertainty, gradual
+lesion transitions, and strong artifact edges may therefore inﬂuence the auxiliary boundary signal.
+The recall (sensitivity) and speciﬁcity metrics provide complementary information under
+foreground–background imbalance. The reported recall indicates strong recovery of lesion pixels,
+while the high speciﬁcity reﬂects eﬀective rejection of background pixels.
+The Dice component
+further emphasizes foreground overlap during optimization.
+Cross-dataset evaluation provides a complementary assessment under dataset shift.
+Although
+performance decreases relative to PH2-trained models, the ISIC-trained models retain useful
+region-overlap and boundary-localization performance on the held-out PH2 test subset without
+target-domain ﬁne-tuning. These results support partial cross-dataset robustness rather than complete
+domain invariance.
+The deformable reconstruction pathway should be distinguished from the newly proposed
+components. MSDC is adapted from MSDUNet [36] and is retained as the reconstruction pathway in
+the component-wise comparisons; it is therefore not regarded as an independent methodological
+contribution of BGDNet.
+6. Limitations and future work
+Several limitations remain. First, ﬁxed Sobel operators provide a simple ﬁrst-order boundary prior
+but cannot adapt their local gradient operators to every lesion appearance. Deep-stage BEM responses
+are also spatially coarse and may include non-lesion or artifact-related activations.
+Second, the annotation-derived soft boundary target cannot explicitly represent inter-observer
+uncertainty.
+Multi-annotator labels, probabilistic contours, signed-distance representations, or
+uncertainty-aware targets may provide more faithful supervision.
+Third, bidirectional cross-attention and deformable reconstruction increase parameter count,
+computation, and memory requirements. Eﬃcient or linear attention, lighter encoders, knowledge
+distillation, structured pruning, and reduced deformable computation are therefore relevant future
+directions.
+Fourth, the cross-dataset experiment uses PH2 as the unseen target and therefore provides only a
+limited assessment of dataset shift.
+The three public datasets do not cover the full diversity of
+acquisition devices, clinical centers, skin appearances, and annotation practices. External multi-center
+validation with ﬁxed trained models remains necessary before making claims of clinical readiness.
+Fifth, the quantitative comparisons with previously published methods include literature-reported
+results rather than uniformly retrained implementations of all competing architectures. Diﬀerences in
+dataset
+partitioning,
+preprocessing,
+pretrained
+initialization,
+training
+strategy,
+and
+metric
+implementation among the source studies may therefore aﬀect direct numerical comparability. A fully
+controlled benchmark in which all competing methods are retrained and evaluated under an identical
+protocol would provide a stronger basis for future comparisons.
+AIMS Bioengineering
+Volume 13, Issue 3, 394–417.
+
+=== PAGE 20 ===
+413
+7. Conclusion
+This work proposed BGDNet, a boundary-guided dual-backbone encoder–decoder network for
+dermoscopic lesion segmentation.
+The model combines a hierarchical Swin Transformer with
+TransXNet and uses channel-wise Sobel feature responses to condition bidirectional cross-branch
+attention. Deformable skip-feature alignment and multi-scale deformable aggregation are then used to
+progressively reconstruct the lesion mask and auxiliary boundary map.
+Experiments on ISIC-2016, ISIC-2018, and PH2 demonstrate strong in-dataset region-overlap and
+boundary-localization performance for BGDNet. Cross-dataset experiments further show that ISIC-
+trained models retain useful performance on the held-out PH2 test subset without target-domain ﬁne-
+tuning.
+The ablation results indicate that the beneﬁt of BGDNet does not arise only from introducing
+boundary priors.
+Using these priors to guide bidirectional interaction between the heterogeneous
+encoders provides a further improvement over direct boundary-prior incorporation and conventional
+bidirectional cross-attention.
+The stage-wise visualization also supports interpreting deep BEM
+responses as feature-level boundary priors rather than precise lesion contours.
+Overall, the results support feature-derived boundary conditioning as an eﬀective strategy for
+coordinating complementary local and contextual representations. Future work will investigate more
+eﬃcient cross-attention, uncertainty-aware boundary supervision, stronger robustness to artifact
+edges, lightweight dual-backbone variants, and external multi-center validation.
+Use of AI tools declaration
+The authors declare they have not used Artiﬁcial Intelligence (AI) tools in the creation of this article.
+Conﬂict of interest
+The authors declare no conﬂict of interest.
+Author contributions
+Jiayu Zhang:
+Conceptualization, methodology, software, formal analysis, investigation, data
+curation, writing—original draft preparation, and visualization.
+Haiyang Liu: Validation, data curation, and writing—review and editing.
+Ying Ye: Validation and writing—review and editing.
+Xiaoming Huang: Supervision, project administration, and writing—review and editing.
+All authors have read and agreed to the published version of the manuscript.
+Data availability statement
+The ISIC-2016, ISIC-2018, and PH2 datasets used in this study are publicly available from their
+respective repositories. The exact dataset-split ﬁles, evaluation conﬁguration, and implementation
+details are available from the corresponding author upon reasonable request.
+AIMS Bioengineering
+Volume 13, Issue 3, 394–417.

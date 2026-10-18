@@ -1,0 +1,455 @@
+=== PAGE 4 ===
+IEEE TRANSACTIONS ON NEURAL NETWORKS AND LEARNING SYSTEMS , VOL. XX, NO. XX, XXXX 2022 4
+Fig. 2: FANet with squeeze and excite residual (SE-Residual ) block and MixPool block. (a) SE-Residual block integrated
+with squeeze and excite layer uses 1 × 1 convolution to concatenate the high-resolution feature re presentation with the the
+encoded feature vector. (b) MixPool block represents atten tion mechanism in our network. The input mask is downscaled t o
+the corresponding layer feature map size Ml which is fused with the masked feature map representation M
+′
+l for hard attention
+of input feature in that layer Fl. Finally, the attenuated feature map F M
+′
+l and the feature maps F
+′
+l are both concatenated. c)
+Proposed FANet showing the complete network architecture. Encoder-decoder architecture with skip-connections (in d otted
+arrows) from SE-Residual blocks to preserve high- and inter mediate resolution feature representations and MixPool bl ock
+connections (with solid arrows) that allow to feedback the p revious mask predictions.
+σ (·) with a threshold of 0.5 to obtain the binary mask M
+′
+l to
+contribute to the spatial attention map generation given by:
+M
+′
+l = σ (conv(Fl)) =
+{
+1, if σ (·) ≥ 0. 5
+0, otherwise. (1)
+Secondly, we apply appropriate max-pooling on the input mas k
+(from the previous epoch) and resize it to the size of the spat ial
+attention map M
+′
+l . A union operation is then applied between
+the resized mask and the spatial attention map. This conﬁrms
+that we obtain the feature from both the feedback and the
+spatial attention maps to further create a new uniﬁed spatia l
+attention map. Next, an element-wise multiplication opera tion
+is applied between the uniﬁed mask and the original feature
+map that suppresses the irrelevant features and enhances th e
+important ones. The enhanced and the original feature maps
+are then followed by a 3 × 3 convolution, BN, and a ReLU.
+=== PAGE 5 ===
+IEEE TRANSACTIONS ON NEURAL NETWORKS AND LEARNING SYSTEMS , VOL. XX, NO. XX, XXXX 2022 5
+TABLE I: Details of the biomedical datasets used in our exper iments. “Train”, “Train after aug.” and “Test” denote the nu mber
+of training samples, number of training samples after image augmentation, and number of test samples, respectively.
+Dataset Images Size Train Train after aug. Test Application
+Kvasir-SEG [36] 1000 V ariable 880 16720 120 Colonoscopy
+CVC-ClinicDB [37] 612 384 × 288 490 14210 61 Colonoscopy
+2018 Data Science Bowl [38] 670 256 × 256 335 10720 134 Nuclie
+ISIC 2018 (Lesion Boundary Segmentation) [39], [40] 2596 V ariable 1815 39930 259 Dermoscopy
+EM dataset [4] 30 512 × 512 24 384 3 Cell
+DRIVE Database [41] 40 584 × 565 20 640 20 Retina V essel
+CHASE-DB1 [42] 28 584 × 565 20 640 8 Retina V essel
+These operations are used to improve the network’s ability t o
+learn non-linearity in the model prediction.
+Finally, we concatenate the output of both activation func-
+tions, which constitutes the output of our MixPool block giv en
+by:
+OutputMixPool = F
+′⌢
+l
+(
+Fl ⊗ (Ml ∪ M
+′
+l )
+)′
+, (2)
+where ⌢ denotes the concatenation operator, ⊗ is element-
+wise multiplication, and ∪ represents the union operation.
+C. Proposed F ANet architecture
+The block diagram of FANet is illustrated in Figure 2 (c).
+It uses an encoder-decoder design common to many semantic
+segmentation architectures. We combine the strength of a
+residual network enhanced with SE as SE-Residual block, and
+MixPool block that facilitates the attention and propagati on
+of information ﬂow from the current learning paradigm and
+that of the previous epoch. We implement a recurrent learnin g
+mechanism in both encoder and decoder layers that allows
+to achieve efﬁcient segmentation. The MixPool block uses
+the previous segmentation map (as an input mask through
+RLE encoding), which contains the information from prior
+training and uses it to improve the semantic representation of
+the feature maps.
+We ﬁrst use the Otsu thresholding [46] to generate an initial
+input mask for training the proposed architectural model. T he
+variability in the input mask is reﬁned over the training epo chs
+and the model learns over time to prune input or previous
+epoch masks with learned semantically meaningful features
+together. To achieve this, we use the novel MixPool block
+that uses the input mask and applies hard attention over the
+subsequent input feature maps. The hard attention enables
+the network to highlight semantically meaningful features
+for the target region-of-interest in the entire network. Th e
+network thus not only learns to predict features maps but als o
+strengthens a joint pruning mechanism that is dependent on
+the input mask. As a result, the devised network is able to
+rectify the predicted segmentation maps in an iterative fas hion
+unlike conventional methods which do not have such pruning
+ability. This provides a strong rational behind our work tha t
+is applicable beyond single step inference prediction with
+capability of reﬁning prediction maps.
+The proposed network architecture is a Fully Convolutional
+Neural Network (FCNN) consisting of four encoder and four
+decoder blocks. The encoder takes the input image, downsam-
+ples it gradually, and encodes it in a compact representatio n.
+Then, the decoder takes this compact representation and tri es
+to reconstruct the semantic representation by gradually up sam-
+pling it and combining the features from the encoder. Finall y,
+we receive a pixel-wise categorization of the input image.
+Both the encoder and the decoder are built using the SE-
+Residual block, and an additional concatenation of the orig inal
+resolution feature representation in the encoder is added a t
+each resolution scale. This mechanism minimizes the loss
+of feature representations during downscaling and upscali ng
+processes.
+Each encoder network starts with two SE-Residual blocks,
+which consist of two 3 × 3 convolutions and a shortcut
+connection known as identity mapping, connecting the input
+and output of the two convolution layers. Each convolution i s
+followed by a BN and a ReLU activation function. The output
+of the second SE-Residual block acts as skip connection for
+the corresponding decoder block. After that, it is followed by
+the MixPool block, which has the previous epoch segmentatio n
+mask and provides a hard-attention over the incoming featur e
+maps. This process is repeated for each of the downscaled
+layers.
+Each decoder network starts with a 4 × 4 transpose con-
+volution that doubles the spatial dimensions of the incom-
+ing feature maps. These feature maps are concatenated with
+feature maps from the corresponding encoder block through
+skip connections. The skip connections help to propagate th e
+information from the upper layers, which are sometimes lost
+due to the depth of the network. The skip connections are
+followed by two SE-Residual blocks, which help to eliminate
+the problem of vanishing gradient. The MixPool block that
+utilizes the segmentation mask from the previous epoch is
+then applied creating a hard-attention over the learned fea ture
+maps. Next, we concatenate the feature maps from the last
+decoder block and the segmentation mask from the previous
+epoch. Finally, we apply a 1 × 1 convolution with the sigmoid
+activation function. The output of this is used to both minim ize
+the training loss, using a combined binary cross-entropy an d
+dice loss, and to generate segmentation masks that are store d
+as a run-length encoded compression for each sample and
+propagated during the next epoch. The RLE is updated after
+each epoch. Similarly, the network learns to adapt the weigh ts
+in iterative training, this mechanism is also utilized duri ng the
+test time. As shown in Figure 1, test results are pruned in a
+few iterations during the test time. Unlike many methods in
+literature [32], [33], we utilize the same network without a ny
+complementary loss function optimization.
+=== PAGE 6 ===
+IEEE TRANSACTIONS ON NEURAL NETWORKS AND LEARNING SYSTEMS , VOL. XX, NO. XX, XXXX 2022 6
+IV. E XPERIMENTS
+A. Setup
+1) Dataset and Evaluation Metrics: To evaluate the pro-
+posed architecture, we have selected seven datasets that ca p-
+ture different segmentation tasks in biomedical imaging. T he
+details of each dataset can be found in Table I. The dataset
+images contain the images of organs and lesions acquired
+under different imaging protocols. For the retina vessel se g-
+mentation task, we use DRIVE and CHASE-DB1 datasets.
+These two datasets are aimed at various diseases related to
+diseases of retina vessels, such as retinopathy, retinal ve in
+occlusion, and retinal artery occlusion. The ISIC 2018 data set,
+which is a dermoscopy dataset that is useful in the diagnosis
+of skin cancer, is the third dataset focused on medical imagi ng
+data. This dataset contains a wide variety of skin cancer
+images of different sizes and shapes, which helps in a better
+understanding of the disease. We have further included Kvas ir-
+SEG and CVC-ClinicDB colonoscopy datasets. These datasets
+contain the image frames extracted from different colonosc opy
+interventions and are focused on colorectal polyps that are one
+of the cancer precursors in the colon and rectum. It highly
+increases the chance of avoiding lethal cancer by early dete c-
+tion. In addition, we have included two datasets acquired fr om
+biological imaging aimed at understanding of the cellular p ro-
+cesses. These include the 2018 Data Science Bowl and the EM
+datasets. The 2018 Data Science Bowl dataset contains image s
+with a large number of variable shaped nuclei acquired from
+different cell types, magniﬁcation, and imaging modalitie s.
+This dataset is designed for automated nuclei segmentation .
+Similarly, the EM dataset contains the transmission EM imag es
+of the neural structures of the Drosophila nerve cord. This
+dataset is aimed at the automated segmentation of the neural
+structures. All experiments on these datasets are conducte d on
+the same train, validation, and test splits as provided by th e
+previously published works reported in this paper.
+To evaluate SOTA deep learning methods and our proposed
+FANet, we have used standard evaluation metrics that includ es
+Dice Coefﬁcient (DSC) (a.k.a. F1), mean Intersection over
+Union (mIoU), precision, and recall. We have additionally
+calculated speciﬁcity for those datasets where this metric was
+previously used for benchmarking.
+2) Implementation details: All the training is performed
+on a V olta 100 GPU and an NVIDIA DGX-2 system using
+the PyTorch 1.6. framework. For test inference, we have used
+an NVIDIA GTX 1050 Ti GPU for our method and all SOTA
+methods used in the paper as this hardware is widely availabl e.
+Our model is trained for 100 epochs (empirically set) using
+an Adam optimizer with a learning rate of 1e−4 for all the
+experiments except for the Digital Retinal Images for V esse l
+Extraction (DRIVE) and the CHASE-DB1 dataset where the
+learning rate was adjusted to 1e−3 due to the small size of the
+training dataset. Datasets were chosen such that the efﬁcie ncy
+of our model could be compared to the SOTA methods. A
+combination of binary cross-entropy and dice loss has been
+used as the loss function. ReduceLROnPlateau callback was
+used to monitor the learning rate and adjust it to obtain
+optimal training performance. All the images used in the
+TABLE II: Results on the Kvasir-SEG [36].
+Method Backbone F1 mIoU Recall Prec.
+U-Net [5] - 0.5969 0.4713 0.6171 0.6722
+ResUNet [47] - 0.6902 0.5721 0.7248 0.7454
+ResUNet++ [18] - 0.7143 0.6126 0.7419 0.7836
+FCN8 [12] VGG 16 0.8310 0.7365 0.8346 0.8817
+HRNet [14] - 0.8446 0.7592 0.8588 0.8778
+DoubleU-Net [19] VGG 19 0.8129 0.7332 0.8402 0.8611
+PSPNet [13] ResNet50 0.8406 0.7444 0.8357 0.8901
+DeepLabv3+ [48] MobileNet 0.8425 0.7575 0.8377 0.9014
+DeepLabv3+ [48] ResNet50 0.8572 0.7759 0.8616 0.8907
+DeepLabv3+ [48] ResNet101 0.8643 0.7862 0.8592 0.9064
+U-Net [5] VGG19 0.7535 0.6571 0.7364 0.8565
+U-Net++ [49] - 0.8002 0.7000 0.8716 0.7992
+Attention U-Net [9] - 0.7944 0.6959 0.8383 0.8287
+FANet - 0.8803 0.8153 0.9058 0.9005
+TABLE III: Results on the CVC-ClinicDB [37].
+Method F1 mIoU Recall Precision
+U-Net (MICCAI’15) [5] 0.8230 0.7550 - -
+ResUNet-mod [47] 0.7788 0.4545 0.6683 0.8877
+ResUNet++ [18] 0.7955 0.7962 0.7022 0.8785
+SFA (MICCAI’19) [50] 0.7000 0.6070 - -
+PraNet [17] 0.8990 0.8490 - -
+U-Net++ [49] 0.9377 0.8890 0.9405 0.9432
+Attention U-Net [9] 0.9325 0.8856 0.9276 0.9546
+FANet 0.9355 0.8937 0.9339 0.9401
+study were resized to 512 × 512 except for the 2018 Data
+Science Bowl and the CVC-ClinicDB dataset, where images
+were resized to 256×256. Data augmentation, such as random
+crop, ﬂipping, rotation, elastic transformation, grid dis tortion,
+optical distortion, grayscale conversion, random brightn ess,
+contrast, channel, and course dropout were used.
+3) Ablation study: In order to evaluate the strength of our
+proposed FANet architecture, we perform a thorough ablatio n
+study. For this, we have used all seven datasets and evaluate d
+on several metrics for baseline (FANet without MixPool),
+baseline with MixPool, and the combination of baseline,
+MixPool, and feedback (proposed).
+B. Results
+Below we present quantitative results on seven different
+biomedical imaging datasets and compare with correspondin g
+SOTA methods.
+1) Results on Kvasir-SEG: Kvasir-SEG [36] is a publicly
+available polyp segmentation dataset acquired from clinic al
+colonoscopy procedures. This dataset has been widely used
+for algorithm benchmarking. We have trained our model and
+compared it with recent SOTA methods on Kvasir-SEG. A
+comparison with widely accepted segmentation methods with
+different backbones (see Table II) shows that our approach
+is improved performance compared to the SOTA methods (on
+the same train-test split). Our FANet outperforms all the SO TA
+methods on almost all metrics. While outperforming most U-
+Net and its variants, it can be observed that FANet achieved
+an F1 score of 0.8803, which is 1.6% and 3.57% better than
+the most accurate DeepLabv3+ with ResNet101 backbone and
+the recent HRNet.
+=== PAGE 7 ===
+IEEE TRANSACTIONS ON NEURAL NETWORKS AND LEARNING SYSTEMS , VOL. XX, NO. XX, XXXX 2022 7
+TABLE IV: Results on the 2018 Data Science Bowl [38].
+Method Backbone F1 mIoU Recall Prec.
+U-Net [5] ResNet101 0.7573 0.9103 - -
+DoubleU-Net [19] VGG19 0.7683 0.8407 0.6407 0.9596
+U-Net++ [49] - 0.9117 0.8477 0.9203 0.9107
+Attention U-Net [9] - 0.9179 0.8570 0.9183 0.9235
+FANet None 0.9176 0.8569 0.9222 0.9194
+TABLE V: Results on the ISIC 2018 (Skin Caner Segmenta-
+tion) [39], [40].
+Method F1 mIoU Recall Spec. Prec.
+U-Net [5] 0.6740 0.5490 0.7080 0.9640 -
+R2U-Net [52] 0.6790 0.5810 0.7920 0.9280 -
+Attention R2U-Net [52] 0.6910 0.5920 0.7260 0.9710 -
+BCDU-Net (d=1) [53] 0.8470 - 0.7830 0.9800 -
+BCDU-Net (d=3) [53] 0.8510 - 0.7850 0.9820 -
+U-Net++ [49] 0.8088 0.7319 0.8450 0.9110 0.8648
+Attention U-Net [9] 0.8205 0.7346 0.8516 0.9135 0.8645
+FANet 0.8731 0.8023 0.8650 0.9611 0.9235
+2) Results on CVC-ClinicDB dataset: CVC-ClinicDB is
+another commonly used dataset for colonoscopy image anal-
+ysis. FANet architecture outperforms all the SOTA methods
+on this dataset by a large margin with F1 of 0.9355, mIoU
+of 0.8937, recall of 0.9339, and precision of 0.9401 (see Ta-
+ble III). FANet achieves the best trade-off between recall a nd
+precision compared to the ResUNet-based architectures [18 ],
+[47]. The strength of the FANet can be observed by the
+large improvement of 23.17% in the recall and 5.24% in the
+precision over the SOTA ResUNet++ [18]. The recall suggests
+that our method is more clinically preferable than the SOTA.
+A higher recall is desired in the systems used for clinical
+diagnosis [51].
+3) Results on 2018 Data Science Bowl: Cell nuclei seg-
+mentation in microscopy imaging is a common task in the
+biological image analysis [38]. We used the publicly availa ble
+2018 Data Science Bowl (DSB) challenge dataset and com-
+pared our results with the SOTA methods. Table IV shows
+that FANet produces an F1 of 0.9176, mIoU of 0.8569, and
+recall of 0.9222 with an improvement of 2.02% in F1 with
+respect to SOTA UNet++ [16] and 28.15% improvement in
+recall compared to the best performing DoubleU-Net [19]. In
+general, FANet achieves the best trade-off between precisi on
+and recall compared to the SOTA methods resulting in the
+highest F1 score (0.9176). The qualitative results with 201 8
+DSB also show that the predicted FANet produces high-qualit y
+segmentation masks for cell nuclei with respect to the groun d
+truth (see Figure 3).
+4) Results on ISIC 2018 dataset: Skin cancer is one of the
+most commonly diagnosed cancers in the US. Early detection
+of melanoma can improve the ﬁve-year survival rate and help
+prevent it in 99% of the cases [54]. Table V shows the
+results on the publicly available International Skin Imagi ng
+Collaboration (ISIC) 2018 dataset. FANet outperformed all
+the methods on almost all evaluation metrics (F1, mIoU, and
+recall). FANet achieved 0.8731 on F1 and recall of 0.8650 wit h
+an improvement of 2.21% and 8.00%, respectively, over the
+most accurate SOTA BCDU-Net (d=3) method. A competitive
+TABLE VI: Results on the DRIVE dataset [41].
+Method F1 mIoU Recall Spec. Prec.
+U-Net [5] 0.8174 - 0.7822 0.9808 -
+Residual U-Net [52] 0.8149 - 0.7726 0.9820 -
+Recurrent U-Net [52] 0.8155 - 0.7751 0.9816 -
+R2U-Net [52] 0.8171 - 0.7792 0.9813 -
+DenseBlock-UNet [55] 0.8146 - 0.7928 0.9776 -
+DUNet [56] 0.8190 - 0.7863 0.9805 -
+IterNet [57] 0.8218 - 0.7791 0.9831 -
+IterNet(Patched) [57] 0.8205 - 0.7235 0.9838 -
+U-Net++ [49] 0.7960 0.6615 0.7903 0.9818 0.8070
+Attention U-Net [9] 0.7984 0.6648 0.7877 0.9827 0.8146
+FANet 0.8183 0.6927 0.8215 0.9826 0.8189
+TABLE VII: Results on the CHASE-DB1 dataset [42].
+Method F1 mIoU Recall Spec. Prec.
+U-Net [5] 0.7993 - 0.7840 0.9880 -
+DenseBlock-UNet [55] 0.8005 - 0.8177 0.9848 -
+DUNet [56] 0.8000 - 0.7858 0.9880 -
+IterNet [57] 0.8072 - 0.7969 0.9881 -
+U-Net++ [49] 0.7954 0.6606 0.8114 0.9847 0.7818
+Attention U-Net [9] 0.7941 0.6589 0.8049 0.9852 0.7852
+FANet 0.8108 0.6820 0.8544 0.9830 0.7722
+speciﬁcity and precision were also recorded. From the qual-
+itative results in Figure 3, we can see that the input mask
+produced by Otsu thresholding shows under segmentation,
+which is improved signiﬁcantly using FANet. The masks
+produced by FANet have smooth boundaries.
+5) Results on DRIVE dataset: The automated segmentation
+of vessels in fundus images can assist in the diagnosis and
+treatment of diabetic retinopathy. The quantitative resul t on
+the publicly available DRIVE dataset is presented in Table V I.
+We can observe that the proposed FANet achieves an F1 score
+of 0.8183, mIoU of 0.6927, recall of 0.8215, and precision
+of 0.8189. The proposed method achieves an improvement of
+4.24% in the recall over SOTA IterNet [57]. Although the F1 of
+the IterNet is 0.35% higher than FANet, the recall is relativ ely
+lower, and other metrics such as mIoU and precision are not
+presented. For our proposed FANet, the precision of 0.8189
+is well balanced with the obtained recall. The higher recall
+produced by FANet shows that our method is more clinically
+relevant. The quality of the segmentation masks in Figure3
+demonstrates the efﬁciency of FANet.
+6) Results on CHASE-DB1 dataset: CHASE-DB1 is the
+second retinal image segmentation dataset used to evaluate
+our method. For this dataset, there is no ofﬁcial training an d
+test split. We have used 20 images to train our model and
+8 images to test as reported in the work of Li et al. [57].
+From Table VII, we can observe that our method achieved the
+highest F1 of 0.8108, mIoU of 0.6820, and the highest recall
+of 0.8544. FANet achieved an improvement of 3.67% in the
+recall compared to the SOTA DenseBlock-UNet.
+7) Results on EM dataset: The EM dataset aims to develop
+an automatic ML algorithm for the segmentation of the neural
+structures so that difﬁculties due to manual labeling can be
+resolved. Table VIII shows the quantitative results on the
+EM dataset. The proposed FANet also obtains F1 of 0.9547,
+mIoU of 0.9134, and a recall of 0.9568. The presented results
+=== PAGE 8 ===
+IEEE TRANSACTIONS ON NEURAL NETWORKS AND LEARNING SYSTEMS , VOL. XX, NO. XX, XXXX 2022 8
+Fig. 3: Qualitative results of FANet on seven biomedical ima ge
+segmentation datasets. The initial “input mask” is generat ed
+using Otsu thresholding . The “output mask” is the predicted
+segmentation mask from the FANet model.
+TABLE VIII: Results on the EM dataset [4].
+Method F1 mIoU Recall Speciﬁcity Prec.
+U-Net [5] - 0.8830 - - -
+Wide U-Net [15] - 0.8837 - - -
+U-Net++ [49] 0.9495 0.9038 0.9520 0.7875 0.9474
+Attention U-Net [9] 0.9492 0.9033 0.9502 0.7912 0.9484
+FANet 0.9547 0.9134 0.9568 0.8096 0.9529
+demonstrate that FANet produces SOTA results, surpassing
+other recent methods in terms of mIoU metric that was used
+by other methods for comparison.
+C. Qualitative results
+The qualitative results on all seven datasets are presented in
+Figure 3. It can be observed that for colonoscopy datasets
+(Kvasir-SEG and CVC-ClinicDB), even though the initial
+input mask covers the entirety of the image, our model is
+able to prune and provide accurate masks. The same can
+be observed for the two retina vessel segmentation datasets ,
+DRIVE and CHASE-DB1. It can be observed that our model
+is able to segment the challenging retinal vessels, includi ng
+small retinal vessel bifurcations, and it well resembles th e
+ground truth mask. For the 2018 DSB, ISIC-2018, and EM
+cell data, again, the input masks are ﬁnely rectiﬁed, achiev ing
+close to ground truth results by the proposed FANet model.
+D. Ablation study
+In this section, we ablate our model architecture and presen t
+extensive experimental results related to the effectivene ss of
+the proposed FANet. To evaluate the contribution of the
+MixPool block and the feedback, we created the following
+conﬁgurations:
+1) Baseline (B1): It refers to the FANet without the MixPool
+block, which means “no feedback mechanism” or “itera-
+tive pruning”. We require the MixPool block to provide
+feedback as it uniﬁes the attention from the network
+feature map and input mask (refer to Figure 2 (b)).
+2) Baseline + MixPool (B2): We integrate the MixPool
+block in all the encoder blocks and decoder blocks.
+During the inference, we directly apply the trained model
+weights with the Ostu thresholding (initial input mask)
+only once, i.e., no iterative pruning is used.
+3) Baseline + MixPool(E1, D4) + Feedback (B3): Here,
+we integrate the MixPool block in the ﬁrst encoder block
+and the last decoder block. Feedback (iterative pruning)
+is used during the inference.
+4) Baseline + MixPool + Feedback (B4): This is the ﬁnal
+FANet architecture, with MixPool block in all encoder
+and decoder blocks and the feedback (iterative pruning)
+mechanism is used during the inference.
+Table IX presents the ablation results on these four conﬁg-
+urations performed on all seven datasets. Below we provide
+detailed analyses of the use of different model architectur al
+settings and validate them with the above described four
+network conﬁgurations ( B1-B4):
+1) Effectiveness of MixPool block: The MixPool block is
+an essential part of the proposed FANet architecture. It use s
+the previously predicted mask as the attention to improve
+the semantically meaningful features and allows higher-le vel
+abstractions. The effectiveness of the MixPool block can be
+evaluated by comparing the network conﬁgurations B1 and
+B4.
+From the experiments in Table IX, we can conclude that the
+B4 outperforms the B1 on all the datasets. On the F1 metric,
+B4 shows an improvement of 2.87% on the Kvasir-SEG
+dataset, 1.89% improvement on the CVC-ClinicDB, 0.55%
+improvement on the 2018 Data Science Bowl dataset, 0.84%
+improvement on the ISIC 2018 dataset, 0.11% improvement
+on the DRIVE dataset, 2.92% improvement on the CHASE-
+DB1 dataset, and a 0.03% improvement on the EM dataset.
+These performance gains are signiﬁcant and thus demonstrat e
+the effectiveness of the use of MixPool block in the proposed
+FANet.
