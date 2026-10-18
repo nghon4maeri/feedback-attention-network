@@ -1,0 +1,10 @@
+Model,Dataset,Cohort,Metric,Mean,Std,Median,Min,Max
+AttentionUNet,ISIC-2018,Official_Validation_100,dice,0.856170,0.156019,0.907868,0.011490,0.984198
+AttentionUNet,ISIC-2018,Official_Validation_100,miou,0.772156,0.178168,0.831282,0.005815,0.968887
+AttentionUNet,ISIC-2018,Official_Validation_100,sensitivity,0.904312,0.192561,0.995683,0.006107,1.000000
+AttentionUNet,ISIC-2018,Official_Validation_100,specificity,0.939776,0.076940,0.966380,0.550289,1.000000
+AttentionUNet,ISIC-2018,Official_Validation_100,precision,0.838427,0.158002,0.876704,0.069697,1.000000
+AttentionUNet,ISIC-2018,Official_Validation_100,fpr,0.060224,0.076940,0.033620,0.000000,0.449711
+AttentionUNet,ISIC-2018,Official_Validation_100,hd95,39.917496,41.862623,19.479233,2.236068,197.970200
+AttentionUNet,ISIC-2018,Official_Validation_100,asd,11.978118,11.096565,7.117703,0.585583,47.533654
+AttentionUNet,ISIC-2018,Official_Validation_100,bf2,0.266709,0.241911,0.183895,0.000000,0.937608
