@@ -10,7 +10,7 @@ if os.path.exists("/content/train.log"):
     with open("/content/train.log", "r") as f:
         lines = f.readlines()
         print("\n--- Last lines of /content/train.log ---")
-        for line in lines[-25:]:
+        for line in lines[-15:]:
             print(line, end="")
 else:
     print("/content/train.log does not exist yet.")
