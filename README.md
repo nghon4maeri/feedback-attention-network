@@ -1,6 +1,6 @@
 # GDF-Netv2 & Medical Image Segmentation Research
 
-This repository contains research and implementation for next-generation medical image segmentation architectures, focusing on achieving superior performance (Dice > 0.94) across standard medical segmentation benchmarks.
+This repository contains research and implementation for next-generation medical image segmentation architectures, focusing on continuous architectural innovation and open-ended performance maximization across standard medical segmentation benchmarks.
 
 ## Repository Structure
 

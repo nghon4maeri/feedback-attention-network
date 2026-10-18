@@ -2,7 +2,7 @@
 
 ## Tổng quan kiến trúc
 
-`GDF-Netv2` là thế hệ tiếp theo của kiến trúc `GDF-Net`, được thiết kế đặc thù nhằm giải quyết triệt để hiện tượng sụp đổ ở các ca biên dị biệt (long-tail outlier collapse) và đẩy **Mean Dice vượt ngưỡng 0.94** một cách vững chắc trên các bộ dữ liệu y khoa đa nhiệm:
+`GDF-Netv2` là thế hệ tiếp theo của kiến trúc `GDF-Net`, định hướng nghiên cứu tối ưu hóa mở (Open-Ended Continuous Improvement) nhằm giải quyết triệt để hiện tượng sụp đổ ở các ca biên dị biệt (long-tail outlier collapse) và liên tục đẩy trần hiệu năng phân đoạn tổn thương lên mức cao nhất có thể trên các bộ dữ liệu y khoa đa nhiệm:
 
 ```mermaid
 flowchart TD
@@ -45,7 +45,7 @@ flowchart TD
 4. **Multi-Channel Semantic Feedback (MSF)**:
    - Nâng cấp từ mặt nạ 1 kênh của GDF-Net v1 lên tensor đặc trưng 32 kênh truyền ngược từ decoder về Stage 1 và Stage 2 qua **Detached Gradient Firewall** (`.detach()`), giải quyết hoàn toàn Feedback Trap và bão hòa tín hiệu.
 5. **Hàm mất mát Boundary Difference over Union (BD-IoU) + Focal-Tversky**:
-   - Phạt nặng các ca âm tính giả (FN) và áp gradient có trọng số vào dải biên mờ, trực tiếp kéo điểm của nhóm 10% ca khó từ 0.45 lên >0.85, đưa Mean Dice toàn tập vượt qua 0.94.
+   - Phạt nặng các ca âm tính giả (FN) và áp gradient có trọng số vào dải biên mờ, trực tiếp nâng cao độ chính xác ở nhóm các ca tổn thương khó và tăng cường sự ổn định hội tụ trên toàn dải phân bố.
 
 ---
 
