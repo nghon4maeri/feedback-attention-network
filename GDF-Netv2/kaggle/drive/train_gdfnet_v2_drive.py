@@ -328,13 +328,18 @@ def discover_drive_paths():
     test_x = sorted([p for p in images_all if "test" in p.lower() or "testing" in p.lower()])
     test_y = sorted([p for p in masks_all if "test" in p.lower() or "testing" in p.lower()])
 
+    n_tr = min(len(train_x), len(train_y))
+    train_x, train_y = train_x[:n_tr], train_y[:n_tr]
+    n_te = min(len(test_x), len(test_y))
+    test_x, test_y = test_x[:n_te], test_y[:n_te]
+
     if len(train_x) == 0 or len(test_y) == 0:
         all_imgs = sorted(images_all)
         all_msks = sorted(masks_all)
         n = min(len(all_imgs), len(all_msks))
         split_idx = int(n * 0.7)
         train_x, train_y = all_imgs[:split_idx], all_msks[:split_idx]
-        test_x, test_y = all_imgs[split_idx:], all_msks[split_idx:]
+        test_x, test_y = all_imgs[split_idx:n], all_msks[split_idx:n]
 
     val_x, val_y = test_x, test_y
     print(f"[+] DRIVE Matched -> Train: {len(train_x)} | Val: {len(val_x)} | Test: {len(test_x)}")
@@ -342,8 +347,9 @@ def discover_drive_paths():
 
 class RetinalDataset(Dataset):
     def __init__(self, imgs, msks, is_train=False, repeat_factor=16):
-        self.imgs = list(imgs)
-        self.msks = list(msks)
+        n = min(len(imgs), len(msks))
+        self.imgs = list(imgs)[:n]
+        self.msks = list(msks)[:n]
         self.is_train = is_train
         self.repeat_factor = max(1, repeat_factor) if is_train else 1
         self.n_samples = len(self.imgs) * self.repeat_factor
