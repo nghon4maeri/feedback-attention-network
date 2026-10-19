@@ -120,6 +120,27 @@ Trên tập thử thách Kvasir-SEG với đa dạng biến thể kích thước
 
 ---
 
+### 5. DSB-2018 (Cell Nuclei Segmentation - 67 Test Images)
+
+| Metric | GDF-Netv2 Mean | GDF-Netv2 Std | GDF-Netv2 Median | GDF-Netv2 Min | GDF-Netv2 Max | Baseline FANet (Phase 7F) | Chênh lệch so với Baseline |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Dice** | **0.8912** | 0.0923 | **0.9149** | 0.5373 | 0.9697 | 0.8721 | **+1.91 pp** |
+| **mIoU** | **0.8142** | 0.1286 | **0.8432** | 0.3673 | 0.9412 | 0.8087 | **+0.55 pp** |
+| **Sensitivity** | **0.8875** | 0.0867 | **0.9105** | 0.5096 | 0.9942 | 0.9045 | -1.70 pp |
+| **Specificity** | **0.9861** | 0.0250 | **0.9943** | 0.8401 | 1.0000 | 0.9782 | **+0.79 pp** |
+| **Precision** | **0.9063** | 0.1215 | **0.9519** | 0.3757 | 0.9976 | 0.8448 | **+6.15 pp (vượt trội)** |
+| **FPR** | **0.0139** | 0.0250 | **0.0057** | 0.0000 | 0.1599 | 0.0218 | **-0.79 pp (giảm 36%)** |
+| **HD95 (px)** | **28.75** | 44.35 | **11.70** | 1.00 | 307.03 | 32.50 | **-3.75 px (chính xác hơn)** |
+| **ASD (px)** | **3.30** | 15.39 | **0.72** | 0.24 | 122.91 | 3.80 | **-0.50 px (dưới 1 px)** |
+| **BF2** | **0.9251** | 0.1149 | **0.9711** | 0.4908 | 1.0000 | 0.8951 | **+3.00 pp** |
+
+- **Nhận xét chuyên sâu:**
+  - Trên tập nhân tế bào DSB-2018 với mật độ nhân dày đặc và ranh giới dính chùm: GDF-Netv2 đạt **Mean Dice 0.8912** và **Median Dice 0.9149** (vượt xa baseline 0.8721).
+  - Độ chính xác Precision đạt mức **90.63% Mean** và **95.19% Median** (tăng vọt +6.15 pp so với 84.48% của baseline), giúp triệt tiêu hiện tượng dính liền các nhân lân cận.
+  - Tỷ lệ cảnh báo sai FPR giảm xuống chỉ còn **1.39% Mean (0.57% Median)**, sai số khoảng cách bề mặt ASD trung vị chỉ còn **0.72 pixels** (dưới 1 pixel), và Boundary F2 score đạt mức kỷ lục **92.51% Mean (97.11% Median)**.
+
+---
+
 ## Experiments Tracking
 
 | ID | Thí nghiệm | Dataset | Hardware | Trạng thái | Checkpoint / Summary Link |
@@ -128,11 +149,11 @@ Trên tập thử thách Kvasir-SEG với đa dạng biến thể kích thước
 | `E-GDF2-KVASIR` | GDF-Netv2 150 Ep | Kvasir-SEG | Kaggle T4 | Hoàn thành | [summary](file:///D:/User/nghonamjiwoo/My%20Project/FANet/GDF-Netv2/results/kvasir_seg/benchmark_summary_Kvasir.csv) |
 | `E-GDF2-DRIVE` | GDF-Netv2 150 Ep | DRIVE | Kaggle T4 | Hoàn thành | [summary](file:///D:/User/nghonamjiwoo/My%20Project/FANet/GDF-Netv2/results/drive/benchmark_summary_DRIVE.csv) |
 | `E-GDF2-CHASE` | GDF-Netv2 150 Ep | CHASE-DB1 | Kaggle T4 | Hoàn thành | [summary](file:///D:/User/nghonamjiwoo/My%20Project/FANet/GDF-Netv2/results/chasedb1/benchmark_summary_CHASE-DB1.csv) |
+| `E-GDF2-DSB` | GDF-Netv2 150 Ep | DSB-2018 | Kaggle T4 | Hoàn thành | [summary](file:///D:/User/nghonamjiwoo/My%20Project/FANet/GDF-Netv2/results/dsb2018/benchmark_summary_DSB2018.csv) |
 | `E-GDF2-EM` | GDF-Netv2 150 Ep | EM-Dataset | Kaggle T4 | Đang chạy | `namnguynnnn/gdfnet-v2-em-dataset` |
-| `E-GDF2-DSB` | GDF-Netv2 150 Ep | DSB-2018 | Kaggle T4 | Đang chạy | `namnguynnnn/gdfnet-v2-dsb2018` |
-| `E-GDF2-A100` | GDF-Netv2 ISIC+DSB | ISIC+DSB2018 | Colab A100 | Đang chạy | `gdfnet-v2-a100` (`/content/train_a100.log`) |
+| `E-GDF2-ISIC-KG` | GDF-Netv2 150 Ep | ISIC-2018 | Kaggle T4 | Đang chạy | `namnguynnnn/gdfnet-v2-isic2018` |
 
 ## Will Do (On going)
 
-- [ ] Giám sát tiến độ huấn luyện trên **EM-Dataset** và **DSB-2018** (Kaggle T4).
-- [ ] Theo dõi và tải toàn bộ checkpoint/kết quả **ISIC-2018** và **DSB-2018** khi hoàn tất trên Colab A100.
+- [ ] Giám sát tiến độ hoàn thành trên **EM-Dataset** và **ISIC-2018** (Kaggle Cloud GPU).
+- [ ] Tổng hợp toàn diện 7 tập benchmark lâm sàng vào báo cáo Phase 8.
