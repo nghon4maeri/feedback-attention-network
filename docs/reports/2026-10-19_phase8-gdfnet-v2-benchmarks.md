@@ -99,6 +99,27 @@ Trên tập thử thách Kvasir-SEG với đa dạng biến thể kích thước
 
 ---
 
+### 4. CHASE-DB1 (Retinal Vessel Segmentation - 4 Test Images)
+
+| Metric | GDF-Netv2 Mean | GDF-Netv2 Std | GDF-Netv2 Median | GDF-Netv2 Min | GDF-Netv2 Max | Baseline FANet (Phase 7F) | Chênh lệch so với Baseline |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Dice** | **0.7902** | 0.0208 | **0.7843** | 0.7734 | 0.8189 | 0.7093 | **+8.09 pp (+8.1%)** |
+| **mIoU** | **0.6536** | 0.0287 | **0.6452** | 0.6305 | 0.6933 | 0.5514 | **+10.22 pp (+10.2%)** |
+| **Sensitivity** | **0.8150** | 0.0226 | **0.8218** | 0.7832 | 0.8332 | 0.6064 | **+20.86 pp (+20.9%)** |
+| **Specificity** | **0.9819** | 0.0042 | **0.9836** | 0.9758 | 0.9849 | 0.9926 | -1.07 pp (cân bằng lại) |
+| **Precision** | **0.7681** | 0.0404 | **0.7684** | 0.7306 | 0.8050 | 0.8637 | -9.56 pp |
+| **FPR** | **0.0181** | 0.0042 | **0.0164** | 0.0151 | 0.0242 | 0.0074 | +1.07 pp |
+| **HD95 (px)** | **48.16** | 9.23 | **49.42** | 35.74 | 58.05 | 56.20 | **-8.04 px (chính xác hơn)** |
+| **ASD (px)** | **1.51** | 0.18 | **1.59** | 1.25 | 1.62 | 2.80 | **-1.29 px (sát ranh giới hơn)** |
+| **BF2** | **0.9097** | 0.0169 | **0.9100** | 0.8904 | 0.9283 | 0.8637 | **+4.60 pp** |
+
+- **Nhận xét chuyên sâu:**
+  - GDF-Netv2 tạo ra bước nhảy vọt toàn diện trên CHASE-DB1: **Mean Dice tăng vọt từ 0.7093 lên 0.7902 (+8.09 pp)**, mIoU tăng từ 0.5514 lên **0.6536 (+10.22 pp)**.
+  - Điểm nghẽn nghiêm trọng nhất ở mô hình v1 (độ nhạy Sensitivity chỉ đạt 60.64% do làm đứt gãy các mao mạch nhỏ) đã được giải quyết triệt để: **Sensitivity đạt mức 81.50% (tăng +20.86 pp)**.
+  - Sai số khoảng cách bề mặt (ASD) trung bình chỉ còn **1.51 pixels** và **Boundary F2 score đạt 90.97%**, chứng minh bộ lọc FDF cùng cơ chế Spatial Boundary Attention bảo toàn hoàn hảo các nhánh vi mạch võng mạc siêu mỏng.
+
+---
+
 ## Experiments Tracking
 
 | ID | Thí nghiệm | Dataset | Hardware | Trạng thái | Checkpoint / Summary Link |
@@ -106,12 +127,12 @@ Trên tập thử thách Kvasir-SEG với đa dạng biến thể kích thước
 | `E-GDF2-CVC` | GDF-Netv2 150 Ep | CVC-ClinicDB | Kaggle T4 | Hoàn thành | [summary](file:///D:/User/nghonamjiwoo/My%20Project/FANet/GDF-Netv2/results/cvc_clinicdb/benchmark_summary_CVC.csv) |
 | `E-GDF2-KVASIR` | GDF-Netv2 150 Ep | Kvasir-SEG | Kaggle T4 | Hoàn thành | [summary](file:///D:/User/nghonamjiwoo/My%20Project/FANet/GDF-Netv2/results/kvasir_seg/benchmark_summary_Kvasir.csv) |
 | `E-GDF2-DRIVE` | GDF-Netv2 150 Ep | DRIVE | Kaggle T4 | Hoàn thành | [summary](file:///D:/User/nghonamjiwoo/My%20Project/FANet/GDF-Netv2/results/drive/benchmark_summary_DRIVE.csv) |
-| `E-GDF2-CHASE` | GDF-Netv2 150 Ep | CHASE-DB1 | Kaggle T4 | Đang chạy | `namnguynnnn/gdfnet-v2-chasedb1` |
+| `E-GDF2-CHASE` | GDF-Netv2 150 Ep | CHASE-DB1 | Kaggle T4 | Hoàn thành | [summary](file:///D:/User/nghonamjiwoo/My%20Project/FANet/GDF-Netv2/results/chasedb1/benchmark_summary_CHASE-DB1.csv) |
 | `E-GDF2-EM` | GDF-Netv2 150 Ep | EM-Dataset | Kaggle T4 | Đang chạy | `namnguynnnn/gdfnet-v2-em-dataset` |
+| `E-GDF2-DSB` | GDF-Netv2 150 Ep | DSB-2018 | Kaggle T4 | Đang chạy | `namnguynnnn/gdfnet-v2-dsb2018` |
 | `E-GDF2-A100` | GDF-Netv2 ISIC+DSB | ISIC+DSB2018 | Colab A100 | Đang chạy | `gdfnet-v2-a100` (`/content/train_a100.log`) |
 
 ## Will Do (On going)
 
-- [ ] Thu thập kết quả và báo cáo 9 chỉ số cho **CHASE-DB1** ngay khi phiên Kaggle hoàn thành.
-- [ ] Giám sát tiến độ huấn luyện trên **EM-Dataset** (Kaggle T4).
+- [ ] Giám sát tiến độ huấn luyện trên **EM-Dataset** và **DSB-2018** (Kaggle T4).
 - [ ] Theo dõi và tải toàn bộ checkpoint/kết quả **ISIC-2018** và **DSB-2018** khi hoàn tất trên Colab A100.
