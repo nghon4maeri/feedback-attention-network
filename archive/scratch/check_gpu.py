@@ -1,3 +1,5 @@
-import subprocess
-res = subprocess.run(["nvidia-smi"], capture_output=True, text=True)
-print(res.stdout)
+import torch
+print("CUDA available:", torch.cuda.is_available())
+if torch.cuda.is_available():
+    print("Device name:", torch.cuda.get_device_name(0))
+    print("Memory (GB):", torch.cuda.get_device_properties(0).total_memory / 1e9)
