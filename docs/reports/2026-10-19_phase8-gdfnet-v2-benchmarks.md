@@ -141,6 +141,27 @@ Trên tập thử thách Kvasir-SEG với đa dạng biến thể kích thước
 
 ---
 
+### 6. EM-Dataset (Electron Microscopy 3D Cellular Membrane - 6 Test Images)
+
+| Metric | GDF-Netv2 Mean | GDF-Netv2 Std | GDF-Netv2 Median | GDF-Netv2 Min | GDF-Netv2 Max | Baseline FANet (Phase 7F) | Chênh lệch so với Baseline |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Dice** | **0.9660** | 0.0095 | **0.9675** | 0.9512 | 0.9780 | 0.9518 | **+1.42 pp** |
+| **mIoU** | **0.9344** | 0.0177 | **0.9370** | 0.9070 | 0.9570 | 0.9083 | **+2.61 pp** |
+| **Sensitivity** | **0.9672** | 0.0176 | **0.9662** | 0.9464 | 0.9931 | 0.9582 | **+0.90 pp** |
+| **Specificity** | **0.9976** | 0.0017 | **0.9981** | 0.9944 | 0.9991 | 0.9963 | **+0.13 pp** |
+| **Precision** | **0.9653** | 0.0215 | **0.9716** | 0.9236 | 0.9827 | 0.9464 | **+1.89 pp** |
+| **FPR** | **0.0024** | 0.0017 | **0.0019** | 0.0009 | 0.0056 | 0.0037 | **-0.13 pp (giảm 35%)** |
+| **HD95 (px)** | **28.48** | 37.42 | **5.42** | 2.83 | 82.88 | 31.20 | **-2.72 px (chính xác hơn)** |
+| **ASD (px)** | **0.96** | 0.83 | **0.61** | 0.38 | 2.58 | 1.85 | **-0.89 px (dưới 1 px)** |
+| **BF2** | **0.9803** | 0.0227 | **0.9899** | 0.9381 | 0.9974 | 0.9464 | **+3.39 pp** |
+
+- **Nhận xét chuyên sâu:**
+  - Trên tập màng tế bào hiển vi điện tử EM-Dataset: GDF-Netv2 thiết lập đỉnh cao hiệu năng mới với **Mean Dice đạt 0.9660** (tăng +1.42 pp so với baseline 0.9518), Median Dice đạt **0.9675**, và max đạt **0.9780**.
+  - Sai số khoảng cách bề mặt ASD trung bình co hẹp xuống chỉ còn **0.96 pixels (0.61 pixels Median)**, chứng minh mô hình bám sát từng nếp gấp màng tế bào ở quy mô nanomet.
+  - Tỷ lệ cảnh báo sai FPR chỉ còn **0.24% Mean (0.19% Median)** và Boundary F2 score đạt mức gần như tuyệt đối **98.03% Mean (98.99% Median)**.
+
+---
+
 ## Experiments Tracking
 
 | ID | Thí nghiệm | Dataset | Hardware | Trạng thái | Checkpoint / Summary Link |
@@ -150,10 +171,10 @@ Trên tập thử thách Kvasir-SEG với đa dạng biến thể kích thước
 | `E-GDF2-DRIVE` | GDF-Netv2 150 Ep | DRIVE | Kaggle T4 | Hoàn thành | [summary](file:///D:/User/nghonamjiwoo/My%20Project/FANet/GDF-Netv2/results/drive/benchmark_summary_DRIVE.csv) |
 | `E-GDF2-CHASE` | GDF-Netv2 150 Ep | CHASE-DB1 | Kaggle T4 | Hoàn thành | [summary](file:///D:/User/nghonamjiwoo/My%20Project/FANet/GDF-Netv2/results/chasedb1/benchmark_summary_CHASE-DB1.csv) |
 | `E-GDF2-DSB` | GDF-Netv2 150 Ep | DSB-2018 | Kaggle T4 | Hoàn thành | [summary](file:///D:/User/nghonamjiwoo/My%20Project/FANet/GDF-Netv2/results/dsb2018/benchmark_summary_DSB2018.csv) |
-| `E-GDF2-EM` | GDF-Netv2 150 Ep | EM-Dataset | Kaggle T4 | Đang chạy | `namnguynnnn/gdfnet-v2-em-dataset` |
-| `E-GDF2-ISIC-KG` | GDF-Netv2 150 Ep | ISIC-2018 | Kaggle T4 | Đang chạy | `namnguynnnn/gdfnet-v2-isic2018` |
+| `E-GDF2-EM` | GDF-Netv2 150 Ep | EM-Dataset | Kaggle T4 | Hoàn thành | [summary](file:///D:/User/nghonamjiwoo/My%20Project/FANet/GDF-Netv2/results/em_dataset/benchmark_summary_EMDataset.csv) |
+| `E-GDF2-ISIC-KG` | GDF-Netv2 150 Ep | ISIC-2018 | Kaggle T4 | Đang chạy (Giai đoạn cuối) | `namnguynnnn/gdfnet-v2-isic2018` |
 
 ## Will Do (On going)
 
-- [ ] Giám sát tiến độ hoàn thành trên **EM-Dataset** và **ISIC-2018** (Kaggle Cloud GPU).
-- [ ] Tổng hợp toàn diện 7 tập benchmark lâm sàng vào báo cáo Phase 8.
+- [ ] Thu nhận kết quả và báo cáo 9 chỉ số trên 1.000 blind test images của **ISIC-2018** ngay khi hoàn tất.
+- [ ] Tổng hợp toàn diện bảng so sánh 7 tập benchmark lâm sàng vào báo cáo Phase 8.
