@@ -237,7 +237,7 @@ class GDFNetV2(nn.Module):
         s1_refined = s1 + (s1 * gate)
 
         d1_t2 = self._decode(s1_refined, s2, s3, s4)
-        final_pred = self.sba(d1_t2, edge_feat)
+        final_pred = F.interpolate(self.sba(d1_t2, edge_feat), size=(H, W), mode='bilinear', align_corners=False)
 
         if self.training:
             return {'final_pred': final_pred, 'pred_t1': pred_t1, 'edge_pred': edge_pred}
