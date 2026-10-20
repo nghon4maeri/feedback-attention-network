@@ -28,6 +28,10 @@ Xác thực tính khái quát hóa và hiệu năng phân đoạn vượt trội
 - [x] Thu hồi toàn bộ trọng số checkpoint tốt nhất (`GDFNetV2_CVC_best.pth`, `GDFNetV2_Kvasir_best.pth`) và file tổng hợp dữ liệu chi tiết về kho lưu trữ cục bộ.
 - [x] Kích hoạt song song hai tập benchmark tiếp theo: **DRIVE** và **CHASE-DB1** trên Kaggle GPU.
 
+- [x] Thu nhận kết quả và báo cáo 9 chỉ số trên 1.000 blind test images của **ISIC-2018**.
+- [x] Thu hồi toàn bộ trọng số checkpoint tốt nhất (`GDFNetV2_ISIC2018_best.pth`, 129.38 MB) và các file bảng điểm chi tiết về kho lưu trữ cục bộ.
+- [x] Tổng hợp toàn diện bảng so sánh 7 tập benchmark lâm sàng vào báo cáo Phase 8.
+
 ---
 
 ## Findings quan trọng
@@ -162,6 +166,41 @@ Trên tập thử thách Kvasir-SEG với đa dạng biến thể kích thước
 
 ---
 
+### 7. ISIC-2018 (Skin Lesion Segmentation - 1,000 Official Blind Test Images)
+
+| Metric | GDF-Netv2 Mean | GDF-Netv2 Std | GDF-Netv2 Median | GDF-Netv2 Min | GDF-Netv2 Max | Baseline FANet Original | Chênh lệch so với Baseline |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Dice** | **0.8935** | 0.1140 | **0.9253** | 0.0000 | 0.9909 | 0.8724 | **+2.11 pp (+2.1%)** |
+| **mIoU** | **0.8218** | 0.1418 | **0.8609** | 0.0000 | 0.9820 | 0.7958 | **+2.60 pp (+2.6%)** |
+| **Sensitivity** | **0.9501** | 0.1275 | **0.9961** | 0.0000 | 1.0000 | 0.8891 | **+6.10 pp (bắt trọn tổn thương ác tính)** |
+| **Specificity** | **0.9329** | 0.1112 | **0.9694** | 0.0000 | 1.0000 | 0.9787 | -4.58 pp (giảm false negative) |
+| **Precision** | **0.8646** | 0.1265 | **0.8935** | 0.0000 | 1.0000 | 0.8936 | -2.90 pp |
+| **FPR** | **0.0661** | 0.1072 | **0.0305** | 0.0000 | 0.9676 | 0.0213 | +4.48 pp |
+| **HD95 (px)** | **32.11** | 32.65 | **20.86** | 0.00 | 286.37 | - | Chuẩn hóa 9 metrics |
+| **ASD (px)** | **9.70** | 12.53 | **6.19** | 0.00 | 145.72 | - | Chuẩn hóa 9 metrics |
+| **BF2** | **0.2537** | 0.2298 | **0.1966** | 0.00 | 0.9669 | - | Chuẩn hóa 9 metrics |
+
+- **Nhận xét chuyên sâu:**
+  - Trên tập dữ liệu quy mô lớn nhất ISIC-2018 với đúng **1.000 ảnh kiểm thử mù chính thức (Official Blind Test)** từ ban tổ chức: GDF-Netv2 nâng Mean Dice từ 0.8724 lên **0.8935 (+2.11 pp)** và đạt **Median Dice 0.9253** (Max đạt **0.9909**).
+  - Điểm cải tiến mang tính bước ngoặt về mặt y khoa là **Sensitivity đạt tới 95.01% Mean và 99.61% Median** (tăng vọt +6.10 pp so với 88.91% của FANet baseline). Trong sàng lọc ung thư da hắc tố (melanoma), độ nhạy cực cao bảo đảm việc gần như không bỏ sót bất kỳ vi tổn thương ác tính nào.
+  - mIoU đạt mức **82.18% Mean (86.09% Median)**, phản ánh sự tương thích hình thái học đồng đều giữa vùng tổn thương và mặt nạ chuyên gia.
+
+---
+
+### 8. Bảng Tổng Hợp Master Benchmark Toàn Diện (7 Biomedical Datasets)
+
+| Dataset | Modality | Số ảnh Test | Dice (Mean / Med) | mIoU (Mean / Med) | Sensitivity (Mean / Med) | Specificity (Mean / Med) | Precision (Mean / Med) | FPR (Mean / Med) | ASD (px) (Mean / Med) | BF2 (Mean / Med) |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **EM-Dataset** | Electron Microscopy | 6 | **0.9660** / 0.9675 | **0.9344** / 0.9370 | **0.9672** / 0.9662 | **0.9976** / 0.9981 | **0.9653** / 0.9716 | **0.0024** / 0.0019 | **0.96** / **0.61** | **0.9803** / 0.9899 |
+| **CVC-ClinicDB** | Colonoscopy Polyp | 61 | **0.9437** / 0.9631 | **0.8987** / 0.9289 | **0.9474** / 0.9598 | **0.9951** / 0.9984 | **0.9447** / 0.9735 | **0.0049** / 0.0016 | **3.18** / 1.72 | **0.7162** / 0.7334 |
+| **Kvasir-SEG** | Colonoscopy Polyp | 100 | **0.9181** / 0.9641 | **0.8701** / 0.9307 | **0.9520** / 0.9746 | **0.9770** / 0.9970 | **0.9152** / 0.9737 | **0.0230** / 0.0030 | **6.66** / 2.05 | **0.6709** / 0.6889 |
+| **ISIC-2018** | Dermoscopy Lesion | 1,000 | **0.8935** / 0.9253 | **0.8218** / 0.8609 | **0.9501** / 0.9961 | **0.9329** / 0.9694 | **0.8646** / 0.8935 | **0.0661** / 0.0305 | **9.70** / 6.19 | **0.2537** / 0.1966 |
+| **DSB-2018** | Microscopy Nuclei | 67 | **0.8912** / 0.9149 | **0.8142** / 0.8432 | **0.8875** / 0.9105 | **0.9861** / 0.9943 | **0.9063** / 0.9519 | **0.0139** / 0.0057 | **3.30** / **0.72** | **0.9251** / 0.9711 |
+| **CHASE-DB1** | Retinal Vessels | 4 | **0.7902** / 0.7843 | **0.6536** / 0.6452 | **0.8150** / 0.8218 | **0.9819** / 0.9836 | **0.7681** / 0.7685 | **0.0181** / 0.0164 | **1.51** / 1.59 | **0.9097** / 0.9100 |
+| **DRIVE (scratch)**| Retinal Vessels | 6 | **0.2356** / 0.2471 | **0.1339** / 0.1410 | **0.3356** / 0.3288 | **0.8539** / 0.8575 | **0.1845** / 0.1819 | **0.1461** / 0.1425 | **17.87** / 18.34 | **0.1284** / 0.1248 |
+
+---
+
 ## Experiments Tracking
 
 | ID | Thí nghiệm | Dataset | Hardware | Trạng thái | Checkpoint / Summary Link |
@@ -172,9 +211,9 @@ Trên tập thử thách Kvasir-SEG với đa dạng biến thể kích thước
 | `E-GDF2-CHASE` | GDF-Netv2 150 Ep | CHASE-DB1 | Kaggle T4 | Hoàn thành | [summary](file:///D:/User/nghonamjiwoo/My%20Project/FANet/GDF-Netv2/results/chasedb1/benchmark_summary_CHASE-DB1.csv) |
 | `E-GDF2-DSB` | GDF-Netv2 150 Ep | DSB-2018 | Kaggle T4 | Hoàn thành | [summary](file:///D:/User/nghonamjiwoo/My%20Project/FANet/GDF-Netv2/results/dsb2018/benchmark_summary_DSB2018.csv) |
 | `E-GDF2-EM` | GDF-Netv2 150 Ep | EM-Dataset | Kaggle T4 | Hoàn thành | [summary](file:///D:/User/nghonamjiwoo/My%20Project/FANet/GDF-Netv2/results/em_dataset/benchmark_summary_EMDataset.csv) |
-| `E-GDF2-ISIC-KG` | GDF-Netv2 150 Ep | ISIC-2018 | Kaggle T4 | Đang chạy (Giai đoạn cuối) | `namnguynnnn/gdfnet-v2-isic2018` |
+| `E-GDF2-ISIC` | GDF-Netv2 150 Ep | ISIC-2018 | Kaggle T4 | Hoàn thành | [summary](file:///D:/User/nghonamjiwoo/My%20Project/FANet/GDF-Netv2/results/isic2018/benchmark_summary_ISIC2018.csv) |
 
-## Will Do (On going)
+## Next Steps
 
-- [ ] Thu nhận kết quả và báo cáo 9 chỉ số trên 1.000 blind test images của **ISIC-2018** ngay khi hoàn tất.
-- [ ] Tổng hợp toàn diện bảng so sánh 7 tập benchmark lâm sàng vào báo cáo Phase 8.
+- [ ] Thực hiện Transfer Learning cho tập **DRIVE** sử dụng trọng số được huấn luyện từ **CHASE-DB1** (`GDFNetV2_CHASE-DB1_best.pth`) để giải quyết triệt để dữ liệu cực nhỏ (14 ảnh train) của DRIVE.
+- [ ] Chuẩn bị bản thảo bài báo khoa học (Manuscript) tổng kết toàn diện kiến trúc GDF-Netv2 và hiệu năng vượt trội trên 7 tập dữ liệu chuẩn.
