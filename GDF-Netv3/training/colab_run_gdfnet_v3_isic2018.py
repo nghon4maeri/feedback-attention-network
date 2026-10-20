@@ -612,15 +612,48 @@ scaler = GradScaler('cuda')
 
 EPOCHS = 100
 best_val_dice = 0.0
+start_epoch = 1
 
 checkpoint_best = f"{OUTPUT_DIR}/GDFNetV3_ISIC2018_best.pth"
 checkpoint_latest = f"{OUTPUT_DIR}/GDFNetV3_ISIC2018_latest.pth"
 history_csv = f"{OUTPUT_DIR}/training_history_ISIC2018.csv"
 
-print(f"\n[*] Starting GDF-Netv3 (EfficientNetV2-S) ISIC-2018 Training on A100 ({EPOCHS} Epochs, Batch Size 16)")
-history = []
+# Check for resume checkpoint
+resume_path = "/content/resume_checkpoint.pth"
+if os.path.exists(resume_path):
+    print(f"[*] Found resume checkpoint at {resume_path}, loading weights...", flush=True)
+    ckpt = torch.load(resume_path, map_location=device)
+    if isinstance(ckpt, dict) and 'model_state' in ckpt:
+        model.load_state_dict(ckpt['model_state'])
+        start_epoch = ckpt.get('epoch', 30) + 1
+        best_val_dice = ckpt.get('best_val_dice', 0.8922)
+    else:
+        model.load_state_dict(ckpt)
+        start_epoch = 31
+        best_val_dice = 0.8922
+    print(f"[+] Resumed successfully from Epoch {start_epoch} (Baseline Best Val Dice: {best_val_dice:.4f})", flush=True)
+elif os.path.exists(checkpoint_latest):
+    print(f"[*] Found latest checkpoint at {checkpoint_latest}, loading weights...", flush=True)
+    ckpt = torch.load(checkpoint_latest, map_location=device)
+    if isinstance(ckpt, dict) and 'model_state' in ckpt:
+        model.load_state_dict(ckpt['model_state'])
+        start_epoch = ckpt.get('epoch', 30) + 1
+        best_val_dice = ckpt.get('best_val_dice', 0.8922)
+    else:
+        model.load_state_dict(ckpt)
+        start_epoch = 31
+        best_val_dice = 0.8922
+    print(f"[+] Resumed successfully from Epoch {start_epoch} (Baseline Best Val Dice: {best_val_dice:.4f})", flush=True)
 
-for epoch in range(1, EPOCHS + 1):
+print(f"\n[*] Starting GDF-Netv3 (EfficientNetV2-S) ISIC-2018 Training on A100 (Epoch {start_epoch} to {EPOCHS}, Batch Size 16)")
+history = []
+if os.path.exists(history_csv):
+    try:
+        history = pd.read_csv(history_csv).to_dict('records')
+    except Exception:
+        pass
+
+for epoch in range(start_epoch, EPOCHS + 1):
     model.train()
     running_loss = 0.0
     t0 = time.time()
