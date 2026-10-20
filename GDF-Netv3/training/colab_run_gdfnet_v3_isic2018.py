@@ -17,6 +17,7 @@ import json
 import time
 import zipfile
 import subprocess
+import shutil
 import numpy as np
 import pandas as pd
 from PIL import Image
@@ -34,6 +35,23 @@ import torch.optim as optim
 from torch.amp import autocast, GradScaler
 from torch.utils.data import Dataset, DataLoader
 
+# Dual Tee Logger to write to stdout and log file simultaneously
+class DualLogger(object):
+    def __init__(self, filepath="/content/train_gdfnet_v3.log"):
+        self.terminal = sys.stdout
+        self.logfile = open(filepath, "a", encoding="utf-8")
+    def write(self, message):
+        self.terminal.write(message)
+        self.terminal.flush()
+        self.logfile.write(message)
+        self.logfile.flush()
+    def flush(self):
+        self.terminal.flush()
+        self.logfile.flush()
+
+sys.stdout = DualLogger("/content/train_gdfnet_v3.log")
+sys.stderr = sys.stdout
+
 # ====================================================================
 # 1. Hardware & Environment
 # ====================================================================
@@ -45,8 +63,12 @@ if torch.cuda.is_available():
     torch.backends.cudnn.allow_tf32 = True
     torch.backends.cudnn.benchmark = True
 
-OUTPUT_DIR = "/content/output_gdfnet_v3"
+LOCAL_OUT = "/content/output_gdfnet_v3"
+os.makedirs(LOCAL_OUT, exist_ok=True)
+DRIVE_OUT = "/content/drive/MyDrive/GDFNetV3_ISIC2018"
+OUTPUT_DIR = DRIVE_OUT if os.path.exists("/content/drive/MyDrive") else LOCAL_OUT
 os.makedirs(OUTPUT_DIR, exist_ok=True)
+print(f"[+] Output Directory configured: {OUTPUT_DIR}")
 
 def set_seed(seed=42):
     import random
@@ -588,8 +610,12 @@ optimizer = optim.AdamW(model.parameters(), lr=1e-4, weight_decay=1e-4)
 scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.5, patience=8)
 scaler = GradScaler('cuda')
 
-EPOCHS = 150
+EPOCHS = 100
 best_val_dice = 0.0
+
+checkpoint_best = f"{OUTPUT_DIR}/GDFNetV3_ISIC2018_best.pth"
+checkpoint_latest = f"{OUTPUT_DIR}/GDFNetV3_ISIC2018_latest.pth"
+history_csv = f"{OUTPUT_DIR}/training_history_ISIC2018.csv"
 
 print(f"\n[*] Starting GDF-Netv3 (EfficientNetV2-S) ISIC-2018 Training on A100 ({EPOCHS} Epochs, Batch Size 16)")
 history = []
@@ -621,21 +647,45 @@ for epoch in range(1, EPOCHS + 1):
     scheduler.step(val_dice)
 
     history.append({'epoch': epoch, 'loss': epoch_loss, 'val_dice': val_dice, 'val_miou': val_miou, 'elapsed_sec': elapsed})
+    pd.DataFrame(history).to_csv(history_csv, index=False)
+    
+    # Save latest state per epoch
+    torch.save({
+        'epoch': epoch,
+        'model_state': model.state_dict(),
+        'optimizer_state': optimizer.state_dict(),
+        'scheduler_state': scheduler.state_dict(),
+        'best_val_dice': best_val_dice
+    }, checkpoint_latest)
+
     print(f"Epoch {epoch:03d}/{EPOCHS} [{elapsed:.1f}s] | Loss: {epoch_loss:.4f} | Val Dice: {val_dice:.4f} | Val mIoU: {val_miou:.4f}", flush=True)
 
     if val_dice > best_val_dice:
         best_val_dice = val_dice
-        torch.save(model.state_dict(), f"{OUTPUT_DIR}/GDFNetV3_ISIC2018_best.pth")
+        torch.save(model.state_dict(), checkpoint_best)
         print(f"[*] New Best Model Saved (Val Dice: {val_dice:.4f})", flush=True)
 
-pd.DataFrame(history).to_csv(f"{OUTPUT_DIR}/training_history_ISIC2018.csv", index=False)
+    # Mirror to Google Drive if connected and distinct
+    if os.path.exists("/content/drive/MyDrive/GDFNetV3_ISIC2018") and OUTPUT_DIR != "/content/drive/MyDrive/GDFNetV3_ISIC2018":
+        try:
+            shutil.copy2(history_csv, "/content/drive/MyDrive/GDFNetV3_ISIC2018/")
+            if val_dice == best_val_dice:
+                shutil.copy2(checkpoint_best, "/content/drive/MyDrive/GDFNetV3_ISIC2018/")
+        except Exception:
+            pass
 
 # Final Blind Test Evaluation
 print("\n[*] Evaluating Best GDF-Netv3 ISIC Checkpoint on 1,000 Official Blind Test Images...", flush=True)
-model.load_state_dict(torch.load(f"{OUTPUT_DIR}/GDFNetV3_ISIC2018_best.pth", map_location=device))
+model.load_state_dict(torch.load(checkpoint_best, map_location=device))
 per_img_df, summary_df = evaluate_model(model, test_loader)
 print("\n================ GDF-NETV3 OFFICIAL TEST RESULTS ================", flush=True)
 print(summary_df.to_string(index=False), flush=True)
 summary_df.to_csv(f"{OUTPUT_DIR}/benchmark_summary_ISIC2018.csv", index=False)
 per_img_df.to_csv(f"{OUTPUT_DIR}/benchmark_raw_ISIC2018.csv", index=False)
+if os.path.exists("/content/drive/MyDrive/GDFNetV3_ISIC2018") and OUTPUT_DIR != "/content/drive/MyDrive/GDFNetV3_ISIC2018":
+    try:
+        shutil.copy2(f"{OUTPUT_DIR}/benchmark_summary_ISIC2018.csv", "/content/drive/MyDrive/GDFNetV3_ISIC2018/")
+        shutil.copy2(f"{OUTPUT_DIR}/benchmark_raw_ISIC2018.csv", "/content/drive/MyDrive/GDFNetV3_ISIC2018/")
+    except Exception:
+        pass
 print("[+] GDF-Netv3 Training and Blind Evaluation Completed Successfully!", flush=True)
