@@ -637,7 +637,7 @@ resume_candidates = [
 for rpath in resume_candidates:
     if os.path.exists(rpath):
         print(f"[*] Found valid resume checkpoint at {rpath}. Restoring training state...", flush=True)
-        ckpt = torch.load(rpath, map_location=device)
+        ckpt = torch.load(rpath, map_location=device, weights_only=False)
         model.load_state_dict(ckpt['model_state'])
         optimizer.load_state_dict(ckpt['optimizer_state'])
         scheduler.load_state_dict(ckpt['scheduler_state'])
@@ -732,9 +732,9 @@ for epoch in range(start_epoch, EPOCHS + 1):
 # Final Blind Test Evaluation on 1,000 Official Held-Out Test Images
 print("\n[*] Evaluating Best GDF-Netv4 Checkpoint on 1,000 Official Blind Test Images (Single View)...", flush=True)
 if os.path.exists(checkpoint_best):
-    model.load_state_dict(torch.load(checkpoint_best, map_location=device))
+    model.load_state_dict(torch.load(checkpoint_best, map_location=device, weights_only=False))
 elif os.path.exists(f"{DRIVE_DIR}/GDFNetV4_ISIC2018_best.pth"):
-    model.load_state_dict(torch.load(f"{DRIVE_DIR}/GDFNetV4_ISIC2018_best.pth", map_location=device))
+    model.load_state_dict(torch.load(f"{DRIVE_DIR}/GDFNetV4_ISIC2018_best.pth", map_location=device, weights_only=False))
 
 per_img_df, summary_df, test_global_dice, test_global_iou = evaluate_model_v4(model, test_loader, use_tta=False)
 summary_df.to_csv(f"{OUTPUT_DIR}/benchmark_summary_ISIC2018.csv", index=False)
