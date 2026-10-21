@@ -483,8 +483,8 @@ class ISICDatasetV4(Dataset):
 
         if is_train:
             self.transform = A.Compose([
-                A.RandomResizedCrop(height=IMG_SIZE, width=IMG_SIZE, scale=(0.5, 1.0), p=0.7),
-                A.Resize(IMG_SIZE, IMG_SIZE),
+                A.RandomResizedCrop(size=(IMG_SIZE, IMG_SIZE), scale=(0.5, 1.0), p=0.7),
+                A.Resize(height=IMG_SIZE, width=IMG_SIZE),
                 A.HorizontalFlip(p=0.5),
                 A.VerticalFlip(p=0.5),
                 A.ShiftScaleRotate(shift_limit=0.1, scale_limit=0.15, rotate_limit=45, p=0.6),
@@ -493,7 +493,7 @@ class ISICDatasetV4(Dataset):
             ])
         else:
             self.transform = A.Compose([
-                A.Resize(IMG_SIZE, IMG_SIZE),
+                A.Resize(height=IMG_SIZE, width=IMG_SIZE),
                 A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
             ])
 
