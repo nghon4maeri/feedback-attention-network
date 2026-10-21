@@ -9,6 +9,13 @@ with open(os.path.join(kaggle_dir, "kaggle.json"), "w") as f:
     json.dump({"username": "namnguynnnn", "key": "KGAT_dad33ce94fb8b25d8a9ecd4ca26ce03f"}, f)
 os.chmod(os.path.join(kaggle_dir, "kaggle.json"), 0o600)
 
+print("[*] Downloading training & test input dataset...", flush=True)
+has_train = any("ISIC2018_Task1-2_Training_Input" in root for root, dirs, _ in os.walk(DATA_ROOT))
+has_train_zip = os.path.exists(f"{DATA_ROOT}/isic2018-challenge-task1-data-segmentation.zip")
+if not (has_train or has_train_zip):
+    subprocess.run(["kaggle", "datasets", "download", "-d", "tschandl/isic2018-challenge-task1-data-segmentation", "-p", DATA_ROOT], check=True)
+print("[+] Training dataset downloaded.", flush=True)
+
 print("[*] Downloading test groundtruth...", flush=True)
 has_test_gt = any("isic2018-test-groundtruth" in f for f in os.listdir(DATA_ROOT))
 if not has_test_gt:
