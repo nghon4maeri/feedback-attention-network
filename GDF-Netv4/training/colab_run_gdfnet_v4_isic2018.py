@@ -11,6 +11,8 @@ Features:
 - StructureLoss (Weighted BCE + Weighted IoU) with Deep Supervision
 - ImageNet standard normalization (mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 - CosineAnnealingLR with Warmup
+- Robust Resumption: Seamlessly resumes epoch, model, optimizer, scheduler, scaler
+- Google Drive Mirroring: Automatic checkpoint synchronization
 - 4-View Flip Test-Time Augmentation (TTA)
 - Full 9-Metric Protocol (Both Per-Image Macro and Dataset-Level Global Micro)
 """
@@ -21,8 +23,8 @@ import glob
 import time
 import json
 import zipfile
+import shutil
 import subprocess
-import argparse
 import numpy as np
 import pandas as pd
 from PIL import Image
@@ -45,12 +47,17 @@ from torch.amp import autocast, GradScaler
 # 1. Output & Device Configuration
 # ====================================================================
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-print(f"[+] Active Compute Device: {device}")
+print(f"[+] Active Compute Device: {device}", flush=True)
 if torch.cuda.is_available():
-    print(f"[+] GPU Hardware: {torch.cuda.get_device_name(0)}")
+    print(f"[+] GPU Hardware: {torch.cuda.get_device_name(0)} (VRAM: {torch.cuda.get_device_properties(0).total_memory / 1e9:.2f} GB)", flush=True)
 
 OUTPUT_DIR = "/content/results_gdfnet_v4" if os.path.exists("/content") else "./results_gdfnet_v4"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+DRIVE_DIR = "/content/drive/MyDrive/GDFNetV4_ISIC2018"
+if os.path.exists("/content/drive/MyDrive"):
+    os.makedirs(DRIVE_DIR, exist_ok=True)
+    print(f"[+] Google Drive Connected: Syncing to {DRIVE_DIR}", flush=True)
 
 def set_seed(seed=42):
     import random
@@ -63,7 +70,92 @@ def set_seed(seed=42):
 set_seed(42)
 
 # ====================================================================
-# 2. Model Architecture: GDF-Netv4
+# 2. Dataset Acquisition & Pairing
+# ====================================================================
+DATA_ROOT = "/content/isic-2018" if os.path.exists("/content") else "./isic-2018"
+os.makedirs(DATA_ROOT, exist_ok=True)
+
+kaggle_dir = os.path.expanduser("~/.kaggle")
+os.makedirs(kaggle_dir, exist_ok=True)
+k_user = os.environ.get("KAGGLE_USERNAME", "namnguynnnn")
+k_key  = os.environ.get("KAGGLE_KEY", "KGAT_dad33ce94fb8b25d8a9ecd4ca26ce03f")
+with open(os.path.join(kaggle_dir, "kaggle.json"), "w") as f:
+    json.dump({"username": k_user, "key": k_key}, f)
+os.chmod(os.path.join(kaggle_dir, "kaggle.json"), 0o600)
+
+def _unzip_all(root):
+    for z in glob.glob(os.path.join(root, "*.zip")):
+        print(f"[*] Extracting: {os.path.basename(z)}...", flush=True)
+        try:
+            with zipfile.ZipFile(z) as f:
+                f.extractall(root)
+            os.remove(z)
+        except Exception as e:
+            print(f"[!] Warning while unzipping {z}: {e}", flush=True)
+
+has_train = any("ISIC2018_Task1-2_Training_Input" in root for root, dirs, _ in os.walk(DATA_ROOT))
+has_test  = any("ISIC2018_Task1_Test_GroundTruth" in root for root, dirs, _ in os.walk(DATA_ROOT))
+
+if not (has_train and has_test):
+    print("[*] Downloading ISIC-2018 Datasets via Kaggle API...", flush=True)
+    subprocess.run(["kaggle", "datasets", "download", "-d",
+                    "tschandl/isic2018-challenge-task1-data-segmentation", "-p", DATA_ROOT], check=True)
+    subprocess.run(["kaggle", "datasets", "download", "-d",
+                    "mfahimhossen/isic2018-test-groundtruth", "-p", DATA_ROOT], check=True)
+    _unzip_all(DATA_ROOT)
+
+val_img_url = "https://isic-archive.s3.amazonaws.com/challenges/2018/ISIC2018_Task1-2_Validation_Input.zip"
+val_gt_url  = "https://isic-archive.s3.amazonaws.com/challenges/2018/ISIC2018_Task1_Validation_GroundTruth.zip"
+
+has_val_img = any("ISIC2018_Task1-2_Validation_Input" in root for root, dirs, _ in os.walk(DATA_ROOT))
+has_val_gt  = any("ISIC2018_Task1_Validation_GroundTruth" in root for root, dirs, _ in os.walk(DATA_ROOT))
+
+if not has_val_img:
+    print("[*] Downloading Official Val Input from S3...", flush=True)
+    subprocess.run(["wget", "-q", "-O", f"{DATA_ROOT}/val_input.zip", val_img_url], check=True)
+if not has_val_gt:
+    print("[*] Downloading Official Val GT from S3...", flush=True)
+    subprocess.run(["wget", "-q", "-O", f"{DATA_ROOT}/val_gt.zip", val_gt_url], check=True)
+_unzip_all(DATA_ROOT)
+
+def find_dir_by_name(target_name, base_search=DATA_ROOT):
+    for root, dirs, files in os.walk(base_search):
+        if os.path.basename(root).lower() == target_name.lower():
+            return root
+    return None
+
+train_img_dir = find_dir_by_name("ISIC2018_Task1-2_Training_Input")
+train_gt_dir  = find_dir_by_name("ISIC2018_Task1_Training_GroundTruth")
+val_img_dir   = find_dir_by_name("ISIC2018_Task1-2_Validation_Input")
+val_gt_dir    = find_dir_by_name("ISIC2018_Task1_Validation_GroundTruth")
+test_img_dir  = find_dir_by_name("ISIC2018_Task1-2_Test_Input")
+test_gt_dir   = find_dir_by_name("ISIC2018_Task1_Test_GroundTruth")
+
+def isic_id(path):
+    base = os.path.basename(path).replace("_segmentation", "")
+    return os.path.splitext(base)[0]
+
+def pair_data(img_dir, gt_dir):
+    imgs = sorted(glob.glob(os.path.join(img_dir, "*.jpg")))
+    msks = sorted(glob.glob(os.path.join(gt_dir, "*.png")))
+    id_map = {isic_id(m): m for m in msks}
+    paired_x = []
+    paired_y = []
+    for im in imgs:
+        imid = isic_id(im)
+        if imid in id_map:
+            paired_x.append(im)
+            paired_y.append(id_map[imid])
+    return paired_x, paired_y
+
+train_x, train_y = pair_data(train_img_dir, train_gt_dir)
+val_x, val_y     = pair_data(val_img_dir, val_gt_dir)
+test_x, test_y   = pair_data(test_img_dir, test_gt_dir)
+
+print(f"[+] Paired Datasets -> Train: {len(train_x)} | Val: {len(val_x)} | Test: {len(test_x)}", flush=True)
+
+# ====================================================================
+# 3. Model Architecture: GDF-Netv4
 # ====================================================================
 class HierarchicalBackboneV4(nn.Module):
     def __init__(self, backbone_name="pvt_v2_b2", pretrained=True, in_chans=3):
@@ -330,7 +422,7 @@ class GDFNetV4(nn.Module):
             return out_final
 
 # ====================================================================
-# 3. Structure Loss with Deep Supervision
+# 4. Structure Loss with Deep Supervision
 # ====================================================================
 class StructureLoss(nn.Module):
     def __init__(self, kernel_size=31, weight_factor=5.0):
@@ -379,7 +471,7 @@ class GDFNetV4CompositeLoss(nn.Module):
             return self.structure_loss(outputs, targets)
 
 # ====================================================================
-# 4. Dataset with ImageNet Normalization & Augmentations
+# 5. Dataset with ImageNet Normalization & Augmentations
 # ====================================================================
 IMG_SIZE = 384
 
@@ -428,9 +520,6 @@ class ISICDatasetV4(Dataset):
         msk = np.expand_dims(msk, axis=0)
         return torch.from_numpy(img).float(), torch.from_numpy(msk).float()
 
-# ====================================================================
-# 5. True 95th Percentile Hausdorff Distance & Clinical Metrics
-# ====================================================================
 def compute_metrics_v4(p, t):
     tp = np.logical_and(p, t).sum()
     fp = np.logical_and(p, ~t).sum()
@@ -478,7 +567,6 @@ def evaluate_model_v4(model, loader, use_tta=False):
         imgs = imgs.to(device)
         with autocast('cuda'):
             if use_tta:
-                # 4-View Flip TTA
                 p1 = torch.sigmoid(model(imgs))
                 p2 = torch.sigmoid(model(torch.flip(imgs, dims=[3])))
                 p2 = torch.flip(p2, dims=[3])
@@ -517,5 +605,165 @@ def evaluate_model_v4(model, loader, use_tta=False):
     summary_df = pd.DataFrame(summary)
     return df, summary_df, global_dice, global_iou
 
-if __name__ == "__main__":
-    print("[*] GDF-Netv4 Training Module Loaded Successfully.")
+# ====================================================================
+# 6. Training Engine on A100 GPU (100 Epochs, Robust Resumption)
+# ====================================================================
+train_loader = DataLoader(ISICDatasetV4(train_x, train_y, is_train=True), batch_size=16, shuffle=True, num_workers=4, pin_memory=True)
+val_loader   = DataLoader(ISICDatasetV4(val_x, val_y, is_train=False), batch_size=16, shuffle=False, num_workers=2, pin_memory=True)
+test_loader  = DataLoader(ISICDatasetV4(test_x, test_y, is_train=False), batch_size=16, shuffle=False, num_workers=2, pin_memory=True)
+
+model = GDFNetV4(backbone_name="pvt_v2_b2", pretrained=True).to(device)
+criterion = GDFNetV4CompositeLoss()
+optimizer = optim.AdamW(model.parameters(), lr=1e-4, weight_decay=1e-4)
+EPOCHS = 100
+scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=EPOCHS, eta_min=1e-6)
+scaler = GradScaler('cuda')
+
+best_val_dice = 0.0
+best_epoch = 0
+start_epoch = 1
+
+checkpoint_best = f"{OUTPUT_DIR}/GDFNetV4_ISIC2018_best.pth"
+checkpoint_latest = f"{OUTPUT_DIR}/GDFNetV4_ISIC2018_latest.pth"
+history_csv = f"{OUTPUT_DIR}/training_history_ISIC2018.csv"
+
+# Check for resume candidates (Drive > Output Dir > Root)
+resume_candidates = [
+    f"{DRIVE_DIR}/GDFNetV4_ISIC2018_latest.pth",
+    checkpoint_latest,
+    "/content/GDFNetV4_latest.pth"
+]
+
+for rpath in resume_candidates:
+    if os.path.exists(rpath):
+        print(f"[*] Found valid resume checkpoint at {rpath}. Restoring training state...", flush=True)
+        ckpt = torch.load(rpath, map_location=device)
+        model.load_state_dict(ckpt['model_state'])
+        optimizer.load_state_dict(ckpt['optimizer_state'])
+        scheduler.load_state_dict(ckpt['scheduler_state'])
+        scaler.load_state_dict(ckpt['scaler_state'])
+        start_epoch = ckpt['epoch'] + 1
+        best_val_dice = ckpt.get('best_val_dice', 0.0)
+        best_epoch = ckpt.get('best_epoch', ckpt['epoch'])
+        print(f"[+] Successfully Resumed from Epoch {start_epoch} (Baseline Best Val Dice: {best_val_dice:.4f} at Epoch {best_epoch})", flush=True)
+        break
+
+history = []
+if os.path.exists(history_csv):
+    try:
+        history = pd.read_csv(history_csv).to_dict('records')
+    except Exception:
+        pass
+elif os.path.exists(f"{DRIVE_DIR}/training_history_ISIC2018.csv"):
+    try:
+        history = pd.read_csv(f"{DRIVE_DIR}/training_history_ISIC2018.csv").to_dict('records')
+        shutil.copy2(f"{DRIVE_DIR}/training_history_ISIC2018.csv", history_csv)
+    except Exception:
+        pass
+
+print(f"\n[*] Starting GDF-Netv4 (PVTv2-B2 + MS-FDF + LGAG) Training on A100 (Epoch {start_epoch} to {EPOCHS})", flush=True)
+
+for epoch in range(start_epoch, EPOCHS + 1):
+    model.train()
+    running_loss = 0.0
+    t0 = time.time()
+
+    for imgs, msks in train_loader:
+        imgs, msks = imgs.to(device), msks.to(device)
+        optimizer.zero_grad()
+        with autocast('cuda'):
+            outs = model(imgs)
+            loss = criterion(outs, msks)
+
+        scaler.scale(loss).backward()
+        scaler.unscale_(optimizer)
+        torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+        scaler.step(optimizer)
+        scaler.update()
+        running_loss += loss.item()
+
+    scheduler.step()
+    elapsed = time.time() - t0
+    epoch_loss = running_loss / len(train_loader)
+    
+    # Validation evaluation
+    _, val_summary, val_global_dice, val_global_iou = evaluate_model_v4(model, val_loader)
+    val_macro_dice = val_summary.loc[val_summary['Metric'] == 'dice', 'Mean'].values[0]
+    val_macro_miou = val_summary.loc[val_summary['Metric'] == 'miou', 'Mean'].values[0]
+
+    current_lr = scheduler.get_last_lr()[0]
+    history.append({
+        'epoch': epoch, 'loss': epoch_loss, 'lr': current_lr,
+        'val_macro_dice': val_macro_dice, 'val_macro_miou': val_macro_miou,
+        'val_global_dice': val_global_dice, 'val_global_iou': val_global_iou,
+        'elapsed_sec': elapsed
+    })
+    pd.DataFrame(history).to_csv(history_csv, index=False)
+
+    # Save latest checkpoint (complete state for seamless resumption)
+    torch.save({
+        'epoch': epoch,
+        'model_state': model.state_dict(),
+        'optimizer_state': optimizer.state_dict(),
+        'scheduler_state': scheduler.state_dict(),
+        'scaler_state': scaler.state_dict(),
+        'best_val_dice': best_val_dice,
+        'best_epoch': best_epoch
+    }, checkpoint_latest)
+
+    print(f"Epoch {epoch:03d}/{EPOCHS} [{elapsed:.1f}s] | Loss: {epoch_loss:.4f} | LR: {current_lr:.6f} | Val Macro Dice: {val_macro_dice:.4f} | Val Global Dice: {val_global_dice:.4f}", flush=True)
+
+    if val_macro_dice > best_val_dice:
+        best_val_dice = val_macro_dice
+        best_epoch = epoch
+        torch.save(model.state_dict(), checkpoint_best)
+        print(f"[*] New Best Model Saved at Epoch {epoch} (Val Macro Dice: {val_macro_dice:.4f})", flush=True)
+
+    # Mirror to Google Drive
+    if os.path.exists(DRIVE_DIR):
+        try:
+            shutil.copy2(history_csv, DRIVE_DIR)
+            shutil.copy2(checkpoint_latest, DRIVE_DIR)
+            if epoch == best_epoch:
+                shutil.copy2(checkpoint_best, DRIVE_DIR)
+        except Exception as e:
+            print(f"[!] Warning syncing to Drive: {e}", flush=True)
+
+# Final Blind Test Evaluation on 1,000 Official Held-Out Test Images
+print("\n[*] Evaluating Best GDF-Netv4 Checkpoint on 1,000 Official Blind Test Images (Single View)...", flush=True)
+if os.path.exists(checkpoint_best):
+    model.load_state_dict(torch.load(checkpoint_best, map_location=device))
+elif os.path.exists(f"{DRIVE_DIR}/GDFNetV4_ISIC2018_best.pth"):
+    model.load_state_dict(torch.load(f"{DRIVE_DIR}/GDFNetV4_ISIC2018_best.pth", map_location=device))
+
+per_img_df, summary_df, test_global_dice, test_global_iou = evaluate_model_v4(model, test_loader, use_tta=False)
+summary_df.to_csv(f"{OUTPUT_DIR}/benchmark_summary_ISIC2018.csv", index=False)
+per_img_df.to_csv(f"{OUTPUT_DIR}/benchmark_raw_ISIC2018.csv", index=False)
+
+print("\n================ GDF-NETV4 OFFICIAL TEST RESULTS (SINGLE VIEW) ================", flush=True)
+print(summary_df.to_string(index=False), flush=True)
+print(f"[+] Dataset-Level Global Micro Dice: {test_global_dice:.4f} ({test_global_dice*100:.2f}%)", flush=True)
+print(f"[+] Dataset-Level Global Micro IoU:  {test_global_iou:.4f} ({test_global_iou*100:.2f}%)", flush=True)
+
+# Also run with 4-View Flip TTA
+print("\n[*] Evaluating Best GDF-Netv4 Checkpoint on 1,000 Test Images with 4-View Flip TTA...", flush=True)
+per_img_tta_df, summary_tta_df, test_global_tta_dice, test_global_tta_iou = evaluate_model_v4(model, test_loader, use_tta=True)
+summary_tta_df.to_csv(f"{OUTPUT_DIR}/benchmark_summary_ISIC2018_TTA.csv", index=False)
+per_img_tta_df.to_csv(f"{OUTPUT_DIR}/benchmark_raw_ISIC2018_TTA.csv", index=False)
+
+print("\n================ GDF-NETV4 OFFICIAL TEST RESULTS (4-VIEW TTA) ================", flush=True)
+print(summary_tta_df.to_string(index=False), flush=True)
+print(f"[+] TTA Dataset-Level Global Micro Dice: {test_global_tta_dice:.4f} ({test_global_tta_dice*100:.2f}%)", flush=True)
+print(f"[+] TTA Dataset-Level Global Micro IoU:  {test_global_tta_iou:.4f} ({test_global_tta_iou*100:.2f}%)", flush=True)
+
+# Final Drive Mirroring
+if os.path.exists(DRIVE_DIR):
+    try:
+        shutil.copy2(f"{OUTPUT_DIR}/benchmark_summary_ISIC2018.csv", DRIVE_DIR)
+        shutil.copy2(f"{OUTPUT_DIR}/benchmark_raw_ISIC2018.csv", DRIVE_DIR)
+        shutil.copy2(f"{OUTPUT_DIR}/benchmark_summary_ISIC2018_TTA.csv", DRIVE_DIR)
+        shutil.copy2(f"{OUTPUT_DIR}/benchmark_raw_ISIC2018_TTA.csv", DRIVE_DIR)
+    except Exception:
+        pass
+
+print("\n[+] GDF-Netv4 ISIC-2018 Training & Official Blind Evaluation Complete!", flush=True)
