@@ -12,7 +12,7 @@ Key Architectural & Training Upgrades:
 ========================================================================================
 """
 
-import os, sys, time, glob, random, math, shutil, argparse
+import os, sys, time, glob, random, math, shutil, argparse, json, zipfile, subprocess
 import cv2
 import numpy as np
 import pandas as pd
@@ -651,16 +651,70 @@ def main():
     print(f"[+] Active Device: {device} | Hardware: {torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'CPU'}")
     os.makedirs(args.output_dir, exist_ok=True)
 
-    # Dataset discovery
+    # Dataset discovery and automated acquisition
     DATA_ROOT = "/content/isic-2018"
-    train_imgs = sorted(glob.glob(f"{DATA_ROOT}/train_images/*.jpg"))
-    train_msks = sorted(glob.glob(f"{DATA_ROOT}/train_masks/*.png"))
-    test_imgs  = sorted(glob.glob(f"{DATA_ROOT}/test_images/*.jpg"))
-    test_msks  = sorted(glob.glob(f"{DATA_ROOT}/test_masks/*.png"))
+    os.makedirs(DATA_ROOT, exist_ok=True)
+
+    kaggle_dir = os.path.expanduser("~/.kaggle")
+    os.makedirs(kaggle_dir, exist_ok=True)
+    with open(os.path.join(kaggle_dir, "kaggle.json"), "w") as f:
+        json.dump({"username": "namnguynnnn", "key": "KGAT_dad33ce94fb8b25d8a9ecd4ca26ce03f"}, f)
+    os.chmod(os.path.join(kaggle_dir, "kaggle.json"), 0o600)
+
+    def _unzip_all(root):
+        for z in glob.glob(os.path.join(root, "*.zip")):
+            print(f"[*] Extracting: {os.path.basename(z)}...", flush=True)
+            try:
+                with zipfile.ZipFile(z) as f:
+                    f.extractall(root)
+                os.remove(z)
+            except Exception as e:
+                print(f"[!] Warning unzipping {z}: {e}", flush=True)
+
+    has_train = any("ISIC2018_Task1-2_Training_Input" in root for root, dirs, _ in os.walk(DATA_ROOT))
+    has_test  = any("ISIC2018_Task1_Test_GroundTruth" in root for root, dirs, _ in os.walk(DATA_ROOT))
+
+    if not (has_train and has_test):
+        print("[*] Downloading ISIC-2018 Datasets via Kaggle API...", flush=True)
+        subprocess.run(["kaggle", "datasets", "download", "-d", "tschandl/isic2018-challenge-task1-data-segmentation", "-p", DATA_ROOT], check=True)
+        subprocess.run(["kaggle", "datasets", "download", "-d", "mfahimhossen/isic2018-test-groundtruth", "-p", DATA_ROOT], check=True)
+        _unzip_all(DATA_ROOT)
+
+    def find_dir_by_name(target_name, base_search=DATA_ROOT):
+        for root, dirs, files in os.walk(base_search):
+            if os.path.basename(root).lower() == target_name.lower():
+                return root
+        return None
+
+    def isic_id(path):
+        base = os.path.basename(path).replace("_segmentation", "")
+        return os.path.splitext(base)[0]
+
+    def pair_data(img_dir, gt_dir):
+        if not img_dir or not gt_dir:
+            return [], []
+        imgs = sorted(glob.glob(os.path.join(img_dir, "*.jpg")))
+        msks = sorted(glob.glob(os.path.join(gt_dir, "*.png")))
+        id_map = {isic_id(m): m for m in msks}
+        paired_x, paired_y = [], []
+        for im in imgs:
+            imid = isic_id(im)
+            if imid in id_map:
+                paired_x.append(im)
+                paired_y.append(id_map[imid])
+        return paired_x, paired_y
+
+    train_img_dir = find_dir_by_name("ISIC2018_Task1-2_Training_Input")
+    train_gt_dir  = find_dir_by_name("ISIC2018_Task1_Training_GroundTruth")
+    test_img_dir  = find_dir_by_name("ISIC2018_Task1-2_Test_Input")
+    test_gt_dir   = find_dir_by_name("ISIC2018_Task1_Test_GroundTruth")
+
+    train_imgs, train_msks = pair_data(train_img_dir, train_gt_dir)
+    test_imgs, test_msks   = pair_data(test_img_dir, test_gt_dir)
 
     assert len(train_imgs) > 0, "No training images found! Ensure dataset is unzipped."
     assert len(test_imgs) > 0, "No test images found!"
-    print(f"[+] Discovered: {len(train_imgs)} Train images | {len(test_imgs)} Blind Test images")
+    print(f"[+] Discovered: {len(train_imgs)} Train images | {len(test_imgs)} Blind Test images", flush=True)
 
     # Stratified 5-Fold Splitting
     kf = KFold(n_splits=5, shuffle=True, random_state=42)
