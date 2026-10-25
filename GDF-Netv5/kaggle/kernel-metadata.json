@@ -1,0 +1,23 @@
+{
+  "id": "namnguynnnn/gdfnet-v5-fold0-isic2018",
+  "title": "gdfnet-v5-fold0-isic2018",
+  "code_file": "gdfnet_v5_fold0_isic2018.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "keywords": [
+    "gpu",
+    "segmentation",
+    "isic2018"
+  ],
+  "dataset_sources": [
+    "tschandl/isic2018-challenge-task1-data-segmentation",
+    "mfahimhossen/isic2018-test-groundtruth"
+  ],
+  "kernel_sources": [],
+  "competition_sources": [],
+  "model_sources": []
+}
