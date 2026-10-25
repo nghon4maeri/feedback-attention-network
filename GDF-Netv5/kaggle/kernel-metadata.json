@@ -9,9 +9,7 @@
   "enable_tpu": false,
   "enable_internet": true,
   "keywords": [
-    "gpu",
-    "segmentation",
-    "isic2018"
+    "gpu"
   ],
   "dataset_sources": [
     "tschandl/isic2018-challenge-task1-data-segmentation",
