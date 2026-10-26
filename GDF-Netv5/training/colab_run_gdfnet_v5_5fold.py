@@ -535,12 +535,12 @@ class ISICDatasetV5(Dataset):
 def compute_surface_distances(gt_binary, pred_binary):
     if not np.any(gt_binary) or not np.any(pred_binary):
         return np.nan, np.nan
-    gt_boundary = gt_binary ^ cv2.erode(gt_binary.astype(np.uint8), np.ones((3,3), np.uint8))
-    pred_boundary = pred_binary ^ cv2.erode(pred_binary.astype(np.uint8), np.ones((3,3), np.uint8))
+    gt_boundary = (gt_binary ^ cv2.erode(gt_binary.astype(np.uint8), np.ones((3,3), np.uint8)).astype(bool)).astype(bool)
+    pred_boundary = (pred_binary ^ cv2.erode(pred_binary.astype(np.uint8), np.ones((3,3), np.uint8)).astype(bool)).astype(bool)
     dt_gt = distance_transform_edt(~gt_boundary)
     dt_pred = distance_transform_edt(~pred_boundary)
-    dist_pred_to_gt = dt_gt[pred_boundary.astype(bool)]
-    dist_gt_to_pred = dt_pred[gt_boundary.astype(bool)]
+    dist_pred_to_gt = dt_gt[pred_boundary]
+    dist_gt_to_pred = dt_pred[gt_boundary]
     if len(dist_pred_to_gt) == 0 or len(dist_gt_to_pred) == 0:
         return np.nan, np.nan
     all_dists = np.concatenate([dist_pred_to_gt, dist_gt_to_pred])
