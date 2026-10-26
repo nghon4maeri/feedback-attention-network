@@ -1,0 +1,184 @@
+[{"stream_name":"stderr","time":7.132953062,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":7.132993294,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":7.132999326,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":7.133003513,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":7.737550315,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":7.737585737,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":7.73759083,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":7.73759461,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":30.436249543,"data":"[+] Active Device: cuda | Hardware: Tesla T4\n"}
+,{"stream_name":"stdout","time":31.608234957,"data":"[+] Discovered: 2594 Train images | 1000 Blind Test images\n"}
+,{"stream_name":"stderr","time":31.946240951,"data":"/usr/local/lib/python3.13/dist-packages/albumentations/core/validation.py:114: UserWarning: ShiftScaleRotate is a special case of Affine transform. Please use Affine transform instead.\n"}
+,{"stream_name":"stderr","time":31.946275608,"data":"  original_init(self, **validated_kwargs)\n"}
+,{"stream_name":"stderr","time":31.946281921,"data":"\n"}
+,{"stream_name":"stderr","time":31.946287023,"data":"/usr/local/lib/python3.13/dist-packages/albumentations/core/validation.py:114: UserWarning: ShiftScaleRotate is a special case of Affine transform. Please use Affine transform instead.\n"}
+,{"stream_name":"stderr","time":31.946291424,"data":"  original_init(self, **validated_kwargs)\n"}
+,{"stream_name":"stderr","time":32.83756632,"data":"Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.\n"}
+,{"stream_name":"stderr","time":32.837618632,"data":"\n"}
+,{"stream_name":"stderr","time":32.837624266,"data":"Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.\n"}
+,{"stream_name":"stdout","time":43.693796733,"data":"[+] GDFNetV5 Initialized | Total Parameters: 68,041,798 | State Dict Keys: 1170\n"}
+,{"stream_name":"stdout","time":43.694619622,"data":"\n"}
+,{"stream_name":"stdout","time":43.694641967,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":43.694647859,"data":"[*] STARTING GDF-NETV5 TRAINING ON FOLD 1 / 5 (100 EPOCHS)\n"}
+,{"stream_name":"stdout","time":43.694652491,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":1009.304772111,"data":"Fold 0 | Epoch 001/100 [776.8s] | Loss: 3.7337 | LR: 0.000100 | Val Macro Dice: 0.8730 | Val Global Dice: 0.8926\n"}
+,{"stream_name":"stdout","time":1009.720988039,"data":"[*] New Best Model for Fold 0 Saved at Epoch 1 (Val Macro Dice: 0.8730)\n"}
+,{"stream_name":"stdout","time":1392.67655939,"data":"Fold 0 | Epoch 002/100 [329.4s] | Loss: 3.0187 | LR: 0.000100 | Val Macro Dice: 0.8786 | Val Global Dice: 0.8926\n"}
+,{"stream_name":"stdout","time":1393.268219477,"data":"[*] New Best Model for Fold 0 Saved at Epoch 2 (Val Macro Dice: 0.8786)\n"}
+,{"stream_name":"stdout","time":1783.667129579,"data":"Fold 0 | Epoch 003/100 [336.6s] | Loss: 2.8027 | LR: 0.000100 | Val Macro Dice: 0.8893 | Val Global Dice: 0.8974\n"}
+,{"stream_name":"stdout","time":1784.265024678,"data":"[*] New Best Model for Fold 0 Saved at Epoch 3 (Val Macro Dice: 0.8893)\n"}
+,{"stream_name":"stdout","time":2164.14463162,"data":"Fold 0 | Epoch 004/100 [326.4s] | Loss: 2.5914 | LR: 0.000100 | Val Macro Dice: 0.8847 | Val Global Dice: 0.8961\n"}
+,{"stream_name":"stdout","time":2541.764485725,"data":"Fold 0 | Epoch 005/100 [324.7s] | Loss: 2.4692 | LR: 0.000099 | Val Macro Dice: 0.8879 | Val Global Dice: 0.9004\n"}
+,{"stream_name":"stdout","time":2917.315438858,"data":"Fold 0 | Epoch 006/100 [321.6s] | Loss: 2.3909 | LR: 0.000099 | Val Macro Dice: 0.8920 | Val Global Dice: 0.9047\n"}
+,{"stream_name":"stdout","time":2917.913336649,"data":"[*] New Best Model for Fold 0 Saved at Epoch 6 (Val Macro Dice: 0.8920)\n"}
+,{"stream_name":"stdout","time":3303.486463812,"data":"Fold 0 | Epoch 007/100 [332.6s] | Loss: 2.3048 | LR: 0.000099 | Val Macro Dice: 0.8902 | Val Global Dice: 0.9026\n"}
+,{"stream_name":"stdout","time":3693.685685539,"data":"Fold 0 | Epoch 008/100 [334.9s] | Loss: 2.2388 | LR: 0.000098 | Val Macro Dice: 0.8904 | Val Global Dice: 0.9044\n"}
+,{"stream_name":"stdout","time":4072.490305356,"data":"Fold 0 | Epoch 009/100 [326.0s] | Loss: 2.1796 | LR: 0.000098 | Val Macro Dice: 0.8981 | Val Global Dice: 0.9091\n"}
+,{"stream_name":"stdout","time":4073.092921084,"data":"[*] New Best Model for Fold 0 Saved at Epoch 9 (Val Macro Dice: 0.8981)\n"}
+,{"stream_name":"stdout","time":4465.117162275,"data":"Fold 0 | Epoch 010/100 [338.9s] | Loss: 2.1481 | LR: 0.000098 | Val Macro Dice: 0.8794 | Val Global Dice: 0.8919\n"}
+,{"stream_name":"stdout","time":4856.039743983,"data":"Fold 0 | Epoch 011/100 [336.5s] | Loss: 2.0866 | LR: 0.000097 | Val Macro Dice: 0.8878 | Val Global Dice: 0.9005\n"}
+,{"stream_name":"stdout","time":5243.400028041,"data":"Fold 0 | Epoch 012/100 [334.0s] | Loss: 2.0449 | LR: 0.000097 | Val Macro Dice: 0.8939 | Val Global Dice: 0.9060\n"}
+,{"stream_name":"stdout","time":5633.732937718,"data":"Fold 0 | Epoch 013/100 [337.6s] | Loss: 1.9931 | LR: 0.000096 | Val Macro Dice: 0.8899 | Val Global Dice: 0.9030\n"}
+,{"stream_name":"stdout","time":6029.856345312,"data":"Fold 0 | Epoch 014/100 [342.6s] | Loss: 1.9795 | LR: 0.000095 | Val Macro Dice: 0.8946 | Val Global Dice: 0.9056\n"}
+,{"stream_name":"stdout","time":6404.811344243,"data":"Fold 0 | Epoch 015/100 [321.5s] | Loss: 1.9217 | LR: 0.000095 | Val Macro Dice: 0.8971 | Val Global Dice: 0.9112\n"}
+,{"stream_name":"stdout","time":6788.584262843,"data":"Fold 0 | Epoch 016/100 [329.3s] | Loss: 1.9074 | LR: 0.000094 | Val Macro Dice: 0.8933 | Val Global Dice: 0.9066\n"}
+,{"stream_name":"stdout","time":7167.660089114,"data":"Fold 0 | Epoch 017/100 [325.8s] | Loss: 1.8942 | LR: 0.000093 | Val Macro Dice: 0.8953 | Val Global Dice: 0.9093\n"}
+,{"stream_name":"stdout","time":7554.111417085,"data":"Fold 0 | Epoch 018/100 [332.9s] | Loss: 1.8599 | LR: 0.000092 | Val Macro Dice: 0.8963 | Val Global Dice: 0.9100\n"}
+,{"stream_name":"stdout","time":7952.929790114,"data":"Fold 0 | Epoch 019/100 [346.0s] | Loss: 1.8339 | LR: 0.000091 | Val Macro Dice: 0.8892 | Val Global Dice: 0.9058\n"}
+,{"stream_name":"stdout","time":8325.877448966,"data":"Fold 0 | Epoch 020/100 [320.0s] | Loss: 1.8019 | LR: 0.000091 | Val Macro Dice: 0.8941 | Val Global Dice: 0.9069\n"}
+,{"stream_name":"stdout","time":8711.036476216,"data":"Fold 0 | Epoch 021/100 [330.1s] | Loss: 1.7896 | LR: 0.000090 | Val Macro Dice: 0.8983 | Val Global Dice: 0.9090\n"}
+,{"stream_name":"stdout","time":8711.651094305,"data":"[*] New Best Model for Fold 0 Saved at Epoch 21 (Val Macro Dice: 0.8983)\n"}
+,{"stream_name":"stdout","time":9103.785349151,"data":"Fold 0 | Epoch 022/100 [339.6s] | Loss: 1.7567 | LR: 0.000089 | Val Macro Dice: 0.8961 | Val Global Dice: 0.9076\n"}
+,{"stream_name":"stdout","time":9485.924687036,"data":"Fold 0 | Epoch 023/100 [329.0s] | Loss: 1.7364 | LR: 0.000088 | Val Macro Dice: 0.8935 | Val Global Dice: 0.9056\n"}
+,{"stream_name":"stdout","time":9875.446084576,"data":"Fold 0 | Epoch 024/100 [336.2s] | Loss: 1.7405 | LR: 0.000087 | Val Macro Dice: 0.9002 | Val Global Dice: 0.9119\n"}
+,{"stream_name":"stdout","time":9876.018980338,"data":"[*] New Best Model for Fold 0 Saved at Epoch 24 (Val Macro Dice: 0.9002)\n"}
+,{"stream_name":"stdout","time":10266.859764111,"data":"Fold 0 | Epoch 025/100 [336.3s] | Loss: 1.7120 | LR: 0.000086 | Val Macro Dice: 0.8954 | Val Global Dice: 0.9095\n"}
+,{"stream_name":"stdout","time":10654.650938176,"data":"Fold 0 | Epoch 026/100 [332.1s] | Loss: 1.6884 | LR: 0.000084 | Val Macro Dice: 0.8997 | Val Global Dice: 0.9112\n"}
+,{"stream_name":"stdout","time":11055.358252011,"data":"Fold 0 | Epoch 027/100 [346.7s] | Loss: 1.6988 | LR: 0.000083 | Val Macro Dice: 0.9003 | Val Global Dice: 0.9122\n"}
+,{"stream_name":"stdout","time":11055.967288459,"data":"[*] New Best Model for Fold 0 Saved at Epoch 27 (Val Macro Dice: 0.9003)\n"}
+,{"stream_name":"stdout","time":11445.124520945,"data":"Fold 0 | Epoch 028/100 [336.2s] | Loss: 1.6477 | LR: 0.000082 | Val Macro Dice: 0.8974 | Val Global Dice: 0.9106\n"}
+,{"stream_name":"stdout","time":11839.309617947,"data":"Fold 0 | Epoch 029/100 [341.0s] | Loss: 1.6326 | LR: 0.000081 | Val Macro Dice: 0.8941 | Val Global Dice: 0.9075\n"}
+,{"stream_name":"stdout","time":12220.006603804,"data":"Fold 0 | Epoch 030/100 [324.8s] | Loss: 1.6255 | LR: 0.000080 | Val Macro Dice: 0.8989 | Val Global Dice: 0.9112\n"}
+,{"stream_name":"stdout","time":12612.258184376,"data":"Fold 0 | Epoch 031/100 [337.7s] | Loss: 1.6098 | LR: 0.000078 | Val Macro Dice: 0.8966 | Val Global Dice: 0.9097\n"}
+,{"stream_name":"stdout","time":13007.224778358,"data":"Fold 0 | Epoch 032/100 [340.9s] | Loss: 1.6011 | LR: 0.000077 | Val Macro Dice: 0.8929 | Val Global Dice: 0.9068\n"}
+,{"stream_name":"stdout","time":13400.666375131,"data":"Fold 0 | Epoch 033/100 [340.1s] | Loss: 1.5801 | LR: 0.000076 | Val Macro Dice: 0.9000 | Val Global Dice: 0.9137\n"}
+,{"stream_name":"stdout","time":13783.802828747,"data":"Fold 0 | Epoch 034/100 [330.5s] | Loss: 1.5711 | LR: 0.000074 | Val Macro Dice: 0.8989 | Val Global Dice: 0.9119\n"}
+,{"stream_name":"stdout","time":14170.819483498,"data":"Fold 0 | Epoch 035/100 [333.8s] | Loss: 1.5518 | LR: 0.000073 | Val Macro Dice: 0.8990 | Val Global Dice: 0.9132\n"}
+,{"stream_name":"stdout","time":14543.374227841,"data":"Fold 0 | Epoch 036/100 [317.7s] | Loss: 1.5333 | LR: 0.000072 | Val Macro Dice: 0.9004 | Val Global Dice: 0.9126\n"}
+,{"stream_name":"stdout","time":14543.985666098,"data":"[*] New Best Model for Fold 0 Saved at Epoch 36 (Val Macro Dice: 0.9004)\n"}
+,{"stream_name":"stdout","time":14924.652643872,"data":"Fold 0 | Epoch 037/100 [327.7s] | Loss: 1.5307 | LR: 0.000070 | Val Macro Dice: 0.8972 | Val Global Dice: 0.9110\n"}
+,{"stream_name":"stdout","time":15301.829513799,"data":"Fold 0 | Epoch 038/100 [324.2s] | Loss: 1.5077 | LR: 0.000069 | Val Macro Dice: 0.8976 | Val Global Dice: 0.9106\n"}
+,{"stream_name":"stdout","time":15693.262406334,"data":"Fold 0 | Epoch 039/100 [337.4s] | Loss: 1.5057 | LR: 0.000067 | Val Macro Dice: 0.8989 | Val Global Dice: 0.9118\n"}
+,{"stream_name":"stdout","time":16081.788506352,"data":"Fold 0 | Epoch 040/100 [334.8s] | Loss: 1.5030 | LR: 0.000066 | Val Macro Dice: 0.8975 | Val Global Dice: 0.9098\n"}
+,{"stream_name":"stdout","time":16465.892698661,"data":"Fold 0 | Epoch 041/100 [329.0s] | Loss: 1.4765 | LR: 0.000064 | Val Macro Dice: 0.8974 | Val Global Dice: 0.9120\n"}
+,{"stream_name":"stdout","time":16851.224036358,"data":"Fold 0 | Epoch 042/100 [331.6s] | Loss: 1.4701 | LR: 0.000063 | Val Macro Dice: 0.8990 | Val Global Dice: 0.9126\n"}
+,{"stream_name":"stdout","time":17243.762345058,"data":"Fold 0 | Epoch 043/100 [338.6s] | Loss: 1.4519 | LR: 0.000061 | Val Macro Dice: 0.8995 | Val Global Dice: 0.9125\n"}
+,{"stream_name":"stdout","time":17637.925672913,"data":"Fold 0 | Epoch 044/100 [340.3s] | Loss: 1.4498 | LR: 0.000060 | Val Macro Dice: 0.9001 | Val Global Dice: 0.9128\n"}
+,{"stream_name":"stdout","time":18017.171893629,"data":"Fold 0 | Epoch 045/100 [325.1s] | Loss: 1.4326 | LR: 0.000058 | Val Macro Dice: 0.8976 | Val Global Dice: 0.9117\n"}
+,{"stream_name":"stdout","time":18409.033887423,"data":"Fold 0 | Epoch 046/100 [337.1s] | Loss: 1.4379 | LR: 0.000057 | Val Macro Dice: 0.8965 | Val Global Dice: 0.9110\n"}
+,{"stream_name":"stdout","time":18807.855350931,"data":"Fold 0 | Epoch 047/100 [344.7s] | Loss: 1.4101 | LR: 0.000055 | Val Macro Dice: 0.8993 | Val Global Dice: 0.9128\n"}
+,{"stream_name":"stdout","time":19187.640089405,"data":"Fold 0 | Epoch 048/100 [325.4s] | Loss: 1.4009 | LR: 0.000054 | Val Macro Dice: 0.8995 | Val Global Dice: 0.9125\n"}
+,{"stream_name":"stdout","time":19581.681422494,"data":"Fold 0 | Epoch 049/100 [340.1s] | Loss: 1.3940 | LR: 0.000052 | Val Macro Dice: 0.8980 | Val Global Dice: 0.9106\n"}
+,{"stream_name":"stdout","time":19971.898416685,"data":"Fold 0 | Epoch 050/100 [337.3s] | Loss: 1.3838 | LR: 0.000051 | Val Macro Dice: 0.8973 | Val Global Dice: 0.9105\n"}
+,{"stream_name":"stdout","time":20372.217530396,"data":"Fold 0 | Epoch 051/100 [346.2s] | Loss: 1.3712 | LR: 0.000049 | Val Macro Dice: 0.9001 | Val Global Dice: 0.9121\n"}
+,{"stream_name":"stdout","time":20758.178131942,"data":"Fold 0 | Epoch 052/100 [332.8s] | Loss: 1.3665 | LR: 0.000047 | Val Macro Dice: 0.9013 | Val Global Dice: 0.9137\n"}
+,{"stream_name":"stdout","time":20758.791511338,"data":"[*] New Best Model for Fold 0 Saved at Epoch 52 (Val Macro Dice: 0.9013)\n"}
+,{"stream_name":"stdout","time":21141.499997947,"data":"Fold 0 | Epoch 053/100 [329.9s] | Loss: 1.3479 | LR: 0.000046 | Val Macro Dice: 0.9006 | Val Global Dice: 0.9118\n"}
+,{"stream_name":"stdout","time":21528.904403314,"data":"Fold 0 | Epoch 054/100 [334.4s] | Loss: 1.3519 | LR: 0.000044 | Val Macro Dice: 0.8983 | Val Global Dice: 0.9115\n"}
+,{"stream_name":"stdout","time":21914.625533244,"data":"Fold 0 | Epoch 055/100 [332.3s] | Loss: 1.3357 | LR: 0.000043 | Val Macro Dice: 0.8983 | Val Global Dice: 0.9119\n"}
+,{"stream_name":"stdout","time":22300.637819088,"data":"Fold 0 | Epoch 056/100 [331.5s] | Loss: 1.3308 | LR: 0.000041 | Val Macro Dice: 0.8994 | Val Global Dice: 0.9125\n"}
+,{"stream_name":"stdout","time":22694.435466561,"data":"Fold 0 | Epoch 057/100 [340.6s] | Loss: 1.3255 | LR: 0.000040 | Val Macro Dice: 0.8999 | Val Global Dice: 0.9126\n"}
+,{"stream_name":"stdout","time":23092.504831924,"data":"Fold 0 | Epoch 058/100 [344.9s] | Loss: 1.3175 | LR: 0.000038 | Val Macro Dice: 0.9014 | Val Global Dice: 0.9124\n"}
+,{"stream_name":"stdout","time":23093.116228563,"data":"[*] New Best Model for Fold 0 Saved at Epoch 58 (Val Macro Dice: 0.9014)\n"}
+,{"stream_name":"stdout","time":23482.57673663,"data":"Fold 0 | Epoch 059/100 [336.5s] | Loss: 1.3124 | LR: 0.000037 | Val Macro Dice: 0.8985 | Val Global Dice: 0.9107\n"}
+,{"stream_name":"stdout","time":23864.944723985,"data":"Fold 0 | Epoch 060/100 [329.3s] | Loss: 1.3132 | LR: 0.000035 | Val Macro Dice: 0.9002 | Val Global Dice: 0.9132\n"}
+,{"stream_name":"stdout","time":24256.657897584,"data":"Fold 0 | Epoch 061/100 [336.7s] | Loss: 1.2986 | LR: 0.000034 | Val Macro Dice: 0.9000 | Val Global Dice: 0.9127\n"}
+,{"stream_name":"stdout","time":24647.132543008,"data":"Fold 0 | Epoch 062/100 [336.7s] | Loss: 1.2933 | LR: 0.000032 | Val Macro Dice: 0.9000 | Val Global Dice: 0.9121\n"}
+,{"stream_name":"stdout","time":25046.191230279,"data":"Fold 0 | Epoch 063/100 [345.8s] | Loss: 1.2898 | LR: 0.000031 | Val Macro Dice: 0.8996 | Val Global Dice: 0.9122\n"}
+,{"stream_name":"stdout","time":25438.574867255,"data":"Fold 0 | Epoch 064/100 [339.3s] | Loss: 1.2775 | LR: 0.000029 | Val Macro Dice: 0.8995 | Val Global Dice: 0.9126\n"}
+,{"stream_name":"stdout","time":25828.310799967,"data":"Fold 0 | Epoch 065/100 [336.7s] | Loss: 1.2800 | LR: 0.000028 | Val Macro Dice: 0.9008 | Val Global Dice: 0.9133\n"}
+,{"stream_name":"stdout","time":26225.902296094,"data":"Fold 0 | Epoch 066/100 [343.3s] | Loss: 1.2653 | LR: 0.000027 | Val Macro Dice: 0.8995 | Val Global Dice: 0.9124\n"}
+,{"stream_name":"stdout","time":26603.924693392,"data":"Fold 0 | Epoch 067/100 [324.6s] | Loss: 1.2657 | LR: 0.000025 | Val Macro Dice: 0.9004 | Val Global Dice: 0.9131\n"}
+,{"stream_name":"stdout","time":26997.949687126,"data":"Fold 0 | Epoch 068/100 [339.6s] | Loss: 1.2510 | LR: 0.000024 | Val Macro Dice: 0.9005 | Val Global Dice: 0.9133\n"}
+,{"stream_name":"stdout","time":27399.896912692,"data":"Fold 0 | Epoch 069/100 [348.3s] | Loss: 1.2494 | LR: 0.000023 | Val Macro Dice: 0.8999 | Val Global Dice: 0.9133\n"}
+,{"stream_name":"stdout","time":27795.776225259,"data":"Fold 0 | Epoch 070/100 [342.2s] | Loss: 1.2488 | LR: 0.000021 | Val Macro Dice: 0.8999 | Val Global Dice: 0.9131\n"}
+,{"stream_name":"stdout","time":28180.118047431,"data":"Fold 0 | Epoch 071/100 [329.9s] | Loss: 1.2431 | LR: 0.000020 | Val Macro Dice: 0.9002 | Val Global Dice: 0.9134\n"}
+,{"stream_name":"stdout","time":28570.078494333,"data":"Fold 0 | Epoch 072/100 [336.2s] | Loss: 1.2340 | LR: 0.000019 | Val Macro Dice: 0.8988 | Val Global Dice: 0.9116\n"}
+,{"stream_name":"stdout","time":28959.822863328,"data":"Fold 0 | Epoch 073/100 [336.3s] | Loss: 1.2345 | LR: 0.000018 | Val Macro Dice: 0.8993 | Val Global Dice: 0.9122\n"}
+,{"stream_name":"stdout","time":29353.730394611,"data":"Fold 0 | Epoch 074/100 [340.2s] | Loss: 1.2239 | LR: 0.000017 | Val Macro Dice: 0.8993 | Val Global Dice: 0.9124\n"}
+,{"stream_name":"stdout","time":29739.115940481,"data":"Fold 0 | Epoch 075/100 [331.5s] | Loss: 1.2192 | LR: 0.000015 | Val Macro Dice: 0.8998 | Val Global Dice: 0.9130\n"}
+,{"stream_name":"stdout","time":30128.721318707,"data":"Fold 0 | Epoch 076/100 [335.0s] | Loss: 1.2107 | LR: 0.000014 | Val Macro Dice: 0.8999 | Val Global Dice: 0.9130\n"}
+,{"stream_name":"stdout","time":30514.849681087,"data":"Fold 0 | Epoch 077/100 [332.5s] | Loss: 1.2182 | LR: 0.000013 | Val Macro Dice: 0.9001 | Val Global Dice: 0.9132\n"}
+,{"stream_name":"stdout","time":30898.047418971,"data":"Fold 0 | Epoch 078/100 [330.0s] | Loss: 1.2165 | LR: 0.000012 | Val Macro Dice: 0.9010 | Val Global Dice: 0.9137\n"}
+,{"stream_name":"stdout","time":31278.915561887,"data":"Fold 0 | Epoch 079/100 [327.7s] | Loss: 1.2083 | LR: 0.000011 | Val Macro Dice: 0.8997 | Val Global Dice: 0.9129\n"}
+,{"stream_name":"stdout","time":31669.969643948,"data":"Fold 0 | Epoch 080/100 [338.2s] | Loss: 1.2033 | LR: 0.000010 | Val Macro Dice: 0.9007 | Val Global Dice: 0.9136\n"}
+,{"stream_name":"stdout","time":32060.264971355,"data":"Fold 0 | Epoch 081/100 [336.0s] | Loss: 1.2056 | LR: 0.000010 | Val Macro Dice: 0.9003 | Val Global Dice: 0.9133\n"}
+,{"stream_name":"stdout","time":32443.669435293,"data":"Fold 0 | Epoch 082/100 [330.7s] | Loss: 1.1989 | LR: 0.000009 | Val Macro Dice: 0.9010 | Val Global Dice: 0.9135\n"}
+,{"stream_name":"stdout","time":32839.439366152,"data":"Fold 0 | Epoch 083/100 [342.8s] | Loss: 1.1989 | LR: 0.000008 | Val Macro Dice: 0.9015 | Val Global Dice: 0.9134\n"}
+,{"stream_name":"stdout","time":32840.071295796,"data":"[*] New Best Model for Fold 0 Saved at Epoch 83 (Val Macro Dice: 0.9015)\n"}
+,{"stream_name":"stdout","time":33221.722304118,"data":"Fold 0 | Epoch 084/100 [328.8s] | Loss: 1.1976 | LR: 0.000007 | Val Macro Dice: 0.9016 | Val Global Dice: 0.9139\n"}
+,{"stream_name":"stdout","time":33222.323348669,"data":"[*] New Best Model for Fold 0 Saved at Epoch 84 (Val Macro Dice: 0.9016)\n"}
+,{"stream_name":"stdout","time":33605.983824682,"data":"Fold 0 | Epoch 085/100 [329.9s] | Loss: 1.1943 | LR: 0.000006 | Val Macro Dice: 0.9017 | Val Global Dice: 0.9137\n"}
+,{"stream_name":"stdout","time":33606.598551582,"data":"[*] New Best Model for Fold 0 Saved at Epoch 85 (Val Macro Dice: 0.9017)\n"}
+,{"stream_name":"stdout","time":33998.064584256,"data":"Fold 0 | Epoch 086/100 [336.9s] | Loss: 1.1957 | LR: 0.000006 | Val Macro Dice: 0.9012 | Val Global Dice: 0.9136\n"}
+,{"stream_name":"stdout","time":34382.415501893,"data":"Fold 0 | Epoch 087/100 [331.3s] | Loss: 1.1878 | LR: 0.000005 | Val Macro Dice: 0.9009 | Val Global Dice: 0.9133\n"}
+,{"stream_name":"stdout","time":34780.092918636,"data":"Fold 0 | Epoch 088/100 [344.4s] | Loss: 1.1894 | LR: 0.000004 | Val Macro Dice: 0.9009 | Val Global Dice: 0.9133\n"}
+,{"stream_name":"stdout","time":35162.458906655,"data":"Fold 0 | Epoch 089/100 [328.2s] | Loss: 1.1861 | LR: 0.000004 | Val Macro Dice: 0.9014 | Val Global Dice: 0.9137\n"}
+,{"stream_name":"stdout","time":35556.174769737,"data":"Fold 0 | Epoch 090/100 [339.7s] | Loss: 1.1947 | LR: 0.000003 | Val Macro Dice: 0.9012 | Val Global Dice: 0.9136\n"}
+,{"stream_name":"stdout","time":35938.212179243,"data":"Fold 0 | Epoch 091/100 [327.3s] | Loss: 1.1873 | LR: 0.000003 | Val Macro Dice: 0.9009 | Val Global Dice: 0.9133\n"}
+,{"stream_name":"stdout","time":36328.706081526,"data":"Fold 0 | Epoch 092/100 [336.8s] | Loss: 1.1814 | LR: 0.000003 | Val Macro Dice: 0.9015 | Val Global Dice: 0.9136\n"}
+,{"stream_name":"stdout","time":36722.717968827,"data":"Fold 0 | Epoch 093/100 [340.6s] | Loss: 1.1869 | LR: 0.000002 | Val Macro Dice: 0.9014 | Val Global Dice: 0.9138\n"}
+,{"stream_name":"stdout","time":37107.835729582,"data":"Fold 0 | Epoch 094/100 [331.4s] | Loss: 1.1790 | LR: 0.000002 | Val Macro Dice: 0.9012 | Val Global Dice: 0.9137\n"}
+,{"stream_name":"stdout","time":37496.629356758,"data":"Fold 0 | Epoch 095/100 [335.3s] | Loss: 1.1828 | LR: 0.000002 | Val Macro Dice: 0.9009 | Val Global Dice: 0.9135\n"}
+,{"stream_name":"stdout","time":37884.778749716,"data":"Fold 0 | Epoch 096/100 [332.7s] | Loss: 1.1744 | LR: 0.000001 | Val Macro Dice: 0.9007 | Val Global Dice: 0.9134\n"}
+,{"stream_name":"stdout","time":38273.254490409,"data":"Fold 0 | Epoch 097/100 [335.2s] | Loss: 1.1760 | LR: 0.000001 | Val Macro Dice: 0.9006 | Val Global Dice: 0.9133\n"}
+,{"stream_name":"stdout","time":38649.078211003,"data":"Fold 0 | Epoch 098/100 [322.3s] | Loss: 1.1790 | LR: 0.000001 | Val Macro Dice: 0.9005 | Val Global Dice: 0.9132\n"}
+,{"stream_name":"stdout","time":39039.108219108,"data":"Fold 0 | Epoch 099/100 [336.1s] | Loss: 1.1774 | LR: 0.000001 | Val Macro Dice: 0.9006 | Val Global Dice: 0.9132\n"}
+,{"stream_name":"stdout","time":39437.952641521,"data":"Fold 0 | Epoch 100/100 [344.8s] | Loss: 1.1777 | LR: 0.000001 | Val Macro Dice: 0.9009 | Val Global Dice: 0.9133\n"}
+,{"stream_name":"stdout","time":39439.23689157,"data":"\n"}
+,{"stream_name":"stdout","time":39439.236941324,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":39439.236947126,"data":"[*] STARTING OFFICIAL 1,000 BLIND TEST EVALUATION\n"}
+,{"stream_name":"stdout","time":39439.236951782,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":39440.689317949,"data":"\n"}
+,{"stream_name":"stdout","time":39440.689358927,"data":"[*] Evaluating Fold 0 Best Model on 1,000 Blind Test Images (Single-View)...\n"}
+,{"stream_name":"stdout","time":39685.398414885,"data":"\n"}
+,{"stream_name":"stdout","time":39685.398462477,"data":"================ GDF-NETV5 FOLD 0 BLIND TEST (SINGLE VIEW) ================\n"}
+,{"stream_name":"stdout","time":39685.398469283,"data":"                Metric       Mean       Std     Median          Min         Max\n"}
+,{"stream_name":"stdout","time":39685.398483099,"data":"                  dice   0.886008  0.104399   0.915112 1.469424e-01    0.999992\n"}
+,{"stream_name":"stdout","time":39685.398486776,"data":"                  miou   0.808166  0.139171   0.843508 7.929727e-02    0.999985\n"}
+,{"stream_name":"stdout","time":39685.398490143,"data":"           sensitivity   0.963848  0.096641   0.996897 8.760601e-02    1.000000\n"}
+,{"stream_name":"stdout","time":39685.398493336,"data":"           specificity   0.914342  0.141146   0.959682 3.703704e-09    1.000000\n"}
+,{"stream_name":"stdout","time":39685.398496636,"data":"             precision   0.841112  0.135696   0.869225 7.929929e-02    1.000000\n"}
+,{"stream_name":"stdout","time":39685.398501786,"data":"                   fpr   0.086658  0.144051   0.040604 3.960208e-13    1.000000\n"}
+,{"stream_name":"stdout","time":39685.3985092,"data":"                  hd95 517.107072 71.564155 514.949672 0.000000e+00  714.368058\n"}
+,{"stream_name":"stdout","time":39685.398511504,"data":"                   asd 377.202964 34.101749 378.088000 0.000000e+00  536.087605\n"}
+,{"stream_name":"stdout","time":39685.398513826,"data":"              j_thresh   0.755727  0.000000   0.755727 0.000000e+00    1.000000\n"}
+,{"stream_name":"stdout","time":39685.39851606,"data":"failed_cases_j_lt_0.65 104.000000  0.000000 104.000000 0.000000e+00 1000.000000\n"}
+,{"stream_name":"stdout","time":39685.398518421,"data":"[+] Dataset Global Micro Dice: 0.8914 | IoU: 0.8042\n"}
+,{"stream_name":"stdout","time":39685.417813736,"data":"\n"}
+,{"stream_name":"stdout","time":39685.417833541,"data":"[*] Evaluating Fold 0 Best Model on 1,000 Blind Test Images (4-View Flip TTA)...\n"}
+,{"stream_name":"stdout","time":39835.376839373,"data":"\n"}
+,{"stream_name":"stdout","time":39835.376873106,"data":"================ GDF-NETV5 FOLD 0 BLIND TEST (4-VIEW TTA) ================\n"}
+,{"stream_name":"stdout","time":39835.376882141,"data":"                Metric       Mean       Std     Median          Min         Max\n"}
+,{"stream_name":"stdout","time":39835.376892187,"data":"                  dice   0.887380  0.103587   0.918102 1.474692e-01    0.999990\n"}
+,{"stream_name":"stdout","time":39835.376896071,"data":"                  miou   0.810259  0.138722   0.848604 7.960420e-02    0.999981\n"}
+,{"stream_name":"stdout","time":39835.376899638,"data":"           sensitivity   0.964663  0.095687   0.997265 8.659236e-02    1.000000\n"}
+,{"stream_name":"stdout","time":39835.376903043,"data":"           specificity   0.914889  0.142573   0.959972 2.511301e-11    1.000000\n"}
+,{"stream_name":"stdout","time":39835.376906413,"data":"             precision   0.842566  0.135134   0.873417 7.960929e-02    1.000000\n"}
+,{"stream_name":"stdout","time":39835.37690978,"data":"                   fpr   0.086111  0.145453   0.040097 3.960208e-13    1.000000\n"}
+,{"stream_name":"stdout","time":39835.376913172,"data":"                  hd95 516.635221 73.062902 514.923017 0.000000e+00  715.767086\n"}
+,{"stream_name":"stdout","time":39835.376916591,"data":"                   asd 376.905492 35.780606 378.277485 0.000000e+00  524.212873\n"}
+,{"stream_name":"stdout","time":39835.376919903,"data":"              j_thresh   0.758167  0.000000   0.758167 0.000000e+00    1.000000\n"}
+,{"stream_name":"stdout","time":39835.376923228,"data":"failed_cases_j_lt_0.65 103.000000  0.000000 103.000000 0.000000e+00 1000.000000\n"}
+,{"stream_name":"stdout","time":39835.376926643,"data":"[+] TTA Dataset Global Micro Dice: 0.8930 | IoU: 0.8066\n"}
+,{"stream_name":"stdout","time":39835.391975336,"data":"\n"}
+,{"stream_name":"stdout","time":39835.39199562,"data":"[+] GDF-Netv5 Fold 0 Training \u0026 Official Blind Test Evaluation Successfully Completed!\n"}
+,{"stream_name":"stderr","time":39841.566683039,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":39841.566710751,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":39841.765963275,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":39841.765987452,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":39842.536599398,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":39842.630772709,"data":"[NbConvertApp] Writing 89411 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":39845.021168126,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":39845.736303722,"data":"[NbConvertApp] Writing 510195 bytes to __results__.html\n"}
+]
