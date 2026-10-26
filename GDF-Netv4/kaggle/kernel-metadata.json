@@ -1,0 +1,19 @@
+{
+  "id": "namnguynnnn/gdfnet-v4-300ep-heavyaug-isic2018",
+  "title": "GDFNet-v4 300Ep HeavyAug ISIC2018",
+  "code_file": "gdfnet_v4_300ep_isic2018.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "dataset_sources": [
+    "tschandl/isic2018-challenge-task1-data-segmentation",
+    "mfahimhossen/isic2018-test-groundtruth",
+    "namnguynnnn/gdfnet-v4-isic2018-best"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}
