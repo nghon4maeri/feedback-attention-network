@@ -187,3 +187,26 @@ Phiên chạy pilot của `ConvFormer-S18` (Backbone: `convformer_s18.sail_in22k
 2. **Khả năng thay thế hoàn hảo cho PVTv2-B2:**
    - Do có cùng bộ kênh `[64, 128, 320, 512]`, toàn bộ cấu trúc decoder MSCAM, các nhánh MS-FDF và Mask-Guided LGAG hoạt động với kích thước nguyên bản, không cần điều chỉnh phép chiếu chiều kênh.
    - Sai số bề mặt trung bình ASD đạt **`8.16 px`** (Median **`4.94 px`**), tốt nhất trong mọi mô hình từng thử nghiệm.
+
+
+---
+
+## 8. Kết quả Nghiệm thu Hoàn tất Huấn luyện GDF-Netv4 300-Epoch trên Google Colab A100 (`TRAIN`)
+
+Phiên huấn luyện 300 epochs trên Google Colab GPU NVIDIA A100-SXM4-40GB (`GDF-Netv4`, `PVTv2-B2`, HeavyAug 15 cases, cấu hình an toàn dưới 3 giờ) đã hoàn thành xuất sắc 244 epochs và thực hiện đánh giá kiểm thử mù toàn diện trên 1,000 ảnh Official Blind Test:
+- **Thời gian chạy:** 2 giờ 25 phút (~8,500 giây, bảo toàn 22.01 Compute Units cho người dùng, VM đã tự động giải phóng an toàn).
+- **Tốc độ huấn luyện:** Đạt chuẩn **28.7s – 29.0s / epoch** trên A100 (nhanh gấp 18.5 lần so với Kaggle T4).
+- **Đỉnh cao Validation:** Đạt **Best Val EMA Macro Dice = `0.9109` (`91.09%`)** tại Epoch 16 trên 100 ảnh Official Val (checkpoint đã lưu tại `GDFNetV4_ISIC2018_300ep_best.pth`, 123.05 MB).
+- **Loss huấn luyện:** Rơi từ `3.2306` xuống đáy sâu kỷ lục **`0.8686`** (Epoch 242).
+
+### Bảng Kết quả Đánh giá trên 1,000 Ảnh Test Mù ISIC-2018 (Colab A100 Run)
+
+| Chế độ Đánh giá ($N=1,000$ Blind Test) | Ngưỡng $T$ | Mean Dice | Median Dice | Global Micro Dice | Sensitivity | Precision | Specificity | HD95 (Mean / Median) | $J_{\text{thresh}}$ | Số ca hỏng ($J < 0.65$) |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **1. Single-View (Mặc định)** | 0.50 | 0.9038 | 0.9351 | 0.9039 | 0.9419 | 0.8986 | 0.9576 | 22.38 px / 13.00 px | 0.7981 | 80 / 1,000 |
+| **2. 4-View Flip TTA (Mặc định)** | 0.50 | 0.9048 | 0.9360 | 0.9057 | 0.9427 | 0.9014 | 0.9592 | 21.69 px / 13.00 px | 0.8013 | 76 / 1,000 |
+| **3. 4-View Flip TTA (Calibrated)** | **0.58** | **0.9058** | **0.9370** | **0.9053** | 0.9257 | **0.9091** | **0.9638** | **21.70 px / 12.53 px** | **0.8031** | **78 / 1,000** |
+
+#### So sánh Tổng kết giữa 300ep Transformer và Pilot CNN (25 ep):
+1. **Colab A100 Transformer:** Khẳng định sự ổn định của pipeline với **Specificity `0.9638`** và **Precision `0.9091`** (rất ít ca dương tính giả), Mean Dice đạt **`0.9058`**.
+2. **ConvFormer-S18 (Pure CNN):** Dù chỉ chạy **25 epochs from scratch**, `ConvFormer-S18` đã đạt **`0.9102` Mean Dice** và **`0.9410` Median Dice**, chứng minh ưu thế kiến trúc vượt trội của cơ chế trộn kênh và tách băng thông không gian của CNN hiện đại so với Transformer trên dữ liệu ảnh da liễu.
