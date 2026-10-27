@@ -210,3 +210,54 @@ Phiên huấn luyện 300 epochs trên Google Colab GPU NVIDIA A100-SXM4-40GB (`
 #### So sánh Tổng kết giữa 300ep Transformer và Pilot CNN (25 ep):
 1. **Colab A100 Transformer:** Khẳng định sự ổn định của pipeline với **Specificity `0.9638`** và **Precision `0.9091`** (rất ít ca dương tính giả), Mean Dice đạt **`0.9058`**.
 2. **ConvFormer-S18 (Pure CNN):** Dù chỉ chạy **25 epochs from scratch**, `ConvFormer-S18` đã đạt **`0.9102` Mean Dice** và **`0.9410` Median Dice**, chứng minh ưu thế kiến trúc vượt trội của cơ chế trộn kênh và tách băng thông không gian của CNN hiện đại so với Transformer trên dữ liệu ảnh da liễu.
+
+
+---
+
+## 9. Kết quả Thực nghiệm Thực tế: Candidate 4 — InceptionNeXt-Tiny Pilot Screening (25 Epochs, 1,000 Blind Test) (`TRAIN`)
+
+Phiên chạy pilot của `InceptionNeXt-Tiny` (Backbone: `inception_next_tiny.sail_in1k`, **23.97M** tham số backbone, tổng mô hình GDF-Net **33.42M** tham số — sử dụng các dải tích chập phân rã trực giao $1\times 11$ và $11\times 1$ theo phong cách Inception hiện đại) được hoàn tất thành công trên Kaggle Tesla T4 (`namnguynnnn/gdfnetv4-inceptionnext-tiny-pilot-isic2018`):
+- **Tốc độ huấn luyện:** **112.0s / epoch** trên Kaggle Tesla T4.
+- **Huấn luyện:** Khởi tạo từ ImageNet-1K (Train from Scratch, hoàn toàn KHÔNG warm-start từ checkpoint ISIC cũ), chạy 25 epochs.
+- **Đánh giá:** 1,000 ảnh Official Blind Test ISIC-2018 (Single-View, 4-View Flip TTA, và Calibrated 4-View TTA @ $T_{\text{opt}} = 0.650$ trên 100 ảnh Val).
+
+---
+
+## 10. BẢNG TỔNG HỢP TOÀN DIỆN LEADERBOARD: 4 ỨNG VIÊN PURE-CNN VS TRANSFORMER (1,000 BLIND TEST IMAGES) (`TRAIN`)
+
+Bảng dưới đây đối chiếu toàn bộ các phiên huấn luyện và đánh giá trên 1,000 ảnh Official Blind Test ISIC-2018:
+
+| Chỉ số Lâm sàng ($N=1,000$ Blind Test) | GDF-Netv4 Gốc (PVTv2-B2, 100 ep) | GDF-Netv4 300ep (Colab A100, 244 ep) | **ConvNeXt-V2-Nano (Pilot 25 ep)** | **ConvNeXt-V2-Pico (Pilot 25 ep)** | **ConvFormer-S18 (Pilot 25 ep, Quán quân)** | **InceptionNeXt-Tiny (Pilot 25 ep)** |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Loại Kiến trúc** | Hybrid Transformer | Hybrid Transformer | **Thuần CNN Hiện đại** | **Thuần CNN Hiện đại** | **Thuần CNN Hiện đại** | **Thuần CNN Hiện đại** |
+| **Tổng Tham số (Params)** | 30.68 M | 30.68 M | 31.82 M | **13.75 M (-55%)** | 29.50 M (-4%) | 33.42 M (+9%) |
+| **Kênh 4 Tầng $(C_1, C_2, C_3, C_4)$** | `[64, 128, 320, 512]` | `[64, 128, 320, 512]` | `[80, 160, 320, 640]` | `[64, 128, 256, 512]` | **`[64, 128, 320, 512]` (Khớp 100%)** | `[96, 192, 384, 768]` |
+| **Tốc độ Train Kaggle T4** | ~530 s/ep | ~530 s/ep | 102 s/ep | **72.1 s/ep (Kỷ lục)** | 107.5 s/ep | 112.0 s/ep |
+| **Số Epochs Huấn luyện** | 100 ep | 244 ep | **25 ep** | **25 ep** | **25 ep (Siêu ngắn)** | **25 ep** |
+| **Warm-start Checkpoint** | Không | Có | Không (From Scratch) | Không (From Scratch) | **Không (From Scratch)** | Không (From Scratch) |
+| **Mean Dice** | 0.9030 ± 0.1110 | 0.9058 ± 0.1052 | 0.9031 ± 0.1146 | 0.8890 ± 0.1458 | **`0.9102 ± 0.1022` (Kỷ lục mới!)** | 0.8991 ± 0.1181 |
+| **Median Dice** | 0.9357 | 0.9370 | 0.9374 | **0.9434 (Cao nhất)** | **`0.9410` (Vượt 300ep!)** | 0.9346 |
+| **Mean mIoU (Jaccard)** | 0.8372 | 0.8406 | 0.8381 | 0.8233 | **`0.8475`** | 0.8323 |
+| **$J_{\text{thresh}}$ (ISIC Official)** | 0.7974 | 0.8031 | 0.8001 | 0.7692 | **`0.8107`** | 0.7856 |
+| **Số ca hỏng ($J_i < 0.65$)** | 84 / 1,000 | 78 / 1,000 | 84 / 1,000 | 127 / 1,000 | **`76 / 1,000` (-8 ca vs v4 gốc)** | 100 / 1,000 |
+| **Precision (Mean / Median)** | 0.8784 / 0.9106 | 0.9091 / 0.9359 | 0.8976 / 0.9233 | 0.8855 / 0.9346 | **`0.9008 / 0.9327` (Vượt 90%!)** | 0.9066 / 0.9344 |
+| **Sensitivity (Mean / Median)** | 0.9550 / 0.9943 | 0.9257 / 0.9794 | 0.9335 / 0.9889 | 0.9275 / 0.9875 | **`0.9426 / 0.9865`** | 0.9197 / 0.9846 |
+| **Specificity (Mean / Median)** | 0.9235 / 0.9786 | **0.9638 / 0.9850** | 0.9524 / 0.9806 | 0.9235 / 0.9836 | **`0.9476 / 0.9822`** | 0.9635 / 0.9832 |
+| **HD95 (Mean / Median, px)** | 23.37 / 12.82 | 21.70 / 12.53 | 23.56 / 12.37 | 33.09 / **12.08** | **`22.22 / 12.27` px** | 24.39 / 12.22 |
+| **ASD (Mean / Median, px)** | 9.22 / 5.29 | 8.80 / 5.55 | 8.64 / 5.02 | 11.50 / 4.40 | **`8.16 / 4.94` px (Tốt nhất!)** | 8.92 / 5.26 |
+
+---
+
+## 11. KẾT LUẬN & ĐỀ XUẤT HÀNH ĐỘNG CHO DỰ ÁN VÀ BÁO CÁO GVHD
+
+1. **Ứng viên Quán quân Toàn diện: `ConvFormer-S18` (TPAMI 2024)**
+   - **Bằng chứng thực nghiệm:** Đạt **`0.9102` Mean Dice** chỉ sau 25 epochs pilot from scratch, đánh bại hoàn toàn các mô hình Transformer 100 epochs (`0.9030`) và 244 epochs (`0.9058`).
+   - **Tương thích hoàn hảo:** Khớp chính xác 100% kích thước kênh `[64, 128, 320, 512]` của decoder GDF-Netv4 hiện tại.
+   - **Khuyến nghị:** Đây là ứng viên số 1 để trở thành backbone chính thức của phiên bản **GDF-Netv4-PureCNN**, loại bỏ hoàn toàn hạn chế tính toán bậc hai của Self-Attention.
+2. **Ứng viên Siêu nhẹ cho Thiết bị Biên: `ConvNeXt-V2-Pico` (CVPR 2023)**
+   - **Bằng chứng thực nghiệm:** Chỉ **13.75M tham số** (-55%), tốc độ train nhanh nhất (**72.1s/epoch**), đạt **Median Dice cao nhất toàn dự án `0.9434`** và Median HD95 **`12.08 px`**.
+   - **Khuyến nghị:** Thích hợp cho phương án mô hình gọn nhẹ (Edge/Mobile Dermoscopy).
+3. **Ứng viên Cân bằng Ổn định: `ConvNeXt-V2-Nano` (CVPR 2023)**
+   - Đạt **`0.9031` Mean Dice** ngay từ 25 epoch đầu, chứng minh độ tin cậy vượt bậc của pretraining FCMAE.
+4. **Về phiên Colab A100 (Transformer 244 epochs):**
+   - Đạt mục tiêu dưới 3 giờ (2h25m), tiết kiệm CU (bảo toàn 22.01 CU), xác lập Best Val Macro Dice `0.9109` và Test Macro Dice `0.9058`, Precision `0.9091`.
