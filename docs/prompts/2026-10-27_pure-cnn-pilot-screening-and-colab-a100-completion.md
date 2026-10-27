@@ -22,6 +22,10 @@
 3. **Cross-Model Synthesis & Guidance for Supervisor:**
    - Synthesize comprehensive leaderboard comparing Transformer vs 4 Pure-CNN backbones.
    - Provide concrete reporting advice and recommendations for the supervisor.
+4. **Full-Scale 300-Epoch ConvFormer-S18 Training on Google Colab A100:**
+   - Architecture: GDF-Netv4 with `convformer_s18.sail_in22k_ft_in1k_384` backbone (29.50M params, pure CNN, MetaFormer blocks).
+   - Training: 300 epochs from scratch (ImageNet-22K pretrained), AdamW (lr 1e-4 / 3e-4), Cosine Annealing, 15 clinical heavy augmentations, ModelEMA (0.999), TF32, AMP mixed precision.
+   - Platform: NVIDIA A100-SXM4-40GB via Colab CLI session `a100-s18`. Measured speed: 28.2s/epoch. Epoch 5 Val Macro Dice reached 0.9018. Expected duration: ~2.3 hours.
 
 ## 3. Constraints & Conventions
 - Strictly follow `AGENTS.md`: commit and push all results and reports to GitHub.
