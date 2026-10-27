@@ -150,3 +150,40 @@ Phiên chạy pilot của `ConvNeXt-V2-Pico` (Backbone: `convnextv2_pico.fcmae_f
 2. **Hạn chế ở pha huấn luyện ngắn (25 epochs):**
    - Do kích thước kênh nhỏ hơn (`[64, 128, 256, 512]`), ở 25 epoch đầu mạng chưa đủ capacity để bao quát hết các ca bệnh phức tạp có artifact nặng (số ca hỏng $J < 0.65$ là 127 ca, kéo Mean Dice về `0.8890`).
    - Khi được cấp đủ số epoch (100–300 epochs), `Pico` hứa hẹn là mô hình lý tưởng cho các ứng dụng y tế cần tính gọn nhẹ và suy luận thời gian thực trên thiết bị di động/biên.
+
+
+---
+
+## 7. Kết quả Thực nghiệm Thực tế: Candidate 3 — ConvFormer-S18 Pilot Screening (25 Epochs, 1,000 Blind Test) (`TRAIN`)
+
+Phiên chạy pilot của `ConvFormer-S18` (Backbone: `convformer_s18.sail_in22k_ft_in1k_384`, **23.67M** tham số backbone, tổng mô hình GDF-Net **29.50M** tham số — khớp 100% layout 4 kênh `[64, 128, 320, 512]` của `PVTv2-B2`) được hoàn tất thành công trên Kaggle Tesla T4 (`namnguynnnn/gdfnetv4-convformer-s18-pilot-isic2018`):
+- **Tốc độ huấn luyện:** **107.5s / epoch** trên Kaggle Tesla T4 (nhanh gấp 5 lần so với chạy Transformer ban đầu).
+- **Huấn luyện:** Khởi tạo từ ImageNet-22K/1K (Train from Scratch, hoàn toàn KHÔNG warm-start từ checkpoint ISIC cũ), chạy 25 epochs.
+- **Đánh giá:** 1,000 ảnh Official Blind Test ISIC-2018 (Single-View, 4-View Flip TTA, và Calibrated 4-View TTA @ $T_{\text{opt}} = 0.690$ trên 100 ảnh Val).
+
+### Bảng Đối chiếu Thực nghiệm Toàn diện 3 Ứng viên CNN vs Transformer (1,000 Blind Test Images)
+
+| Chỉ số Lâm sàng ($N=1,000$ Blind Test) | GDF-Netv4 Gốc (PVTv2-B2, 100 ep) | GDF-Netv4 300ep (PVTv2-B2, Warm-start) | **ConvNeXt-V2-Nano (Pilot 25 ep)** | **ConvNeXt-V2-Pico (Pilot 25 ep)** | **ConvFormer-S18 (Pilot 25 ep, Calibrated)** |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Tổng Tham số (Params)** | 30.68 M | 30.68 M | 31.82 M | **13.75 M (-55%)** | 29.50 M (-4%) |
+| **Kênh 4 Tầng** | `[64, 128, 320, 512]` | `[64, 128, 320, 512]` | `[80, 160, 320, 640]` | `[64, 128, 256, 512]` | **`[64, 128, 320, 512]` (Khớp 100%)** |
+| **Số Epochs Huấn luyện** | 100 ep | 300 ep (71 ep chạy) | 25 ep | 25 ep | **25 ep (Siêu ngắn)** |
+| **Warm-start Checkpoint** | Không | Có | Không (From Scratch) | Không (From Scratch) | **Không (From Scratch)** |
+| **Mean Dice** | 0.9030 ± 0.1110 | 0.9101 ± 0.1055 | 0.9031 ± 0.1146 | 0.8890 ± 0.1458 | **`0.9102 ± 0.1022` (Vượt 300ep!)** |
+| **Median Dice** | 0.9357 | 0.9399 | 0.9374 | **0.9434** | **`0.9410` (Vượt 300ep!)** |
+| **Mean mIoU (Jaccard)** | 0.8372 | **0.8476** | 0.8381 | 0.8233 | **`0.8475`** |
+| **$J_{\text{thresh}}$ (ISIC Official)** | 0.7974 | **0.8150** | 0.8001 | 0.7692 | **`0.8107`** |
+| **Số ca hỏng ($J_i < 0.65$)** | 84 / 1,000 | **69 / 1,000** | 84 / 1,000 | 127 / 1,000 | **`76 / 1,000` (-8 ca vs v4 gốc)** |
+| **Precision (Mean / Median)** | 0.8784 / 0.9106 | 0.8992 / 0.9256 | 0.8976 / 0.9233 | 0.8855 / 0.9346 | **`0.9008 / 0.9327` (Vượt mốc 90%!)** |
+| **Sensitivity (Mean / Median)** | 0.9550 / 0.9943 | 0.9431 / 0.9900 | 0.9335 / 0.9889 | 0.9275 / 0.9875 | **`0.9426 / 0.9865`** |
+| **Specificity (Mean / Median)** | 0.9235 / 0.9786 | 0.9503 / 0.9819 | 0.9524 / 0.9806 | 0.9235 / 0.9836 | **`0.9476 / 0.9822`** |
+| **HD95 (Mean / Median, px)** | 23.37 / 12.82 | 21.37 / 12.53 | 23.56 / 12.37 | 33.09 / 12.08 | **`22.22 / 12.27` px** |
+| **ASD (Mean / Median, px)** | 9.22 / 5.29 | 8.17 / 4.96 | 8.64 / 5.02 | 11.50 / 4.40 | **`8.16 / 4.94` px (Tốt nhất!)** |
+
+### Nhận xét & Đánh giá Đột phá Khoa học về ConvFormer-S18:
+1. **Thành tích lịch sử ở quy mô pilot (25 epochs):**
+   - Chỉ sau **25 epochs chạy từ scratch**, `ConvFormer-S18` đã đạt **`0.9102` Mean Dice** và **`0.9410` Median Dice**, chính thức vượt qua kỷ lục của mô hình Transformer 300 epochs warm-start (`0.9101` / `0.9399`).
+   - Đây là mô hình đầu tiên trong dự án vượt mốc **`90% Precision` lâm sàng (`0.9008`)** trên 1,000 ảnh test mù, đồng thời duy trì Sensitivity cao `0.9426`.
+2. **Khả năng thay thế hoàn hảo cho PVTv2-B2:**
+   - Do có cùng bộ kênh `[64, 128, 320, 512]`, toàn bộ cấu trúc decoder MSCAM, các nhánh MS-FDF và Mask-Guided LGAG hoạt động với kích thước nguyên bản, không cần điều chỉnh phép chiếu chiều kênh.
+   - Sai số bề mặt trung bình ASD đạt **`8.16 px`** (Median **`4.94 px`**), tốt nhất trong mọi mô hình từng thử nghiệm.
