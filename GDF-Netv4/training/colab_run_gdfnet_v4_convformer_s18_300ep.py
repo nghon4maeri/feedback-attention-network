@@ -925,45 +925,17 @@ def main():
     checkpoint_latest = os.path.join(OUTPUT_DIR, "GDFNetV4_ConvFormerS18_300ep_latest.pth")
     history_csv = os.path.join(OUTPUT_DIR, "training_history_ConvFormerS18_300ep.csv")
 
-    # Check for auto-resume checkpoint (latest.pth takes priority, then best.pth)
-    resume_path = None
-    for root_candidate in [OUTPUT_DIR, DRIVE_DIR, RESUME_CKPT_DIR, DATA_ROOT]:
-        if os.path.exists(root_candidate):
-            for fname in ["GDFNetV4_ConvFormerS18_300ep_latest.pth", "GDFNetV4_ConvFormerS18_300ep_best.pth"]:
-                p = os.path.join(root_candidate, fname)
-                if os.path.exists(p) and os.path.getsize(p) > 1024 * 1024:
-                    resume_path = p
-                    break
-        if resume_path:
-            break
-
-    if not resume_path:
-        print("[*] Downloading SOTA Warm-Start Checkpoint (namnguynnnn/gdfnet-v4-isic2018-best) via Kaggle API...", flush=True)
-        try:
-            ckpt_dl_dir = os.path.join(DATA_ROOT, "warmstart_ckpt")
-            os.makedirs(ckpt_dl_dir, exist_ok=True)
-            subprocess.run(["kaggle", "datasets", "download", "-d",
-                            "namnguynnnn/gdfnet-v4-isic2018-best", "-f", "GDFNetV4_ISIC2018_best.pth", "-p", ckpt_dl_dir], check=True)
-            _unzip_all(ckpt_dl_dir)
-            cand = os.path.join(ckpt_dl_dir, "GDFNetV4_ISIC2018_best.pth")
-            if os.path.exists(cand):
-                resume_path = cand
-                if os.path.exists(DRIVE_DIR):
-                    shutil.copy2(cand, os.path.join(DRIVE_DIR, "GDFNetV4_ISIC2018_best.pth"))
-        except Exception as e:
-            print(f"[!] Warning downloading warm-start checkpoint: {e}", flush=True)
-
     best_val_dice = 0.0
     best_epoch = 0
-    best_source = "init"
+    best_source = "scratch"
     start_epoch = 1
 
     backbone_params = list(model.backbone.parameters())
     backbone_ids = set(id(p) for p in backbone_params)
     head_params = [p for p in model.parameters() if id(p) not in backbone_ids]
     optimizer = optim.AdamW([
-        {'params': backbone_params, 'lr': 3e-5},
-        {'params': head_params, 'lr': 8e-5}
+        {'params': backbone_params, 'lr': 1e-4},
+        {'params': head_params, 'lr': 3e-4}
     ], weight_decay=2e-4)
     ema = ModelEMA(model, decay=0.999)
     criterion = GDFNetV4DiceOptCompositeLoss(dice_weight=0.5)
@@ -1006,19 +978,8 @@ def main():
     if os.path.exists(os.path.join(DRIVE_DIR, "GDFNetV4_ConvFormerS18_300ep_best.pth")) and not os.path.exists(checkpoint_best):
         shutil.copy2(os.path.join(DRIVE_DIR, "GDFNetV4_ConvFormerS18_300ep_best.pth"), checkpoint_best)
 
-    # 2. If not resuming an in-progress 300ep run, Warm-Start from SOTA GDFNetV4_ISIC2018_best.pth
-    if not resumed and resume_path and os.path.exists(resume_path):
-        print(f"[*] Loading SOTA Warm-Start Checkpoint from: {resume_path}", flush=True)
-        state = torch.load(resume_path, map_location=device, weights_only=False)
-        if isinstance(state, dict) and 'model_state' in state:
-            state = state['model_state']
-        model.load_state_dict(state, strict=True)
-        ema = ModelEMA(model, decay=0.999)
-        _, val_sum0, val_glob0, _ = evaluate_model_v4(model, val_loader, device, use_tta=False, compute_surface=False)
-        best_val_dice = float(val_sum0.loc[val_sum0['Metric'] == 'dice', 'Mean'].values[0])
-        best_source = "warmstart_v4_best"
-        torch.save(model.state_dict(), checkpoint_best)
-        print(f"[+] Warm-Start Verified on 100 Official Val Images -> Baseline Val Macro Dice: {best_val_dice:.4f} (Global: {val_glob0:.4f})", flush=True)
+    if not resumed:
+        print("[+] Training from Scratch: ConvFormer-S18 (ImageNet-22K Pretrained, TPAMI 2024)", flush=True)
 
     history = []
     if os.path.exists(history_csv):
