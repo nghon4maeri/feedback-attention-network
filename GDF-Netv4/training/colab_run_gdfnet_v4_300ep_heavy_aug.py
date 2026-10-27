@@ -945,7 +945,7 @@ def main():
             ckpt_dl_dir = os.path.join(DATA_ROOT, "warmstart_ckpt")
             os.makedirs(ckpt_dl_dir, exist_ok=True)
             subprocess.run(["kaggle", "datasets", "download", "-d",
-                            "namnguynnnn/gdfnet-v4-isic2018-best", "-p", ckpt_dl_dir], check=True)
+                            "namnguynnnn/gdfnet-v4-isic2018-best", "-f", "GDFNetV4_ISIC2018_best.pth", "-p", ckpt_dl_dir], check=True)
             _unzip_all(ckpt_dl_dir)
             cand = os.path.join(ckpt_dl_dir, "GDFNetV4_ISIC2018_best.pth")
             if os.path.exists(cand):
