@@ -1,0 +1,18 @@
+{
+  "id": "namnguynnnn/gdfnet-v4-inceptionnext-tiny-pilot",
+  "title": "GDFNetV4 InceptionNeXt-Tiny Pilot ISIC2018",
+  "code_file": "gdfnet_v4_inceptionnext_tiny_pilot.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": "true",
+  "enable_gpu": "true",
+  "enable_tpu": "false",
+  "enable_internet": "true",
+  "dataset_sources": [
+    "tschandl/isic2018-challenge-task1-data-segmentation",
+    "mfahimhossen/isic2018-test-groundtruth"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}
