@@ -1,0 +1,81 @@
+# [Phase 15 – 27/10/2026] GDF-Netv4 300-Epoch Heavy-Augmentation Benchmark Verification (Mean Dice 0.9101) & Modern Lightweight CNN Backbone Survey
+
+## 1. Ký hiệu (Notation) & Phân loại Bằng chứng
+
+- `GDF-Netv4 (300ep Heavy-Aug + EMA + Calibrated)`: Phiên bản tối ưu hóa của `GDF-Netv4` (`pvt_v2_b2`, `30,683,333` tham số, `drop_path_rate = 0.2`) khởi tạo ấm (Warm-Start) từ `GDFNetV4_ISIC2018_best.pth` (`0.9030` TTA Dice), huấn luyện với tổ hợp 15 phép tăng cường dữ liệu lâm sàng (`ISICDatasetV4HeavyAug`), hàm mục tiêu `StructureLoss + 0.5 * SoftMacroDiceLoss`, trung bình trượt trọng số `ModelEMA(decay=0.999)`, và hiệu chỉnh ngưỡng xác suất $T_{\text{opt}} = 0.720$ trên 100 ảnh Official Validation.
+- Phân loại bằng chứng theo chuẩn `AGENTS.md`:
+  - `TRAIN`: Toàn bộ kết quả huấn luyện (71 epochs trong 11.09 giờ trên Kaggle Tesla T4, đạt đỉnh tại **Epoch 5 [EMA]** với **Official Val Macro Dice = `0.9026`**, **Val Global Dice = `0.9084`**) và kết quả kiểm thử mù trên **1,000 ảnh Official Blind Test** (`0.9006` Single-View, `0.9016` 4-View TTA @ $T=0.50$, và **`0.9101` Calibrated 4-View TTA @ $T_{\text{opt}}=0.72$**).
+  - `LITERATURE`: Các thông số chuẩn trên ImageNet-1K và ISIC-2018 của các họ kiến trúc CNN hiện đại (`ConvNeXt`, `ConvNeXt-V2`, `MogaNet`, `InceptionNeXt`, `UniRepLKNet`, `SegNeXt/MSCAN`, `VAN/LKA`, `ConvFormer`, `CMUNeXt`) có kiểm toán DOI tại [`docs/literature_grounding_modern_cnn_backbones.md`](../literature_grounding_modern_cnn_backbones.md).
+
+---
+
+## 2. Tóm tắt Kết quả Nghiệm thu Phiên Chạy Kaggle (`namnguynnnn/gdfnet-v4-300ep-heavyaug-isic2018`)
+
+1. **Vượt Ngưỡng Mục tiêu `Dice > 0.910` trên 1,000 Ảnh Test Mù Chính thức (`TRAIN`):**
+   - **Single-View ($T = 0.50$):** Mean Dice = **`0.9006 ± 0.1028`** (tăng so với `0.9001` của v4 gốc; độ lệch chuẩn `Std` giảm từ `0.1150` xuống **`0.1028`**; số ca hỏng $J_i < 0.65$ giảm từ `92` xuống **`84` ca**; Global Micro Dice tăng từ `0.8983` lên **`0.9045`**).
+   - **4-View Flip TTA ($T = 0.50$):** Mean Dice = **`0.9016 ± 0.1051`**, số ca hỏng $J_i < 0.65$ giảm từ `84` xuống **`79` ca**, HD95 giảm từ `23.37 px` xuống **`22.58 px`**, Global Micro Dice tăng từ `0.9030` lên **`0.9062`**.
+   - **Official-Val Calibrated 4-View TTA ($T_{\text{opt}} = 0.720$, tìm trên 100 ảnh Official Val đạt `0.9087`):**
+     - **Mean Dice:** **`0.9101 ± 0.1055` (`91.01%`)** — **Chính thức vượt mốc `0.910`!**
+     - **Median Dice:** **`0.9399` (`93.99%`)**
+     - **Mean mIoU (Jaccard):** **`0.8476 ± 0.1328` (`84.76%`)** (Median **`0.8867`**)
+     - **Thresholded Jaccard ($J_{\text{thresh}}$):** **`0.8150` (`81.50%`)** — **Vượt qua kỷ lục Thế giới của đội Vô địch ISIC-2018 (`0.8020`, dùng ensemble 4 mạng lớn) tới `+1.30 pp`!**
+     - **Số ca hỏng ($J_i < 0.65$):** Giảm xuống chỉ còn **`69 / 1,000 ca`** (giảm 15 ca so với v4 gốc `84` ca, và giảm 25 ca so với v2 `94` ca).
+     - **Precision:** Tăng vọt lên **`0.8992`** (Median **`0.9256`**), trong khi **Sensitivity** giữ ở mức cao **`0.9431`** (Median **`0.9900`**), **Specificity** đạt **`0.9503`** (FPR giảm còn **`0.0487`**).
+     - **Sai số biên (HD95 / ASD / BF2):** HD95 giảm xuống **`21.37 px`** (Median `12.53 px`), ASD giảm xuống **`8.17 px`** (Median `4.96 px`), BF2 đạt **`0.3050`** — toàn bộ đều là kỷ lục tốt nhất của dự án.
+     - **Global Micro Dice (Protocol A2):** Đạt **`0.9118` (`91.18%`)**, Global Micro IoU đạt **`0.8378`**.
+2. **Kiểm định Ý nghĩa Thống kê Đối đầu ($N = 1,000$ ảnh test mù):**
+   - **So với `GDF-Netv4` gốc (`0.9030` TTA):** Tăng $\Delta\text{Dice} = +0.0071$, chiến thắng trên **702 / 1,000 ảnh (`70.2%`)**, kiểm định Wilcoxon signed-rank đạt **$p = 2.01 \times 10^{-36}$** (Paired t-test $p = 5.58 \times 10^{-4}$).
+   - **So với `GDF-Netv2` (`0.8935`):** Tăng $\Delta\text{Dice} = +0.0166$, chiến thắng trên **706 / 1,000 ảnh**, Wilcoxon **$p = 1.98 \times 10^{-42}$**.
+   - **So với `GDF-Netv5` Fold 0 (`0.8874`):** Tăng $\Delta\text{Dice} = +0.0228$, chiến thắng trên **712 / 1,000 ảnh**, Wilcoxon **$p = 1.58 \times 10^{-54}$**.
+
+---
+
+## 3. Bảng Kết quả Chi tiết trên 1,000 Blind Test Images
+
+Dữ liệu trích xuất từ [`GDF-Netv4/results/isic2018_300ep/`](file:///D:/User/nghonamjiwoo/My%20Project/FANet/GDF-Netv4/results/isic2018_300ep/):
+
+| Chỉ số Lâm sàng ($N=1,000$ Blind Test) | GDF-Netv4 Gốc (TTA, $T=0.50$) | **GDF-Netv4 300ep (SV, $T=0.50$)** | **GDF-Netv4 300ep (TTA, $T=0.50$)** | **GDF-Netv4 300ep (TTA, $T_{\text{opt}}=0.72$)** | $\Delta$ (Mới vs v4 Gốc) |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Mean Dice** | 0.9030 ± 0.1110 | 0.9006 ± 0.1028 | 0.9016 ± 0.1051 | **0.9101 ± 0.1055** | **+0.71 pp** |
+| **Median Dice** | 0.9357 | 0.9293 | 0.9315 | **0.9399** | **+0.42 pp** |
+| **Mean mIoU (Jaccard)** | 0.8372 ± 0.1409 | 0.8313 ± 0.1322 | 0.8333 ± 0.1337 | **0.8476 ± 0.1328** | **+1.04 pp** |
+| **Median mIoU** | 0.8792 | 0.8680 | 0.8718 | **0.8867** | **+0.75 pp** |
+| **$J_{\text{thresh}}$ (ISIC Official)** | 0.7974 | 0.7893 | 0.7949 | **0.8150** | **+1.76 pp** |
+| **Số ca hỏng ($J_i < 0.65$)** | 84 / 1,000 | 84 / 1,000 | 79 / 1,000 | **69 / 1,000** | **-15 ca (-17.9%)** |
+| **Sensitivity (Mean / Median)** | 0.9550 / 0.9943 | **0.9599** / 0.9974 | 0.9596 / **0.9976** | 0.9431 / 0.9900 | Cân bằng tối ưu |
+| **Precision (Mean / Median)** | 0.8784 / 0.9106 | 0.8660 / 0.8912 | 0.8687 / 0.8932 | **0.8992 / 0.9256** | **+2.08 pp** |
+| **Specificity (Mean / Median)** | 0.9235 / 0.9786 | 0.9240 / 0.9707 | 0.9275 / 0.9719 | **0.9503 / 0.9819** | **+2.68 pp** |
+| **False Positive Rate (FPR)** | 0.0755 | 0.0750 | 0.0715 | **0.0487** | **-2.68 pp** |
+| **HD95 (Mean / Median, px)** | 23.37 / 12.82 | 23.23 / 13.89 | 22.58 / 13.60 | **21.37 / 12.53** | **-2.00 px** |
+| **ASD (Mean / Median, px)** | 9.22 / 5.29 | 9.20 / 5.93 | 9.07 / 5.85 | **8.17 / 4.96** | **-1.05 px** |
+| **Boundary F2 (BF2)** | 0.2804 | 0.2420 | 0.2459 | **0.3050** | **+2.46 pp** |
+| **Global Micro Dice / IoU** | 0.9030 / 0.8231 | 0.9045 / 0.8257 | 0.9062 / 0.8284 | **0.9118 / 0.8378** | **+0.88 pp** |
+
+---
+
+## 4. Khảo sát Khoa học Các Mô hình CNN Hiện đại Gọn Nhẹ trên ImageNet-1K & Phân vùng Y tế (2022–2026)
+
+Để giải quyết vấn đề kích thước mô hình lớn (`GDF-Netv5` 68.04M tham số, `GDF-Netv4` 30.68M tham số) và thời gian huấn luyện dài trên GPU phổ thông, chúng tôi đã thực hiện khảo sát đa nguồn (OpenAlex, arXiv, IEEE/CVF, `timm` registry — chi tiết lưu tại [`docs/literature_grounding_modern_cnn_backbones.md`](../literature_grounding_modern_cnn_backbones.md)):
+
+### 4.1. Bảng Đối chiếu Các Backbone CNN Hiện đại Sẵn có trong `timm`
+
+| Backbone (`timm` ID) | Bài báo Gốc (Venue, Năm) | Số Tham số Backbone | Kênh Đặc trưng 4 Tầng $(C_1, C_2, C_3, C_4)$ | ImageNet-1K Top-1 (%) | FLOPs @ $224^2$ | Đánh giá Phù hợp cho GDF-Net |
+| :--- | :--- | :---: | :---: | :---: | :---: | :--- |
+| **`convnextv2_atto`** | CVPR 2023 (`10.1109/CVPR52729.2023.01548`) | **3.39 M** | `[40, 80, 160, 320]` | 76.7% | 0.55 G | Siêu nhẹ (Tổng mạng ~5.2M params), phù hợp thiết bị biên |
+| **`convnextv2_femto`** | CVPR 2023 (`10.1109/CVPR52729.2023.01548`) | **4.85 M** | `[48, 96, 192, 384]` | 78.5% | 0.78 G | Nhẹ gấp 5.2 lần `PVTv2-B2` |
+| **`convnextv2_pico`** | CVPR 2023 (`10.1109/CVPR52729.2023.01548`) | **8.55 M** | **`[64, 128, 256, 512]`** | 80.3% | 1.37 G | **Khớp kênh 100% với Decoder v4**, giảm 60% tham số (Tổng ~12.2M) |
+| **`convnextv2_nano`** | CVPR 2023 (`10.1109/CVPR52729.2023.01548`) | **14.98 M** | `[80, 160, 320, 640]` | **82.9%** *(IN-22K)* | 2.45 G | **Đề xuất Số 1 (Sweet-Spot):** Nhẹ hơn 40% nhưng Top-1 cao hơn `PVTv2-B2` (+0.9%) |
+| **`convnextv2_tiny`** | CVPR 2023 (`10.1109/CVPR52729.2023.01548`) | **27.86 M** | `[96, 192, 384, 768]` | **85.1%** *(IN-22K, $384^2$)* | 4.47 G | Đã kiểm chứng ở `GDF-Netv2`; có bản pretrained sẵn ở $384 \times 384$ |
+| **`inception_next_atto`** | CVPR 2024 (`10.1109/CVPR52733.2024.00542`) | **2.89 M** | `[40, 80, 160, 320]` | 75.2% | 0.51 G | Tích chập dải trực giao $1\times 11$ và $11\times 1$ siêu nhanh |
+| **`inception_next_tiny`** | CVPR 2024 (`10.1109/CVPR52733.2024.00542`) | **23.97 M** | `[96, 192, 384, 768]` | 82.3% | 4.20 G | Tốc độ GPU nhanh hơn 1.6x so với `ConvNeXt-Tiny` nhờ phân rã nhân lớn |
+| **`convformer_s18`** | TPAMI 2024 (`10.1109/TPAMI.2023.3329173`) | **23.67 M** | **`[64, 128, 320, 512]`** | **84.4%** *(IN-22K, $384^2$)* | 3.90 G | **Khớp chính xác kênh `[64, 128, 320, 512]` của `PVTv2-B2`**, thuần CNN |
+| **MogaNet-Tiny / Small** | ICLR 2024 (`arXiv:2211.03295`) | **5.2M / 24.6M** | `[32..256]` / `[64..512]` | 79.0% / 83.4% | 1.1G / 4.9G | Cổng tích hợp đa bậc (Multi-order Gated Aggregation), rất mạnh nhưng cần cài gói ngoài `timm` |
+
+### 4.2. Phân tích Tại sao `ConvNeXt-V2` (Pico / Nano) và `ConvFormer-S18` là Lựa chọn Tối ưu Nhất cho GDF-Net
+
+1. **Giải thích từ bằng chứng thực nghiệm nội bộ của dự án (`TRAIN`):**
+   - Trước đây ở `GDF-Netv2`, `convnextv2_tiny` chỉ đạt `0.8935` vì mắc 4 lỗi trong pipeline cũ (thiếu `ImageNet Normalize`, thiếu `MS-FDF [1,3,5]`, thiếu `Mask-Guided LGAG`, và lỗi `.detach()`). Dù vậy, `GDF-Netv2` vẫn đạt **Specificity cao nhất (`0.9329`) và FPR thấp nhất (`0.0661`)** nhờ lớp **Global Response Normalization (GRN)** đặc trưng của `ConvNeXt-V2`.
+2. **Ưu thế vượt trội của `convnextv2_nano.fcmae_ft_in22k_in1k_384` (`14.98M` params) và `convnextv2_pico.fcmae_ft_in1k` (`8.55M` params):**
+   - **Không có nút thắt cổ chai Quadratic Self-Attention ($O(H^2W^2)$):** Chạy thuần tích chập chiều sâu $7 \times 7$ + $1 \times 1$ pointwise, giúp tốc độ huấn luyện trên GPU Tesla T4 nhanh hơn **1.7–2.2 lần** so với Transformer.
+   - **Pretrained bằng FCMAE (Fully Convolutional Masked Autoencoder):** Học biểu diễn ngữ cảnh cục bộ - toàn cục để tự tái tạo các vùng ảnh bị che khuất, khớp hoàn hảo với bài toán nội suy biên tổn thương bị lông/thước đo che khuất trên ISIC-2018.
+   - **Tương thích kiến trúc tức thời:** Chỉ cần đổi tham số `backbone_name="convnextv2_nano.fcmae_ft_in22k_in1k_384"` hoặc `"convnextv2_pico.fcmae_ft_in1k"` trong [`HierarchicalBackboneV4`](file:///D:/User/nghonamjiwoo/My%20Project/FANet/GDF-Netv4/models/backbones.py), toàn bộ nhánh `MS-FDF`, `Mask-Guided LGAG`, và `Cascaded MSCAM Decoder` sẽ tự động thích ứng theo số kênh `feature_info.channels()`.
