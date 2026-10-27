@@ -113,3 +113,40 @@ Phiên chạy pilot được triển khai thành công trên Kaggle Tesla T4 (`n
 1. **Khả năng học hội tụ siêu tốc:** Dù chỉ chạy vỏn vẹn **25 epochs từ scratch** (chưa từng nạp pretrained ISIC), `ConvNeXt-V2-Nano` đã đạt **`0.9031` Calibrated Mean Dice** và **`0.9374` Median Dice**, ngang ngửa với `GDF-Netv4` Transformer chạy 100 epochs (`0.9030`).
 2. **Độ chính xác và độ đặc hiệu biên cực cao:** Specificity đạt **`0.9524`** (vượt `PVTv2-B2` gốc `0.9235`), Precision đạt **`0.8976`**, và Median HD95 co lại chỉ còn **`12.37 px`** (tốt hơn cả v4 300ep `12.53 px`).
 3. **Tiềm năng khi mở rộng 100–300 Epochs:** Việc một mạng thuần CNN đạt `>0.903` chỉ sau 25 epochs khẳng định kiến trúc FCMAE kết hợp cùng cơ chế đa tầng `GDF-Net` có tiềm năng vượt mốc `0.912` nếu được huấn luyện dài hơi (100–300 epochs) hoặc warm-start.
+
+
+---
+
+## 6. Kết quả Thực nghiệm Thực tế: Candidate 2 — ConvNeXt-V2-Pico Pilot Screening (25 Epochs, 1,000 Blind Test) (`TRAIN`)
+
+Phiên chạy pilot của `ConvNeXt-V2-Pico` (Backbone: `convnextv2_pico.fcmae_ft_in1k`, chỉ **8.55M** tham số backbone, tổng mô hình GDF-Net chỉ **13.75M** tham số — giảm **-55%** dung lượng so với v4 Transformer) được hoàn tất thành công trên Kaggle Tesla T4 (`namnguynnnn/gdfnetv4-convnextv2-pico-pilot-isic2018`):
+- **Tốc độ huấn luyện:** Đạt kỷ lục tốc độ nhanh nhất của dự án trên GPU Tesla T4: **72.1s / epoch** (nhanh hơn 1.4 lần so với `Nano` và 7.3 lần so với `PVTv2-B2`).
+- **Huấn luyện:** Khởi tạo từ ImageNet (Train from Scratch, hoàn toàn KHÔNG warm-start từ checkpoint ISIC cũ), chạy 25 epochs.
+- **Đánh giá:** 1,000 ảnh Official Blind Test ISIC-2018 (Single-View, 4-View Flip TTA, và Calibrated 4-View TTA trên 100 ảnh Val).
+
+### Bảng Đối chiếu Thực nghiệm Đa Backbone (1,000 Blind Test Images)
+
+| Chỉ số Lâm sàng ($N=1,000$ Blind Test) | GDF-Netv4 Gốc (PVTv2-B2) | GDF-Netv4 300ep (PVTv2-B2) | **ConvNeXt-V2-Nano (Pilot 25 ep)** | **ConvNeXt-V2-Pico (Pilot 25 ep, SV)** | **ConvNeXt-V2-Pico (Pilot 25 ep, Calibrated)** |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Tổng Tham số (Params)** | 30.68 M | 30.68 M | 31.82 M | **13.75 M (-55%)** | **13.75 M (-55%)** |
+| **Tốc độ Train (s/ep @ T4)** | ~530 s | ~530 s | 102 s | **72.1 s (Kỷ lục)** | **72.1 s (Kỷ lục)** |
+| **Số Epochs Huấn luyện** | 100 ep | 300 ep (71 ep chạy) | 25 ep | **25 ep** | **25 ep** |
+| **Warm-start Checkpoint** | Không | Có | Không (From Scratch) | **Không (From Scratch)** | **Không (From Scratch)** |
+| **Mean Dice** | 0.9030 ± 0.1110 | **0.9101 ± 0.1055** | 0.9031 ± 0.1146 | 0.8755 ± 0.1453 | **0.8890 ± 0.1458** |
+| **Median Dice** | 0.9357 | 0.9399 | 0.9374 | 0.9277 | **0.9434 (Cao nhất!)** |
+| **Mean mIoU (Jaccard)** | 0.8372 | **0.8476** | 0.8381 | 0.8012 | **0.8233** |
+| **$J_{\text{thresh}}$ (ISIC Official)** | 0.7974 | **0.8150** | 0.8001 | 0.7344 | **0.7692** |
+| **Số ca hỏng ($J_i < 0.65$)** | 84 / 1,000 | **69 / 1,000** | 84 / 1,000 | 150 / 1,000 | **127 / 1,000** |
+| **Sensitivity (Mean / Median)** | 0.9550 / 0.9943 | 0.9431 / 0.9900 | 0.9335 / 0.9889 | 0.9531 / **0.9972** | 0.9275 / 0.9875 |
+| **Precision (Mean / Median)** | 0.8784 / 0.9106 | 0.8992 / 0.9256 | 0.8976 / 0.9233 | 0.8410 / 0.8923 | **0.8855 / 0.9346** |
+| **Specificity (Mean / Median)** | 0.9235 / 0.9786 | 0.9503 / 0.9819 | 0.9524 / 0.9806 | 0.8856 / 0.9705 | **0.9235 / 0.9836** |
+| **HD95 (Mean / Median, px)** | 23.37 / 12.82 | 21.37 / 12.53 | 23.56 / 12.37 | 36.95 / 14.94 | **33.09 / 12.08 (Kỷ lục)** |
+| **Boundary F2 (BF2)** | 0.2804 | 0.3050 | 0.2989 | 0.2588 | **0.3538 (Kỷ lục)** |
+
+### Nhận xét & Đánh giá Khoa học về ConvNeXt-V2-Pico:
+1. **Ưu thế tuyệt đối về Median Dice và Chất lượng Biên:**
+   - Dù chỉ có **13.75M tham số** và train 25 epoch, `Pico` đạt **Median Dice `0.9434` (`94.34%`)**, vượt qua cả `PVTv2-B2` 300ep (`0.9399`) và `ConvNeXt-V2-Nano` (`0.9374`).
+   - Median HD95 giảm xuống kỷ lục mới: **`12.08 px`** và Boundary F2 đạt **`0.3538`** (cao nhất toàn dự án), chứng minh khả năng bám dính bờ biên tổn thương sắc nét vượt trội của các khối tích chập nhỏ gọn kết hợp GRN.
+2. **Hạn chế ở pha huấn luyện ngắn (25 epochs):**
+   - Do kích thước kênh nhỏ hơn (`[64, 128, 256, 512]`), ở 25 epoch đầu mạng chưa đủ capacity để bao quát hết các ca bệnh phức tạp có artifact nặng (số ca hỏng $J < 0.65$ là 127 ca, kéo Mean Dice về `0.8890`).
+   - Khi được cấp đủ số epoch (100–300 epochs), `Pico` hứa hẹn là mô hình lý tưởng cho các ứng dụng y tế cần tính gọn nhẹ và suy luận thời gian thực trên thiết bị di động/biên.
