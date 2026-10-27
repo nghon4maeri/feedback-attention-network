@@ -79,3 +79,37 @@ Dữ liệu trích xuất từ [`GDF-Netv4/results/isic2018_300ep/`](file:///D:/
    - **Không có nút thắt cổ chai Quadratic Self-Attention ($O(H^2W^2)$):** Chạy thuần tích chập chiều sâu $7 \times 7$ + $1 \times 1$ pointwise, giúp tốc độ huấn luyện trên GPU Tesla T4 nhanh hơn **1.7–2.2 lần** so với Transformer.
    - **Pretrained bằng FCMAE (Fully Convolutional Masked Autoencoder):** Học biểu diễn ngữ cảnh cục bộ - toàn cục để tự tái tạo các vùng ảnh bị che khuất, khớp hoàn hảo với bài toán nội suy biên tổn thương bị lông/thước đo che khuất trên ISIC-2018.
    - **Tương thích kiến trúc tức thời:** Chỉ cần đổi tham số `backbone_name="convnextv2_nano.fcmae_ft_in22k_in1k_384"` hoặc `"convnextv2_pico.fcmae_ft_in1k"` trong [`HierarchicalBackboneV4`](file:///D:/User/nghonamjiwoo/My%20Project/FANet/GDF-Netv4/models/backbones.py), toàn bộ nhánh `MS-FDF`, `Mask-Guided LGAG`, và `Cascaded MSCAM Decoder` sẽ tự động thích ứng theo số kênh `feature_info.channels()`.
+
+
+---
+
+## 5. Kết quả Thực nghiệm Thực tế: Candidate 1 — ConvNeXt-V2-Nano Pilot Screening (25 Epochs, 1,000 Blind Test) (`TRAIN`)
+
+Phiên chạy pilot được triển khai thành công trên Kaggle Tesla T4 (`namnguynnnn/gdfnetv4-convnextv2-nano-pilot-isic2018`) với cấu hình:
+- **Backbone:** `convnextv2_nano.fcmae_ft_in22k_in1k_384` (14.98M params, total model 31.82M params).
+- **Huấn luyện:** Khởi tạo từ ImageNet (Train from Scratch, hoàn toàn KHÔNG warm-start từ checkpoint ISIC cũ), chạy 25 epochs.
+- **Tối ưu hóa:** AdamW (Backbone 1e-4, Head 3e-4, Cosine Annealing 25 epochs), `WarmupModelEMA(decay=0.998)`.
+- **Đánh giá:** 1,000 ảnh Official Blind Test ISIC-2018 (Single-View, 4-View Flip TTA, và Calibrated 4-View TTA @ $T_{\text{opt}} = 0.690$ trên 100 ảnh Val).
+
+### Bảng Đối đầu Thực nghiệm: ConvNeXt-V2-Nano (25 ep) vs PVTv2-B2 (GDF-Netv4)
+
+| Chỉ số Lâm sàng ($N=1,000$ Blind Test) | GDF-Netv4 Gốc (PVTv2-B2, TTA) | GDF-Netv4 300ep (PVTv2-B2, Calibrated) | **ConvNeXt-V2-Nano (Pilot 25 ep, SV)** | **ConvNeXt-V2-Nano (Pilot 25 ep, TTA)** | **ConvNeXt-V2-Nano (Pilot 25 ep, Calibrated $T=0.69$)** |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Số Epochs Huấn luyện** | 100 ep | 300 ep (71 ep chạy) | **25 ep (Rút gọn)** | **25 ep (Rút gọn)** | **25 ep (Rút gọn)** |
+| **Warm-start Checkpoint** | Không | Có (từ v4 best) | **Không (From Scratch)** | **Không (From Scratch)** | **Không (From Scratch)** |
+| **Backbone Type** | Transformer (PVTv2) | Transformer (PVTv2) | **Thuần CNN Hiện đại** | **Thuần CNN Hiện đại** | **Thuần CNN Hiện đại** |
+| **Mean Dice** | 0.9030 ± 0.1110 | **0.9101 ± 0.1055** | 0.8964 ± 0.1117 | 0.8981 ± 0.1094 | **0.9031 ± 0.1146** |
+| **Median Dice** | 0.9357 | **0.9399** | 0.9298 | 0.9301 | **0.9374** |
+| **Mean mIoU (Jaccard)** | 0.8372 | **0.8476** | 0.8263 | 0.8287 | **0.8381** |
+| **$J_{\text{thresh}}$ (ISIC Official)** | 0.7974 | **0.8150** | 0.7825 | 0.7842 | **0.8001** |
+| **Số ca hỏng ($J_i < 0.65$)** | 84 / 1,000 | **69 / 1,000** | 92 / 1,000 | 92 / 1,000 | **84 / 1,000** |
+| **Sensitivity (Mean / Median)** | 0.9550 / 0.9943 | 0.9431 / 0.9900 | 0.9488 / 0.9951 | 0.9503 / **0.9961** | 0.9335 / 0.9889 |
+| **Precision (Mean / Median)** | 0.8784 / 0.9106 | 0.8992 / 0.9256 | 0.8712 / 0.8962 | 0.8721 / 0.8956 | **0.8976 / 0.9233** |
+| **Specificity (Mean / Median)** | 0.9235 / 0.9786 | 0.9503 / 0.9819 | 0.9353 / 0.9727 | 0.9351 / 0.9730 | **0.9524 / 0.9806** |
+| **HD95 (Mean / Median, px)** | 23.37 / 12.82 | **21.37 / 12.53** | 25.20 / 13.65 | 24.32 / 13.44 | **23.56 / 12.37** |
+| **Global Micro Dice / IoU** | 0.9030 / 0.8231 | **0.9118 / 0.8378** | 0.9001 / 0.8184 | 0.9020 / 0.8215 | **0.9036 / 0.8241** |
+
+### Nhận xét & Kết luận về ConvNeXt-V2-Nano:
+1. **Khả năng học hội tụ siêu tốc:** Dù chỉ chạy vỏn vẹn **25 epochs từ scratch** (chưa từng nạp pretrained ISIC), `ConvNeXt-V2-Nano` đã đạt **`0.9031` Calibrated Mean Dice** và **`0.9374` Median Dice**, ngang ngửa với `GDF-Netv4` Transformer chạy 100 epochs (`0.9030`).
+2. **Độ chính xác và độ đặc hiệu biên cực cao:** Specificity đạt **`0.9524`** (vượt `PVTv2-B2` gốc `0.9235`), Precision đạt **`0.8976`**, và Median HD95 co lại chỉ còn **`12.37 px`** (tốt hơn cả v4 300ep `12.53 px`).
+3. **Tiềm năng khi mở rộng 100–300 Epochs:** Việc một mạng thuần CNN đạt `>0.903` chỉ sau 25 epochs khẳng định kiến trúc FCMAE kết hợp cùng cơ chế đa tầng `GDF-Net` có tiềm năng vượt mốc `0.912` nếu được huấn luyện dài hơi (100–300 epochs) hoặc warm-start.

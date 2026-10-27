@@ -4,10 +4,10 @@
   "code_file": "gdfnet_v4_convnextv2_nano_pilot.ipynb",
   "language": "python",
   "kernel_type": "notebook",
-  "is_private": "true",
-  "enable_gpu": "true",
-  "enable_tpu": "false",
-  "enable_internet": "true",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": true,
   "dataset_sources": [
     "tschandl/isic2018-challenge-task1-data-segmentation",
     "mfahimhossen/isic2018-test-groundtruth"
