@@ -537,9 +537,48 @@ class GDFNetV4DiceOptCompositeLoss(nn.Module):
 
 
 # ====================================================================
-# 5. Dataset & Evaluation Engine
+# 5. Dataset & Evaluation Engine (With Fast Local SSD Caching & Post-Crop Clinical Aug)
 # ====================================================================
 IMG_SIZE = 384
+TRAIN_CACHE_SIZE = 512
+
+def prepare_fast_ssd_cache(imgs, msks, cache_dir, target_size, desc="Dataset"):
+    """
+    Pre-resizes huge raw ISIC-2018 JPEGs/PNGs (up to 6000x4000) once to fast local SSD.
+    Reduces per-epoch CPU disk/decode overhead from ~500s/epoch down to ~20s/epoch.
+    """
+    os.makedirs(cache_dir, exist_ok=True)
+    cached_imgs, cached_msks = [], []
+    need_build = False
+    for im_p, mk_p in zip(imgs, msks):
+        base_id = os.path.splitext(os.path.basename(im_p))[0]
+        c_im = os.path.join(cache_dir, f"{base_id}.jpg")
+        c_mk = os.path.join(cache_dir, f"{base_id}_mask.png")
+        cached_imgs.append(c_im)
+        cached_msks.append(c_mk)
+        if not (os.path.exists(c_im) and os.path.exists(c_mk)):
+            need_build = True
+
+    if need_build:
+        print(f"[*] Building fast local SSD cache for {desc} ({len(imgs)} pairs -> {target_size}x{target_size}) at {cache_dir}...", flush=True)
+        t_cache = time.time()
+        for idx, (im_p, mk_p, c_im, c_mk) in enumerate(zip(imgs, msks, cached_imgs, cached_msks)):
+            if not (os.path.exists(c_im) and os.path.exists(c_mk)):
+                img = cv2.imread(im_p, cv2.IMREAD_COLOR)
+                if img is None:
+                    img = cv2.cvtColor(np.array(Image.open(im_p).convert('RGB')), cv2.COLOR_RGB2BGR)
+                msk = cv2.imread(mk_p, cv2.IMREAD_GRAYSCALE)
+                if msk is None:
+                    msk = np.array(Image.open(mk_p).convert('L'))
+                img_r = cv2.resize(img, (target_size, target_size), interpolation=cv2.INTER_AREA)
+                msk_r = cv2.resize(msk, (target_size, target_size), interpolation=cv2.INTER_NEAREST)
+                cv2.imwrite(c_im, img_r, [int(cv2.IMWRITE_JPEG_QUALITY), 96])
+                cv2.imwrite(c_mk, msk_r)
+        print(f"[+] Fast SSD cache ready for {desc} in {time.time() - t_cache:.1f}s!", flush=True)
+    else:
+        print(f"[+] Using existing fast SSD cache for {desc} at {cache_dir}", flush=True)
+    return cached_imgs, cached_msks
+
 
 class ISICDatasetV4HeavyAug(Dataset):
     def __init__(self, imgs, msks, is_train=False):
@@ -554,7 +593,8 @@ class ISICDatasetV4HeavyAug(Dataset):
         self.cutout = ImageOnlyCutoutTransform(p=0.25, max_holes=4, max_size=28)
 
         if is_train:
-            self.transform = A.Compose([
+            # Stage 1: Spatial & Geometric transforms (outputs 384x384 uint8 image & float32 mask)
+            self.spatial_transform = A.Compose([
                 A.RandomResizedCrop(size=(IMG_SIZE, IMG_SIZE), scale=(0.5, 1.0), p=0.75),
                 A.Resize(height=IMG_SIZE, width=IMG_SIZE),
                 A.HorizontalFlip(p=0.5),
@@ -572,6 +612,9 @@ class ISICDatasetV4HeavyAug(Dataset):
                     A.OpticalDistortion(distort_limit=0.25, p=1.0),
                     A.ElasticTransform(alpha=30, sigma=5, p=1.0),
                 ], p=0.35),
+            ])
+            # Stage 2: Photometric & Normalization transforms (after 384x384 clinical synthesis)
+            self.photo_transform = A.Compose([
                 A.OneOf([
                     A.ColorJitter(brightness=0.25, contrast=0.25, saturation=0.25, hue=0.08, p=1.0),
                     A.HueSaturationValue(hue_shift_limit=15, sat_shift_limit=25, val_shift_limit=20, p=1.0),
@@ -585,7 +628,7 @@ class ISICDatasetV4HeavyAug(Dataset):
                 A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
             ])
         else:
-            self.transform = A.Compose([
+            self.eval_transform = A.Compose([
                 A.Resize(height=IMG_SIZE, width=IMG_SIZE),
                 A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
             ])
@@ -606,13 +649,20 @@ class ISICDatasetV4HeavyAug(Dataset):
         msk = (msk > 127).astype(np.float32)
 
         if self.is_train:
+            # 1. Crop & Geometric transforms first -> image is now 384x384 (162x fewer pixels than raw 24MP)
+            sp = self.spatial_transform(image=img, mask=msk)
+            img, msk = sp['image'], sp['mask']
+            # 2. Apply 5 Clinical Dermoscopy Artifact Synthesis transforms at 384x384 resolution
             img = self.vignetting(img)
             img = self.hair(img)
             img = self.ruler(img)
             img = self.glare(img)
             img = self.cutout(img)
+            # 3. Apply Photometric & ImageNet Normalization
+            augmented = self.photo_transform(image=img, mask=msk)
+        else:
+            augmented = self.eval_transform(image=img, mask=msk)
 
-        augmented = self.transform(image=img, mask=msk)
         img = np.transpose(augmented['image'].astype(np.float32), (2, 0, 1))
         msk = np.expand_dims(augmented['mask'].astype(np.float32), axis=0)
         return torch.from_numpy(img).float(), torch.from_numpy(msk).float()
@@ -839,19 +889,33 @@ def main():
                 paired_y.append(id_map[imid])
         return paired_x, paired_y
 
-    train_x, train_y = pair_data(train_img_dir, train_gt_dir)
-    val_x, val_y     = pair_data(val_img_dir, val_gt_dir)
-    test_x, test_y   = pair_data(test_img_dir, test_gt_dir)
-    print(f"[+] Paired Datasets -> Train: {len(train_x)} | Official Val: {len(val_x)} | Blind Test: {len(test_x)}", flush=True)
+    train_x_raw, train_y_raw = pair_data(train_img_dir, train_gt_dir)
+    val_x_raw, val_y_raw     = pair_data(val_img_dir, val_gt_dir)
+    test_x_raw, test_y_raw   = pair_data(test_img_dir, test_gt_dir)
+    print(f"[+] Paired Datasets -> Train: {len(train_x_raw)} | Official Val: {len(val_x_raw)} | Blind Test: {len(test_x_raw)}", flush=True)
+
+    if torch.cuda.is_available():
+        torch.backends.cuda.matmul.allow_tf32 = True
+        torch.backends.cudnn.allow_tf32 = True
+        torch.backends.cudnn.benchmark = True
+
+    CACHE_ROOT = os.path.join(DATA_ROOT, "fast_ssd_cache")
+    train_x, train_y = prepare_fast_ssd_cache(train_x_raw, train_y_raw, os.path.join(CACHE_ROOT, "train_512"), TRAIN_CACHE_SIZE, desc="Train Set")
+    val_x, val_y     = prepare_fast_ssd_cache(val_x_raw, val_y_raw, os.path.join(CACHE_ROOT, "val_384"), IMG_SIZE, desc="Official Val Set")
+    test_x, test_y   = prepare_fast_ssd_cache(test_x_raw, test_y_raw, os.path.join(CACHE_ROOT, "test_384"), IMG_SIZE, desc="Official Test Set")
 
     BATCH_SIZE = 16
     EPOCHS = 300
+    NUM_WORKERS = min(4, os.cpu_count() or 2)
     train_loader = DataLoader(ISICDatasetV4HeavyAug(train_x, train_y, is_train=True),
-                              batch_size=BATCH_SIZE, shuffle=True, num_workers=2, pin_memory=True, drop_last=True)
+                              batch_size=BATCH_SIZE, shuffle=True, num_workers=NUM_WORKERS,
+                              pin_memory=True, persistent_workers=(NUM_WORKERS > 0), drop_last=True)
     val_loader   = DataLoader(ISICDatasetV4HeavyAug(val_x, val_y, is_train=False),
-                              batch_size=BATCH_SIZE, shuffle=False, num_workers=2, pin_memory=True)
+                              batch_size=BATCH_SIZE, shuffle=False, num_workers=NUM_WORKERS,
+                              pin_memory=True, persistent_workers=(NUM_WORKERS > 0))
     test_loader  = DataLoader(ISICDatasetV4HeavyAug(test_x, test_y, is_train=False),
-                              batch_size=BATCH_SIZE, shuffle=False, num_workers=2, pin_memory=True)
+                              batch_size=BATCH_SIZE, shuffle=False, num_workers=NUM_WORKERS,
+                              pin_memory=True, persistent_workers=(NUM_WORKERS > 0))
 
     model = GDFNetV4(backbone_name="pvt_v2_b2", pretrained=True, drop_path_rate=0.2).to(device)
     total_params = sum(p.numel() for p in model.parameters())
@@ -863,7 +927,7 @@ def main():
 
     # Search for warm-start SOTA checkpoint GDFNetV4_ISIC2018_best.pth
     warmstart_path = None
-    for root_candidate in ["/kaggle/input", DRIVE_DIR, OUTPUT_DIR, "./GDF-Netv4/results/isic2018"]:
+    for root_candidate in ["/kaggle/input", DRIVE_DIR, OUTPUT_DIR, DATA_ROOT, "./GDF-Netv4/results/isic2018"]:
         if os.path.exists(root_candidate):
             for r, d, files in os.walk(root_candidate):
                 for f in files:
@@ -874,6 +938,22 @@ def main():
                     break
         if warmstart_path:
             break
+
+    if not warmstart_path:
+        print("[*] Downloading SOTA Warm-Start Checkpoint (namnguynnnn/gdfnet-v4-isic2018-best) via Kaggle API...", flush=True)
+        try:
+            ckpt_dl_dir = os.path.join(DATA_ROOT, "warmstart_ckpt")
+            os.makedirs(ckpt_dl_dir, exist_ok=True)
+            subprocess.run(["kaggle", "datasets", "download", "-d",
+                            "namnguynnnn/gdfnet-v4-isic2018-best", "-p", ckpt_dl_dir], check=True)
+            _unzip_all(ckpt_dl_dir)
+            cand = os.path.join(ckpt_dl_dir, "GDFNetV4_ISIC2018_best.pth")
+            if os.path.exists(cand):
+                warmstart_path = cand
+                if os.path.exists(DRIVE_DIR):
+                    shutil.copy2(cand, os.path.join(DRIVE_DIR, "GDFNetV4_ISIC2018_best.pth"))
+        except Exception as e:
+            print(f"[!] Warning downloading warm-start checkpoint: {e}", flush=True)
 
     best_val_dice = 0.0
     best_epoch = 0
