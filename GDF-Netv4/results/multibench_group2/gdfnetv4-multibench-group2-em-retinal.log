@@ -1,0 +1,674 @@
+[{"stream_name":"stdout","time":24.584250197,"data":"[+] Device: cuda\n"}
+,{"stream_name":"stdout","time":24.631713814,"data":"[+] GPU: Tesla T4 (VRAM: 15.64 GB)\n"}
+,{"stream_name":"stdout","time":25.797987662,"data":"[+] EM-Dataset Slices -\u003e Total: 165 | Train: 20 | Val: 4 | Test: 141\n"}
+,{"stream_name":"stdout","time":25.857333581,"data":"[+] CHASE-DB1 Matched Pairs: 28 -\u003e Train: 20 | Val: 4 | Test: 4\n"}
+,{"stream_name":"stdout","time":25.90495459,"data":"[+] DRIVE ID-Verified Matched Pairs: 20 (IDs: [21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40])\n"}
+,{"stream_name":"stdout","time":25.905058128,"data":"[+] DRIVE Splits -\u003e Train: 12 | Val: 2 | Test: 6\n"}
+,{"stream_name":"stdout","time":25.916845323,"data":"\n"}
+,{"stream_name":"stdout","time":25.91686819,"data":"================================================================================\n"}
+,{"stream_name":"stdout","time":25.916873127,"data":"[*] STARTING GDF-Netv4 BENCHMARK: EMDataset_ConvFormerS18 (60 Epochs)\n"}
+,{"stream_name":"stdout","time":25.91688327,"data":"[*] Backbone: convformer_s18.sail_in22k_ft_in1k_384 | Warm-Start: None\n"}
+,{"stream_name":"stdout","time":25.91692943,"data":"================================================================================\n"}
+,{"stream_name":"stderr","time":27.044189931,"data":"Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.\n"}
+,{"stream_name":"stdout","time":41.701602979,"data":"[+] Model Initialized | Total Params: 36,108,336 | Channels: (64, 128, 320, 512)\n"}
+,{"stream_name":"stdout","time":136.572984909,"data":"[EMDataset_ConvFormerS18] Ep 01/60 [93.8s] | Loss: 5.2658 | Val Raw: 0.7833 | Val EMA: 0.7856 -\u003e [*] Best (EMA: 0.7856)\n"}
+,{"stream_name":"stdout","time":150.253016247,"data":"[EMDataset_ConvFormerS18] Ep 02/60 [12.7s] | Loss: 4.2873 | Val Raw: 0.8982 | Val EMA: 0.8617 -\u003e [*] Best (RAW: 0.8982)\n"}
+,{"stream_name":"stdout","time":164.220590765,"data":"[EMDataset_ConvFormerS18] Ep 03/60 [12.9s] | Loss: 3.9334 | Val Raw: 0.9217 | Val EMA: 0.8903 -\u003e [*] Best (RAW: 0.9217)\n"}
+,{"stream_name":"stdout","time":178.250481092,"data":"[EMDataset_ConvFormerS18] Ep 04/60 [13.0s] | Loss: 3.7012 | Val Raw: 0.9231 | Val EMA: 0.9181 -\u003e [*] Best (RAW: 0.9231)\n"}
+,{"stream_name":"stdout","time":192.093383963,"data":"[EMDataset_ConvFormerS18] Ep 05/60 [12.8s] | Loss: 3.4939 | Val Raw: 0.9329 | Val EMA: 0.9212 -\u003e [*] Best (RAW: 0.9329)\n"}
+,{"stream_name":"stdout","time":205.585595704,"data":"[EMDataset_ConvFormerS18] Ep 06/60 [12.7s] | Loss: 3.3204 | Val Raw: 0.9098 | Val EMA: 0.9259\n"}
+,{"stream_name":"stdout","time":219.066085675,"data":"[EMDataset_ConvFormerS18] Ep 07/60 [12.7s] | Loss: 3.1582 | Val Raw: 0.9124 | Val EMA: 0.9252\n"}
+,{"stream_name":"stdout","time":232.835370877,"data":"[EMDataset_ConvFormerS18] Ep 08/60 [12.7s] | Loss: 3.0303 | Val Raw: 0.9342 | Val EMA: 0.9299 -\u003e [*] Best (RAW: 0.9342)\n"}
+,{"stream_name":"stdout","time":246.419779109,"data":"[EMDataset_ConvFormerS18] Ep 09/60 [12.8s] | Loss: 2.9074 | Val Raw: 0.9208 | Val EMA: 0.9298\n"}
+,{"stream_name":"stdout","time":260.306423386,"data":"[EMDataset_ConvFormerS18] Ep 10/60 [12.8s] | Loss: 2.8071 | Val Raw: 0.9347 | Val EMA: 0.9339 -\u003e [*] Best (RAW: 0.9347)\n"}
+,{"stream_name":"stdout","time":274.201630883,"data":"[EMDataset_ConvFormerS18] Ep 11/60 [12.8s] | Loss: 2.7147 | Val Raw: 0.9378 | Val EMA: 0.9338 -\u003e [*] Best (RAW: 0.9378)\n"}
+,{"stream_name":"stdout","time":288.008554511,"data":"[EMDataset_ConvFormerS18] Ep 12/60 [12.7s] | Loss: 2.6383 | Val Raw: 0.9397 | Val EMA: 0.9350 -\u003e [*] Best (RAW: 0.9397)\n"}
+,{"stream_name":"stdout","time":301.579542759,"data":"[EMDataset_ConvFormerS18] Ep 13/60 [12.8s] | Loss: 2.5728 | Val Raw: 0.9358 | Val EMA: 0.9345\n"}
+,{"stream_name":"stdout","time":315.339070023,"data":"[EMDataset_ConvFormerS18] Ep 14/60 [12.7s] | Loss: 2.5197 | Val Raw: 0.9426 | Val EMA: 0.9362 -\u003e [*] Best (RAW: 0.9426)\n"}
+,{"stream_name":"stdout","time":328.891092534,"data":"[EMDataset_ConvFormerS18] Ep 15/60 [12.7s] | Loss: 2.4800 | Val Raw: 0.9409 | Val EMA: 0.9377\n"}
+,{"stream_name":"stdout","time":342.694085362,"data":"[EMDataset_ConvFormerS18] Ep 16/60 [12.8s] | Loss: 2.4508 | Val Raw: 0.9443 | Val EMA: 0.9396 -\u003e [*] Best (RAW: 0.9443)\n"}
+,{"stream_name":"stdout","time":356.304350875,"data":"[EMDataset_ConvFormerS18] Ep 17/60 [12.8s] | Loss: 2.4332 | Val Raw: 0.9430 | Val EMA: 0.9396\n"}
+,{"stream_name":"stdout","time":369.888206053,"data":"[EMDataset_ConvFormerS18] Ep 18/60 [12.8s] | Loss: 2.4242 | Val Raw: 0.9360 | Val EMA: 0.9404\n"}
+,{"stream_name":"stdout","time":383.484482996,"data":"[EMDataset_ConvFormerS18] Ep 19/60 [12.8s] | Loss: 2.4126 | Val Raw: 0.9386 | Val EMA: 0.9409\n"}
+,{"stream_name":"stdout","time":397.187141187,"data":"[EMDataset_ConvFormerS18] Ep 20/60 [12.9s] | Loss: 2.4086 | Val Raw: 0.9405 | Val EMA: 0.9406\n"}
+,{"stream_name":"stdout","time":410.794450455,"data":"[EMDataset_ConvFormerS18] Ep 21/60 [12.8s] | Loss: 2.3632 | Val Raw: 0.9357 | Val EMA: 0.9415\n"}
+,{"stream_name":"stdout","time":424.415370545,"data":"[EMDataset_ConvFormerS18] Ep 22/60 [12.8s] | Loss: 2.2626 | Val Raw: 0.9403 | Val EMA: 0.9403\n"}
+,{"stream_name":"stdout","time":438.029376421,"data":"[EMDataset_ConvFormerS18] Ep 23/60 [12.8s] | Loss: 2.1846 | Val Raw: 0.9383 | Val EMA: 0.9355\n"}
+,{"stream_name":"stdout","time":451.644649979,"data":"[EMDataset_ConvFormerS18] Ep 24/60 [12.8s] | Loss: 2.0777 | Val Raw: 0.9363 | Val EMA: 0.9362\n"}
+,{"stream_name":"stdout","time":465.22784444,"data":"[EMDataset_ConvFormerS18] Ep 25/60 [12.8s] | Loss: 1.9808 | Val Raw: 0.9294 | Val EMA: 0.9373\n"}
+,{"stream_name":"stdout","time":478.815643801,"data":"[EMDataset_ConvFormerS18] Ep 26/60 [12.8s] | Loss: 1.9068 | Val Raw: 0.9388 | Val EMA: 0.9382\n"}
+,{"stream_name":"stdout","time":492.634033938,"data":"[EMDataset_ConvFormerS18] Ep 27/60 [12.8s] | Loss: 1.8418 | Val Raw: 0.9517 | Val EMA: 0.9395 -\u003e [*] Best (RAW: 0.9517)\n"}
+,{"stream_name":"stdout","time":506.182578458,"data":"[EMDataset_ConvFormerS18] Ep 28/60 [12.7s] | Loss: 1.7701 | Val Raw: 0.9363 | Val EMA: 0.9408\n"}
+,{"stream_name":"stdout","time":519.74307852,"data":"[EMDataset_ConvFormerS18] Ep 29/60 [12.7s] | Loss: 1.7071 | Val Raw: 0.9454 | Val EMA: 0.9426\n"}
+,{"stream_name":"stdout","time":533.309518005,"data":"[EMDataset_ConvFormerS18] Ep 30/60 [12.8s] | Loss: 1.6378 | Val Raw: 0.9412 | Val EMA: 0.9425\n"}
+,{"stream_name":"stdout","time":546.968679361,"data":"[EMDataset_ConvFormerS18] Ep 31/60 [12.8s] | Loss: 1.5896 | Val Raw: 0.9364 | Val EMA: 0.9432\n"}
+,{"stream_name":"stdout","time":560.564751271,"data":"[EMDataset_ConvFormerS18] Ep 32/60 [12.8s] | Loss: 1.5277 | Val Raw: 0.9502 | Val EMA: 0.9436\n"}
+,{"stream_name":"stdout","time":574.186045523,"data":"[EMDataset_ConvFormerS18] Ep 33/60 [12.8s] | Loss: 1.4727 | Val Raw: 0.9510 | Val EMA: 0.9477\n"}
+,{"stream_name":"stdout","time":587.97066546,"data":"[EMDataset_ConvFormerS18] Ep 34/60 [12.8s] | Loss: 1.4067 | Val Raw: 0.9523 | Val EMA: 0.9458 -\u003e [*] Best (RAW: 0.9523)\n"}
+,{"stream_name":"stdout","time":601.557334737,"data":"[EMDataset_ConvFormerS18] Ep 35/60 [12.8s] | Loss: 1.3773 | Val Raw: 0.9483 | Val EMA: 0.9463\n"}
+,{"stream_name":"stdout","time":615.128428522,"data":"[EMDataset_ConvFormerS18] Ep 36/60 [12.8s] | Loss: 1.3352 | Val Raw: 0.9487 | Val EMA: 0.9459\n"}
+,{"stream_name":"stdout","time":628.718192234,"data":"[EMDataset_ConvFormerS18] Ep 37/60 [12.8s] | Loss: 1.3042 | Val Raw: 0.9493 | Val EMA: 0.9468\n"}
+,{"stream_name":"stdout","time":642.298966789,"data":"[EMDataset_ConvFormerS18] Ep 38/60 [12.8s] | Loss: 1.2624 | Val Raw: 0.9508 | Val EMA: 0.9484\n"}
+,{"stream_name":"stdout","time":655.886330906,"data":"[EMDataset_ConvFormerS18] Ep 39/60 [12.8s] | Loss: 1.2235 | Val Raw: 0.9514 | Val EMA: 0.9505\n"}
+,{"stream_name":"stdout","time":669.454649201,"data":"[EMDataset_ConvFormerS18] Ep 40/60 [12.8s] | Loss: 1.1900 | Val Raw: 0.9467 | Val EMA: 0.9494\n"}
+,{"stream_name":"stdout","time":683.025056916,"data":"[EMDataset_ConvFormerS18] Ep 41/60 [12.8s] | Loss: 1.1649 | Val Raw: 0.9477 | Val EMA: 0.9492\n"}
+,{"stream_name":"stdout","time":696.636747547,"data":"[EMDataset_ConvFormerS18] Ep 42/60 [12.8s] | Loss: 1.1283 | Val Raw: 0.9489 | Val EMA: 0.9492\n"}
+,{"stream_name":"stdout","time":710.194133868,"data":"[EMDataset_ConvFormerS18] Ep 43/60 [12.7s] | Loss: 1.1103 | Val Raw: 0.9508 | Val EMA: 0.9497\n"}
+,{"stream_name":"stdout","time":723.745842544,"data":"[EMDataset_ConvFormerS18] Ep 44/60 [12.8s] | Loss: 1.0858 | Val Raw: 0.9486 | Val EMA: 0.9495\n"}
+,{"stream_name":"stdout","time":737.313831371,"data":"[EMDataset_ConvFormerS18] Ep 45/60 [12.8s] | Loss: 1.0706 | Val Raw: 0.9483 | Val EMA: 0.9495\n"}
+,{"stream_name":"stdout","time":750.908027286,"data":"[EMDataset_ConvFormerS18] Ep 46/60 [12.8s] | Loss: 1.0496 | Val Raw: 0.9463 | Val EMA: 0.9497\n"}
+,{"stream_name":"stdout","time":764.492719252,"data":"[EMDataset_ConvFormerS18] Ep 47/60 [12.8s] | Loss: 1.0529 | Val Raw: 0.9483 | Val EMA: 0.9496\n"}
+,{"stream_name":"stdout","time":778.254654606,"data":"[EMDataset_ConvFormerS18] Ep 48/60 [12.7s] | Loss: 1.0301 | Val Raw: 0.9525 | Val EMA: 0.9500 -\u003e [*] Best (RAW: 0.9525)\n"}
+,{"stream_name":"stdout","time":792.069028357,"data":"[EMDataset_ConvFormerS18] Ep 49/60 [12.8s] | Loss: 1.0159 | Val Raw: 0.9540 | Val EMA: 0.9504 -\u003e [*] Best (RAW: 0.9540)\n"}
+,{"stream_name":"stdout","time":805.901221304,"data":"[EMDataset_ConvFormerS18] Ep 50/60 [12.8s] | Loss: 1.0065 | Val Raw: 0.9541 | Val EMA: 0.9510 -\u003e [*] Best (RAW: 0.9541)\n"}
+,{"stream_name":"stdout","time":819.500386051,"data":"[EMDataset_ConvFormerS18] Ep 51/60 [12.8s] | Loss: 1.0007 | Val Raw: 0.9541 | Val EMA: 0.9515\n"}
+,{"stream_name":"stdout","time":833.061979836,"data":"[EMDataset_ConvFormerS18] Ep 52/60 [12.8s] | Loss: 0.9945 | Val Raw: 0.9501 | Val EMA: 0.9519\n"}
+,{"stream_name":"stdout","time":847.036566759,"data":"[EMDataset_ConvFormerS18] Ep 53/60 [13.1s] | Loss: 0.9909 | Val Raw: 0.9496 | Val EMA: 0.9519\n"}
+,{"stream_name":"stdout","time":860.635632497,"data":"[EMDataset_ConvFormerS18] Ep 54/60 [12.8s] | Loss: 0.9871 | Val Raw: 0.9500 | Val EMA: 0.9520\n"}
+,{"stream_name":"stdout","time":874.256964391,"data":"[EMDataset_ConvFormerS18] Ep 55/60 [12.8s] | Loss: 0.9892 | Val Raw: 0.9498 | Val EMA: 0.9519\n"}
+,{"stream_name":"stdout","time":887.847591438,"data":"[EMDataset_ConvFormerS18] Ep 56/60 [12.8s] | Loss: 0.9829 | Val Raw: 0.9512 | Val EMA: 0.9520\n"}
+,{"stream_name":"stdout","time":901.436929795,"data":"[EMDataset_ConvFormerS18] Ep 57/60 [12.8s] | Loss: 0.9714 | Val Raw: 0.9526 | Val EMA: 0.9521\n"}
+,{"stream_name":"stdout","time":915.065794791,"data":"[EMDataset_ConvFormerS18] Ep 58/60 [12.8s] | Loss: 0.9743 | Val Raw: 0.9515 | Val EMA: 0.9521\n"}
+,{"stream_name":"stdout","time":928.681725082,"data":"[EMDataset_ConvFormerS18] Ep 59/60 [12.8s] | Loss: 0.9593 | Val Raw: 0.9512 | Val EMA: 0.9522\n"}
+,{"stream_name":"stdout","time":942.229398587,"data":"[EMDataset_ConvFormerS18] Ep 60/60 [12.8s] | Loss: 0.9678 | Val Raw: 0.9510 | Val EMA: 0.9521\n"}
+,{"stream_name":"stdout","time":942.231433875,"data":"\n"}
+,{"stream_name":"stdout","time":942.231456165,"data":"[+] Training Finished for EMDataset_ConvFormerS18! Best Val Macro Dice: 0.9541 @ Ep 50 (RAW)\n"}
+,{"stream_name":"stdout","time":961.01586681,"data":"\n"}
+,{"stream_name":"stdout","time":961.015967515,"data":"--- EMDataset_ConvFormerS18 TEST RESULTS (SINGLE-VIEW, T=0.50) ---\n"}
+,{"stream_name":"stdout","time":961.028149733,"data":"           Metric     Mean      Std   Median      Min       Max\n"}
+,{"stream_name":"stdout","time":961.028185561,"data":"             Dice 0.952009 0.013123 0.954423 0.913082  0.978511\n"}
+,{"stream_name":"stdout","time":961.028189647,"data":"             mIoU 0.908709 0.023769 0.912819 0.840065  0.957926\n"}
+,{"stream_name":"stdout","time":961.028192868,"data":"      Sensitivity 0.956392 0.022753 0.962692 0.876562  0.990273\n"}
+,{"stream_name":"stdout","time":961.028196007,"data":"      Specificity 0.996635 0.002243 0.997502 0.990216  0.999736\n"}
+,{"stream_name":"stdout","time":961.028199014,"data":"        Precision 0.948307 0.020742 0.951018 0.884434  0.990803\n"}
+,{"stream_name":"stdout","time":961.028201998,"data":"              FPR 0.003365 0.002243 0.002498 0.000264  0.009784\n"}
+,{"stream_name":"stdout","time":961.028205465,"data":"             HD95 2.383153 2.695192 2.000000 1.000000 24.700201\n"}
+,{"stream_name":"stdout","time":961.028208591,"data":"              ASD 1.261915 0.928411 0.924347 0.418701  4.851980\n"}
+,{"stream_name":"stdout","time":961.028211598,"data":"              BF2 0.954558 0.036650 0.964601 0.810758  1.000000\n"}
+,{"stream_name":"stdout","time":961.028214591,"data":"Global_Micro_Dice 0.950725 0.000000 0.950725 0.950725  0.950725\n"}
+,{"stream_name":"stdout","time":961.028217598,"data":" Global_Micro_IoU 0.906077 0.000000 0.906077 0.906077  0.906077\n"}
+,{"stream_name":"stdout","time":981.350162339,"data":"\n"}
+,{"stream_name":"stdout","time":981.350307983,"data":"--- EMDataset_ConvFormerS18 TEST RESULTS (4-VIEW TTA, T=0.50) ---\n"}
+,{"stream_name":"stdout","time":981.353099245,"data":"           Metric     Mean      Std   Median      Min       Max\n"}
+,{"stream_name":"stdout","time":981.35312817,"data":"             Dice 0.952918 0.013301 0.954569 0.915524  0.979609\n"}
+,{"stream_name":"stdout","time":981.353135098,"data":"             mIoU 0.910373 0.024079 0.913086 0.844209  0.960033\n"}
+,{"stream_name":"stdout","time":981.353139887,"data":"      Sensitivity 0.958970 0.022637 0.965520 0.881422  0.990849\n"}
+,{"stream_name":"stdout","time":981.353149462,"data":"      Specificity 0.996611 0.002173 0.997462 0.990519  0.999760\n"}
+,{"stream_name":"stdout","time":981.353153508,"data":"        Precision 0.947583 0.021148 0.950871 0.877809  0.991636\n"}
+,{"stream_name":"stdout","time":981.353156545,"data":"              FPR 0.003389 0.002173 0.002538 0.000240  0.009481\n"}
+,{"stream_name":"stdout","time":981.353159603,"data":"             HD95 2.667191 6.287092 2.000000 1.000000 72.562498\n"}
+,{"stream_name":"stdout","time":981.353162612,"data":"              ASD 1.277463 0.936884 0.938672 0.401030  5.589559\n"}
+,{"stream_name":"stdout","time":981.353165558,"data":"              BF2 0.957430 0.035685 0.967581 0.818448  1.000000\n"}
+,{"stream_name":"stdout","time":981.353168536,"data":"Global_Micro_Dice 0.951656 0.000000 0.951656 0.951656  0.951656\n"}
+,{"stream_name":"stdout","time":981.353171607,"data":" Global_Micro_IoU 0.907770 0.000000 0.907770 0.907770  0.907770\n"}
+,{"stream_name":"stdout","time":982.500761348,"data":"[*] EMDataset_ConvFormerS18 Calibrated Threshold on Val: T_opt = 0.630 (Val TTA Macro Dice: 0.9551)\n"}
+,{"stream_name":"stdout","time":1002.963221023,"data":"\n"}
+,{"stream_name":"stdout","time":1002.963314674,"data":"--- EMDataset_ConvFormerS18 TEST RESULTS (CALIBRATED 4-VIEW TTA, T_opt=0.630) ---\n"}
+,{"stream_name":"stdout","time":1002.966590353,"data":"           Metric     Mean      Std   Median      Min       Max  T_opt\n"}
+,{"stream_name":"stdout","time":1002.96661213,"data":"             Dice 0.953107 0.013895 0.954630 0.915111  0.980676   0.63\n"}
+,{"stream_name":"stdout","time":1002.966617584,"data":"             mIoU 0.910746 0.025174 0.913198 0.843506  0.962085   0.63\n"}
+,{"stream_name":"stdout","time":1002.966634783,"data":"      Sensitivity 0.949791 0.025207 0.958310 0.863474  0.986179   0.63\n"}
+,{"stream_name":"stdout","time":1002.9666398,"data":"      Specificity 0.997253 0.001864 0.997953 0.991815  0.999831   0.63\n"}
+,{"stream_name":"stdout","time":1002.96664448,"data":"        Precision 0.957100 0.018695 0.960503 0.898376  0.993966   0.63\n"}
+,{"stream_name":"stdout","time":1002.966648869,"data":"              FPR 0.002747 0.001864 0.002047 0.000169  0.008185   0.63\n"}
+,{"stream_name":"stdout","time":1002.966653314,"data":"             HD95 2.138464 1.809509 2.000000 1.000000 21.260292   0.63\n"}
+,{"stream_name":"stdout","time":1002.966657928,"data":"              ASD 1.254565 0.944321 0.894763 0.379786  4.619714   0.63\n"}
+,{"stream_name":"stdout","time":1002.966662341,"data":"              BF2 0.956849 0.037965 0.965900 0.792178  1.000000   0.63\n"}
+,{"stream_name":"stdout","time":1002.966666266,"data":"Global_Micro_Dice 0.952093 0.000000 0.952093 0.952093  0.952093   0.63\n"}
+,{"stream_name":"stdout","time":1002.966670229,"data":" Global_Micro_IoU 0.908567 0.000000 0.908567 0.908567  0.908567   0.63\n"}
+,{"stream_name":"stdout","time":1003.018928787,"data":"\n"}
+,{"stream_name":"stdout","time":1003.018950264,"data":"================================================================================\n"}
+,{"stream_name":"stdout","time":1003.018966507,"data":"[*] STARTING GDF-Netv4 BENCHMARK: CHASE-DB1_ConvFormerS18 (60 Epochs)\n"}
+,{"stream_name":"stdout","time":1003.018983801,"data":"[*] Backbone: convformer_s18.sail_in22k_ft_in1k_384 | Warm-Start: None\n"}
+,{"stream_name":"stdout","time":1003.019160637,"data":"================================================================================\n"}
+,{"stream_name":"stdout","time":1003.915831754,"data":"[+] Model Initialized | Total Params: 36,108,336 | Channels: (64, 128, 320, 512)\n"}
+,{"stream_name":"stdout","time":1021.332906299,"data":"[CHASE-DB1_ConvFormerS18] Ep 01/60 [16.3s] | Loss: 5.3130 | Val Raw: 0.6449 | Val EMA: 0.6520 -\u003e [*] Best (EMA: 0.6520)\n"}
+,{"stream_name":"stdout","time":1038.636006403,"data":"[CHASE-DB1_ConvFormerS18] Ep 02/60 [16.2s] | Loss: 4.5737 | Val Raw: 0.6768 | Val EMA: 0.6722 -\u003e [*] Best (RAW: 0.6768)\n"}
+,{"stream_name":"stdout","time":1055.811377474,"data":"[CHASE-DB1_ConvFormerS18] Ep 03/60 [16.1s] | Loss: 4.3113 | Val Raw: 0.6842 | Val EMA: 0.6846 -\u003e [*] Best (EMA: 0.6846)\n"}
+,{"stream_name":"stdout","time":1073.026214367,"data":"[CHASE-DB1_ConvFormerS18] Ep 04/60 [16.1s] | Loss: 4.1157 | Val Raw: 0.6919 | Val EMA: 0.7012 -\u003e [*] Best (EMA: 0.7012)\n"}
+,{"stream_name":"stdout","time":1090.271122976,"data":"[CHASE-DB1_ConvFormerS18] Ep 05/60 [16.2s] | Loss: 3.9590 | Val Raw: 0.7014 | Val EMA: 0.7034 -\u003e [*] Best (EMA: 0.7034)\n"}
+,{"stream_name":"stdout","time":1107.535139365,"data":"[CHASE-DB1_ConvFormerS18] Ep 06/60 [16.2s] | Loss: 3.8275 | Val Raw: 0.7106 | Val EMA: 0.7107 -\u003e [*] Best (EMA: 0.7107)\n"}
+,{"stream_name":"stdout","time":1124.815430473,"data":"[CHASE-DB1_ConvFormerS18] Ep 07/60 [16.1s] | Loss: 3.7174 | Val Raw: 0.7319 | Val EMA: 0.7149 -\u003e [*] Best (RAW: 0.7319)\n"}
+,{"stream_name":"stdout","time":1141.74107885,"data":"[CHASE-DB1_ConvFormerS18] Ep 08/60 [16.0s] | Loss: 3.6313 | Val Raw: 0.7266 | Val EMA: 0.7191\n"}
+,{"stream_name":"stdout","time":1158.897472259,"data":"[CHASE-DB1_ConvFormerS18] Ep 09/60 [16.0s] | Loss: 3.5499 | Val Raw: 0.7342 | Val EMA: 0.7270 -\u003e [*] Best (RAW: 0.7342)\n"}
+,{"stream_name":"stdout","time":1175.974950657,"data":"[CHASE-DB1_ConvFormerS18] Ep 10/60 [16.2s] | Loss: 3.4778 | Val Raw: 0.7332 | Val EMA: 0.7292\n"}
+,{"stream_name":"stdout","time":1193.103463393,"data":"[CHASE-DB1_ConvFormerS18] Ep 11/60 [16.0s] | Loss: 3.4205 | Val Raw: 0.7461 | Val EMA: 0.7324 -\u003e [*] Best (RAW: 0.7461)\n"}
+,{"stream_name":"stdout","time":1210.413551236,"data":"[CHASE-DB1_ConvFormerS18] Ep 12/60 [16.2s] | Loss: 3.3709 | Val Raw: 0.7485 | Val EMA: 0.7352 -\u003e [*] Best (RAW: 0.7485)\n"}
+,{"stream_name":"stdout","time":1227.41259509,"data":"[CHASE-DB1_ConvFormerS18] Ep 13/60 [16.1s] | Loss: 3.3286 | Val Raw: 0.7324 | Val EMA: 0.7375\n"}
+,{"stream_name":"stdout","time":1244.452798612,"data":"[CHASE-DB1_ConvFormerS18] Ep 14/60 [16.1s] | Loss: 3.2931 | Val Raw: 0.7363 | Val EMA: 0.7399\n"}
+,{"stream_name":"stdout","time":1261.454858444,"data":"[CHASE-DB1_ConvFormerS18] Ep 15/60 [16.1s] | Loss: 3.2644 | Val Raw: 0.7461 | Val EMA: 0.7429\n"}
+,{"stream_name":"stdout","time":1278.422530051,"data":"[CHASE-DB1_ConvFormerS18] Ep 16/60 [16.1s] | Loss: 3.2457 | Val Raw: 0.7380 | Val EMA: 0.7452\n"}
+,{"stream_name":"stdout","time":1295.354981762,"data":"[CHASE-DB1_ConvFormerS18] Ep 17/60 [16.1s] | Loss: 3.2346 | Val Raw: 0.7409 | Val EMA: 0.7458\n"}
+,{"stream_name":"stdout","time":1312.27715449,"data":"[CHASE-DB1_ConvFormerS18] Ep 18/60 [16.1s] | Loss: 3.2238 | Val Raw: 0.7477 | Val EMA: 0.7469\n"}
+,{"stream_name":"stdout","time":1329.536320492,"data":"[CHASE-DB1_ConvFormerS18] Ep 19/60 [16.2s] | Loss: 3.2172 | Val Raw: 0.7507 | Val EMA: 0.7471 -\u003e [*] Best (RAW: 0.7507)\n"}
+,{"stream_name":"stdout","time":1346.468713894,"data":"[CHASE-DB1_ConvFormerS18] Ep 20/60 [16.1s] | Loss: 3.2125 | Val Raw: 0.7506 | Val EMA: 0.7478\n"}
+,{"stream_name":"stdout","time":1363.730792178,"data":"[CHASE-DB1_ConvFormerS18] Ep 21/60 [16.1s] | Loss: 3.2167 | Val Raw: 0.7608 | Val EMA: 0.7462 -\u003e [*] Best (RAW: 0.7608)\n"}
+,{"stream_name":"stdout","time":1381.083963887,"data":"[CHASE-DB1_ConvFormerS18] Ep 22/60 [16.2s] | Loss: 3.1558 | Val Raw: 0.7680 | Val EMA: 0.7478 -\u003e [*] Best (RAW: 0.7680)\n"}
+,{"stream_name":"stdout","time":1398.180274815,"data":"[CHASE-DB1_ConvFormerS18] Ep 23/60 [16.2s] | Loss: 3.0936 | Val Raw: 0.7612 | Val EMA: 0.7484\n"}
+,{"stream_name":"stdout","time":1415.329550127,"data":"[CHASE-DB1_ConvFormerS18] Ep 24/60 [16.0s] | Loss: 3.0409 | Val Raw: 0.7726 | Val EMA: 0.7528 -\u003e [*] Best (RAW: 0.7726)\n"}
+,{"stream_name":"stdout","time":1432.384712107,"data":"[CHASE-DB1_ConvFormerS18] Ep 25/60 [16.2s] | Loss: 2.9979 | Val Raw: 0.7661 | Val EMA: 0.7540\n"}
+,{"stream_name":"stdout","time":1449.41958528,"data":"[CHASE-DB1_ConvFormerS18] Ep 26/60 [16.2s] | Loss: 2.9569 | Val Raw: 0.7706 | Val EMA: 0.7556\n"}
+,{"stream_name":"stdout","time":1466.695797191,"data":"[CHASE-DB1_ConvFormerS18] Ep 27/60 [16.2s] | Loss: 2.9006 | Val Raw: 0.7745 | Val EMA: 0.7577 -\u003e [*] Best (RAW: 0.7745)\n"}
+,{"stream_name":"stdout","time":1483.697370291,"data":"[CHASE-DB1_ConvFormerS18] Ep 28/60 [16.1s] | Loss: 2.8568 | Val Raw: 0.7647 | Val EMA: 0.7595\n"}
+,{"stream_name":"stdout","time":1501.367008861,"data":"[CHASE-DB1_ConvFormerS18] Ep 29/60 [16.6s] | Loss: 2.8266 | Val Raw: 0.7746 | Val EMA: 0.7632 -\u003e [*] Best (RAW: 0.7746)\n"}
+,{"stream_name":"stdout","time":1518.581878134,"data":"[CHASE-DB1_ConvFormerS18] Ep 30/60 [16.1s] | Loss: 2.7835 | Val Raw: 0.7855 | Val EMA: 0.7647 -\u003e [*] Best (RAW: 0.7855)\n"}
+,{"stream_name":"stdout","time":1535.899938014,"data":"[CHASE-DB1_ConvFormerS18] Ep 31/60 [16.2s] | Loss: 2.7519 | Val Raw: 0.7960 | Val EMA: 0.7676 -\u003e [*] Best (RAW: 0.7960)\n"}
+,{"stream_name":"stdout","time":1552.885453157,"data":"[CHASE-DB1_ConvFormerS18] Ep 32/60 [16.1s] | Loss: 2.7155 | Val Raw: 0.7818 | Val EMA: 0.7704\n"}
+,{"stream_name":"stdout","time":1569.949946684,"data":"[CHASE-DB1_ConvFormerS18] Ep 33/60 [16.2s] | Loss: 2.6802 | Val Raw: 0.7911 | Val EMA: 0.7719\n"}
+,{"stream_name":"stdout","time":1587.186394,"data":"[CHASE-DB1_ConvFormerS18] Ep 34/60 [16.2s] | Loss: 2.6512 | Val Raw: 0.7984 | Val EMA: 0.7743 -\u003e [*] Best (RAW: 0.7984)\n"}
+,{"stream_name":"stdout","time":1604.049941483,"data":"[CHASE-DB1_ConvFormerS18] Ep 35/60 [16.0s] | Loss: 2.6172 | Val Raw: 0.7963 | Val EMA: 0.7758\n"}
+,{"stream_name":"stdout","time":1621.03524187,"data":"[CHASE-DB1_ConvFormerS18] Ep 36/60 [16.1s] | Loss: 2.5902 | Val Raw: 0.7886 | Val EMA: 0.7772\n"}
+,{"stream_name":"stdout","time":1638.080168796,"data":"[CHASE-DB1_ConvFormerS18] Ep 37/60 [16.2s] | Loss: 2.5757 | Val Raw: 0.7904 | Val EMA: 0.7790\n"}
+,{"stream_name":"stdout","time":1655.109094513,"data":"[CHASE-DB1_ConvFormerS18] Ep 38/60 [16.2s] | Loss: 2.5449 | Val Raw: 0.7948 | Val EMA: 0.7805\n"}
+,{"stream_name":"stdout","time":1672.028732077,"data":"[CHASE-DB1_ConvFormerS18] Ep 39/60 [16.0s] | Loss: 2.5259 | Val Raw: 0.7878 | Val EMA: 0.7814\n"}
+,{"stream_name":"stdout","time":1689.080381909,"data":"[CHASE-DB1_ConvFormerS18] Ep 40/60 [16.2s] | Loss: 2.5182 | Val Raw: 0.7945 | Val EMA: 0.7829\n"}
+,{"stream_name":"stdout","time":1706.36801142,"data":"[CHASE-DB1_ConvFormerS18] Ep 41/60 [16.2s] | Loss: 2.4971 | Val Raw: 0.7996 | Val EMA: 0.7829 -\u003e [*] Best (RAW: 0.7996)\n"}
+,{"stream_name":"stdout","time":1723.311888345,"data":"[CHASE-DB1_ConvFormerS18] Ep 42/60 [16.1s] | Loss: 2.4840 | Val Raw: 0.7990 | Val EMA: 0.7836\n"}
+,{"stream_name":"stdout","time":1740.34532946,"data":"[CHASE-DB1_ConvFormerS18] Ep 43/60 [16.2s] | Loss: 2.4756 | Val Raw: 0.7888 | Val EMA: 0.7844\n"}
+,{"stream_name":"stdout","time":1757.308701867,"data":"[CHASE-DB1_ConvFormerS18] Ep 44/60 [16.1s] | Loss: 2.4601 | Val Raw: 0.7803 | Val EMA: 0.7862\n"}
+,{"stream_name":"stdout","time":1774.390558033,"data":"[CHASE-DB1_ConvFormerS18] Ep 45/60 [16.2s] | Loss: 2.4570 | Val Raw: 0.7845 | Val EMA: 0.7868\n"}
+,{"stream_name":"stdout","time":1791.47261312,"data":"[CHASE-DB1_ConvFormerS18] Ep 46/60 [16.2s] | Loss: 2.4237 | Val Raw: 0.7893 | Val EMA: 0.7876\n"}
+,{"stream_name":"stdout","time":1808.352312668,"data":"[CHASE-DB1_ConvFormerS18] Ep 47/60 [16.0s] | Loss: 2.4153 | Val Raw: 0.7855 | Val EMA: 0.7887\n"}
+,{"stream_name":"stdout","time":1825.317657492,"data":"[CHASE-DB1_ConvFormerS18] Ep 48/60 [16.1s] | Loss: 2.4065 | Val Raw: 0.7817 | Val EMA: 0.7893\n"}
+,{"stream_name":"stdout","time":1842.338948309,"data":"[CHASE-DB1_ConvFormerS18] Ep 49/60 [16.2s] | Loss: 2.3936 | Val Raw: 0.7756 | Val EMA: 0.7893\n"}
+,{"stream_name":"stdout","time":1859.350962976,"data":"[CHASE-DB1_ConvFormerS18] Ep 50/60 [16.1s] | Loss: 2.3818 | Val Raw: 0.7784 | Val EMA: 0.7895\n"}
+,{"stream_name":"stdout","time":1876.288191259,"data":"[CHASE-DB1_ConvFormerS18] Ep 51/60 [16.1s] | Loss: 2.3735 | Val Raw: 0.7810 | Val EMA: 0.7895\n"}
+,{"stream_name":"stdout","time":1893.174563964,"data":"[CHASE-DB1_ConvFormerS18] Ep 52/60 [16.0s] | Loss: 2.3650 | Val Raw: 0.7829 | Val EMA: 0.7894\n"}
+,{"stream_name":"stdout","time":1910.286706693,"data":"[CHASE-DB1_ConvFormerS18] Ep 53/60 [16.3s] | Loss: 2.3601 | Val Raw: 0.7839 | Val EMA: 0.7898\n"}
+,{"stream_name":"stdout","time":1927.20016079,"data":"[CHASE-DB1_ConvFormerS18] Ep 54/60 [16.0s] | Loss: 2.3607 | Val Raw: 0.7844 | Val EMA: 0.7900\n"}
+,{"stream_name":"stdout","time":1944.324359655,"data":"[CHASE-DB1_ConvFormerS18] Ep 55/60 [16.2s] | Loss: 2.3602 | Val Raw: 0.7859 | Val EMA: 0.7903\n"}
+,{"stream_name":"stdout","time":1961.417206458,"data":"[CHASE-DB1_ConvFormerS18] Ep 56/60 [16.2s] | Loss: 2.3630 | Val Raw: 0.7930 | Val EMA: 0.7907\n"}
+,{"stream_name":"stdout","time":1978.47124163,"data":"[CHASE-DB1_ConvFormerS18] Ep 57/60 [16.2s] | Loss: 2.3504 | Val Raw: 0.7946 | Val EMA: 0.7910\n"}
+,{"stream_name":"stdout","time":1995.555553058,"data":"[CHASE-DB1_ConvFormerS18] Ep 58/60 [16.2s] | Loss: 2.3453 | Val Raw: 0.7945 | Val EMA: 0.7910\n"}
+,{"stream_name":"stdout","time":2012.473088851,"data":"[CHASE-DB1_ConvFormerS18] Ep 59/60 [16.0s] | Loss: 2.3408 | Val Raw: 0.7954 | Val EMA: 0.7912\n"}
+,{"stream_name":"stdout","time":2029.461972173,"data":"[CHASE-DB1_ConvFormerS18] Ep 60/60 [16.1s] | Loss: 2.3398 | Val Raw: 0.7939 | Val EMA: 0.7914\n"}
+,{"stream_name":"stdout","time":2029.464091494,"data":"\n"}
+,{"stream_name":"stdout","time":2029.464130471,"data":"[+] Training Finished for CHASE-DB1_ConvFormerS18! Best Val Macro Dice: 0.7996 @ Ep 41 (RAW)\n"}
+,{"stream_name":"stdout","time":2030.32598755,"data":"\n"}
+,{"stream_name":"stdout","time":2030.326160361,"data":"--- CHASE-DB1_ConvFormerS18 TEST RESULTS (SINGLE-VIEW, T=0.50) ---\n"}
+,{"stream_name":"stdout","time":2030.329220147,"data":"           Metric     Mean      Std   Median      Min      Max\n"}
+,{"stream_name":"stdout","time":2030.32923506,"data":"             Dice 0.798669 0.016845 0.793876 0.784017 0.822905\n"}
+,{"stream_name":"stdout","time":2030.329241423,"data":"             mIoU 0.665068 0.023599 0.658206 0.644760 0.699098\n"}
+,{"stream_name":"stdout","time":2030.329246726,"data":"      Sensitivity 0.854868 0.032564 0.859542 0.811089 0.889299\n"}
+,{"stream_name":"stdout","time":2030.329253041,"data":"      Specificity 0.979170 0.004990 0.980780 0.971889 0.983231\n"}
+,{"stream_name":"stdout","time":2030.329258341,"data":"        Precision 0.751326 0.040793 0.748793 0.714870 0.792847\n"}
+,{"stream_name":"stdout","time":2030.329264243,"data":"              FPR 0.020830 0.004990 0.019220 0.016769 0.028111\n"}
+,{"stream_name":"stdout","time":2030.329269753,"data":"             HD95 2.809017 1.464888 2.118034 2.000000 5.000000\n"}
+,{"stream_name":"stdout","time":2030.329275151,"data":"              ASD 1.059790 0.123742 1.027240 0.958615 1.226064\n"}
+,{"stream_name":"stdout","time":2030.329280777,"data":"              BF2 0.940522 0.014227 0.946435 0.919632 0.949586\n"}
+,{"stream_name":"stdout","time":2030.329286434,"data":"Global_Micro_Dice 0.799073 0.000000 0.799073 0.799073 0.799073\n"}
+,{"stream_name":"stdout","time":2030.329294191,"data":" Global_Micro_IoU 0.665380 0.000000 0.665380 0.665380 0.665380\n"}
+,{"stream_name":"stdout","time":2031.275980125,"data":"\n"}
+,{"stream_name":"stdout","time":2031.276152125,"data":"--- CHASE-DB1_ConvFormerS18 TEST RESULTS (4-VIEW TTA, T=0.50) ---\n"}
+,{"stream_name":"stdout","time":2031.279171478,"data":"           Metric     Mean      Std   Median      Min      Max\n"}
+,{"stream_name":"stdout","time":2031.279195236,"data":"             Dice 0.800234 0.018747 0.798363 0.779580 0.824632\n"}
+,{"stream_name":"stdout","time":2031.279202629,"data":"             mIoU 0.667299 0.026173 0.664411 0.638779 0.701594\n"}
+,{"stream_name":"stdout","time":2031.279208651,"data":"      Sensitivity 0.853016 0.029333 0.854725 0.815604 0.887013\n"}
+,{"stream_name":"stdout","time":2031.279214207,"data":"      Specificity 0.979718 0.004909 0.981128 0.972655 0.983961\n"}
+,{"stream_name":"stdout","time":2031.279220031,"data":"        Precision 0.755595 0.044652 0.754327 0.714371 0.799354\n"}
+,{"stream_name":"stdout","time":2031.279225871,"data":"              FPR 0.020282 0.004909 0.018872 0.016039 0.027345\n"}
+,{"stream_name":"stdout","time":2031.279231509,"data":"             HD95 2.648810 0.989143 2.236068 2.000000 4.123106\n"}
+,{"stream_name":"stdout","time":2031.279237324,"data":"              ASD 1.071709 0.130384 1.076232 0.945868 1.188502\n"}
+,{"stream_name":"stdout","time":2031.279255003,"data":"              BF2 0.940567 0.011742 0.943878 0.923900 0.950611\n"}
+,{"stream_name":"stdout","time":2031.279259892,"data":"Global_Micro_Dice 0.801038 0.000000 0.801038 0.801038 0.801038\n"}
+,{"stream_name":"stdout","time":2031.279264201,"data":" Global_Micro_IoU 0.668110 0.000000 0.668110 0.668110 0.668110\n"}
+,{"stream_name":"stdout","time":2032.433585608,"data":"[*] CHASE-DB1_ConvFormerS18 Calibrated Threshold on Val: T_opt = 0.550 (Val TTA Macro Dice: 0.7984)\n"}
+,{"stream_name":"stdout","time":2033.398970342,"data":"\n"}
+,{"stream_name":"stdout","time":2033.399019194,"data":"--- CHASE-DB1_ConvFormerS18 TEST RESULTS (CALIBRATED 4-VIEW TTA, T_opt=0.550) ---\n"}
+,{"stream_name":"stdout","time":2033.402415192,"data":"           Metric     Mean      Std   Median      Min      Max  T_opt\n"}
+,{"stream_name":"stdout","time":2033.402434671,"data":"             Dice 0.802327 0.017431 0.800900 0.782557 0.824952   0.55\n"}
+,{"stream_name":"stdout","time":2033.402439798,"data":"             mIoU 0.670172 0.024399 0.667921 0.642787 0.702058   0.55\n"}
+,{"stream_name":"stdout","time":2033.402444214,"data":"      Sensitivity 0.838470 0.029656 0.840161 0.800883 0.872675   0.55\n"}
+,{"stream_name":"stdout","time":2033.402449386,"data":"      Specificity 0.981737 0.004485 0.982902 0.975372 0.985774   0.55\n"}
+,{"stream_name":"stdout","time":2033.402454654,"data":"        Precision 0.771247 0.044536 0.770706 0.728590 0.814987   0.55\n"}
+,{"stream_name":"stdout","time":2033.402459956,"data":"              FPR 0.018263 0.004485 0.017098 0.014226 0.024628   0.55\n"}
+,{"stream_name":"stdout","time":2033.402464745,"data":"             HD95 2.927051 1.381966 2.236068 2.236068 5.000000   0.55\n"}
+,{"stream_name":"stdout","time":2033.402469838,"data":"              ASD 1.073431 0.130911 1.077699 0.940498 1.197828   0.55\n"}
+,{"stream_name":"stdout","time":2033.402474195,"data":"              BF2 0.938747 0.012947 0.943164 0.919932 0.948727   0.55\n"}
+,{"stream_name":"stdout","time":2033.402478521,"data":"Global_Micro_Dice 0.803134 0.000000 0.803134 0.803134 0.803134   0.55\n"}
+,{"stream_name":"stdout","time":2033.402482875,"data":" Global_Micro_IoU 0.671031 0.000000 0.671031 0.671031 0.671031   0.55\n"}
+,{"stream_name":"stdout","time":2033.551565132,"data":"\n"}
+,{"stream_name":"stdout","time":2033.55160024,"data":"================================================================================\n"}
+,{"stream_name":"stdout","time":2033.551606287,"data":"[*] STARTING GDF-Netv4 BENCHMARK: DRIVE_ConvFormerS18 (50 Epochs)\n"}
+,{"stream_name":"stdout","time":2033.551699874,"data":"[*] Backbone: convformer_s18.sail_in22k_ft_in1k_384 | Warm-Start: /kaggle/working/GDFNetV4_CHASE-DB1_ConvFormerS18_best.pth\n"}
+,{"stream_name":"stdout","time":2033.551814044,"data":"================================================================================\n"}
+,{"stream_name":"stdout","time":2034.676587812,"data":"[+] Successfully loaded Warm-Start Transfer Checkpoint: /kaggle/working/GDFNetV4_CHASE-DB1_ConvFormerS18_best.pth\n"}
+,{"stream_name":"stdout","time":2034.678621276,"data":"[+] Model Initialized | Total Params: 36,108,336 | Channels: (64, 128, 320, 512)\n"}
+,{"stream_name":"stdout","time":2057.699473131,"data":"[DRIVE_ConvFormerS18] Ep 01/50 [12.1s] | Loss: 3.0743 | Val Raw: 0.7502 | Val EMA: 0.7428 -\u003e [*] Best (RAW: 0.7502)\n"}
+,{"stream_name":"stdout","time":2070.447973784,"data":"[DRIVE_ConvFormerS18] Ep 02/50 [11.8s] | Loss: 2.9823 | Val Raw: 0.7528 | Val EMA: 0.7529 -\u003e [*] Best (EMA: 0.7529)\n"}
+,{"stream_name":"stdout","time":2083.449560926,"data":"[DRIVE_ConvFormerS18] Ep 03/50 [12.0s] | Loss: 2.9279 | Val Raw: 0.7538 | Val EMA: 0.7549 -\u003e [*] Best (EMA: 0.7549)\n"}
+,{"stream_name":"stdout","time":2096.403144488,"data":"[DRIVE_ConvFormerS18] Ep 04/50 [12.0s] | Loss: 2.9124 | Val Raw: 0.7590 | Val EMA: 0.7555 -\u003e [*] Best (RAW: 0.7590)\n"}
+,{"stream_name":"stdout","time":2109.206027999,"data":"[DRIVE_ConvFormerS18] Ep 05/50 [11.8s] | Loss: 2.8810 | Val Raw: 0.7627 | Val EMA: 0.7547 -\u003e [*] Best (RAW: 0.7627)\n"}
+,{"stream_name":"stdout","time":2121.950283086,"data":"[DRIVE_ConvFormerS18] Ep 06/50 [11.8s] | Loss: 2.8638 | Val Raw: 0.7645 | Val EMA: 0.7556 -\u003e [*] Best (RAW: 0.7645)\n"}
+,{"stream_name":"stdout","time":2134.83104814,"data":"[DRIVE_ConvFormerS18] Ep 07/50 [12.2s] | Loss: 2.8482 | Val Raw: 0.7617 | Val EMA: 0.7560\n"}
+,{"stream_name":"stdout","time":2147.326794566,"data":"[DRIVE_ConvFormerS18] Ep 08/50 [11.7s] | Loss: 2.8277 | Val Raw: 0.7584 | Val EMA: 0.7563\n"}
+,{"stream_name":"stdout","time":2159.951923957,"data":"[DRIVE_ConvFormerS18] Ep 09/50 [11.9s] | Loss: 2.8114 | Val Raw: 0.7631 | Val EMA: 0.7581\n"}
+,{"stream_name":"stdout","time":2172.569239296,"data":"[DRIVE_ConvFormerS18] Ep 10/50 [11.9s] | Loss: 2.8008 | Val Raw: 0.7620 | Val EMA: 0.7573\n"}
+,{"stream_name":"stdout","time":2185.065902914,"data":"[DRIVE_ConvFormerS18] Ep 11/50 [11.8s] | Loss: 2.7829 | Val Raw: 0.7618 | Val EMA: 0.7572\n"}
+,{"stream_name":"stdout","time":2197.55008148,"data":"[DRIVE_ConvFormerS18] Ep 12/50 [11.7s] | Loss: 2.7690 | Val Raw: 0.7602 | Val EMA: 0.7568\n"}
+,{"stream_name":"stdout","time":2210.126160057,"data":"[DRIVE_ConvFormerS18] Ep 13/50 [11.8s] | Loss: 2.7615 | Val Raw: 0.7555 | Val EMA: 0.7570\n"}
+,{"stream_name":"stdout","time":2222.72737254,"data":"[DRIVE_ConvFormerS18] Ep 14/50 [11.9s] | Loss: 2.7440 | Val Raw: 0.7608 | Val EMA: 0.7582\n"}
+,{"stream_name":"stdout","time":2235.368196932,"data":"[DRIVE_ConvFormerS18] Ep 15/50 [11.9s] | Loss: 2.7406 | Val Raw: 0.7564 | Val EMA: 0.7581\n"}
+,{"stream_name":"stdout","time":2247.953038578,"data":"[DRIVE_ConvFormerS18] Ep 16/50 [11.8s] | Loss: 2.7297 | Val Raw: 0.7601 | Val EMA: 0.7583\n"}
+,{"stream_name":"stdout","time":2260.448280639,"data":"[DRIVE_ConvFormerS18] Ep 17/50 [11.8s] | Loss: 2.7286 | Val Raw: 0.7608 | Val EMA: 0.7591\n"}
+,{"stream_name":"stdout","time":2273.046627982,"data":"[DRIVE_ConvFormerS18] Ep 18/50 [11.9s] | Loss: 2.7191 | Val Raw: 0.7604 | Val EMA: 0.7598\n"}
+,{"stream_name":"stdout","time":2285.584823525,"data":"[DRIVE_ConvFormerS18] Ep 19/50 [11.8s] | Loss: 2.7154 | Val Raw: 0.7604 | Val EMA: 0.7596\n"}
+,{"stream_name":"stdout","time":2298.210602836,"data":"[DRIVE_ConvFormerS18] Ep 20/50 [11.9s] | Loss: 2.7252 | Val Raw: 0.7590 | Val EMA: 0.7598\n"}
+,{"stream_name":"stdout","time":2310.894877838,"data":"[DRIVE_ConvFormerS18] Ep 21/50 [11.9s] | Loss: 2.7194 | Val Raw: 0.7549 | Val EMA: 0.7605\n"}
+,{"stream_name":"stdout","time":2323.73765672,"data":"[DRIVE_ConvFormerS18] Ep 22/50 [11.9s] | Loss: 2.7244 | Val Raw: 0.7659 | Val EMA: 0.7596 -\u003e [*] Best (RAW: 0.7659)\n"}
+,{"stream_name":"stdout","time":2336.336556077,"data":"[DRIVE_ConvFormerS18] Ep 23/50 [11.9s] | Loss: 2.7137 | Val Raw: 0.7658 | Val EMA: 0.7610\n"}
+,{"stream_name":"stdout","time":2348.976849435,"data":"[DRIVE_ConvFormerS18] Ep 24/50 [11.9s] | Loss: 2.6933 | Val Raw: 0.7642 | Val EMA: 0.7610\n"}
+,{"stream_name":"stdout","time":2361.533758136,"data":"[DRIVE_ConvFormerS18] Ep 25/50 [11.8s] | Loss: 2.6872 | Val Raw: 0.7611 | Val EMA: 0.7610\n"}
+,{"stream_name":"stdout","time":2374.028083594,"data":"[DRIVE_ConvFormerS18] Ep 26/50 [11.7s] | Loss: 2.6706 | Val Raw: 0.7595 | Val EMA: 0.7624\n"}
+,{"stream_name":"stdout","time":2386.587753472,"data":"[DRIVE_ConvFormerS18] Ep 27/50 [11.8s] | Loss: 2.6632 | Val Raw: 0.7629 | Val EMA: 0.7623\n"}
+,{"stream_name":"stdout","time":2399.142889053,"data":"[DRIVE_ConvFormerS18] Ep 28/50 [11.8s] | Loss: 2.6524 | Val Raw: 0.7632 | Val EMA: 0.7630\n"}
+,{"stream_name":"stdout","time":2411.838171421,"data":"[DRIVE_ConvFormerS18] Ep 29/50 [11.9s] | Loss: 2.6417 | Val Raw: 0.7631 | Val EMA: 0.7637\n"}
+,{"stream_name":"stdout","time":2424.455868179,"data":"[DRIVE_ConvFormerS18] Ep 30/50 [11.8s] | Loss: 2.6366 | Val Raw: 0.7614 | Val EMA: 0.7643\n"}
+,{"stream_name":"stdout","time":2437.074304583,"data":"[DRIVE_ConvFormerS18] Ep 31/50 [11.9s] | Loss: 2.6209 | Val Raw: 0.7639 | Val EMA: 0.7644\n"}
+,{"stream_name":"stdout","time":2449.579161929,"data":"[DRIVE_ConvFormerS18] Ep 32/50 [11.8s] | Loss: 2.6184 | Val Raw: 0.7596 | Val EMA: 0.7644\n"}
+,{"stream_name":"stdout","time":2462.082462954,"data":"[DRIVE_ConvFormerS18] Ep 33/50 [11.8s] | Loss: 2.6034 | Val Raw: 0.7654 | Val EMA: 0.7651\n"}
+,{"stream_name":"stdout","time":2474.80063218,"data":"[DRIVE_ConvFormerS18] Ep 34/50 [11.7s] | Loss: 2.6028 | Val Raw: 0.7633 | Val EMA: 0.7660 -\u003e [*] Best (EMA: 0.7660)\n"}
+,{"stream_name":"stdout","time":2487.365080903,"data":"[DRIVE_ConvFormerS18] Ep 35/50 [11.8s] | Loss: 2.5894 | Val Raw: 0.7628 | Val EMA: 0.7657\n"}
+,{"stream_name":"stdout","time":2500.030639899,"data":"[DRIVE_ConvFormerS18] Ep 36/50 [11.9s] | Loss: 2.5915 | Val Raw: 0.7576 | Val EMA: 0.7658\n"}
+,{"stream_name":"stdout","time":2512.810278473,"data":"[DRIVE_ConvFormerS18] Ep 37/50 [11.8s] | Loss: 2.5799 | Val Raw: 0.7691 | Val EMA: 0.7657 -\u003e [*] Best (RAW: 0.7691)\n"}
+,{"stream_name":"stdout","time":2525.365544385,"data":"[DRIVE_ConvFormerS18] Ep 38/50 [11.8s] | Loss: 2.5726 | Val Raw: 0.7609 | Val EMA: 0.7661\n"}
+,{"stream_name":"stdout","time":2537.982585792,"data":"[DRIVE_ConvFormerS18] Ep 39/50 [11.9s] | Loss: 2.5639 | Val Raw: 0.7690 | Val EMA: 0.7663\n"}
+,{"stream_name":"stdout","time":2550.791417828,"data":"[DRIVE_ConvFormerS18] Ep 40/50 [11.9s] | Loss: 2.5544 | Val Raw: 0.7695 | Val EMA: 0.7665 -\u003e [*] Best (RAW: 0.7695)\n"}
+,{"stream_name":"stdout","time":2563.418667195,"data":"[DRIVE_ConvFormerS18] Ep 41/50 [11.9s] | Loss: 2.5575 | Val Raw: 0.7617 | Val EMA: 0.7668\n"}
+,{"stream_name":"stdout","time":2576.025266893,"data":"[DRIVE_ConvFormerS18] Ep 42/50 [11.9s] | Loss: 2.5666 | Val Raw: 0.7688 | Val EMA: 0.7663\n"}
+,{"stream_name":"stdout","time":2588.853507706,"data":"[DRIVE_ConvFormerS18] Ep 43/50 [11.9s] | Loss: 2.5669 | Val Raw: 0.7702 | Val EMA: 0.7659 -\u003e [*] Best (RAW: 0.7702)\n"}
+,{"stream_name":"stdout","time":2601.579240768,"data":"[DRIVE_ConvFormerS18] Ep 44/50 [11.8s] | Loss: 2.5623 | Val Raw: 0.7705 | Val EMA: 0.7659 -\u003e [*] Best (RAW: 0.7705)\n"}
+,{"stream_name":"stdout","time":2614.152877148,"data":"[DRIVE_ConvFormerS18] Ep 45/50 [11.8s] | Loss: 2.5489 | Val Raw: 0.7691 | Val EMA: 0.7657\n"}
+,{"stream_name":"stdout","time":2626.730071565,"data":"[DRIVE_ConvFormerS18] Ep 46/50 [11.9s] | Loss: 2.5389 | Val Raw: 0.7660 | Val EMA: 0.7656\n"}
+,{"stream_name":"stdout","time":2639.347905005,"data":"[DRIVE_ConvFormerS18] Ep 47/50 [11.9s] | Loss: 2.5353 | Val Raw: 0.7657 | Val EMA: 0.7656\n"}
+,{"stream_name":"stdout","time":2651.892748896,"data":"[DRIVE_ConvFormerS18] Ep 48/50 [11.8s] | Loss: 2.5241 | Val Raw: 0.7652 | Val EMA: 0.7656\n"}
+,{"stream_name":"stdout","time":2664.503929545,"data":"[DRIVE_ConvFormerS18] Ep 49/50 [11.8s] | Loss: 2.5220 | Val Raw: 0.7651 | Val EMA: 0.7657\n"}
+,{"stream_name":"stdout","time":2677.115728963,"data":"[DRIVE_ConvFormerS18] Ep 50/50 [11.9s] | Loss: 2.5151 | Val Raw: 0.7640 | Val EMA: 0.7660\n"}
+,{"stream_name":"stdout","time":2677.11780799,"data":"\n"}
+,{"stream_name":"stdout","time":2677.117878669,"data":"[+] Training Finished for DRIVE_ConvFormerS18! Best Val Macro Dice: 0.7705 @ Ep 44 (RAW)\n"}
+,{"stream_name":"stdout","time":2678.170199009,"data":"\n"}
+,{"stream_name":"stdout","time":2678.170315547,"data":"--- DRIVE_ConvFormerS18 TEST RESULTS (SINGLE-VIEW, T=0.50) ---\n"}
+,{"stream_name":"stdout","time":2678.173033291,"data":"           Metric     Mean      Std   Median      Min       Max\n"}
+,{"stream_name":"stdout","time":2678.173051608,"data":"             Dice 0.785645 0.019000 0.780875 0.765564  0.808742\n"}
+,{"stream_name":"stdout","time":2678.173056928,"data":"             mIoU 0.647302 0.025889 0.640576 0.620173  0.678898\n"}
+,{"stream_name":"stdout","time":2678.173060863,"data":"      Sensitivity 0.846817 0.036712 0.835084 0.799692  0.905272\n"}
+,{"stream_name":"stdout","time":2678.173064873,"data":"      Specificity 0.971331 0.004543 0.971447 0.963967  0.976518\n"}
+,{"stream_name":"stdout","time":2678.173069133,"data":"        Precision 0.735809 0.050067 0.734266 0.670164  0.817999\n"}
+,{"stream_name":"stdout","time":2678.173072967,"data":"              FPR 0.028669 0.004543 0.028553 0.023482  0.036033\n"}
+,{"stream_name":"stdout","time":2678.173076816,"data":"             HD95 5.392541 4.701553 3.924096 2.236068 14.866069\n"}
+,{"stream_name":"stdout","time":2678.173080811,"data":"              ASD 1.218081 0.405935 1.063342 0.949790  2.036148\n"}
+,{"stream_name":"stdout","time":2678.173085003,"data":"              BF2 0.921988 0.023679 0.929307 0.877104  0.940825\n"}
+,{"stream_name":"stdout","time":2678.173088824,"data":"Global_Micro_Dice 0.787566 0.000000 0.787566 0.787566  0.787566\n"}
+,{"stream_name":"stdout","time":2678.173092171,"data":" Global_Micro_IoU 0.649574 0.000000 0.649574 0.649574  0.649574\n"}
+,{"stream_name":"stdout","time":2679.46847468,"data":"\n"}
+,{"stream_name":"stdout","time":2679.46854032,"data":"--- DRIVE_ConvFormerS18 TEST RESULTS (4-VIEW TTA, T=0.50) ---\n"}
+,{"stream_name":"stdout","time":2679.471372738,"data":"           Metric     Mean      Std   Median      Min       Max\n"}
+,{"stream_name":"stdout","time":2679.471388925,"data":"             Dice 0.788578 0.020931 0.783790 0.762328  0.815864\n"}
+,{"stream_name":"stdout","time":2679.471398464,"data":"             mIoU 0.651365 0.028623 0.644514 0.615937  0.688996\n"}
+,{"stream_name":"stdout","time":2679.47140139,"data":"      Sensitivity 0.846219 0.036661 0.834701 0.800445  0.900581\n"}
+,{"stream_name":"stdout","time":2679.471403815,"data":"      Specificity 0.972162 0.003926 0.972203 0.966004  0.976665\n"}
+,{"stream_name":"stdout","time":2679.471406196,"data":"        Precision 0.741038 0.048280 0.738899 0.681771  0.819071\n"}
+,{"stream_name":"stdout","time":2679.471408566,"data":"              FPR 0.027838 0.003926 0.027797 0.023335  0.033996\n"}
+,{"stream_name":"stdout","time":2679.471410923,"data":"             HD95 5.002432 4.191755 3.864328 2.236068 13.341664\n"}
+,{"stream_name":"stdout","time":2679.471413261,"data":"              ASD 1.186509 0.368644 1.037283 0.948775  1.919319\n"}
+,{"stream_name":"stdout","time":2679.471415495,"data":"              BF2 0.925930 0.022553 0.933006 0.884430  0.944004\n"}
+,{"stream_name":"stdout","time":2679.471417732,"data":"Global_Micro_Dice 0.790675 0.000000 0.790675 0.790675  0.790675\n"}
+,{"stream_name":"stdout","time":2679.471420113,"data":" Global_Micro_IoU 0.653815 0.000000 0.653815 0.653815  0.653815\n"}
+,{"stream_name":"stdout","time":2680.177701643,"data":"[*] DRIVE_ConvFormerS18 Calibrated Threshold on Val: T_opt = 0.650 (Val TTA Macro Dice: 0.7770)\n"}
+,{"stream_name":"stdout","time":2681.494775257,"data":"\n"}
+,{"stream_name":"stdout","time":2681.494880447,"data":"--- DRIVE_ConvFormerS18 TEST RESULTS (CALIBRATED 4-VIEW TTA, T_opt=0.650) ---\n"}
+,{"stream_name":"stdout","time":2681.498209884,"data":"           Metric     Mean      Std   Median      Min       Max  T_opt\n"}
+,{"stream_name":"stdout","time":2681.498233992,"data":"             Dice 0.793185 0.017754 0.791009 0.769821  0.821756   0.65\n"}
+,{"stream_name":"stdout","time":2681.498253988,"data":"             mIoU 0.657556 0.024526 0.654273 0.625780  0.697442   0.65\n"}
+,{"stream_name":"stdout","time":2681.498258834,"data":"      Sensitivity 0.806529 0.039419 0.796523 0.757877  0.868359   0.65\n"}
+,{"stream_name":"stdout","time":2681.498263907,"data":"      Specificity 0.978990 0.003599 0.979303 0.973442  0.982831   0.65\n"}
+,{"stream_name":"stdout","time":2681.498268608,"data":"        Precision 0.783204 0.044634 0.777946 0.725600  0.853495   0.65\n"}
+,{"stream_name":"stdout","time":2681.498273688,"data":"              FPR 0.021010 0.003599 0.020697 0.017169  0.026558   0.65\n"}
+,{"stream_name":"stdout","time":2681.498278744,"data":"             HD95 4.711282 3.250320 4.081139 2.000000 10.770330   0.65\n"}
+,{"stream_name":"stdout","time":2681.498283333,"data":"              ASD 1.137564 0.297853 1.044971 0.893905  1.703807   0.65\n"}
+,{"stream_name":"stdout","time":2681.498288277,"data":"              BF2 0.928192 0.018989 0.929919 0.900127  0.951241   0.65\n"}
+,{"stream_name":"stdout","time":2681.498294354,"data":"Global_Micro_Dice 0.794553 0.000000 0.794553 0.794553  0.794553   0.65\n"}
+,{"stream_name":"stdout","time":2681.498299208,"data":" Global_Micro_IoU 0.659136 0.000000 0.659136 0.659136  0.659136   0.65\n"}
+,{"stream_name":"stdout","time":2681.658463424,"data":"\n"}
+,{"stream_name":"stdout","time":2681.658491005,"data":"================================================================================\n"}
+,{"stream_name":"stdout","time":2681.658496564,"data":"[*] STARTING GDF-Netv4 BENCHMARK: EMDataset_PVTv2B2 (60 Epochs)\n"}
+,{"stream_name":"stdout","time":2681.65850203,"data":"[*] Backbone: pvt_v2_b2 | Warm-Start: None\n"}
+,{"stream_name":"stdout","time":2681.658507144,"data":"================================================================================\n"}
+,{"stream_name":"stdout","time":2684.593480906,"data":"[+] Model Initialized | Total Params: 37,288,488 | Channels: (64, 128, 320, 512)\n"}
+,{"stream_name":"stdout","time":2804.525373773,"data":"[EMDataset_PVTv2B2] Ep 01/60 [118.7s] | Loss: 5.6577 | Val Raw: 0.7778 | Val EMA: 0.7030 -\u003e [*] Best (RAW: 0.7778)\n"}
+,{"stream_name":"stdout","time":2817.424505177,"data":"[EMDataset_PVTv2B2] Ep 02/60 [11.7s] | Loss: 4.5555 | Val Raw: 0.8779 | Val EMA: 0.8515 -\u003e [*] Best (RAW: 0.8779)\n"}
+,{"stream_name":"stdout","time":2830.066825628,"data":"[EMDataset_PVTv2B2] Ep 03/60 [11.5s] | Loss: 4.1254 | Val Raw: 0.8739 | Val EMA: 0.8889 -\u003e [*] Best (EMA: 0.8889)\n"}
+,{"stream_name":"stdout","time":2842.582636,"data":"[EMDataset_PVTv2B2] Ep 04/60 [11.4s] | Loss: 3.8470 | Val Raw: 0.9239 | Val EMA: 0.9017 -\u003e [*] Best (RAW: 0.9239)\n"}
+,{"stream_name":"stdout","time":2855.080008747,"data":"[EMDataset_PVTv2B2] Ep 05/60 [11.6s] | Loss: 3.6574 | Val Raw: 0.8860 | Val EMA: 0.9173\n"}
+,{"stream_name":"stdout","time":2867.568676041,"data":"[EMDataset_PVTv2B2] Ep 06/60 [11.4s] | Loss: 3.4929 | Val Raw: 0.9255 | Val EMA: 0.9139 -\u003e [*] Best (RAW: 0.9255)\n"}
+,{"stream_name":"stdout","time":2879.869510528,"data":"[EMDataset_PVTv2B2] Ep 07/60 [11.4s] | Loss: 3.3626 | Val Raw: 0.9108 | Val EMA: 0.9167\n"}
+,{"stream_name":"stdout","time":2892.425399459,"data":"[EMDataset_PVTv2B2] Ep 08/60 [11.5s] | Loss: 3.2315 | Val Raw: 0.9260 | Val EMA: 0.9257 -\u003e [*] Best (RAW: 0.9260)\n"}
+,{"stream_name":"stdout","time":2905.091797196,"data":"[EMDataset_PVTv2B2] Ep 09/60 [11.5s] | Loss: 3.1190 | Val Raw: 0.9228 | Val EMA: 0.9295 -\u003e [*] Best (EMA: 0.9295)\n"}
+,{"stream_name":"stdout","time":2917.680821897,"data":"[EMDataset_PVTv2B2] Ep 10/60 [11.5s] | Loss: 3.0329 | Val Raw: 0.9381 | Val EMA: 0.9288 -\u003e [*] Best (RAW: 0.9381)\n"}
+,{"stream_name":"stdout","time":2929.983037473,"data":"[EMDataset_PVTv2B2] Ep 11/60 [11.4s] | Loss: 2.9665 | Val Raw: 0.9315 | Val EMA: 0.9300\n"}
+,{"stream_name":"stdout","time":2942.275261588,"data":"[EMDataset_PVTv2B2] Ep 12/60 [11.4s] | Loss: 2.9208 | Val Raw: 0.9180 | Val EMA: 0.9290\n"}
+,{"stream_name":"stdout","time":2954.55949531,"data":"[EMDataset_PVTv2B2] Ep 13/60 [11.4s] | Loss: 2.8491 | Val Raw: 0.9305 | Val EMA: 0.9311\n"}
+,{"stream_name":"stdout","time":2966.833220012,"data":"[EMDataset_PVTv2B2] Ep 14/60 [11.4s] | Loss: 2.8050 | Val Raw: 0.9352 | Val EMA: 0.9321\n"}
+,{"stream_name":"stdout","time":2979.147602615,"data":"[EMDataset_PVTv2B2] Ep 15/60 [11.4s] | Loss: 2.7746 | Val Raw: 0.9303 | Val EMA: 0.9322\n"}
+,{"stream_name":"stdout","time":2991.431428943,"data":"[EMDataset_PVTv2B2] Ep 16/60 [11.4s] | Loss: 2.7385 | Val Raw: 0.9324 | Val EMA: 0.9331\n"}
+,{"stream_name":"stdout","time":3003.695051481,"data":"[EMDataset_PVTv2B2] Ep 17/60 [11.4s] | Loss: 2.7340 | Val Raw: 0.9330 | Val EMA: 0.9339\n"}
+,{"stream_name":"stdout","time":3016.28244457,"data":"[EMDataset_PVTv2B2] Ep 18/60 [11.5s] | Loss: 2.7198 | Val Raw: 0.9400 | Val EMA: 0.9345 -\u003e [*] Best (RAW: 0.9400)\n"}
+,{"stream_name":"stdout","time":3028.646685569,"data":"[EMDataset_PVTv2B2] Ep 19/60 [11.5s] | Loss: 2.7126 | Val Raw: 0.9345 | Val EMA: 0.9351\n"}
+,{"stream_name":"stdout","time":3040.927895504,"data":"[EMDataset_PVTv2B2] Ep 20/60 [11.4s] | Loss: 2.7094 | Val Raw: 0.9359 | Val EMA: 0.9355\n"}
+,{"stream_name":"stdout","time":3053.202550874,"data":"[EMDataset_PVTv2B2] Ep 21/60 [11.4s] | Loss: 2.6795 | Val Raw: 0.9200 | Val EMA: 0.9325\n"}
+,{"stream_name":"stdout","time":3065.465814497,"data":"[EMDataset_PVTv2B2] Ep 22/60 [11.4s] | Loss: 2.5980 | Val Raw: 0.9100 | Val EMA: 0.9306\n"}
+,{"stream_name":"stdout","time":3077.763311777,"data":"[EMDataset_PVTv2B2] Ep 23/60 [11.4s] | Loss: 2.5221 | Val Raw: 0.9212 | Val EMA: 0.9303\n"}
+,{"stream_name":"stdout","time":3090.07903444,"data":"[EMDataset_PVTv2B2] Ep 24/60 [11.4s] | Loss: 2.4199 | Val Raw: 0.9305 | Val EMA: 0.9319\n"}
+,{"stream_name":"stdout","time":3102.407821367,"data":"[EMDataset_PVTv2B2] Ep 25/60 [11.4s] | Loss: 2.3493 | Val Raw: 0.9349 | Val EMA: 0.9371\n"}
+,{"stream_name":"stdout","time":3114.757541807,"data":"[EMDataset_PVTv2B2] Ep 26/60 [11.4s] | Loss: 2.2734 | Val Raw: 0.9332 | Val EMA: 0.9380\n"}
+,{"stream_name":"stdout","time":3127.089052043,"data":"[EMDataset_PVTv2B2] Ep 27/60 [11.4s] | Loss: 2.2049 | Val Raw: 0.9285 | Val EMA: 0.9370\n"}
+,{"stream_name":"stdout","time":3139.384317365,"data":"[EMDataset_PVTv2B2] Ep 28/60 [11.4s] | Loss: 2.1312 | Val Raw: 0.9379 | Val EMA: 0.9374\n"}
+,{"stream_name":"stdout","time":3151.93725114,"data":"[EMDataset_PVTv2B2] Ep 29/60 [11.4s] | Loss: 2.0708 | Val Raw: 0.9405 | Val EMA: 0.9381 -\u003e [*] Best (RAW: 0.9405)\n"}
+,{"stream_name":"stdout","time":3164.218981214,"data":"[EMDataset_PVTv2B2] Ep 30/60 [11.4s] | Loss: 2.0252 | Val Raw: 0.9368 | Val EMA: 0.9386\n"}
+,{"stream_name":"stdout","time":3176.545761001,"data":"[EMDataset_PVTv2B2] Ep 31/60 [11.4s] | Loss: 1.9702 | Val Raw: 0.9287 | Val EMA: 0.9393\n"}
+,{"stream_name":"stdout","time":3189.117567028,"data":"[EMDataset_PVTv2B2] Ep 32/60 [11.5s] | Loss: 1.9251 | Val Raw: 0.9326 | Val EMA: 0.9405 -\u003e [*] Best (EMA: 0.9405)\n"}
+,{"stream_name":"stdout","time":3201.411345533,"data":"[EMDataset_PVTv2B2] Ep 33/60 [11.4s] | Loss: 1.8943 | Val Raw: 0.9304 | Val EMA: 0.9404\n"}
+,{"stream_name":"stdout","time":3213.958380373,"data":"[EMDataset_PVTv2B2] Ep 34/60 [11.4s] | Loss: 1.8721 | Val Raw: 0.9312 | Val EMA: 0.9411 -\u003e [*] Best (EMA: 0.9411)\n"}
+,{"stream_name":"stdout","time":3226.313153808,"data":"[EMDataset_PVTv2B2] Ep 35/60 [11.4s] | Loss: 1.8206 | Val Raw: 0.9307 | Val EMA: 0.9410\n"}
+,{"stream_name":"stdout","time":3238.657257209,"data":"[EMDataset_PVTv2B2] Ep 36/60 [11.5s] | Loss: 1.7655 | Val Raw: 0.9403 | Val EMA: 0.9409\n"}
+,{"stream_name":"stdout","time":3251.173288281,"data":"[EMDataset_PVTv2B2] Ep 37/60 [11.4s] | Loss: 1.7147 | Val Raw: 0.9410 | Val EMA: 0.9423 -\u003e [*] Best (EMA: 0.9423)\n"}
+,{"stream_name":"stdout","time":3263.708414792,"data":"[EMDataset_PVTv2B2] Ep 38/60 [11.4s] | Loss: 1.6842 | Val Raw: 0.9380 | Val EMA: 0.9432 -\u003e [*] Best (EMA: 0.9432)\n"}
+,{"stream_name":"stdout","time":3276.260090963,"data":"[EMDataset_PVTv2B2] Ep 39/60 [11.4s] | Loss: 1.6571 | Val Raw: 0.9375 | Val EMA: 0.9443 -\u003e [*] Best (EMA: 0.9443)\n"}
+,{"stream_name":"stdout","time":3288.885664958,"data":"[EMDataset_PVTv2B2] Ep 40/60 [11.5s] | Loss: 1.6215 | Val Raw: 0.9374 | Val EMA: 0.9449 -\u003e [*] Best (EMA: 0.9449)\n"}
+,{"stream_name":"stdout","time":3301.494521119,"data":"[EMDataset_PVTv2B2] Ep 41/60 [11.5s] | Loss: 1.6020 | Val Raw: 0.9450 | Val EMA: 0.9454 -\u003e [*] Best (EMA: 0.9454)\n"}
+,{"stream_name":"stdout","time":3314.128266133,"data":"[EMDataset_PVTv2B2] Ep 42/60 [11.5s] | Loss: 1.5617 | Val Raw: 0.9496 | Val EMA: 0.9464 -\u003e [*] Best (RAW: 0.9496)\n"}
+,{"stream_name":"stdout","time":3326.531797364,"data":"[EMDataset_PVTv2B2] Ep 43/60 [11.5s] | Loss: 1.5409 | Val Raw: 0.9459 | Val EMA: 0.9467\n"}
+,{"stream_name":"stdout","time":3338.897240548,"data":"[EMDataset_PVTv2B2] Ep 44/60 [11.5s] | Loss: 1.5279 | Val Raw: 0.9471 | Val EMA: 0.9468\n"}
+,{"stream_name":"stdout","time":3351.244586549,"data":"[EMDataset_PVTv2B2] Ep 45/60 [11.5s] | Loss: 1.5076 | Val Raw: 0.9458 | Val EMA: 0.9472\n"}
+,{"stream_name":"stdout","time":3363.566735793,"data":"[EMDataset_PVTv2B2] Ep 46/60 [11.5s] | Loss: 1.4781 | Val Raw: 0.9479 | Val EMA: 0.9477\n"}
+,{"stream_name":"stdout","time":3375.98902158,"data":"[EMDataset_PVTv2B2] Ep 47/60 [11.5s] | Loss: 1.4599 | Val Raw: 0.9460 | Val EMA: 0.9478\n"}
+,{"stream_name":"stdout","time":3388.292976421,"data":"[EMDataset_PVTv2B2] Ep 48/60 [11.4s] | Loss: 1.4379 | Val Raw: 0.9458 | Val EMA: 0.9480\n"}
+,{"stream_name":"stdout","time":3400.627780689,"data":"[EMDataset_PVTv2B2] Ep 49/60 [11.4s] | Loss: 1.4235 | Val Raw: 0.9474 | Val EMA: 0.9485\n"}
+,{"stream_name":"stdout","time":3412.986041838,"data":"[EMDataset_PVTv2B2] Ep 50/60 [11.5s] | Loss: 1.4185 | Val Raw: 0.9447 | Val EMA: 0.9489\n"}
+,{"stream_name":"stdout","time":3425.624297354,"data":"[EMDataset_PVTv2B2] Ep 51/60 [11.7s] | Loss: 1.4087 | Val Raw: 0.9472 | Val EMA: 0.9494\n"}
+,{"stream_name":"stdout","time":3438.18862279,"data":"[EMDataset_PVTv2B2] Ep 52/60 [11.4s] | Loss: 1.4065 | Val Raw: 0.9499 | Val EMA: 0.9495 -\u003e [*] Best (RAW: 0.9499)\n"}
+,{"stream_name":"stdout","time":3450.513829591,"data":"[EMDataset_PVTv2B2] Ep 53/60 [11.4s] | Loss: 1.4099 | Val Raw: 0.9492 | Val EMA: 0.9495\n"}
+,{"stream_name":"stdout","time":3462.847749732,"data":"[EMDataset_PVTv2B2] Ep 54/60 [11.4s] | Loss: 1.3988 | Val Raw: 0.9485 | Val EMA: 0.9494\n"}
+,{"stream_name":"stdout","time":3475.12328989,"data":"[EMDataset_PVTv2B2] Ep 55/60 [11.4s] | Loss: 1.3911 | Val Raw: 0.9485 | Val EMA: 0.9495\n"}
+,{"stream_name":"stdout","time":3487.504170437,"data":"[EMDataset_PVTv2B2] Ep 56/60 [11.5s] | Loss: 1.3818 | Val Raw: 0.9471 | Val EMA: 0.9495\n"}
+,{"stream_name":"stdout","time":3499.849855873,"data":"[EMDataset_PVTv2B2] Ep 57/60 [11.5s] | Loss: 1.3786 | Val Raw: 0.9497 | Val EMA: 0.9495\n"}
+,{"stream_name":"stdout","time":3512.181873976,"data":"[EMDataset_PVTv2B2] Ep 58/60 [11.5s] | Loss: 1.3797 | Val Raw: 0.9497 | Val EMA: 0.9495\n"}
+,{"stream_name":"stdout","time":3524.568804109,"data":"[EMDataset_PVTv2B2] Ep 59/60 [11.5s] | Loss: 1.3739 | Val Raw: 0.9487 | Val EMA: 0.9494\n"}
+,{"stream_name":"stdout","time":3536.917133636,"data":"[EMDataset_PVTv2B2] Ep 60/60 [11.5s] | Loss: 1.3718 | Val Raw: 0.9491 | Val EMA: 0.9493\n"}
+,{"stream_name":"stdout","time":3536.919381261,"data":"\n"}
+,{"stream_name":"stdout","time":3536.919424579,"data":"[+] Training Finished for EMDataset_PVTv2B2! Best Val Macro Dice: 0.9499 @ Ep 52 (RAW)\n"}
+,{"stream_name":"stdout","time":3556.891945349,"data":"\n"}
+,{"stream_name":"stdout","time":3556.893252568,"data":"--- EMDataset_PVTv2B2 TEST RESULTS (SINGLE-VIEW, T=0.50) ---\n"}
+,{"stream_name":"stdout","time":3556.894963552,"data":"           Metric     Mean      Std   Median      Min       Max\n"}
+,{"stream_name":"stdout","time":3556.894985385,"data":"             Dice 0.949526 0.012992 0.950694 0.902746  0.973903\n"}
+,{"stream_name":"stdout","time":3556.894989978,"data":"             mIoU 0.904190 0.023375 0.906021 0.822732  0.949133\n"}
+,{"stream_name":"stdout","time":3556.894993665,"data":"      Sensitivity 0.965875 0.021140 0.970625 0.882718  0.996057\n"}
+,{"stream_name":"stdout","time":3556.894997127,"data":"      Specificity 0.995863 0.002180 0.996576 0.989244  0.999126\n"}
+,{"stream_name":"stdout","time":3556.895000461,"data":"        Precision 0.934291 0.020903 0.936239 0.867463  0.971143\n"}
+,{"stream_name":"stdout","time":3556.895003992,"data":"              FPR 0.004137 0.002180 0.003424 0.000874  0.010756\n"}
+,{"stream_name":"stdout","time":3556.895007708,"data":"             HD95 2.617952 3.848479 2.000000 1.000000 44.162738\n"}
+,{"stream_name":"stdout","time":3556.895011163,"data":"              ASD 1.335279 0.969214 0.941909 0.504095  5.095600\n"}
+,{"stream_name":"stdout","time":3556.895014501,"data":"              BF2 0.950359 0.038240 0.962514 0.802301  0.997989\n"}
+,{"stream_name":"stdout","time":3556.895017883,"data":"Global_Micro_Dice 0.948610 0.000000 0.948610 0.948610  0.948610\n"}
+,{"stream_name":"stdout","time":3556.895021223,"data":" Global_Micro_IoU 0.902244 0.000000 0.902244 0.902244  0.902244\n"}
+,{"stream_name":"stdout","time":3573.787443578,"data":"\n"}
+,{"stream_name":"stdout","time":3573.787601434,"data":"--- EMDataset_PVTv2B2 TEST RESULTS (4-VIEW TTA, T=0.50) ---\n"}
+,{"stream_name":"stdout","time":3573.790555032,"data":"           Metric     Mean      Std   Median      Min       Max\n"}
+,{"stream_name":"stdout","time":3573.790569222,"data":"             Dice 0.949194 0.012318 0.951260 0.914782  0.971784\n"}
+,{"stream_name":"stdout","time":3573.790580649,"data":"             mIoU 0.903559 0.022160 0.907051 0.842947  0.945116\n"}
+,{"stream_name":"stdout","time":3573.790584537,"data":"      Sensitivity 0.966814 0.020439 0.973004 0.886467  0.995181\n"}
+,{"stream_name":"stdout","time":3573.790587738,"data":"      Specificity 0.995770 0.002174 0.996560 0.989609  0.999233\n"}
+,{"stream_name":"stdout","time":3573.790605403,"data":"        Precision 0.932771 0.020717 0.934553 0.857737  0.974606\n"}
+,{"stream_name":"stdout","time":3573.79061116,"data":"              FPR 0.004230 0.002174 0.003440 0.000767  0.010391\n"}
+,{"stream_name":"stdout","time":3573.79061635,"data":"             HD95 3.129282 5.836221 2.000000 1.414214 47.785541\n"}
+,{"stream_name":"stdout","time":3573.790621574,"data":"              ASD 1.399102 1.050616 0.958624 0.521475  5.359375\n"}
+,{"stream_name":"stdout","time":3573.79062656,"data":"              BF2 0.952063 0.035534 0.962692 0.811319  0.998838\n"}
+,{"stream_name":"stdout","time":3573.790632146,"data":"Global_Micro_Dice 0.948411 0.000000 0.948411 0.948411  0.948411\n"}
+,{"stream_name":"stdout","time":3573.790640374,"data":" Global_Micro_IoU 0.901883 0.000000 0.901883 0.901883  0.901883\n"}
+,{"stream_name":"stdout","time":3574.918869653,"data":"[*] EMDataset_PVTv2B2 Calibrated Threshold on Val: T_opt = 0.690 (Val TTA Macro Dice: 0.9537)\n"}
+,{"stream_name":"stdout","time":3592.020794059,"data":"\n"}
+,{"stream_name":"stdout","time":3592.020955765,"data":"--- EMDataset_PVTv2B2 TEST RESULTS (CALIBRATED 4-VIEW TTA, T_opt=0.690) ---\n"}
+,{"stream_name":"stdout","time":3592.024138358,"data":"           Metric     Mean      Std   Median      Min       Max  T_opt\n"}
+,{"stream_name":"stdout","time":3592.024158047,"data":"             Dice 0.951834 0.012715 0.953253 0.911217  0.976127   0.69\n"}
+,{"stream_name":"stdout","time":3592.024161464,"data":"             mIoU 0.908371 0.022986 0.910682 0.836914  0.953367   0.69\n"}
+,{"stream_name":"stdout","time":3592.024164038,"data":"      Sensitivity 0.951935 0.023718 0.957449 0.863603  0.986243   0.69\n"}
+,{"stream_name":"stdout","time":3592.024166491,"data":"      Specificity 0.997074 0.001672 0.997660 0.992359  0.999626   0.69\n"}
+,{"stream_name":"stdout","time":3592.024168918,"data":"        Precision 0.952316 0.017393 0.955181 0.900846  0.987127   0.69\n"}
+,{"stream_name":"stdout","time":3592.024171408,"data":"              FPR 0.002926 0.001672 0.002340 0.000374  0.007641   0.69\n"}
+,{"stream_name":"stdout","time":3592.024173828,"data":"             HD95 2.482793 4.077223 2.000000 1.000000 47.934275   0.69\n"}
+,{"stream_name":"stdout","time":3592.024176232,"data":"              ASD 1.314143 1.014534 0.864704 0.454797  5.120586   0.69\n"}
+,{"stream_name":"stdout","time":3592.024178732,"data":"              BF2 0.955108 0.037458 0.964881 0.779010  1.000000   0.69\n"}
+,{"stream_name":"stdout","time":3592.024181152,"data":"Global_Micro_Dice 0.950922 0.000000 0.950922 0.950922  0.950922   0.69\n"}
+,{"stream_name":"stdout","time":3592.024183594,"data":" Global_Micro_IoU 0.906437 0.000000 0.906437 0.906437  0.906437   0.69\n"}
+,{"stream_name":"stdout","time":3592.088911957,"data":"\n"}
+,{"stream_name":"stdout","time":3592.088939776,"data":"================================================================================\n"}
+,{"stream_name":"stdout","time":3592.088944037,"data":"[*] STARTING GDF-Netv4 BENCHMARK: CHASE-DB1_PVTv2B2 (60 Epochs)\n"}
+,{"stream_name":"stdout","time":3592.088978397,"data":"[*] Backbone: pvt_v2_b2 | Warm-Start: None\n"}
+,{"stream_name":"stdout","time":3592.088983237,"data":"================================================================================\n"}
+,{"stream_name":"stdout","time":3593.014397589,"data":"[+] Model Initialized | Total Params: 37,288,488 | Channels: (64, 128, 320, 512)\n"}
+,{"stream_name":"stdout","time":3609.085374555,"data":"[CHASE-DB1_PVTv2B2] Ep 01/60 [14.8s] | Loss: 5.4937 | Val Raw: 0.6629 | Val EMA: 0.6427 -\u003e [*] Best (RAW: 0.6629)\n"}
+,{"stream_name":"stdout","time":3624.733694579,"data":"[CHASE-DB1_PVTv2B2] Ep 02/60 [14.4s] | Loss: 4.7419 | Val Raw: 0.6663 | Val EMA: 0.6561 -\u003e [*] Best (RAW: 0.6663)\n"}
+,{"stream_name":"stdout","time":3640.24220447,"data":"[CHASE-DB1_PVTv2B2] Ep 03/60 [14.3s] | Loss: 4.4765 | Val Raw: 0.6682 | Val EMA: 0.6640 -\u003e [*] Best (RAW: 0.6682)\n"}
+,{"stream_name":"stdout","time":3655.957130135,"data":"[CHASE-DB1_PVTv2B2] Ep 04/60 [14.5s] | Loss: 4.2968 | Val Raw: 0.6917 | Val EMA: 0.6862 -\u003e [*] Best (RAW: 0.6917)\n"}
+,{"stream_name":"stdout","time":3671.668282678,"data":"[CHASE-DB1_PVTv2B2] Ep 05/60 [14.5s] | Loss: 4.1514 | Val Raw: 0.7081 | Val EMA: 0.6981 -\u003e [*] Best (RAW: 0.7081)\n"}
+,{"stream_name":"stdout","time":3687.176628233,"data":"[CHASE-DB1_PVTv2B2] Ep 06/60 [14.5s] | Loss: 4.0330 | Val Raw: 0.7080 | Val EMA: 0.7023\n"}
+,{"stream_name":"stdout","time":3702.807294546,"data":"[CHASE-DB1_PVTv2B2] Ep 07/60 [14.4s] | Loss: 3.9261 | Val Raw: 0.7104 | Val EMA: 0.7108 -\u003e [*] Best (EMA: 0.7108)\n"}
+,{"stream_name":"stdout","time":3718.421028174,"data":"[CHASE-DB1_PVTv2B2] Ep 08/60 [14.4s] | Loss: 3.8431 | Val Raw: 0.7247 | Val EMA: 0.7165 -\u003e [*] Best (RAW: 0.7247)\n"}
+,{"stream_name":"stdout","time":3734.0455072,"data":"[CHASE-DB1_PVTv2B2] Ep 09/60 [14.4s] | Loss: 3.7714 | Val Raw: 0.7360 | Val EMA: 0.7187 -\u003e [*] Best (RAW: 0.7360)\n"}
+,{"stream_name":"stdout","time":3749.402222251,"data":"[CHASE-DB1_PVTv2B2] Ep 10/60 [14.4s] | Loss: 3.7123 | Val Raw: 0.7308 | Val EMA: 0.7220\n"}
+,{"stream_name":"stdout","time":3764.876825253,"data":"[CHASE-DB1_PVTv2B2] Ep 11/60 [14.5s] | Loss: 3.6538 | Val Raw: 0.7255 | Val EMA: 0.7256\n"}
+,{"stream_name":"stdout","time":3780.355063203,"data":"[CHASE-DB1_PVTv2B2] Ep 12/60 [14.5s] | Loss: 3.6005 | Val Raw: 0.7296 | Val EMA: 0.7295\n"}
+,{"stream_name":"stdout","time":3795.860740798,"data":"[CHASE-DB1_PVTv2B2] Ep 13/60 [14.5s] | Loss: 3.5677 | Val Raw: 0.7285 | Val EMA: 0.7328\n"}
+,{"stream_name":"stdout","time":3811.268179363,"data":"[CHASE-DB1_PVTv2B2] Ep 14/60 [14.5s] | Loss: 3.5369 | Val Raw: 0.7319 | Val EMA: 0.7349\n"}
+,{"stream_name":"stdout","time":3826.667023057,"data":"[CHASE-DB1_PVTv2B2] Ep 15/60 [14.4s] | Loss: 3.5142 | Val Raw: 0.7264 | Val EMA: 0.7353\n"}
+,{"stream_name":"stdout","time":3842.362973159,"data":"[CHASE-DB1_PVTv2B2] Ep 16/60 [14.5s] | Loss: 3.5004 | Val Raw: 0.7298 | Val EMA: 0.7367 -\u003e [*] Best (EMA: 0.7367)\n"}
+,{"stream_name":"stdout","time":3858.007639336,"data":"[CHASE-DB1_PVTv2B2] Ep 17/60 [14.4s] | Loss: 3.4836 | Val Raw: 0.7418 | Val EMA: 0.7405 -\u003e [*] Best (RAW: 0.7418)\n"}
+,{"stream_name":"stdout","time":3873.735683811,"data":"[CHASE-DB1_PVTv2B2] Ep 18/60 [14.5s] | Loss: 3.4760 | Val Raw: 0.7439 | Val EMA: 0.7408 -\u003e [*] Best (RAW: 0.7439)\n"}
+,{"stream_name":"stdout","time":3889.458452301,"data":"[CHASE-DB1_PVTv2B2] Ep 19/60 [14.5s] | Loss: 3.4697 | Val Raw: 0.7478 | Val EMA: 0.7421 -\u003e [*] Best (RAW: 0.7478)\n"}
+,{"stream_name":"stdout","time":3905.002099865,"data":"[CHASE-DB1_PVTv2B2] Ep 20/60 [14.6s] | Loss: 3.4703 | Val Raw: 0.7434 | Val EMA: 0.7426\n"}
+,{"stream_name":"stdout","time":3920.45346272,"data":"[CHASE-DB1_PVTv2B2] Ep 21/60 [14.5s] | Loss: 3.4594 | Val Raw: 0.7441 | Val EMA: 0.7401\n"}
+,{"stream_name":"stdout","time":3935.844836396,"data":"[CHASE-DB1_PVTv2B2] Ep 22/60 [14.4s] | Loss: 3.4030 | Val Raw: 0.7362 | Val EMA: 0.7399\n"}
+,{"stream_name":"stdout","time":3951.510254639,"data":"[CHASE-DB1_PVTv2B2] Ep 23/60 [14.7s] | Loss: 3.3378 | Val Raw: 0.7463 | Val EMA: 0.7405\n"}
+,{"stream_name":"stdout","time":3966.965354702,"data":"[CHASE-DB1_PVTv2B2] Ep 24/60 [14.5s] | Loss: 3.2869 | Val Raw: 0.7382 | Val EMA: 0.7429\n"}
+,{"stream_name":"stdout","time":3982.648900036,"data":"[CHASE-DB1_PVTv2B2] Ep 25/60 [14.5s] | Loss: 3.2396 | Val Raw: 0.7550 | Val EMA: 0.7441 -\u003e [*] Best (RAW: 0.7550)\n"}
+,{"stream_name":"stdout","time":3998.06220775,"data":"[CHASE-DB1_PVTv2B2] Ep 26/60 [14.5s] | Loss: 3.1802 | Val Raw: 0.7533 | Val EMA: 0.7479\n"}
+,{"stream_name":"stdout","time":4013.504630551,"data":"[CHASE-DB1_PVTv2B2] Ep 27/60 [14.5s] | Loss: 3.1236 | Val Raw: 0.7499 | Val EMA: 0.7503\n"}
+,{"stream_name":"stdout","time":4029.273333922,"data":"[CHASE-DB1_PVTv2B2] Ep 28/60 [14.6s] | Loss: 3.0922 | Val Raw: 0.7652 | Val EMA: 0.7533 -\u003e [*] Best (RAW: 0.7652)\n"}
+,{"stream_name":"stdout","time":4044.79249209,"data":"[CHASE-DB1_PVTv2B2] Ep 29/60 [14.5s] | Loss: 3.0494 | Val Raw: 0.7552 | Val EMA: 0.7569\n"}
+,{"stream_name":"stdout","time":4060.275001861,"data":"[CHASE-DB1_PVTv2B2] Ep 30/60 [14.5s] | Loss: 3.0061 | Val Raw: 0.7552 | Val EMA: 0.7589\n"}
+,{"stream_name":"stdout","time":4075.661455649,"data":"[CHASE-DB1_PVTv2B2] Ep 31/60 [14.4s] | Loss: 2.9736 | Val Raw: 0.7544 | Val EMA: 0.7619\n"}
+,{"stream_name":"stdout","time":4091.402688212,"data":"[CHASE-DB1_PVTv2B2] Ep 32/60 [14.5s] | Loss: 2.9262 | Val Raw: 0.7671 | Val EMA: 0.7647 -\u003e [*] Best (RAW: 0.7671)\n"}
+,{"stream_name":"stdout","time":4107.035340888,"data":"[CHASE-DB1_PVTv2B2] Ep 33/60 [14.4s] | Loss: 2.8959 | Val Raw: 0.7673 | Val EMA: 0.7671 -\u003e [*] Best (RAW: 0.7673)\n"}
+,{"stream_name":"stdout","time":4122.732886645,"data":"[CHASE-DB1_PVTv2B2] Ep 34/60 [14.5s] | Loss: 2.8516 | Val Raw: 0.7565 | Val EMA: 0.7691 -\u003e [*] Best (EMA: 0.7691)\n"}
+,{"stream_name":"stdout","time":4138.432894541,"data":"[CHASE-DB1_PVTv2B2] Ep 35/60 [14.5s] | Loss: 2.8316 | Val Raw: 0.7746 | Val EMA: 0.7711 -\u003e [*] Best (RAW: 0.7746)\n"}
+,{"stream_name":"stdout","time":4153.925807124,"data":"[CHASE-DB1_PVTv2B2] Ep 36/60 [14.5s] | Loss: 2.7970 | Val Raw: 0.7612 | Val EMA: 0.7735\n"}
+,{"stream_name":"stdout","time":4169.588144851,"data":"[CHASE-DB1_PVTv2B2] Ep 37/60 [14.5s] | Loss: 2.7693 | Val Raw: 0.7723 | Val EMA: 0.7759 -\u003e [*] Best (EMA: 0.7759)\n"}
+,{"stream_name":"stdout","time":4185.252822293,"data":"[CHASE-DB1_PVTv2B2] Ep 38/60 [14.5s] | Loss: 2.7450 | Val Raw: 0.7770 | Val EMA: 0.7774 -\u003e [*] Best (EMA: 0.7774)\n"}
+,{"stream_name":"stdout","time":4200.902430727,"data":"[CHASE-DB1_PVTv2B2] Ep 39/60 [14.4s] | Loss: 2.7194 | Val Raw: 0.7771 | Val EMA: 0.7803 -\u003e [*] Best (EMA: 0.7803)\n"}
+,{"stream_name":"stdout","time":4216.545677887,"data":"[CHASE-DB1_PVTv2B2] Ep 40/60 [14.4s] | Loss: 2.6967 | Val Raw: 0.7687 | Val EMA: 0.7819 -\u003e [*] Best (EMA: 0.7819)\n"}
+,{"stream_name":"stdout","time":4232.249525154,"data":"[CHASE-DB1_PVTv2B2] Ep 41/60 [14.5s] | Loss: 2.6823 | Val Raw: 0.7688 | Val EMA: 0.7831 -\u003e [*] Best (EMA: 0.7831)\n"}
+,{"stream_name":"stdout","time":4247.962921621,"data":"[CHASE-DB1_PVTv2B2] Ep 42/60 [14.5s] | Loss: 2.6758 | Val Raw: 0.7756 | Val EMA: 0.7838 -\u003e [*] Best (EMA: 0.7838)\n"}
+,{"stream_name":"stdout","time":4263.770597607,"data":"[CHASE-DB1_PVTv2B2] Ep 43/60 [14.6s] | Loss: 2.6602 | Val Raw: 0.7933 | Val EMA: 0.7853 -\u003e [*] Best (RAW: 0.7933)\n"}
+,{"stream_name":"stdout","time":4279.209561915,"data":"[CHASE-DB1_PVTv2B2] Ep 44/60 [14.5s] | Loss: 2.6397 | Val Raw: 0.7890 | Val EMA: 0.7865\n"}
+,{"stream_name":"stdout","time":4294.708217954,"data":"[CHASE-DB1_PVTv2B2] Ep 45/60 [14.5s] | Loss: 2.6134 | Val Raw: 0.7858 | Val EMA: 0.7874\n"}
+,{"stream_name":"stdout","time":4310.452801439,"data":"[CHASE-DB1_PVTv2B2] Ep 46/60 [14.5s] | Loss: 2.6064 | Val Raw: 0.7935 | Val EMA: 0.7878 -\u003e [*] Best (RAW: 0.7935)\n"}
+,{"stream_name":"stdout","time":4326.139397454,"data":"[CHASE-DB1_PVTv2B2] Ep 47/60 [14.5s] | Loss: 2.5786 | Val Raw: 0.7956 | Val EMA: 0.7888 -\u003e [*] Best (RAW: 0.7956)\n"}
+,{"stream_name":"stdout","time":4341.59196608,"data":"[CHASE-DB1_PVTv2B2] Ep 48/60 [14.5s] | Loss: 2.5687 | Val Raw: 0.7866 | Val EMA: 0.7900\n"}
+,{"stream_name":"stdout","time":4357.051199536,"data":"[CHASE-DB1_PVTv2B2] Ep 49/60 [14.5s] | Loss: 2.5579 | Val Raw: 0.7926 | Val EMA: 0.7908\n"}
+,{"stream_name":"stdout","time":4372.448795764,"data":"[CHASE-DB1_PVTv2B2] Ep 50/60 [14.4s] | Loss: 2.5498 | Val Raw: 0.7920 | Val EMA: 0.7915\n"}
+,{"stream_name":"stdout","time":4387.914365742,"data":"[CHASE-DB1_PVTv2B2] Ep 51/60 [14.5s] | Loss: 2.5438 | Val Raw: 0.7900 | Val EMA: 0.7920\n"}
+,{"stream_name":"stdout","time":4403.413021209,"data":"[CHASE-DB1_PVTv2B2] Ep 52/60 [14.5s] | Loss: 2.5333 | Val Raw: 0.7863 | Val EMA: 0.7925\n"}
+,{"stream_name":"stdout","time":4418.957204735,"data":"[CHASE-DB1_PVTv2B2] Ep 53/60 [14.6s] | Loss: 2.5387 | Val Raw: 0.7891 | Val EMA: 0.7930\n"}
+,{"stream_name":"stdout","time":4434.346665134,"data":"[CHASE-DB1_PVTv2B2] Ep 54/60 [14.4s] | Loss: 2.5232 | Val Raw: 0.7897 | Val EMA: 0.7935\n"}
+,{"stream_name":"stdout","time":4449.839784102,"data":"[CHASE-DB1_PVTv2B2] Ep 55/60 [14.5s] | Loss: 2.5357 | Val Raw: 0.7951 | Val EMA: 0.7942\n"}
+,{"stream_name":"stdout","time":4465.577015414,"data":"[CHASE-DB1_PVTv2B2] Ep 56/60 [14.5s] | Loss: 2.5126 | Val Raw: 0.7980 | Val EMA: 0.7946 -\u003e [*] Best (RAW: 0.7980)\n"}
+,{"stream_name":"stdout","time":4481.375059653,"data":"[CHASE-DB1_PVTv2B2] Ep 57/60 [14.6s] | Loss: 2.5101 | Val Raw: 0.7988 | Val EMA: 0.7950 -\u003e [*] Best (RAW: 0.7988)\n"}
+,{"stream_name":"stdout","time":4497.163844111,"data":"[CHASE-DB1_PVTv2B2] Ep 58/60 [14.6s] | Loss: 2.5175 | Val Raw: 0.8000 | Val EMA: 0.7953 -\u003e [*] Best (RAW: 0.8000)\n"}
+,{"stream_name":"stdout","time":4513.174184668,"data":"[CHASE-DB1_PVTv2B2] Ep 59/60 [15.0s] | Loss: 2.5079 | Val Raw: 0.7998 | Val EMA: 0.7957\n"}
+,{"stream_name":"stdout","time":4529.299181845,"data":"[CHASE-DB1_PVTv2B2] Ep 60/60 [14.9s] | Loss: 2.5088 | Val Raw: 0.8004 | Val EMA: 0.7959 -\u003e [*] Best (RAW: 0.8004)\n"}
+,{"stream_name":"stdout","time":4529.301213708,"data":"\n"}
+,{"stream_name":"stdout","time":4529.30123099,"data":"[+] Training Finished for CHASE-DB1_PVTv2B2! Best Val Macro Dice: 0.8004 @ Ep 60 (RAW)\n"}
+,{"stream_name":"stdout","time":4530.177350314,"data":"\n"}
+,{"stream_name":"stdout","time":4530.177499426,"data":"--- CHASE-DB1_PVTv2B2 TEST RESULTS (SINGLE-VIEW, T=0.50) ---\n"}
+,{"stream_name":"stdout","time":4530.181117999,"data":"           Metric     Mean      Std   Median      Min      Max\n"}
+,{"stream_name":"stdout","time":4530.181138801,"data":"             Dice 0.793248 0.018323 0.788411 0.777695 0.818475\n"}
+,{"stream_name":"stdout","time":4530.181146269,"data":"             mIoU 0.657631 0.025399 0.650771 0.636253 0.692727\n"}
+,{"stream_name":"stdout","time":4530.181151653,"data":"      Sensitivity 0.891357 0.026886 0.894807 0.855348 0.920468\n"}
+,{"stream_name":"stdout","time":4530.181156682,"data":"      Specificity 0.973951 0.005695 0.976062 0.965631 0.978048\n"}
+,{"stream_name":"stdout","time":4530.181163922,"data":"        Precision 0.715951 0.037464 0.715165 0.679748 0.753727\n"}
+,{"stream_name":"stdout","time":4530.181172922,"data":"              FPR 0.026049 0.005695 0.023938 0.021952 0.034369\n"}
+,{"stream_name":"stdout","time":4530.181176385,"data":"             HD95 2.368034 0.435760 2.236068 2.000000 3.000000\n"}
+,{"stream_name":"stdout","time":4530.181179865,"data":"              ASD 1.035430 0.110847 1.027470 0.935221 1.151561\n"}
+,{"stream_name":"stdout","time":4530.181183371,"data":"              BF2 0.942883 0.009269 0.943723 0.930817 0.953268\n"}
+,{"stream_name":"stdout","time":4530.181186718,"data":"Global_Micro_Dice 0.793677 0.000000 0.793677 0.793677 0.793677\n"}
+,{"stream_name":"stdout","time":4530.181190041,"data":" Global_Micro_IoU 0.657930 0.000000 0.657930 0.657930 0.657930\n"}
+,{"stream_name":"stdout","time":4531.115774259,"data":"\n"}
+,{"stream_name":"stdout","time":4531.115855986,"data":"--- CHASE-DB1_PVTv2B2 TEST RESULTS (4-VIEW TTA, T=0.50) ---\n"}
+,{"stream_name":"stdout","time":4531.118805786,"data":"           Metric     Mean      Std   Median      Min      Max\n"}
+,{"stream_name":"stdout","time":4531.118822188,"data":"             Dice 0.798326 0.020506 0.794666 0.779371 0.824599\n"}
+,{"stream_name":"stdout","time":4531.118831324,"data":"             mIoU 0.664710 0.028585 0.659397 0.638499 0.701547\n"}
+,{"stream_name":"stdout","time":4531.118834554,"data":"      Sensitivity 0.892851 0.025564 0.894578 0.859912 0.922338\n"}
+,{"stream_name":"stdout","time":4531.11883767,"data":"      Specificity 0.974852 0.005934 0.976976 0.966125 0.979331\n"}
+,{"stream_name":"stdout","time":4531.11885746,"data":"        Precision 0.723487 0.042454 0.723000 0.683331 0.764618\n"}
+,{"stream_name":"stdout","time":4531.118862818,"data":"              FPR 0.025148 0.005934 0.023024 0.020669 0.033875\n"}
+,{"stream_name":"stdout","time":4531.11886789,"data":"             HD95 2.368034 0.435760 2.236068 2.000000 3.000000\n"}
+,{"stream_name":"stdout","time":4531.11887311,"data":"              ASD 0.992747 0.112056 1.005066 0.864536 1.096318\n"}
+,{"stream_name":"stdout","time":4531.118888884,"data":"              BF2 0.945491 0.010248 0.946744 0.931898 0.956578\n"}
+,{"stream_name":"stdout","time":4531.118892876,"data":"Global_Micro_Dice 0.798912 0.000000 0.798912 0.798912 0.798912\n"}
+,{"stream_name":"stdout","time":4531.118896455,"data":" Global_Micro_IoU 0.665156 0.000000 0.665156 0.665156 0.665156\n"}
+,{"stream_name":"stdout","time":4532.242653421,"data":"[*] CHASE-DB1_PVTv2B2 Calibrated Threshold on Val: T_opt = 0.730 (Val TTA Macro Dice: 0.8152)\n"}
+,{"stream_name":"stdout","time":4533.174756878,"data":"\n"}
+,{"stream_name":"stdout","time":4533.17492502,"data":"--- CHASE-DB1_PVTv2B2 TEST RESULTS (CALIBRATED 4-VIEW TTA, T_opt=0.730) ---\n"}
+,{"stream_name":"stdout","time":4533.178149195,"data":"           Metric     Mean      Std   Median      Min      Max  T_opt\n"}
+,{"stream_name":"stdout","time":4533.178171026,"data":"             Dice 0.812548 0.015836 0.809220 0.797089 0.834662   0.73\n"}
+,{"stream_name":"stdout","time":4533.178176526,"data":"             mIoU 0.684505 0.022646 0.679573 0.662634 0.716240   0.73\n"}
+,{"stream_name":"stdout","time":4533.178181015,"data":"      Sensitivity 0.834753 0.031505 0.837484 0.793916 0.870130   0.73\n"}
+,{"stream_name":"stdout","time":4533.178185477,"data":"      Specificity 0.984027 0.004493 0.985384 0.977554 0.987787   0.73\n"}
+,{"stream_name":"stdout","time":4533.178190149,"data":"        Precision 0.793720 0.044279 0.791964 0.754437 0.836517   0.73\n"}
+,{"stream_name":"stdout","time":4533.17819474,"data":"              FPR 0.015973 0.004493 0.014616 0.012213 0.022446   0.73\n"}
+,{"stream_name":"stdout","time":4533.178198612,"data":"             HD95 3.134789 1.797442 2.236068 2.236068 5.830952   0.73\n"}
+,{"stream_name":"stdout","time":4533.178203095,"data":"              ASD 1.020559 0.145712 0.982979 0.905350 1.210929   0.73\n"}
+,{"stream_name":"stdout","time":4533.178215693,"data":"              BF2 0.937686 0.014802 0.944300 0.915626 0.946518   0.73\n"}
+,{"stream_name":"stdout","time":4533.178219693,"data":"Global_Micro_Dice 0.813079 0.000000 0.813079 0.813079 0.813079   0.73\n"}
+,{"stream_name":"stdout","time":4533.178223944,"data":" Global_Micro_IoU 0.685032 0.000000 0.685032 0.685032 0.685032   0.73\n"}
+,{"stream_name":"stdout","time":4533.308349976,"data":"\n"}
+,{"stream_name":"stdout","time":4533.30837868,"data":"================================================================================\n"}
+,{"stream_name":"stdout","time":4533.308384675,"data":"[*] STARTING GDF-Netv4 BENCHMARK: DRIVE_PVTv2B2 (50 Epochs)\n"}
+,{"stream_name":"stdout","time":4533.30838954,"data":"[*] Backbone: pvt_v2_b2 | Warm-Start: /kaggle/working/GDFNetV4_CHASE-DB1_PVTv2B2_best.pth\n"}
+,{"stream_name":"stdout","time":4533.308394158,"data":"================================================================================\n"}
+,{"stream_name":"stdout","time":4534.381706251,"data":"[+] Successfully loaded Warm-Start Transfer Checkpoint: /kaggle/working/GDFNetV4_CHASE-DB1_PVTv2B2_best.pth\n"}
+,{"stream_name":"stdout","time":4534.383881095,"data":"[+] Model Initialized | Total Params: 37,288,488 | Channels: (64, 128, 320, 512)\n"}
+,{"stream_name":"stdout","time":4556.793465903,"data":"[DRIVE_PVTv2B2] Ep 01/50 [10.7s] | Loss: 3.0838 | Val Raw: 0.7460 | Val EMA: 0.7502 -\u003e [*] Best (EMA: 0.7502)\n"}
+,{"stream_name":"stdout","time":4568.245736221,"data":"[DRIVE_PVTv2B2] Ep 02/50 [10.6s] | Loss: 3.0080 | Val Raw: 0.7448 | Val EMA: 0.7489\n"}
+,{"stream_name":"stdout","time":4580.134182011,"data":"[DRIVE_PVTv2B2] Ep 03/50 [10.7s] | Loss: 2.9962 | Val Raw: 0.7509 | Val EMA: 0.7440 -\u003e [*] Best (RAW: 0.7509)\n"}
+,{"stream_name":"stdout","time":4591.995855663,"data":"[DRIVE_PVTv2B2] Ep 04/50 [10.8s] | Loss: 2.9648 | Val Raw: 0.7573 | Val EMA: 0.7469 -\u003e [*] Best (RAW: 0.7573)\n"}
+,{"stream_name":"stdout","time":4603.520633335,"data":"[DRIVE_PVTv2B2] Ep 05/50 [10.7s] | Loss: 2.9233 | Val Raw: 0.7512 | Val EMA: 0.7486\n"}
+,{"stream_name":"stdout","time":4615.269367906,"data":"[DRIVE_PVTv2B2] Ep 06/50 [10.6s] | Loss: 2.9008 | Val Raw: 0.7596 | Val EMA: 0.7521 -\u003e [*] Best (RAW: 0.7596)\n"}
+,{"stream_name":"stdout","time":4627.046296441,"data":"[DRIVE_PVTv2B2] Ep 07/50 [10.7s] | Loss: 2.8688 | Val Raw: 0.7646 | Val EMA: 0.7566 -\u003e [*] Best (RAW: 0.7646)\n"}
+,{"stream_name":"stdout","time":4638.839990494,"data":"[DRIVE_PVTv2B2] Ep 08/50 [10.7s] | Loss: 2.8511 | Val Raw: 0.7671 | Val EMA: 0.7598 -\u003e [*] Best (RAW: 0.7671)\n"}
+,{"stream_name":"stdout","time":4650.37971388,"data":"[DRIVE_PVTv2B2] Ep 09/50 [10.7s] | Loss: 2.8369 | Val Raw: 0.7597 | Val EMA: 0.7590\n"}
+,{"stream_name":"stdout","time":4662.278201499,"data":"[DRIVE_PVTv2B2] Ep 10/50 [10.8s] | Loss: 2.8130 | Val Raw: 0.7674 | Val EMA: 0.7590 -\u003e [*] Best (RAW: 0.7674)\n"}
+,{"stream_name":"stdout","time":4673.90767868,"data":"[DRIVE_PVTv2B2] Ep 11/50 [10.7s] | Loss: 2.8079 | Val Raw: 0.7607 | Val EMA: 0.7591\n"}
+,{"stream_name":"stdout","time":4685.451748278,"data":"[DRIVE_PVTv2B2] Ep 12/50 [10.7s] | Loss: 2.7816 | Val Raw: 0.7631 | Val EMA: 0.7598\n"}
+,{"stream_name":"stdout","time":4696.978103611,"data":"[DRIVE_PVTv2B2] Ep 13/50 [10.7s] | Loss: 2.7707 | Val Raw: 0.7636 | Val EMA: 0.7607\n"}
+,{"stream_name":"stdout","time":4708.532322451,"data":"[DRIVE_PVTv2B2] Ep 14/50 [10.7s] | Loss: 2.7602 | Val Raw: 0.7648 | Val EMA: 0.7609\n"}
+,{"stream_name":"stdout","time":4720.019026141,"data":"[DRIVE_PVTv2B2] Ep 15/50 [10.6s] | Loss: 2.7457 | Val Raw: 0.7611 | Val EMA: 0.7609\n"}
+,{"stream_name":"stdout","time":4731.623817591,"data":"[DRIVE_PVTv2B2] Ep 16/50 [10.7s] | Loss: 2.7362 | Val Raw: 0.7625 | Val EMA: 0.7614\n"}
+,{"stream_name":"stdout","time":4743.087997862,"data":"[DRIVE_PVTv2B2] Ep 17/50 [10.6s] | Loss: 2.7303 | Val Raw: 0.7598 | Val EMA: 0.7622\n"}
+,{"stream_name":"stdout","time":4754.779998566,"data":"[DRIVE_PVTv2B2] Ep 18/50 [10.9s] | Loss: 2.7303 | Val Raw: 0.7616 | Val EMA: 0.7624\n"}
+,{"stream_name":"stdout","time":4766.239091641,"data":"[DRIVE_PVTv2B2] Ep 19/50 [10.6s] | Loss: 2.7253 | Val Raw: 0.7607 | Val EMA: 0.7625\n"}
+,{"stream_name":"stdout","time":4777.798300119,"data":"[DRIVE_PVTv2B2] Ep 20/50 [10.7s] | Loss: 2.7179 | Val Raw: 0.7608 | Val EMA: 0.7623\n"}
+,{"stream_name":"stdout","time":4789.380060345,"data":"[DRIVE_PVTv2B2] Ep 21/50 [10.7s] | Loss: 2.7325 | Val Raw: 0.7615 | Val EMA: 0.7625\n"}
+,{"stream_name":"stdout","time":4800.88797836,"data":"[DRIVE_PVTv2B2] Ep 22/50 [10.6s] | Loss: 2.7332 | Val Raw: 0.7646 | Val EMA: 0.7632\n"}
+,{"stream_name":"stdout","time":4812.431676278,"data":"[DRIVE_PVTv2B2] Ep 23/50 [10.7s] | Loss: 2.7221 | Val Raw: 0.7644 | Val EMA: 0.7638\n"}
+,{"stream_name":"stdout","time":4823.883139537,"data":"[DRIVE_PVTv2B2] Ep 24/50 [10.6s] | Loss: 2.7041 | Val Raw: 0.7613 | Val EMA: 0.7626\n"}
+,{"stream_name":"stdout","time":4835.46472442,"data":"[DRIVE_PVTv2B2] Ep 25/50 [10.7s] | Loss: 2.6971 | Val Raw: 0.7666 | Val EMA: 0.7621\n"}
+,{"stream_name":"stdout","time":4847.155209368,"data":"[DRIVE_PVTv2B2] Ep 26/50 [10.6s] | Loss: 2.6834 | Val Raw: 0.7697 | Val EMA: 0.7631 -\u003e [*] Best (RAW: 0.7697)\n"}
+,{"stream_name":"stdout","time":4858.693959236,"data":"[DRIVE_PVTv2B2] Ep 27/50 [10.7s] | Loss: 2.6766 | Val Raw: 0.7635 | Val EMA: 0.7626\n"}
+,{"stream_name":"stdout","time":4870.19544479,"data":"[DRIVE_PVTv2B2] Ep 28/50 [10.7s] | Loss: 2.6625 | Val Raw: 0.7670 | Val EMA: 0.7629\n"}
+,{"stream_name":"stdout","time":4881.688195126,"data":"[DRIVE_PVTv2B2] Ep 29/50 [10.7s] | Loss: 2.6460 | Val Raw: 0.7690 | Val EMA: 0.7629\n"}
+,{"stream_name":"stdout","time":4893.167073915,"data":"[DRIVE_PVTv2B2] Ep 30/50 [10.6s] | Loss: 2.6300 | Val Raw: 0.7688 | Val EMA: 0.7635\n"}
+,{"stream_name":"stdout","time":4904.73368685,"data":"[DRIVE_PVTv2B2] Ep 31/50 [10.7s] | Loss: 2.6288 | Val Raw: 0.7662 | Val EMA: 0.7631\n"}
+,{"stream_name":"stdout","time":4916.276377655,"data":"[DRIVE_PVTv2B2] Ep 32/50 [10.7s] | Loss: 2.6099 | Val Raw: 0.7671 | Val EMA: 0.7640\n"}
+,{"stream_name":"stdout","time":4927.828565363,"data":"[DRIVE_PVTv2B2] Ep 33/50 [10.7s] | Loss: 2.5951 | Val Raw: 0.7678 | Val EMA: 0.7641\n"}
+,{"stream_name":"stdout","time":4939.315018469,"data":"[DRIVE_PVTv2B2] Ep 34/50 [10.6s] | Loss: 2.5956 | Val Raw: 0.7661 | Val EMA: 0.7638\n"}
+,{"stream_name":"stdout","time":4951.090230038,"data":"[DRIVE_PVTv2B2] Ep 35/50 [10.7s] | Loss: 2.5813 | Val Raw: 0.7700 | Val EMA: 0.7640 -\u003e [*] Best (RAW: 0.7700)\n"}
+,{"stream_name":"stdout","time":4962.892003192,"data":"[DRIVE_PVTv2B2] Ep 36/50 [10.7s] | Loss: 2.5715 | Val Raw: 0.7724 | Val EMA: 0.7647 -\u003e [*] Best (RAW: 0.7724)\n"}
+,{"stream_name":"stdout","time":4974.460930112,"data":"[DRIVE_PVTv2B2] Ep 37/50 [10.7s] | Loss: 2.5657 | Val Raw: 0.7656 | Val EMA: 0.7643\n"}
+,{"stream_name":"stdout","time":4986.046319967,"data":"[DRIVE_PVTv2B2] Ep 38/50 [10.7s] | Loss: 2.5627 | Val Raw: 0.7683 | Val EMA: 0.7644\n"}
+,{"stream_name":"stdout","time":4997.810808162,"data":"[DRIVE_PVTv2B2] Ep 39/50 [10.7s] | Loss: 2.5576 | Val Raw: 0.7734 | Val EMA: 0.7649 -\u003e [*] Best (RAW: 0.7734)\n"}
+,{"stream_name":"stdout","time":5009.700739699,"data":"[DRIVE_PVTv2B2] Ep 40/50 [11.0s] | Loss: 2.5522 | Val Raw: 0.7656 | Val EMA: 0.7651\n"}
+,{"stream_name":"stdout","time":5021.326322058,"data":"[DRIVE_PVTv2B2] Ep 41/50 [10.7s] | Loss: 2.5426 | Val Raw: 0.7695 | Val EMA: 0.7657\n"}
+,{"stream_name":"stdout","time":5032.894715065,"data":"[DRIVE_PVTv2B2] Ep 42/50 [10.7s] | Loss: 2.5483 | Val Raw: 0.7664 | Val EMA: 0.7653\n"}
+,{"stream_name":"stdout","time":5044.441688168,"data":"[DRIVE_PVTv2B2] Ep 43/50 [10.7s] | Loss: 2.5749 | Val Raw: 0.7619 | Val EMA: 0.7657\n"}
+,{"stream_name":"stdout","time":5055.984762029,"data":"[DRIVE_PVTv2B2] Ep 44/50 [10.7s] | Loss: 2.5534 | Val Raw: 0.7623 | Val EMA: 0.7666\n"}
+,{"stream_name":"stdout","time":5067.474734124,"data":"[DRIVE_PVTv2B2] Ep 45/50 [10.7s] | Loss: 2.5426 | Val Raw: 0.7674 | Val EMA: 0.7667\n"}
+,{"stream_name":"stdout","time":5078.926987627,"data":"[DRIVE_PVTv2B2] Ep 46/50 [10.6s] | Loss: 2.5297 | Val Raw: 0.7679 | Val EMA: 0.7669\n"}
+,{"stream_name":"stdout","time":5090.386194755,"data":"[DRIVE_PVTv2B2] Ep 47/50 [10.6s] | Loss: 2.5207 | Val Raw: 0.7677 | Val EMA: 0.7670\n"}
+,{"stream_name":"stdout","time":5101.945541633,"data":"[DRIVE_PVTv2B2] Ep 48/50 [10.7s] | Loss: 2.5341 | Val Raw: 0.7701 | Val EMA: 0.7671\n"}
+,{"stream_name":"stdout","time":5113.44144606,"data":"[DRIVE_PVTv2B2] Ep 49/50 [10.7s] | Loss: 2.5085 | Val Raw: 0.7662 | Val EMA: 0.7669\n"}
+,{"stream_name":"stdout","time":5124.961801869,"data":"[DRIVE_PVTv2B2] Ep 50/50 [10.7s] | Loss: 2.5027 | Val Raw: 0.7651 | Val EMA: 0.7672\n"}
+,{"stream_name":"stdout","time":5124.963778372,"data":"\n"}
+,{"stream_name":"stdout","time":5124.963801455,"data":"[+] Training Finished for DRIVE_PVTv2B2! Best Val Macro Dice: 0.7734 @ Ep 39 (RAW)\n"}
+,{"stream_name":"stdout","time":5126.054658078,"data":"\n"}
+,{"stream_name":"stdout","time":5126.054793162,"data":"--- DRIVE_PVTv2B2 TEST RESULTS (SINGLE-VIEW, T=0.50) ---\n"}
+,{"stream_name":"stdout","time":5126.057754843,"data":"           Metric     Mean      Std   Median      Min       Max\n"}
+,{"stream_name":"stdout","time":5126.057784727,"data":"             Dice 0.782694 0.026361 0.783055 0.743983  0.818106\n"}
+,{"stream_name":"stdout","time":5126.057791484,"data":"             mIoU 0.643613 0.035517 0.643557 0.592335  0.692199\n"}
+,{"stream_name":"stdout","time":5126.057808457,"data":"      Sensitivity 0.869995 0.034596 0.866266 0.819030  0.917865\n"}
+,{"stream_name":"stdout","time":5126.057813218,"data":"      Specificity 0.967421 0.004564 0.967197 0.963225  0.975818\n"}
+,{"stream_name":"stdout","time":5126.05781716,"data":"        Precision 0.714782 0.059584 0.704379 0.654358  0.817185\n"}
+,{"stream_name":"stdout","time":5126.05782062,"data":"              FPR 0.032579 0.004564 0.032803 0.024182  0.036775\n"}
+,{"stream_name":"stdout","time":5126.057824179,"data":"             HD95 6.224642 6.140407 4.182873 2.828427 18.681542\n"}
+,{"stream_name":"stdout","time":5126.057827768,"data":"              ASD 1.314412 0.580799 1.092643 1.007834  2.491637\n"}
+,{"stream_name":"stdout","time":5126.05783127,"data":"              BF2 0.916263 0.033614 0.928196 0.850563  0.939288\n"}
+,{"stream_name":"stdout","time":5126.057834759,"data":"Global_Micro_Dice 0.785572 0.000000 0.785572 0.785572  0.785572\n"}
+,{"stream_name":"stdout","time":5126.057838406,"data":" Global_Micro_IoU 0.646866 0.000000 0.646866 0.646866  0.646866\n"}
+,{"stream_name":"stdout","time":5127.339351518,"data":"\n"}
+,{"stream_name":"stdout","time":5127.34021996,"data":"--- DRIVE_PVTv2B2 TEST RESULTS (4-VIEW TTA, T=0.50) ---\n"}
+,{"stream_name":"stdout","time":5127.342314367,"data":"           Metric     Mean      Std   Median      Min       Max\n"}
+,{"stream_name":"stdout","time":5127.342328729,"data":"             Dice 0.784676 0.027914 0.783119 0.741451  0.814900\n"}
+,{"stream_name":"stdout","time":5127.342333194,"data":"             mIoU 0.646371 0.037574 0.643631 0.589131  0.687622\n"}
+,{"stream_name":"stdout","time":5127.34233765,"data":"      Sensitivity 0.863271 0.037485 0.858243 0.807022  0.908127\n"}
+,{"stream_name":"stdout","time":5127.34234178,"data":"      Specificity 0.968944 0.004469 0.968372 0.964623  0.977084\n"}
+,{"stream_name":"stdout","time":5127.34234571,"data":"        Precision 0.722722 0.059995 0.718760 0.657705  0.822935\n"}
+,{"stream_name":"stdout","time":5127.342349678,"data":"              FPR 0.031056 0.004469 0.031628 0.022916  0.035377\n"}
+,{"stream_name":"stdout","time":5127.342353772,"data":"             HD95 5.784701 6.576069 3.118034 2.236068 19.000000\n"}
+,{"stream_name":"stdout","time":5127.342357894,"data":"              ASD 1.269237 0.599035 1.027615 0.963958  2.482908\n"}
+,{"stream_name":"stdout","time":5127.342361395,"data":"              BF2 0.921938 0.034839 0.932956 0.854455  0.945932\n"}
+,{"stream_name":"stdout","time":5127.34236559,"data":"Global_Micro_Dice 0.787526 0.000000 0.787526 0.787526  0.787526\n"}
+,{"stream_name":"stdout","time":5127.342371818,"data":" Global_Micro_IoU 0.649519 0.000000 0.649519 0.649519  0.649519\n"}
+,{"stream_name":"stdout","time":5128.070392285,"data":"[*] DRIVE_PVTv2B2 Calibrated Threshold on Val: T_opt = 0.680 (Val TTA Macro Dice: 0.7841)\n"}
+,{"stream_name":"stdout","time":5129.314526691,"data":"\n"}
+,{"stream_name":"stdout","time":5129.314640675,"data":"--- DRIVE_PVTv2B2 TEST RESULTS (CALIBRATED 4-VIEW TTA, T_opt=0.680) ---\n"}
+,{"stream_name":"stdout","time":5129.317885422,"data":"           Metric     Mean      Std   Median      Min       Max  T_opt\n"}
+,{"stream_name":"stdout","time":5129.317904992,"data":"             Dice 0.793692 0.022209 0.792840 0.759109  0.826334   0.68\n"}
+,{"stream_name":"stdout","time":5129.317910514,"data":"             mIoU 0.658419 0.030496 0.656791 0.611745  0.704063   0.68\n"}
+,{"stream_name":"stdout","time":5129.317915166,"data":"      Sensitivity 0.815335 0.041867 0.812065 0.752413  0.862751   0.68\n"}
+,{"stream_name":"stdout","time":5129.31791928,"data":"      Specificity 0.978072 0.003779 0.977911 0.974024  0.984580   0.68\n"}
+,{"stream_name":"stdout","time":5129.317935755,"data":"        Precision 0.776713 0.052958 0.771253 0.726456  0.865585   0.68\n"}
+,{"stream_name":"stdout","time":5129.317939706,"data":"              FPR 0.021928 0.003779 0.022089 0.015420  0.025976   0.68\n"}
+,{"stream_name":"stdout","time":5129.317947132,"data":"             HD95 5.422772 4.930746 3.650282 2.000000 15.000000   0.68\n"}
+,{"stream_name":"stdout","time":5129.317949647,"data":"              ASD 1.188577 0.447140 1.054890 0.889362  2.067652   0.68\n"}
+,{"stream_name":"stdout","time":5129.317952018,"data":"              BF2 0.924639 0.026007 0.928187 0.880306  0.950713   0.68\n"}
+,{"stream_name":"stdout","time":5129.317954478,"data":"Global_Micro_Dice 0.795559 0.000000 0.795559 0.795559  0.795559   0.68\n"}
+,{"stream_name":"stdout","time":5129.317956896,"data":" Global_Micro_IoU 0.660522 0.000000 0.660522 0.660522  0.660522   0.68\n"}
+,{"stream_name":"stdout","time":5129.447655328,"data":"\n"}
+,{"stream_name":"stdout","time":5129.44768144,"data":"==========================================================================================\n"}
+,{"stream_name":"stdout","time":5129.447705891,"data":"       GROUP 2 MASTER BENCHMARK SUMMARY (EM-Dataset, CHASE-DB1, DRIVE)       \n"}
+,{"stream_name":"stdout","time":5129.447833687,"data":"==========================================================================================\n"}
+,{"stream_name":"stdout","time":5129.45370645,"data":"  Dataset      Backbone  Best_Val_Dice  Best_Epoch  T_opt  SV_Mean_Dice  SV_Median_Dice  TTA_Mean_Dice  TTA_Median_Dice  Cal_Mean_Dice  Cal_Median_Dice  Cal_mIoU  Cal_Sens  Cal_Spec  Cal_Prec  Cal_FPR  Cal_HD95  Cal_ASD  Cal_BF2  Cal_Global_Dice\n"}
+,{"stream_name":"stdout","time":5129.453732946,"data":"EMDataset ConvFormerS18       0.954116          50   0.63      0.952009        0.954423       0.952918         0.954569       0.953107         0.954630  0.910746  0.949791  0.997253  0.957100 0.002747  2.138464 1.254565 0.956849         0.952093\n"}
+,{"stream_name":"stdout","time":5129.453739368,"data":"CHASE-DB1 ConvFormerS18       0.799605          41   0.55      0.798669        0.793876       0.800234         0.798363       0.802327         0.800900  0.670172  0.838470  0.981737  0.771247 0.018263  2.927051 1.073431 0.938747         0.803134\n"}
+,{"stream_name":"stdout","time":5129.453744489,"data":"    DRIVE ConvFormerS18       0.770495          44   0.65      0.785645        0.780875       0.788578         0.783790       0.793185         0.791009  0.657556  0.806529  0.978990  0.783204 0.021010  4.711282 1.137564 0.928192         0.794553\n"}
+,{"stream_name":"stdout","time":5129.453749573,"data":"EMDataset       PVTv2B2       0.949886          52   0.69      0.949526        0.950694       0.949194         0.951260       0.951834         0.953253  0.908371  0.951935  0.997074  0.952316 0.002926  2.482793 1.314143 0.955108         0.950922\n"}
+,{"stream_name":"stdout","time":5129.453754577,"data":"CHASE-DB1       PVTv2B2       0.800369          60   0.73      0.793248        0.788411       0.798326         0.794666       0.812548         0.809220  0.684505  0.834753  0.984027  0.793720 0.015973  3.134789 1.020559 0.937686         0.813079\n"}
+,{"stream_name":"stdout","time":5129.453759539,"data":"    DRIVE       PVTv2B2       0.773378          39   0.68      0.782694        0.783055       0.784676         0.783119       0.793692         0.792840  0.658419  0.815335  0.978072  0.776713 0.021928  5.422772 1.188577 0.924639         0.795559\n"}
+,{"stream_name":"stdout","time":5129.453764492,"data":"==========================================================================================\n"}
+,{"stream_name":"stderr","time":5136.926930428,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":5136.926975034,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":5137.219317114,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":5137.219342412,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":5138.087011585,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":5139.387748679,"data":"[NbConvertApp] Writing 509937 bytes to __results__.html\n"}
+]
