@@ -1,0 +1,690 @@
+[{"stream_name":"stdout","time":35.989996087,"data":"[+] Device: cuda\n"}
+,{"stream_name":"stdout","time":36.041462565,"data":"[+] GPU: Tesla T4 (VRAM: 15.64 GB)\n"}
+,{"stream_name":"stdout","time":105.729588098,"data":"[+] EM-Dataset Slices -\u003e Total: 165 | Train: 153 | Val: 6 | Test: 6\n"}
+,{"stream_name":"stdout","time":112.049714093,"data":"[+] CHASE-DB1 Matched Pairs: 28 -\u003e Train: 20 | Val: 4 | Test: 4\n"}
+,{"stream_name":"stdout","time":112.080697096,"data":"[+] DRIVE ID-Verified Matched Pairs: 20 (IDs: [21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40])\n"}
+,{"stream_name":"stdout","time":112.080817557,"data":"[+] DRIVE Splits -\u003e Train: 12 | Val: 2 | Test: 6\n"}
+,{"stream_name":"stdout","time":112.080942536,"data":"\n"}
+,{"stream_name":"stdout","time":112.080950043,"data":"\u003e\u003e\u003e Running Experiments for Backbone: ConvFormerS18 (convformer_s18.sail_in22k_ft_in1k_384) \u003c\u003c\u003c\n"}
+,{"stream_name":"stdout","time":112.080955866,"data":"\n"}
+,{"stream_name":"stdout","time":112.095145724,"data":"\n"}
+,{"stream_name":"stdout","time":112.095169114,"data":"================================================================================\n"}
+,{"stream_name":"stdout","time":112.095215404,"data":"[*] STARTING GDF-Netv4 TRAINING: EMDataset_ConvFormerS18_isic2018 (60 Epochs)\n"}
+,{"stream_name":"stdout","time":112.095315366,"data":"[*] Backbone: convformer_s18.sail_in22k_ft_in1k_384 | Warm-Start Mode: isic2018 | Loss Kernel: 15\n"}
+,{"stream_name":"stdout","time":112.095354596,"data":"================================================================================\n"}
+,{"stream_name":"stderr","time":112.948605952,"data":"Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.\n"}
+,{"stream_name":"stdout","time":116.986252081,"data":"[*] Found ISIC-2018 Checkpoint: /kaggle/input/datasets/namnguynnnn/gdfnetv4-isic-pretrained/GDFNetV4_ConvFormerS18_ISIC2018_best.pth\n"}
+,{"stream_name":"stdout","time":123.309017321,"data":"[+] Successfully initialized from ISIC-2018! (Missing: 0, Unexpected: 0)\n"}
+,{"stream_name":"stdout","time":123.310723416,"data":"[+] Model Initialized | Total Params: 29,503,181 | Channels: (64, 128, 320, 512)\n"}
+,{"stream_name":"stdout","time":283.054695553,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 01/60 [142.9s] | Loss: 3.4966 | Val Raw: 0.8876 | Val EMA: 0.3190 -\u003e [*] Best (RAW: 0.8876)\n"}
+,{"stream_name":"stdout","time":309.833550835,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 02/60 [25.5s] | Loss: 1.5423 | Val Raw: 0.9181 | Val EMA: 0.4320 -\u003e [*] Best (RAW: 0.9181)\n"}
+,{"stream_name":"stdout","time":337.397774414,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 03/60 [26.3s] | Loss: 1.2920 | Val Raw: 0.9310 | Val EMA: 0.6234 -\u003e [*] Best (RAW: 0.9310)\n"}
+,{"stream_name":"stdout","time":364.294191449,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 04/60 [25.6s] | Loss: 1.1830 | Val Raw: 0.9340 | Val EMA: 0.7457 -\u003e [*] Best (RAW: 0.9340)\n"}
+,{"stream_name":"stdout","time":391.150815583,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 05/60 [25.5s] | Loss: 1.1200 | Val Raw: 0.9380 | Val EMA: 0.8204 -\u003e [*] Best (RAW: 0.9380)\n"}
+,{"stream_name":"stdout","time":418.152725062,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 06/60 [25.9s] | Loss: 1.0717 | Val Raw: 0.9291 | Val EMA: 0.8674\n"}
+,{"stream_name":"stdout","time":445.158965475,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 07/60 [25.7s] | Loss: 1.0245 | Val Raw: 0.9439 | Val EMA: 0.8934 -\u003e [*] Best (RAW: 0.9439)\n"}
+,{"stream_name":"stdout","time":471.882116106,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 08/60 [25.6s] | Loss: 0.9981 | Val Raw: 0.9434 | Val EMA: 0.9068\n"}
+,{"stream_name":"stdout","time":498.722619138,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 09/60 [25.8s] | Loss: 0.9829 | Val Raw: 0.9430 | Val EMA: 0.9185\n"}
+,{"stream_name":"stdout","time":525.809705059,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 10/60 [25.8s] | Loss: 0.9568 | Val Raw: 0.9448 | Val EMA: 0.9264 -\u003e [*] Best (RAW: 0.9448)\n"}
+,{"stream_name":"stdout","time":552.557501979,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 11/60 [25.7s] | Loss: 0.9430 | Val Raw: 0.9426 | Val EMA: 0.9322\n"}
+,{"stream_name":"stdout","time":579.452566735,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 12/60 [25.7s] | Loss: 0.9375 | Val Raw: 0.9451 | Val EMA: 0.9347 -\u003e [*] Best (RAW: 0.9451)\n"}
+,{"stream_name":"stdout","time":606.525856601,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 13/60 [25.8s] | Loss: 0.9227 | Val Raw: 0.9456 | Val EMA: 0.9373 -\u003e [*] Best (RAW: 0.9456)\n"}
+,{"stream_name":"stdout","time":633.522524848,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 14/60 [25.7s] | Loss: 0.9055 | Val Raw: 0.9467 | Val EMA: 0.9395 -\u003e [*] Best (RAW: 0.9467)\n"}
+,{"stream_name":"stdout","time":660.554673028,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 15/60 [25.8s] | Loss: 0.9025 | Val Raw: 0.9473 | Val EMA: 0.9413 -\u003e [*] Best (RAW: 0.9473)\n"}
+,{"stream_name":"stdout","time":687.509419252,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 16/60 [25.9s] | Loss: 0.8971 | Val Raw: 0.9441 | Val EMA: 0.9427\n"}
+,{"stream_name":"stdout","time":714.379611146,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 17/60 [25.8s] | Loss: 0.8913 | Val Raw: 0.9458 | Val EMA: 0.9438\n"}
+,{"stream_name":"stdout","time":741.312096751,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 18/60 [25.8s] | Loss: 0.8863 | Val Raw: 0.9450 | Val EMA: 0.9445\n"}
+,{"stream_name":"stdout","time":768.139534366,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 19/60 [25.8s] | Loss: 0.8832 | Val Raw: 0.9468 | Val EMA: 0.9449\n"}
+,{"stream_name":"stdout","time":794.994711396,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 20/60 [25.8s] | Loss: 0.8818 | Val Raw: 0.9466 | Val EMA: 0.9453\n"}
+,{"stream_name":"stdout","time":821.881000512,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 21/60 [25.8s] | Loss: 0.8953 | Val Raw: 0.9395 | Val EMA: 0.9454\n"}
+,{"stream_name":"stdout","time":848.746743613,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 22/60 [25.8s] | Loss: 0.8965 | Val Raw: 0.9460 | Val EMA: 0.9458\n"}
+,{"stream_name":"stdout","time":875.560364477,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 23/60 [25.8s] | Loss: 0.8776 | Val Raw: 0.9459 | Val EMA: 0.9463\n"}
+,{"stream_name":"stdout","time":902.548926983,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 24/60 [25.7s] | Loss: 0.8706 | Val Raw: 0.9496 | Val EMA: 0.9465 -\u003e [*] Best (RAW: 0.9496)\n"}
+,{"stream_name":"stdout","time":929.529689725,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 25/60 [25.7s] | Loss: 0.8691 | Val Raw: 0.9520 | Val EMA: 0.9465 -\u003e [*] Best (RAW: 0.9520)\n"}
+,{"stream_name":"stdout","time":956.524994728,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 26/60 [25.7s] | Loss: 0.8560 | Val Raw: 0.9527 | Val EMA: 0.9470 -\u003e [*] Best (RAW: 0.9527)\n"}
+,{"stream_name":"stdout","time":983.385711765,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 27/60 [25.8s] | Loss: 0.8396 | Val Raw: 0.9518 | Val EMA: 0.9477\n"}
+,{"stream_name":"stdout","time":1010.275281418,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 28/60 [25.8s] | Loss: 0.8307 | Val Raw: 0.9510 | Val EMA: 0.9483\n"}
+,{"stream_name":"stdout","time":1037.126411651,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 29/60 [25.8s] | Loss: 0.8260 | Val Raw: 0.9502 | Val EMA: 0.9487\n"}
+,{"stream_name":"stdout","time":1064.375236975,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 30/60 [26.2s] | Loss: 0.8196 | Val Raw: 0.9490 | Val EMA: 0.9489\n"}
+,{"stream_name":"stdout","time":1091.493441803,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 31/60 [25.8s] | Loss: 0.8152 | Val Raw: 0.9534 | Val EMA: 0.9493 -\u003e [*] Best (RAW: 0.9534)\n"}
+,{"stream_name":"stdout","time":1118.328776067,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 32/60 [25.8s] | Loss: 0.8104 | Val Raw: 0.9519 | Val EMA: 0.9495\n"}
+,{"stream_name":"stdout","time":1145.148568758,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 33/60 [25.8s] | Loss: 0.8161 | Val Raw: 0.9491 | Val EMA: 0.9498\n"}
+,{"stream_name":"stdout","time":1172.056130765,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 34/60 [25.8s] | Loss: 0.7982 | Val Raw: 0.9483 | Val EMA: 0.9502\n"}
+,{"stream_name":"stdout","time":1199.105336536,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 35/60 [25.8s] | Loss: 0.7922 | Val Raw: 0.9540 | Val EMA: 0.9506 -\u003e [*] Best (RAW: 0.9540)\n"}
+,{"stream_name":"stdout","time":1225.934259846,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 36/60 [25.8s] | Loss: 0.7902 | Val Raw: 0.9522 | Val EMA: 0.9509\n"}
+,{"stream_name":"stdout","time":1252.80643891,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 37/60 [25.8s] | Loss: 0.7854 | Val Raw: 0.9519 | Val EMA: 0.9514\n"}
+,{"stream_name":"stdout","time":1279.708526113,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 38/60 [25.8s] | Loss: 0.7803 | Val Raw: 0.9524 | Val EMA: 0.9517\n"}
+,{"stream_name":"stdout","time":1306.565018072,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 39/60 [25.8s] | Loss: 0.7721 | Val Raw: 0.9470 | Val EMA: 0.9519\n"}
+,{"stream_name":"stdout","time":1333.400991648,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 40/60 [25.8s] | Loss: 0.7721 | Val Raw: 0.9519 | Val EMA: 0.9520\n"}
+,{"stream_name":"stdout","time":1360.201812415,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 41/60 [25.7s] | Loss: 0.7763 | Val Raw: 0.9507 | Val EMA: 0.9520\n"}
+,{"stream_name":"stdout","time":1387.058734323,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 42/60 [25.8s] | Loss: 0.7577 | Val Raw: 0.9517 | Val EMA: 0.9523\n"}
+,{"stream_name":"stdout","time":1413.888531373,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 43/60 [25.8s] | Loss: 0.7606 | Val Raw: 0.9511 | Val EMA: 0.9527\n"}
+,{"stream_name":"stdout","time":1440.928902222,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 44/60 [25.8s] | Loss: 0.7543 | Val Raw: 0.9542 | Val EMA: 0.9532 -\u003e [*] Best (RAW: 0.9542)\n"}
+,{"stream_name":"stdout","time":1467.832176605,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 45/60 [25.8s] | Loss: 0.7501 | Val Raw: 0.9535 | Val EMA: 0.9534\n"}
+,{"stream_name":"stdout","time":1494.882838906,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 46/60 [25.8s] | Loss: 0.7522 | Val Raw: 0.9571 | Val EMA: 0.9537 -\u003e [*] Best (RAW: 0.9571)\n"}
+,{"stream_name":"stdout","time":1521.7409487,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 47/60 [25.8s] | Loss: 0.7546 | Val Raw: 0.9569 | Val EMA: 0.9540\n"}
+,{"stream_name":"stdout","time":1548.605714361,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 48/60 [25.8s] | Loss: 0.7432 | Val Raw: 0.9552 | Val EMA: 0.9543\n"}
+,{"stream_name":"stdout","time":1575.49824211,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 49/60 [25.8s] | Loss: 0.7436 | Val Raw: 0.9569 | Val EMA: 0.9545\n"}
+,{"stream_name":"stdout","time":1602.402821209,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 50/60 [25.8s] | Loss: 0.7383 | Val Raw: 0.9560 | Val EMA: 0.9547\n"}
+,{"stream_name":"stdout","time":1629.231844376,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 51/60 [25.8s] | Loss: 0.7356 | Val Raw: 0.9551 | Val EMA: 0.9550\n"}
+,{"stream_name":"stdout","time":1656.104003053,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 52/60 [25.8s] | Loss: 0.7370 | Val Raw: 0.9555 | Val EMA: 0.9550\n"}
+,{"stream_name":"stdout","time":1683.020110985,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 53/60 [25.8s] | Loss: 0.7301 | Val Raw: 0.9555 | Val EMA: 0.9551\n"}
+,{"stream_name":"stdout","time":1709.912411123,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 54/60 [25.8s] | Loss: 0.7302 | Val Raw: 0.9547 | Val EMA: 0.9552\n"}
+,{"stream_name":"stdout","time":1736.755854415,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 55/60 [25.8s] | Loss: 0.7337 | Val Raw: 0.9554 | Val EMA: 0.9552\n"}
+,{"stream_name":"stdout","time":1763.605758842,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 56/60 [25.8s] | Loss: 0.7308 | Val Raw: 0.9561 | Val EMA: 0.9553\n"}
+,{"stream_name":"stdout","time":1790.503751987,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 57/60 [25.8s] | Loss: 0.7275 | Val Raw: 0.9561 | Val EMA: 0.9555\n"}
+,{"stream_name":"stdout","time":1817.441465478,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 58/60 [25.9s] | Loss: 0.7295 | Val Raw: 0.9548 | Val EMA: 0.9556\n"}
+,{"stream_name":"stdout","time":1844.227724392,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 59/60 [25.7s] | Loss: 0.7256 | Val Raw: 0.9560 | Val EMA: 0.9556\n"}
+,{"stream_name":"stdout","time":1870.999938032,"data":"[EMDataset_ConvFormerS18_isic2018] Ep 60/60 [25.7s] | Loss: 0.7250 | Val Raw: 0.9564 | Val EMA: 0.9558\n"}
+,{"stream_name":"stdout","time":1871.002161483,"data":"\n"}
+,{"stream_name":"stdout","time":1871.002184799,"data":"[+] Training Finished for EMDataset_ConvFormerS18_isic2018! Best Val Macro Dice: 0.9571 @ Ep 46 (RAW)\n"}
+,{"stream_name":"stdout","time":1871.992805652,"data":"\n"}
+,{"stream_name":"stdout","time":1871.992917269,"data":"--- EMDataset_ConvFormerS18_isic2018 TEST RESULTS (SINGLE-VIEW, T=0.50) ---\n"}
+,{"stream_name":"stdout","time":1872.009670708,"data":"           Metric     Mean      Std   Median      Min      Max\n"}
+,{"stream_name":"stdout","time":1872.00970541,"data":"             Dice 0.950419 0.010435 0.948965 0.938473 0.965817\n"}
+,{"stream_name":"stdout","time":1872.009712775,"data":"             mIoU 0.905680 0.019002 0.902927 0.884078 0.933893\n"}
+,{"stream_name":"stdout","time":1872.00971845,"data":"      Sensitivity 0.945924 0.018902 0.950878 0.912671 0.964388\n"}
+,{"stream_name":"stdout","time":1872.009724245,"data":"      Specificity 0.996879 0.001789 0.997009 0.994054 0.998732\n"}
+,{"stream_name":"stdout","time":1872.009729669,"data":"        Precision 0.955451 0.020056 0.960673 0.917780 0.974662\n"}
+,{"stream_name":"stdout","time":1872.00973559,"data":"              FPR 0.003121 0.001789 0.002991 0.001268 0.005946\n"}
+,{"stream_name":"stdout","time":1872.009741464,"data":"             HD95 2.661519 1.702816 2.118034 1.414214 6.082763\n"}
+,{"stream_name":"stdout","time":1872.009747448,"data":"              ASD 1.219899 0.785100 0.843590 0.563191 2.562950\n"}
+,{"stream_name":"stdout","time":1872.009752957,"data":"              BF2 0.949348 0.027965 0.946455 0.917887 0.991332\n"}
+,{"stream_name":"stdout","time":1872.009757876,"data":"Global_Micro_Dice 0.949583 0.000000 0.949583 0.949583 0.949583\n"}
+,{"stream_name":"stdout","time":1872.009762577,"data":" Global_Micro_IoU 0.904006 0.000000 0.904006 0.904006 0.904006\n"}
+,{"stream_name":"stdout","time":1873.268998252,"data":"\n"}
+,{"stream_name":"stdout","time":1873.26903608,"data":"--- EMDataset_ConvFormerS18_isic2018 TEST RESULTS (4-VIEW TTA, T=0.50) ---\n"}
+,{"stream_name":"stdout","time":1873.272096836,"data":"           Metric     Mean      Std   Median      Min      Max\n"}
+,{"stream_name":"stdout","time":1873.27212449,"data":"             Dice 0.951725 0.009478 0.950623 0.941692 0.965574\n"}
+,{"stream_name":"stdout","time":1873.27213171,"data":"             mIoU 0.908027 0.017297 0.905941 0.889810 0.933439\n"}
+,{"stream_name":"stdout","time":1873.272138385,"data":"      Sensitivity 0.945529 0.019340 0.950803 0.913314 0.963061\n"}
+,{"stream_name":"stdout","time":1873.272143941,"data":"      Specificity 0.997101 0.001726 0.997190 0.994331 0.998932\n"}
+,{"stream_name":"stdout","time":1873.272160473,"data":"        Precision 0.958537 0.019827 0.963074 0.921513 0.979686\n"}
+,{"stream_name":"stdout","time":1873.272165208,"data":"              FPR 0.002899 0.001726 0.002810 0.001068 0.005669\n"}
+,{"stream_name":"stdout","time":1873.272169104,"data":"             HD95 2.481058 1.270126 2.118034 1.414214 5.000000\n"}
+,{"stream_name":"stdout","time":1873.272173072,"data":"              ASD 1.347256 0.794257 1.172380 0.569500 2.465540\n"}
+,{"stream_name":"stdout","time":1873.272176922,"data":"              BF2 0.954987 0.023934 0.950951 0.924725 0.991327\n"}
+,{"stream_name":"stdout","time":1873.272180954,"data":"Global_Micro_Dice 0.950842 0.000000 0.950842 0.950842 0.950842\n"}
+,{"stream_name":"stdout","time":1873.2721848,"data":" Global_Micro_IoU 0.906291 0.000000 0.906291 0.906291 0.906291\n"}
+,{"stream_name":"stdout","time":1874.513878494,"data":"[*] EMDataset_ConvFormerS18_isic2018 Calibrated Threshold on Val: T_opt = 0.520 (Val TTA Macro Dice: 0.9584)\n"}
+,{"stream_name":"stdout","time":1875.783072361,"data":"\n"}
+,{"stream_name":"stdout","time":1875.783269483,"data":"--- EMDataset_ConvFormerS18_isic2018 TEST RESULTS (CALIBRATED 4-VIEW TTA, T_opt=0.520) ---\n"}
+,{"stream_name":"stdout","time":1875.786732584,"data":"           Metric     Mean      Std   Median      Min      Max  T_opt\n"}
+,{"stream_name":"stdout","time":1875.786767462,"data":"             Dice 0.951599 0.009509 0.950431 0.942060 0.965482   0.52\n"}
+,{"stream_name":"stdout","time":1875.786773478,"data":"             mIoU 0.907799 0.017351 0.905598 0.890467 0.933267   0.52\n"}
+,{"stream_name":"stdout","time":1875.786777895,"data":"      Sensitivity 0.944226 0.019564 0.949813 0.911813 0.961837   0.52\n"}
+,{"stream_name":"stdout","time":1875.786812795,"data":"      Specificity 0.997182 0.001688 0.997266 0.994478 0.998976   0.52\n"}
+,{"stream_name":"stdout","time":1875.786820733,"data":"        Precision 0.959619 0.019485 0.964008 0.923304 0.980481   0.52\n"}
+,{"stream_name":"stdout","time":1875.786825169,"data":"              FPR 0.002818 0.001688 0.002734 0.001024 0.005522   0.52\n"}
+,{"stream_name":"stdout","time":1875.786829973,"data":"             HD95 2.454665 1.207411 2.118034 1.414214 4.841641   0.52\n"}
+,{"stream_name":"stdout","time":1875.786834713,"data":"              ASD 1.336240 0.780541 1.157212 0.569247 2.419828   0.52\n"}
+,{"stream_name":"stdout","time":1875.786838642,"data":"              BF2 0.954642 0.023798 0.951032 0.924652 0.991316   0.52\n"}
+,{"stream_name":"stdout","time":1875.786843274,"data":"Global_Micro_Dice 0.950710 0.000000 0.950710 0.950710 0.950710   0.52\n"}
+,{"stream_name":"stdout","time":1875.78684751,"data":" Global_Micro_IoU 0.906050 0.000000 0.906050 0.906050 0.906050   0.52\n"}
+,{"stream_name":"stdout","time":1875.954894852,"data":"\n"}
+,{"stream_name":"stdout","time":1875.954921244,"data":"================================================================================\n"}
+,{"stream_name":"stdout","time":1875.954927195,"data":"[*] STARTING GDF-Netv4 TRAINING: CHASE-DB1_ConvFormerS18_isic2018 (60 Epochs)\n"}
+,{"stream_name":"stdout","time":1875.954990572,"data":"[*] Backbone: convformer_s18.sail_in22k_ft_in1k_384 | Warm-Start Mode: isic2018 | Loss Kernel: 7\n"}
+,{"stream_name":"stdout","time":1875.955086002,"data":"================================================================================\n"}
+,{"stream_name":"stdout","time":1876.625598825,"data":"[*] Found ISIC-2018 Checkpoint: /kaggle/input/datasets/namnguynnnn/gdfnetv4-isic-pretrained/GDFNetV4_ConvFormerS18_ISIC2018_best.pth\n"}
+,{"stream_name":"stdout","time":1876.783627378,"data":"[+] Successfully initialized from ISIC-2018! (Missing: 0, Unexpected: 0)\n"}
+,{"stream_name":"stdout","time":1876.785472421,"data":"[+] Model Initialized | Total Params: 29,503,181 | Channels: (64, 128, 320, 512)\n"}
+,{"stream_name":"stdout","time":2034.450750272,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 01/60 [155.2s] | Loss: 6.3801 | Val Raw: 0.6445 | Val EMA: 0.2075 -\u003e [*] Best (RAW: 0.6445)\n"}
+,{"stream_name":"stdout","time":2072.836831073,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 02/60 [36.8s] | Loss: 3.8613 | Val Raw: 0.7577 | Val EMA: 0.2082 -\u003e [*] Best (RAW: 0.7577)\n"}
+,{"stream_name":"stdout","time":2111.444626837,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 03/60 [37.0s] | Loss: 3.3749 | Val Raw: 0.7742 | Val EMA: 0.2179 -\u003e [*] Best (RAW: 0.7742)\n"}
+,{"stream_name":"stdout","time":2149.771607263,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 04/60 [36.8s] | Loss: 3.1689 | Val Raw: 0.7786 | Val EMA: 0.2392 -\u003e [*] Best (RAW: 0.7786)\n"}
+,{"stream_name":"stdout","time":2188.277029598,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 05/60 [37.0s] | Loss: 3.0482 | Val Raw: 0.7876 | Val EMA: 0.2775 -\u003e [*] Best (RAW: 0.7876)\n"}
+,{"stream_name":"stdout","time":2226.652222808,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 06/60 [36.8s] | Loss: 2.9600 | Val Raw: 0.7954 | Val EMA: 0.3249 -\u003e [*] Best (RAW: 0.7954)\n"}
+,{"stream_name":"stdout","time":2264.876770026,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 07/60 [36.9s] | Loss: 2.9134 | Val Raw: 0.7901 | Val EMA: 0.3995\n"}
+,{"stream_name":"stdout","time":2303.445988619,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 08/60 [37.0s] | Loss: 2.8704 | Val Raw: 0.7994 | Val EMA: 0.4910 -\u003e [*] Best (RAW: 0.7994)\n"}
+,{"stream_name":"stdout","time":2341.932014191,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 09/60 [36.9s] | Loss: 2.8392 | Val Raw: 0.8036 | Val EMA: 0.5938 -\u003e [*] Best (RAW: 0.8036)\n"}
+,{"stream_name":"stdout","time":2380.428389452,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 10/60 [36.9s] | Loss: 2.8076 | Val Raw: 0.8060 | Val EMA: 0.6697 -\u003e [*] Best (RAW: 0.8060)\n"}
+,{"stream_name":"stdout","time":2418.969929458,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 11/60 [37.0s] | Loss: 2.7901 | Val Raw: 0.8090 | Val EMA: 0.7120 -\u003e [*] Best (RAW: 0.8090)\n"}
+,{"stream_name":"stdout","time":2457.322949576,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 12/60 [37.0s] | Loss: 2.7888 | Val Raw: 0.8040 | Val EMA: 0.7380\n"}
+,{"stream_name":"stdout","time":2495.6056217,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 13/60 [36.9s] | Loss: 2.7666 | Val Raw: 0.8044 | Val EMA: 0.7570\n"}
+,{"stream_name":"stdout","time":2533.915675194,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 14/60 [36.9s] | Loss: 2.7555 | Val Raw: 0.7999 | Val EMA: 0.7705\n"}
+,{"stream_name":"stdout","time":2572.251253071,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 15/60 [37.0s] | Loss: 2.7250 | Val Raw: 0.8010 | Val EMA: 0.7800\n"}
+,{"stream_name":"stdout","time":2610.54743491,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 16/60 [36.9s] | Loss: 2.7372 | Val Raw: 0.8013 | Val EMA: 0.7865\n"}
+,{"stream_name":"stdout","time":2648.908185503,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 17/60 [37.0s] | Loss: 2.7080 | Val Raw: 0.8034 | Val EMA: 0.7910\n"}
+,{"stream_name":"stdout","time":2687.214403688,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 18/60 [36.9s] | Loss: 2.6975 | Val Raw: 0.8020 | Val EMA: 0.7945\n"}
+,{"stream_name":"stdout","time":2725.637376689,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 19/60 [37.0s] | Loss: 2.7045 | Val Raw: 0.8035 | Val EMA: 0.7966\n"}
+,{"stream_name":"stdout","time":2763.958031156,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 20/60 [36.9s] | Loss: 2.7105 | Val Raw: 0.8025 | Val EMA: 0.7983\n"}
+,{"stream_name":"stdout","time":2802.367212785,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 21/60 [37.0s] | Loss: 2.7238 | Val Raw: 0.8058 | Val EMA: 0.7997\n"}
+,{"stream_name":"stdout","time":2840.572950447,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 22/60 [36.9s] | Loss: 2.7087 | Val Raw: 0.8068 | Val EMA: 0.8009\n"}
+,{"stream_name":"stdout","time":2879.17592353,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 23/60 [37.0s] | Loss: 2.6823 | Val Raw: 0.8136 | Val EMA: 0.8022 -\u003e [*] Best (RAW: 0.8136)\n"}
+,{"stream_name":"stdout","time":2917.489543131,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 24/60 [36.9s] | Loss: 2.6718 | Val Raw: 0.8090 | Val EMA: 0.8030\n"}
+,{"stream_name":"stdout","time":2955.740205229,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 25/60 [36.9s] | Loss: 2.6474 | Val Raw: 0.8126 | Val EMA: 0.8040\n"}
+,{"stream_name":"stdout","time":2994.033352111,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 26/60 [36.9s] | Loss: 2.6340 | Val Raw: 0.8078 | Val EMA: 0.8051\n"}
+,{"stream_name":"stdout","time":3032.58231248,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 27/60 [37.0s] | Loss: 2.6294 | Val Raw: 0.8157 | Val EMA: 0.8057 -\u003e [*] Best (RAW: 0.8157)\n"}
+,{"stream_name":"stdout","time":3070.963760313,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 28/60 [36.8s] | Loss: 2.6184 | Val Raw: 0.8160 | Val EMA: 0.8065 -\u003e [*] Best (RAW: 0.8160)\n"}
+,{"stream_name":"stdout","time":3109.510424258,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 29/60 [37.0s] | Loss: 2.5964 | Val Raw: 0.8171 | Val EMA: 0.8072 -\u003e [*] Best (RAW: 0.8171)\n"}
+,{"stream_name":"stdout","time":3147.971892188,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 30/60 [36.9s] | Loss: 2.5786 | Val Raw: 0.8184 | Val EMA: 0.8081 -\u003e [*] Best (RAW: 0.8184)\n"}
+,{"stream_name":"stdout","time":3186.175719584,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 31/60 [36.8s] | Loss: 2.5708 | Val Raw: 0.8171 | Val EMA: 0.8092\n"}
+,{"stream_name":"stdout","time":3224.447338686,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 32/60 [36.9s] | Loss: 2.5622 | Val Raw: 0.8176 | Val EMA: 0.8098\n"}
+,{"stream_name":"stdout","time":3262.982326867,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 33/60 [37.0s] | Loss: 2.5549 | Val Raw: 0.8224 | Val EMA: 0.8105 -\u003e [*] Best (RAW: 0.8224)\n"}
+,{"stream_name":"stdout","time":3301.357355667,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 34/60 [37.0s] | Loss: 2.5276 | Val Raw: 0.8201 | Val EMA: 0.8111\n"}
+,{"stream_name":"stdout","time":3339.648300774,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 35/60 [36.9s] | Loss: 2.5173 | Val Raw: 0.8201 | Val EMA: 0.8120\n"}
+,{"stream_name":"stdout","time":3378.015083716,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 36/60 [37.0s] | Loss: 2.5111 | Val Raw: 0.8177 | Val EMA: 0.8124\n"}
+,{"stream_name":"stdout","time":3416.31100926,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 37/60 [36.9s] | Loss: 2.5023 | Val Raw: 0.8200 | Val EMA: 0.8132\n"}
+,{"stream_name":"stdout","time":3454.844841557,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 38/60 [37.0s] | Loss: 2.4914 | Val Raw: 0.8229 | Val EMA: 0.8137 -\u003e [*] Best (RAW: 0.8229)\n"}
+,{"stream_name":"stdout","time":3493.104420695,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 39/60 [36.9s] | Loss: 2.4897 | Val Raw: 0.8227 | Val EMA: 0.8141\n"}
+,{"stream_name":"stdout","time":3531.411028382,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 40/60 [36.9s] | Loss: 2.4743 | Val Raw: 0.8226 | Val EMA: 0.8147\n"}
+,{"stream_name":"stdout","time":3569.928928274,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 41/60 [37.0s] | Loss: 2.4709 | Val Raw: 0.8262 | Val EMA: 0.8149 -\u003e [*] Best (RAW: 0.8262)\n"}
+,{"stream_name":"stdout","time":3608.214979314,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 42/60 [36.9s] | Loss: 2.4712 | Val Raw: 0.8255 | Val EMA: 0.8154\n"}
+,{"stream_name":"stdout","time":3646.906140256,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 43/60 [37.3s] | Loss: 2.4694 | Val Raw: 0.8253 | Val EMA: 0.8157\n"}
+,{"stream_name":"stdout","time":3685.216420765,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 44/60 [36.9s] | Loss: 2.4623 | Val Raw: 0.8258 | Val EMA: 0.8162\n"}
+,{"stream_name":"stdout","time":3723.431640001,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 45/60 [36.9s] | Loss: 2.4752 | Val Raw: 0.8218 | Val EMA: 0.8166\n"}
+,{"stream_name":"stdout","time":3761.78297206,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 46/60 [36.9s] | Loss: 2.4561 | Val Raw: 0.8210 | Val EMA: 0.8170\n"}
+,{"stream_name":"stdout","time":3800.151504148,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 47/60 [37.0s] | Loss: 2.4626 | Val Raw: 0.8208 | Val EMA: 0.8174\n"}
+,{"stream_name":"stdout","time":3838.478390179,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 48/60 [36.9s] | Loss: 2.4532 | Val Raw: 0.8151 | Val EMA: 0.8177\n"}
+,{"stream_name":"stdout","time":3876.746414668,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 49/60 [36.9s] | Loss: 2.4388 | Val Raw: 0.8152 | Val EMA: 0.8183\n"}
+,{"stream_name":"stdout","time":3915.14947424,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 50/60 [37.0s] | Loss: 2.4324 | Val Raw: 0.8150 | Val EMA: 0.8188\n"}
+,{"stream_name":"stdout","time":3953.34002988,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 51/60 [36.8s] | Loss: 2.4282 | Val Raw: 0.8135 | Val EMA: 0.8190\n"}
+,{"stream_name":"stdout","time":3991.591020109,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 52/60 [36.8s] | Loss: 2.4190 | Val Raw: 0.8150 | Val EMA: 0.8190\n"}
+,{"stream_name":"stdout","time":4029.918502417,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 53/60 [36.9s] | Loss: 2.4202 | Val Raw: 0.8172 | Val EMA: 0.8192\n"}
+,{"stream_name":"stdout","time":4068.153022972,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 54/60 [36.8s] | Loss: 2.4034 | Val Raw: 0.8172 | Val EMA: 0.8193\n"}
+,{"stream_name":"stdout","time":4106.361130712,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 55/60 [36.8s] | Loss: 2.4134 | Val Raw: 0.8187 | Val EMA: 0.8193\n"}
+,{"stream_name":"stdout","time":4144.730289701,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 56/60 [37.0s] | Loss: 2.4053 | Val Raw: 0.8180 | Val EMA: 0.8195\n"}
+,{"stream_name":"stdout","time":4182.951118531,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 57/60 [36.8s] | Loss: 2.3982 | Val Raw: 0.8170 | Val EMA: 0.8196\n"}
+,{"stream_name":"stdout","time":4221.347638339,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 58/60 [37.0s] | Loss: 2.4034 | Val Raw: 0.8182 | Val EMA: 0.8195\n"}
+,{"stream_name":"stdout","time":4259.684338538,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 59/60 [37.0s] | Loss: 2.3977 | Val Raw: 0.8177 | Val EMA: 0.8195\n"}
+,{"stream_name":"stdout","time":4297.929012519,"data":"[CHASE-DB1_ConvFormerS18_isic2018] Ep 60/60 [36.9s] | Loss: 2.3948 | Val Raw: 0.8174 | Val EMA: 0.8194\n"}
+,{"stream_name":"stdout","time":4297.931234108,"data":"\n"}
+,{"stream_name":"stdout","time":4297.931253534,"data":"[+] Training Finished for CHASE-DB1_ConvFormerS18_isic2018! Best Val Macro Dice: 0.8262 @ Ep 41 (RAW)\n"}
+,{"stream_name":"stdout","time":4299.931981424,"data":"\n"}
+,{"stream_name":"stdout","time":4299.932078611,"data":"--- CHASE-DB1_ConvFormerS18_isic2018 TEST RESULTS (SINGLE-VIEW, T=0.50) ---\n"}
+,{"stream_name":"stdout","time":4299.935298286,"data":"           Metric     Mean      Std   Median      Min      Max\n"}
+,{"stream_name":"stdout","time":4299.935323573,"data":"             Dice 0.824552 0.019078 0.817462 0.810596 0.852688\n"}
+,{"stream_name":"stdout","time":4299.935330605,"data":"             mIoU 0.701820 0.028032 0.691280 0.681515 0.743204\n"}
+,{"stream_name":"stdout","time":4299.93533585,"data":"      Sensitivity 0.852398 0.030433 0.862343 0.808658 0.876249\n"}
+,{"stream_name":"stdout","time":4299.935341242,"data":"      Specificity 0.984339 0.004850 0.985637 0.977400 0.988680\n"}
+,{"stream_name":"stdout","time":4299.935347198,"data":"        Precision 0.800615 0.046479 0.799145 0.754096 0.850074\n"}
+,{"stream_name":"stdout","time":4299.935366156,"data":"              FPR 0.015661 0.004850 0.014363 0.011320 0.022600\n"}
+,{"stream_name":"stdout","time":4299.935371182,"data":"             HD95 4.502617 1.722957 3.924096 3.162278 7.000000\n"}
+,{"stream_name":"stdout","time":4299.935375147,"data":"              ASD 1.495645 0.232321 1.518045 1.219489 1.727004\n"}
+,{"stream_name":"stdout","time":4299.935379349,"data":"              BF2 0.905803 0.014893 0.907036 0.886707 0.922433\n"}
+,{"stream_name":"stdout","time":4299.935384154,"data":"Global_Micro_Dice 0.824372 0.000000 0.824372 0.824372 0.824372\n"}
+,{"stream_name":"stdout","time":4299.935389597,"data":" Global_Micro_IoU 0.701219 0.000000 0.701219 0.701219 0.701219\n"}
+,{"stream_name":"stdout","time":4301.799356844,"data":"\n"}
+,{"stream_name":"stdout","time":4301.799423584,"data":"--- CHASE-DB1_ConvFormerS18_isic2018 TEST RESULTS (4-VIEW TTA, T=0.50) ---\n"}
+,{"stream_name":"stdout","time":4301.802499427,"data":"           Metric     Mean      Std   Median      Min      Max\n"}
+,{"stream_name":"stdout","time":4301.802525727,"data":"             Dice 0.823914 0.016273 0.817759 0.812724 0.847414\n"}
+,{"stream_name":"stdout","time":4301.802531687,"data":"             mIoU 0.700803 0.023798 0.691728 0.684528 0.735229\n"}
+,{"stream_name":"stdout","time":4301.802536042,"data":"      Sensitivity 0.843654 0.028788 0.851574 0.803614 0.867853\n"}
+,{"stream_name":"stdout","time":4301.80254083,"data":"      Specificity 0.985186 0.004473 0.986427 0.978818 0.989071\n"}
+,{"stream_name":"stdout","time":4301.802545273,"data":"        Precision 0.807308 0.046381 0.806229 0.764181 0.852591\n"}
+,{"stream_name":"stdout","time":4301.802549438,"data":"              FPR 0.014814 0.004473 0.013573 0.010929 0.021182\n"}
+,{"stream_name":"stdout","time":4301.802553342,"data":"             HD95 4.232527 1.856778 3.383914 3.162278 7.000000\n"}
+,{"stream_name":"stdout","time":4301.802557495,"data":"              ASD 1.476964 0.166266 1.488419 1.286519 1.644499\n"}
+,{"stream_name":"stdout","time":4301.80256788,"data":"              BF2 0.907858 0.013745 0.910404 0.889203 0.921420\n"}
+,{"stream_name":"stdout","time":4301.802571111,"data":"Global_Micro_Dice 0.824021 0.000000 0.824021 0.824021 0.824021\n"}
+,{"stream_name":"stdout","time":4301.802573752,"data":" Global_Micro_IoU 0.700711 0.000000 0.700711 0.700711 0.700711\n"}
+,{"stream_name":"stdout","time":4303.647850916,"data":"[*] CHASE-DB1_ConvFormerS18_isic2018 Calibrated Threshold on Val: T_opt = 0.460 (Val TTA Macro Dice: 0.8219)\n"}
+,{"stream_name":"stdout","time":4305.507754483,"data":"\n"}
+,{"stream_name":"stdout","time":4305.507867825,"data":"--- CHASE-DB1_ConvFormerS18_isic2018 TEST RESULTS (CALIBRATED 4-VIEW TTA, T_opt=0.460) ---\n"}
+,{"stream_name":"stdout","time":4305.511315416,"data":"           Metric     Mean      Std   Median      Min      Max  T_opt\n"}
+,{"stream_name":"stdout","time":4305.511338585,"data":"             Dice 0.823762 0.017596 0.817937 0.810656 0.848516   0.46\n"}
+,{"stream_name":"stdout","time":4305.511357394,"data":"             mIoU 0.700624 0.025706 0.692004 0.681599 0.736890   0.46\n"}
+,{"stream_name":"stdout","time":4305.511362411,"data":"      Sensitivity 0.854498 0.027417 0.862291 0.816029 0.877382   0.46\n"}
+,{"stream_name":"stdout","time":4305.511367289,"data":"      Specificity 0.984014 0.004703 0.985363 0.977281 0.988051   0.46\n"}
+,{"stream_name":"stdout","time":4305.511371957,"data":"        Precision 0.797291 0.046866 0.796459 0.753362 0.842884   0.46\n"}
+,{"stream_name":"stdout","time":4305.511376256,"data":"              FPR 0.015986 0.004703 0.014637 0.011949 0.022719   0.46\n"}
+,{"stream_name":"stdout","time":4305.511398199,"data":"             HD95 4.119008 1.745001 3.383914 3.000000 6.708204   0.46\n"}
+,{"stream_name":"stdout","time":4305.511416227,"data":"              ASD 1.469429 0.164504 1.485878 1.274539 1.631422   0.46\n"}
+,{"stream_name":"stdout","time":4305.511421667,"data":"              BF2 0.907877 0.013970 0.908964 0.890187 0.923393   0.46\n"}
+,{"stream_name":"stdout","time":4305.511426638,"data":"Global_Micro_Dice 0.823915 0.000000 0.823915 0.823915 0.823915   0.46\n"}
+,{"stream_name":"stdout","time":4305.511431605,"data":" Global_Micro_IoU 0.700558 0.000000 0.700558 0.700558 0.700558   0.46\n"}
+,{"stream_name":"stdout","time":4305.688109027,"data":"\n"}
+,{"stream_name":"stdout","time":4305.688139166,"data":"================================================================================\n"}
+,{"stream_name":"stdout","time":4305.688910593,"data":"[*] STARTING GDF-Netv4 TRAINING: DRIVE_ConvFormerS18_isic2018 (50 Epochs)\n"}
+,{"stream_name":"stdout","time":4305.688931846,"data":"[*] Backbone: convformer_s18.sail_in22k_ft_in1k_384 | Warm-Start Mode: isic2018 | Loss Kernel: 7\n"}
+,{"stream_name":"stdout","time":4305.688937557,"data":"================================================================================\n"}
+,{"stream_name":"stdout","time":4306.386566222,"data":"[*] Found ISIC-2018 Checkpoint: /kaggle/input/datasets/namnguynnnn/gdfnetv4-isic-pretrained/GDFNetV4_ConvFormerS18_ISIC2018_best.pth\n"}
+,{"stream_name":"stdout","time":4306.545608726,"data":"[+] Successfully initialized from ISIC-2018! (Missing: 0, Unexpected: 0)\n"}
+,{"stream_name":"stdout","time":4306.547476692,"data":"[+] Model Initialized | Total Params: 29,503,181 | Channels: (64, 128, 320, 512)\n"}
+,{"stream_name":"stdout","time":4457.279614317,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 01/50 [132.3s] | Loss: 8.0997 | Val Raw: 0.4104 | Val EMA: 0.0202 -\u003e [*] Best (RAW: 0.4104)\n"}
+,{"stream_name":"stdout","time":4474.286694375,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 02/50 [15.8s] | Loss: 4.5805 | Val Raw: 0.6648 | Val EMA: 0.0171 -\u003e [*] Best (RAW: 0.6648)\n"}
+,{"stream_name":"stdout","time":4491.58292366,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 03/50 [16.0s] | Loss: 3.9596 | Val Raw: 0.7101 | Val EMA: 0.0144 -\u003e [*] Best (RAW: 0.7101)\n"}
+,{"stream_name":"stdout","time":4508.779558652,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 04/50 [16.0s] | Loss: 3.6705 | Val Raw: 0.7155 | Val EMA: 0.0123 -\u003e [*] Best (RAW: 0.7155)\n"}
+,{"stream_name":"stdout","time":4525.796016776,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 05/50 [15.8s] | Loss: 3.5054 | Val Raw: 0.7306 | Val EMA: 0.0100 -\u003e [*] Best (RAW: 0.7306)\n"}
+,{"stream_name":"stdout","time":4542.697471803,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 06/50 [15.7s] | Loss: 3.4173 | Val Raw: 0.7386 | Val EMA: 0.0080 -\u003e [*] Best (RAW: 0.7386)\n"}
+,{"stream_name":"stdout","time":4559.63558002,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 07/50 [15.7s] | Loss: 3.3495 | Val Raw: 0.7393 | Val EMA: 0.0060 -\u003e [*] Best (RAW: 0.7393)\n"}
+,{"stream_name":"stdout","time":4576.752986217,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 08/50 [15.9s] | Loss: 3.2996 | Val Raw: 0.7472 | Val EMA: 0.0038 -\u003e [*] Best (RAW: 0.7472)\n"}
+,{"stream_name":"stdout","time":4593.75942459,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 09/50 [15.8s] | Loss: 3.2680 | Val Raw: 0.7500 | Val EMA: 0.0015 -\u003e [*] Best (RAW: 0.7500)\n"}
+,{"stream_name":"stdout","time":4610.608686404,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 10/50 [15.8s] | Loss: 3.2329 | Val Raw: 0.7499 | Val EMA: 0.0002\n"}
+,{"stream_name":"stdout","time":4627.673929784,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 11/50 [15.9s] | Loss: 3.2177 | Val Raw: 0.7548 | Val EMA: 0.0052 -\u003e [*] Best (RAW: 0.7548)\n"}
+,{"stream_name":"stdout","time":4644.403646976,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 12/50 [15.7s] | Loss: 3.1985 | Val Raw: 0.7529 | Val EMA: 0.0360\n"}
+,{"stream_name":"stdout","time":4661.271893042,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 13/50 [15.8s] | Loss: 3.1802 | Val Raw: 0.7509 | Val EMA: 0.1445\n"}
+,{"stream_name":"stdout","time":4678.15084386,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 14/50 [15.8s] | Loss: 3.1657 | Val Raw: 0.7493 | Val EMA: 0.2924\n"}
+,{"stream_name":"stdout","time":4695.013728502,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 15/50 [15.8s] | Loss: 3.1579 | Val Raw: 0.7494 | Val EMA: 0.4349\n"}
+,{"stream_name":"stdout","time":4712.093642401,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 16/50 [15.8s] | Loss: 3.1471 | Val Raw: 0.7552 | Val EMA: 0.5446 -\u003e [*] Best (RAW: 0.7552)\n"}
+,{"stream_name":"stdout","time":4728.848672132,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 17/50 [15.7s] | Loss: 3.1420 | Val Raw: 0.7537 | Val EMA: 0.6208\n"}
+,{"stream_name":"stdout","time":4745.553738323,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 18/50 [15.7s] | Loss: 3.1419 | Val Raw: 0.7531 | Val EMA: 0.6699\n"}
+,{"stream_name":"stdout","time":4762.398510899,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 19/50 [15.8s] | Loss: 3.1389 | Val Raw: 0.7534 | Val EMA: 0.6984\n"}
+,{"stream_name":"stdout","time":4779.138880207,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 20/50 [15.7s] | Loss: 3.1369 | Val Raw: 0.7526 | Val EMA: 0.7174\n"}
+,{"stream_name":"stdout","time":4796.2101457,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 21/50 [15.9s] | Loss: 3.1325 | Val Raw: 0.7618 | Val EMA: 0.7296 -\u003e [*] Best (RAW: 0.7618)\n"}
+,{"stream_name":"stdout","time":4813.364953182,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 22/50 [16.2s] | Loss: 3.1159 | Val Raw: 0.7605 | Val EMA: 0.7378\n"}
+,{"stream_name":"stdout","time":4830.077213931,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 23/50 [15.7s] | Loss: 3.1039 | Val Raw: 0.7591 | Val EMA: 0.7430\n"}
+,{"stream_name":"stdout","time":4846.849190654,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 24/50 [15.8s] | Loss: 3.0793 | Val Raw: 0.7605 | Val EMA: 0.7470\n"}
+,{"stream_name":"stdout","time":4863.854475541,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 25/50 [15.8s] | Loss: 3.0686 | Val Raw: 0.7662 | Val EMA: 0.7501 -\u003e [*] Best (RAW: 0.7662)\n"}
+,{"stream_name":"stdout","time":4880.977265804,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 26/50 [15.9s] | Loss: 3.0595 | Val Raw: 0.7709 | Val EMA: 0.7521 -\u003e [*] Best (RAW: 0.7709)\n"}
+,{"stream_name":"stdout","time":4897.745469899,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 27/50 [15.8s] | Loss: 3.0384 | Val Raw: 0.7667 | Val EMA: 0.7536\n"}
+,{"stream_name":"stdout","time":4914.503266338,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 28/50 [15.7s] | Loss: 3.0339 | Val Raw: 0.7656 | Val EMA: 0.7547\n"}
+,{"stream_name":"stdout","time":4931.367169104,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 29/50 [15.8s] | Loss: 3.0126 | Val Raw: 0.7653 | Val EMA: 0.7557\n"}
+,{"stream_name":"stdout","time":4948.450450542,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 30/50 [15.9s] | Loss: 3.0023 | Val Raw: 0.7714 | Val EMA: 0.7563 -\u003e [*] Best (RAW: 0.7714)\n"}
+,{"stream_name":"stdout","time":4965.27753735,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 31/50 [15.8s] | Loss: 2.9876 | Val Raw: 0.7706 | Val EMA: 0.7574\n"}
+,{"stream_name":"stdout","time":4982.190382908,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 32/50 [15.8s] | Loss: 2.9801 | Val Raw: 0.7678 | Val EMA: 0.7583\n"}
+,{"stream_name":"stdout","time":4998.968220268,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 33/50 [15.8s] | Loss: 2.9651 | Val Raw: 0.7675 | Val EMA: 0.7589\n"}
+,{"stream_name":"stdout","time":5015.818279256,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 34/50 [15.8s] | Loss: 2.9689 | Val Raw: 0.7681 | Val EMA: 0.7595\n"}
+,{"stream_name":"stdout","time":5032.585540183,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 35/50 [15.8s] | Loss: 2.9554 | Val Raw: 0.7624 | Val EMA: 0.7605\n"}
+,{"stream_name":"stdout","time":5049.310030805,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 36/50 [15.7s] | Loss: 2.9618 | Val Raw: 0.7710 | Val EMA: 0.7613\n"}
+,{"stream_name":"stdout","time":5066.156397683,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 37/50 [15.8s] | Loss: 2.9380 | Val Raw: 0.7691 | Val EMA: 0.7615\n"}
+,{"stream_name":"stdout","time":5083.149373362,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 38/50 [15.8s] | Loss: 2.9331 | Val Raw: 0.7720 | Val EMA: 0.7618 -\u003e [*] Best (RAW: 0.7720)\n"}
+,{"stream_name":"stdout","time":5100.093603008,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 39/50 [15.9s] | Loss: 2.9300 | Val Raw: 0.7674 | Val EMA: 0.7624\n"}
+,{"stream_name":"stdout","time":5116.959550258,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 40/50 [15.9s] | Loss: 2.9117 | Val Raw: 0.7677 | Val EMA: 0.7630\n"}
+,{"stream_name":"stdout","time":5133.865682467,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 41/50 [15.9s] | Loss: 2.9156 | Val Raw: 0.7669 | Val EMA: 0.7637\n"}
+,{"stream_name":"stdout","time":5150.773763843,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 42/50 [15.9s] | Loss: 2.9154 | Val Raw: 0.7579 | Val EMA: 0.7645\n"}
+,{"stream_name":"stdout","time":5167.686770445,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 43/50 [15.9s] | Loss: 2.9202 | Val Raw: 0.7656 | Val EMA: 0.7649\n"}
+,{"stream_name":"stdout","time":5184.370758093,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 44/50 [15.7s] | Loss: 2.9022 | Val Raw: 0.7675 | Val EMA: 0.7657\n"}
+,{"stream_name":"stdout","time":5201.319472379,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 45/50 [15.9s] | Loss: 2.8985 | Val Raw: 0.7698 | Val EMA: 0.7661\n"}
+,{"stream_name":"stdout","time":5218.0904783,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 46/50 [15.8s] | Loss: 2.8831 | Val Raw: 0.7685 | Val EMA: 0.7667\n"}
+,{"stream_name":"stdout","time":5234.969737523,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 47/50 [15.9s] | Loss: 2.8830 | Val Raw: 0.7672 | Val EMA: 0.7672\n"}
+,{"stream_name":"stdout","time":5251.825156293,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 48/50 [15.8s] | Loss: 2.8767 | Val Raw: 0.7655 | Val EMA: 0.7675\n"}
+,{"stream_name":"stdout","time":5268.584816189,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 49/50 [15.7s] | Loss: 2.8738 | Val Raw: 0.7697 | Val EMA: 0.7678\n"}
+,{"stream_name":"stdout","time":5285.473477577,"data":"[DRIVE_ConvFormerS18_isic2018] Ep 50/50 [15.9s] | Loss: 2.8644 | Val Raw: 0.7691 | Val EMA: 0.7681\n"}
+,{"stream_name":"stdout","time":5285.475725828,"data":"\n"}
+,{"stream_name":"stdout","time":5285.4757532,"data":"[+] Training Finished for DRIVE_ConvFormerS18_isic2018! Best Val Macro Dice: 0.7720 @ Ep 38 (RAW)\n"}
+,{"stream_name":"stdout","time":5288.041894981,"data":"\n"}
+,{"stream_name":"stdout","time":5288.041950193,"data":"--- DRIVE_ConvFormerS18_isic2018 TEST RESULTS (SINGLE-VIEW, T=0.50) ---\n"}
+,{"stream_name":"stdout","time":5288.044476254,"data":"           Metric     Mean      Std   Median      Min       Max\n"}
+,{"stream_name":"stdout","time":5288.044508649,"data":"             Dice 0.781560 0.025317 0.782431 0.737740  0.806204\n"}
+,{"stream_name":"stdout","time":5288.044516059,"data":"             mIoU 0.642025 0.033654 0.642660 0.584459  0.675328\n"}
+,{"stream_name":"stdout","time":5288.044522276,"data":"      Sensitivity 0.841994 0.045602 0.836457 0.776591  0.906155\n"}
+,{"stream_name":"stdout","time":5288.044527882,"data":"      Specificity 0.971456 0.004825 0.971104 0.965414  0.980020\n"}
+,{"stream_name":"stdout","time":5288.04453352,"data":"        Precision 0.733749 0.061952 0.730485 0.666544  0.836056\n"}
+,{"stream_name":"stdout","time":5288.044539473,"data":"              FPR 0.028544 0.004825 0.028896 0.019980  0.034586\n"}
+,{"stream_name":"stdout","time":5288.04454551,"data":"             HD95 6.845528 7.096935 4.302776 2.236068 21.000000\n"}
+,{"stream_name":"stdout","time":5288.044550861,"data":"              ASD 1.464296 0.713971 1.205320 1.047918  2.907309\n"}
+,{"stream_name":"stdout","time":5288.044568314,"data":"              BF2 0.909987 0.038578 0.921762 0.836519  0.938816\n"}
+,{"stream_name":"stdout","time":5288.044573603,"data":"Global_Micro_Dice 0.784117 0.000000 0.784117 0.784117  0.784117\n"}
+,{"stream_name":"stdout","time":5288.044578882,"data":" Global_Micro_IoU 0.644895 0.000000 0.644895 0.644895  0.644895\n"}
+,{"stream_name":"stdout","time":5289.764315149,"data":"\n"}
+,{"stream_name":"stdout","time":5289.76445632,"data":"--- DRIVE_ConvFormerS18_isic2018 TEST RESULTS (4-VIEW TTA, T=0.50) ---\n"}
+,{"stream_name":"stdout","time":5289.767461402,"data":"           Metric     Mean      Std   Median      Min       Max\n"}
+,{"stream_name":"stdout","time":5289.76750022,"data":"             Dice 0.781663 0.026224 0.784022 0.736488  0.806818\n"}
+,{"stream_name":"stdout","time":5289.767505327,"data":"             mIoU 0.642207 0.034851 0.644809 0.582890  0.676190\n"}
+,{"stream_name":"stdout","time":5289.767511362,"data":"      Sensitivity 0.841323 0.045716 0.836661 0.776929  0.905348\n"}
+,{"stream_name":"stdout","time":5289.767515266,"data":"      Specificity 0.971606 0.004927 0.971070 0.965899  0.980211\n"}
+,{"stream_name":"stdout","time":5289.767519788,"data":"        Precision 0.734541 0.063309 0.728474 0.664681  0.837428\n"}
+,{"stream_name":"stdout","time":5289.767524223,"data":"              FPR 0.028394 0.004927 0.028930 0.019789  0.034101\n"}
+,{"stream_name":"stdout","time":5289.767528959,"data":"             HD95 6.771649 7.139588 4.081139 2.236068 21.000000\n"}
+,{"stream_name":"stdout","time":5289.767533451,"data":"              ASD 1.460173 0.703688 1.201777 1.043554  2.879334\n"}
+,{"stream_name":"stdout","time":5289.767537777,"data":"              BF2 0.911847 0.038894 0.922089 0.838352  0.942399\n"}
+,{"stream_name":"stdout","time":5289.767542136,"data":"Global_Micro_Dice 0.784279 0.000000 0.784279 0.784279  0.784279\n"}
+,{"stream_name":"stdout","time":5289.767545828,"data":" Global_Micro_IoU 0.645114 0.000000 0.645114 0.645114  0.645114\n"}
+,{"stream_name":"stdout","time":5290.58592528,"data":"[*] DRIVE_ConvFormerS18_isic2018 Calibrated Threshold on Val: T_opt = 0.530 (Val TTA Macro Dice: 0.7698)\n"}
+,{"stream_name":"stdout","time":5292.256425284,"data":"\n"}
+,{"stream_name":"stdout","time":5292.25653219,"data":"--- DRIVE_ConvFormerS18_isic2018 TEST RESULTS (CALIBRATED 4-VIEW TTA, T_opt=0.530) ---\n"}
+,{"stream_name":"stdout","time":5292.259951056,"data":"           Metric     Mean      Std   Median      Min       Max  T_opt\n"}
+,{"stream_name":"stdout","time":5292.259970861,"data":"             Dice 0.783262 0.025404 0.785355 0.739128  0.809543   0.53\n"}
+,{"stream_name":"stdout","time":5292.259976549,"data":"             mIoU 0.644328 0.033852 0.646592 0.586204  0.680027   0.53\n"}
+,{"stream_name":"stdout","time":5292.259980471,"data":"      Sensitivity 0.833721 0.046541 0.829261 0.768873  0.898688   0.53\n"}
+,{"stream_name":"stdout","time":5292.259984231,"data":"      Specificity 0.973118 0.004798 0.972700 0.967531  0.981483   0.53\n"}
+,{"stream_name":"stdout","time":5292.259987936,"data":"        Precision 0.743234 0.062462 0.737706 0.674739  0.844908   0.53\n"}
+,{"stream_name":"stdout","time":5292.25999174,"data":"              FPR 0.026882 0.004798 0.027300 0.018517  0.032469   0.53\n"}
+,{"stream_name":"stdout","time":5292.2599955,"data":"             HD95 6.724074 6.981704 4.130649 2.236068 20.615528   0.53\n"}
+,{"stream_name":"stdout","time":5292.260001285,"data":"              ASD 1.444335 0.686736 1.201706 1.043456  2.826613   0.53\n"}
+,{"stream_name":"stdout","time":5292.260022757,"data":"              BF2 0.913029 0.038153 0.923179 0.842082  0.945604   0.53\n"}
+,{"stream_name":"stdout","time":5292.260039201,"data":"Global_Micro_Dice 0.785736 0.000000 0.785736 0.785736  0.785736   0.53\n"}
+,{"stream_name":"stdout","time":5292.260305083,"data":" Global_Micro_IoU 0.647088 0.000000 0.647088 0.647088  0.647088   0.53\n"}
+,{"stream_name":"stdout","time":5292.48019661,"data":"\n"}
+,{"stream_name":"stdout","time":5292.480274837,"data":"\u003e\u003e\u003e Running Experiments for Backbone: PVTv2B2 (pvt_v2_b2) \u003c\u003c\u003c\n"}
+,{"stream_name":"stdout","time":5292.480283633,"data":"\n"}
+,{"stream_name":"stdout","time":5292.487593701,"data":"\n"}
+,{"stream_name":"stdout","time":5292.48761838,"data":"================================================================================\n"}
+,{"stream_name":"stdout","time":5292.487624717,"data":"[*] STARTING GDF-Netv4 TRAINING: EMDataset_PVTv2B2_isic2018 (60 Epochs)\n"}
+,{"stream_name":"stdout","time":5292.487629394,"data":"[*] Backbone: pvt_v2_b2 | Warm-Start Mode: isic2018 | Loss Kernel: 15\n"}
+,{"stream_name":"stdout","time":5292.487633924,"data":"================================================================================\n"}
+,{"stream_name":"stdout","time":5294.557572951,"data":"[*] Found ISIC-2018 Checkpoint: /kaggle/input/datasets/namnguynnnn/gdfnetv4-isic-pretrained/GDFNetV4_PVTv2B2_ISIC2018_best.pth\n"}
+,{"stream_name":"stdout","time":5300.922964322,"data":"[+] Successfully initialized from ISIC-2018! (Missing: 0, Unexpected: 0)\n"}
+,{"stream_name":"stdout","time":5300.92484624,"data":"[+] Model Initialized | Total Params: 30,683,333 | Channels: (64, 128, 320, 512)\n"}
+,{"stream_name":"stdout","time":5479.74420932,"data":"[EMDataset_PVTv2B2_isic2018] Ep 01/60 [161.6s] | Loss: 3.3679 | Val Raw: 0.9048 | Val EMA: 0.0406 -\u003e [*] Best (RAW: 0.9048)\n"}
+,{"stream_name":"stdout","time":5504.458332566,"data":"[EMDataset_PVTv2B2_isic2018] Ep 02/60 [23.2s] | Loss: 1.8866 | Val Raw: 0.9311 | Val EMA: 0.2691 -\u003e [*] Best (RAW: 0.9311)\n"}
+,{"stream_name":"stdout","time":5530.1586811,"data":"[EMDataset_PVTv2B2_isic2018] Ep 03/60 [24.4s] | Loss: 1.6503 | Val Raw: 0.9274 | Val EMA: 0.5485\n"}
+,{"stream_name":"stdout","time":5554.839201972,"data":"[EMDataset_PVTv2B2_isic2018] Ep 04/60 [23.4s] | Loss: 1.5246 | Val Raw: 0.9246 | Val EMA: 0.7200\n"}
+,{"stream_name":"stdout","time":5579.587963754,"data":"[EMDataset_PVTv2B2_isic2018] Ep 05/60 [23.3s] | Loss: 1.4180 | Val Raw: 0.9396 | Val EMA: 0.8172 -\u003e [*] Best (RAW: 0.9396)\n"}
+,{"stream_name":"stdout","time":5604.657703728,"data":"[EMDataset_PVTv2B2_isic2018] Ep 06/60 [23.7s] | Loss: 1.3469 | Val Raw: 0.9342 | Val EMA: 0.8524\n"}
+,{"stream_name":"stdout","time":5629.589867659,"data":"[EMDataset_PVTv2B2_isic2018] Ep 07/60 [23.6s] | Loss: 1.2934 | Val Raw: 0.9303 | Val EMA: 0.8776\n"}
+,{"stream_name":"stdout","time":5654.353026757,"data":"[EMDataset_PVTv2B2_isic2018] Ep 08/60 [23.4s] | Loss: 1.2379 | Val Raw: 0.9338 | Val EMA: 0.8942\n"}
+,{"stream_name":"stdout","time":5679.134684501,"data":"[EMDataset_PVTv2B2_isic2018] Ep 09/60 [23.5s] | Loss: 1.1919 | Val Raw: 0.9349 | Val EMA: 0.9108\n"}
+,{"stream_name":"stdout","time":5704.638823713,"data":"[EMDataset_PVTv2B2_isic2018] Ep 10/60 [24.0s] | Loss: 1.1462 | Val Raw: 0.9398 | Val EMA: 0.9233 -\u003e [*] Best (RAW: 0.9398)\n"}
+,{"stream_name":"stdout","time":5729.661709553,"data":"[EMDataset_PVTv2B2_isic2018] Ep 11/60 [23.5s] | Loss: 1.1166 | Val Raw: 0.9442 | Val EMA: 0.9311 -\u003e [*] Best (RAW: 0.9442)\n"}
+,{"stream_name":"stdout","time":5754.587834529,"data":"[EMDataset_PVTv2B2_isic2018] Ep 12/60 [23.4s] | Loss: 1.0949 | Val Raw: 0.9445 | Val EMA: 0.9370 -\u003e [*] Best (RAW: 0.9445)\n"}
+,{"stream_name":"stdout","time":5779.648008969,"data":"[EMDataset_PVTv2B2_isic2018] Ep 13/60 [23.5s] | Loss: 1.0820 | Val Raw: 0.9473 | Val EMA: 0.9407 -\u003e [*] Best (RAW: 0.9473)\n"}
+,{"stream_name":"stdout","time":5804.693637772,"data":"[EMDataset_PVTv2B2_isic2018] Ep 14/60 [23.5s] | Loss: 1.0634 | Val Raw: 0.9482 | Val EMA: 0.9434 -\u003e [*] Best (RAW: 0.9482)\n"}
+,{"stream_name":"stdout","time":5829.584462861,"data":"[EMDataset_PVTv2B2_isic2018] Ep 15/60 [23.6s] | Loss: 1.0513 | Val Raw: 0.9478 | Val EMA: 0.9454\n"}
+,{"stream_name":"stdout","time":5854.444627304,"data":"[EMDataset_PVTv2B2_isic2018] Ep 16/60 [23.6s] | Loss: 1.0312 | Val Raw: 0.9469 | Val EMA: 0.9469\n"}
+,{"stream_name":"stdout","time":5879.539506248,"data":"[EMDataset_PVTv2B2_isic2018] Ep 17/60 [23.6s] | Loss: 1.0211 | Val Raw: 0.9493 | Val EMA: 0.9479 -\u003e [*] Best (RAW: 0.9493)\n"}
+,{"stream_name":"stdout","time":5904.424116347,"data":"[EMDataset_PVTv2B2_isic2018] Ep 18/60 [23.6s] | Loss: 1.0149 | Val Raw: 0.9488 | Val EMA: 0.9487\n"}
+,{"stream_name":"stdout","time":5929.482678649,"data":"[EMDataset_PVTv2B2_isic2018] Ep 19/60 [23.5s] | Loss: 1.0121 | Val Raw: 0.9506 | Val EMA: 0.9493 -\u003e [*] Best (RAW: 0.9506)\n"}
+,{"stream_name":"stdout","time":5954.544708573,"data":"[EMDataset_PVTv2B2_isic2018] Ep 20/60 [23.5s] | Loss: 1.0102 | Val Raw: 0.9512 | Val EMA: 0.9496 -\u003e [*] Best (RAW: 0.9512)\n"}
+,{"stream_name":"stdout","time":5979.469317136,"data":"[EMDataset_PVTv2B2_isic2018] Ep 21/60 [23.6s] | Loss: 1.0421 | Val Raw: 0.9417 | Val EMA: 0.9497\n"}
+,{"stream_name":"stdout","time":6004.305464523,"data":"[EMDataset_PVTv2B2_isic2018] Ep 22/60 [23.5s] | Loss: 1.0295 | Val Raw: 0.9443 | Val EMA: 0.9497\n"}
+,{"stream_name":"stdout","time":6029.201915715,"data":"[EMDataset_PVTv2B2_isic2018] Ep 23/60 [23.6s] | Loss: 0.9958 | Val Raw: 0.9501 | Val EMA: 0.9499\n"}
+,{"stream_name":"stdout","time":6054.051225526,"data":"[EMDataset_PVTv2B2_isic2018] Ep 24/60 [23.5s] | Loss: 0.9746 | Val Raw: 0.9436 | Val EMA: 0.9506\n"}
+,{"stream_name":"stdout","time":6078.859031412,"data":"[EMDataset_PVTv2B2_isic2018] Ep 25/60 [23.5s] | Loss: 0.9577 | Val Raw: 0.9501 | Val EMA: 0.9509\n"}
+,{"stream_name":"stdout","time":6103.930274303,"data":"[EMDataset_PVTv2B2_isic2018] Ep 26/60 [23.6s] | Loss: 0.9510 | Val Raw: 0.9453 | Val EMA: 0.9512 -\u003e [*] Best (EMA: 0.9512)\n"}
+,{"stream_name":"stdout","time":6128.972100681,"data":"[EMDataset_PVTv2B2_isic2018] Ep 27/60 [23.5s] | Loss: 0.9369 | Val Raw: 0.9364 | Val EMA: 0.9514 -\u003e [*] Best (EMA: 0.9514)\n"}
+,{"stream_name":"stdout","time":6154.007854214,"data":"[EMDataset_PVTv2B2_isic2018] Ep 28/60 [23.5s] | Loss: 0.9225 | Val Raw: 0.9410 | Val EMA: 0.9516 -\u003e [*] Best (EMA: 0.9516)\n"}
+,{"stream_name":"stdout","time":6178.827171815,"data":"[EMDataset_PVTv2B2_isic2018] Ep 29/60 [23.5s] | Loss: 0.9028 | Val Raw: 0.9430 | Val EMA: 0.9516\n"}
+,{"stream_name":"stdout","time":6203.810278653,"data":"[EMDataset_PVTv2B2_isic2018] Ep 30/60 [23.5s] | Loss: 0.8911 | Val Raw: 0.9444 | Val EMA: 0.9519 -\u003e [*] Best (EMA: 0.9519)\n"}
+,{"stream_name":"stdout","time":6228.759582905,"data":"[EMDataset_PVTv2B2_isic2018] Ep 31/60 [23.5s] | Loss: 0.8828 | Val Raw: 0.9404 | Val EMA: 0.9523 -\u003e [*] Best (EMA: 0.9523)\n"}
+,{"stream_name":"stdout","time":6253.698781079,"data":"[EMDataset_PVTv2B2_isic2018] Ep 32/60 [23.5s] | Loss: 0.8768 | Val Raw: 0.9438 | Val EMA: 0.9527 -\u003e [*] Best (EMA: 0.9527)\n"}
+,{"stream_name":"stdout","time":6278.63795176,"data":"[EMDataset_PVTv2B2_isic2018] Ep 33/60 [23.4s] | Loss: 0.8680 | Val Raw: 0.9470 | Val EMA: 0.9531 -\u003e [*] Best (EMA: 0.9531)\n"}
+,{"stream_name":"stdout","time":6303.649872063,"data":"[EMDataset_PVTv2B2_isic2018] Ep 34/60 [23.5s] | Loss: 0.8581 | Val Raw: 0.9500 | Val EMA: 0.9535 -\u003e [*] Best (EMA: 0.9535)\n"}
+,{"stream_name":"stdout","time":6328.723232109,"data":"[EMDataset_PVTv2B2_isic2018] Ep 35/60 [23.5s] | Loss: 0.8464 | Val Raw: 0.9482 | Val EMA: 0.9537 -\u003e [*] Best (EMA: 0.9537)\n"}
+,{"stream_name":"stdout","time":6354.08123426,"data":"[EMDataset_PVTv2B2_isic2018] Ep 36/60 [23.9s] | Loss: 0.8413 | Val Raw: 0.9477 | Val EMA: 0.9540 -\u003e [*] Best (EMA: 0.9540)\n"}
+,{"stream_name":"stdout","time":6379.022070951,"data":"[EMDataset_PVTv2B2_isic2018] Ep 37/60 [23.5s] | Loss: 0.8348 | Val Raw: 0.9525 | Val EMA: 0.9544 -\u003e [*] Best (EMA: 0.9544)\n"}
+,{"stream_name":"stdout","time":6404.076682124,"data":"[EMDataset_PVTv2B2_isic2018] Ep 38/60 [23.6s] | Loss: 0.8216 | Val Raw: 0.9536 | Val EMA: 0.9544 -\u003e [*] Best (EMA: 0.9544)\n"}
+,{"stream_name":"stdout","time":6429.129610566,"data":"[EMDataset_PVTv2B2_isic2018] Ep 39/60 [23.5s] | Loss: 0.8140 | Val Raw: 0.9537 | Val EMA: 0.9547 -\u003e [*] Best (EMA: 0.9547)\n"}
+,{"stream_name":"stdout","time":6454.173216023,"data":"[EMDataset_PVTv2B2_isic2018] Ep 40/60 [23.5s] | Loss: 0.8090 | Val Raw: 0.9539 | Val EMA: 0.9549 -\u003e [*] Best (EMA: 0.9549)\n"}
+,{"stream_name":"stdout","time":6479.156340434,"data":"[EMDataset_PVTv2B2_isic2018] Ep 41/60 [23.4s] | Loss: 0.8012 | Val Raw: 0.9528 | Val EMA: 0.9552 -\u003e [*] Best (EMA: 0.9552)\n"}
+,{"stream_name":"stdout","time":6504.182868517,"data":"[EMDataset_PVTv2B2_isic2018] Ep 42/60 [23.5s] | Loss: 0.8009 | Val Raw: 0.9518 | Val EMA: 0.9552 -\u003e [*] Best (EMA: 0.9552)\n"}
+,{"stream_name":"stdout","time":6529.183213536,"data":"[EMDataset_PVTv2B2_isic2018] Ep 43/60 [23.5s] | Loss: 0.7924 | Val Raw: 0.9558 | Val EMA: 0.9555 -\u003e [*] Best (RAW: 0.9558)\n"}
+,{"stream_name":"stdout","time":6554.219118565,"data":"[EMDataset_PVTv2B2_isic2018] Ep 44/60 [23.5s] | Loss: 0.7866 | Val Raw: 0.9573 | Val EMA: 0.9558 -\u003e [*] Best (RAW: 0.9573)\n"}
+,{"stream_name":"stdout","time":6579.045512863,"data":"[EMDataset_PVTv2B2_isic2018] Ep 45/60 [23.5s] | Loss: 0.7838 | Val Raw: 0.9570 | Val EMA: 0.9560\n"}
+,{"stream_name":"stdout","time":6603.889040453,"data":"[EMDataset_PVTv2B2_isic2018] Ep 46/60 [23.5s] | Loss: 0.7799 | Val Raw: 0.9546 | Val EMA: 0.9562\n"}
+,{"stream_name":"stdout","time":6628.688496765,"data":"[EMDataset_PVTv2B2_isic2018] Ep 47/60 [23.5s] | Loss: 0.7708 | Val Raw: 0.9562 | Val EMA: 0.9565\n"}
+,{"stream_name":"stdout","time":6653.620461596,"data":"[EMDataset_PVTv2B2_isic2018] Ep 48/60 [23.6s] | Loss: 0.7696 | Val Raw: 0.9558 | Val EMA: 0.9567\n"}
+,{"stream_name":"stdout","time":6678.449854347,"data":"[EMDataset_PVTv2B2_isic2018] Ep 49/60 [23.5s] | Loss: 0.7683 | Val Raw: 0.9541 | Val EMA: 0.9569\n"}
+,{"stream_name":"stdout","time":6703.222583399,"data":"[EMDataset_PVTv2B2_isic2018] Ep 50/60 [23.5s] | Loss: 0.7648 | Val Raw: 0.9557 | Val EMA: 0.9570\n"}
+,{"stream_name":"stdout","time":6728.024496307,"data":"[EMDataset_PVTv2B2_isic2018] Ep 51/60 [23.5s] | Loss: 0.7595 | Val Raw: 0.9557 | Val EMA: 0.9571\n"}
+,{"stream_name":"stdout","time":6752.949053493,"data":"[EMDataset_PVTv2B2_isic2018] Ep 52/60 [23.4s] | Loss: 0.7595 | Val Raw: 0.9558 | Val EMA: 0.9573 -\u003e [*] Best (EMA: 0.9573)\n"}
+,{"stream_name":"stdout","time":6777.945510946,"data":"[EMDataset_PVTv2B2_isic2018] Ep 53/60 [23.5s] | Loss: 0.7547 | Val Raw: 0.9574 | Val EMA: 0.9575 -\u003e [*] Best (EMA: 0.9575)\n"}
+,{"stream_name":"stdout","time":6802.956128829,"data":"[EMDataset_PVTv2B2_isic2018] Ep 54/60 [23.5s] | Loss: 0.7516 | Val Raw: 0.9581 | Val EMA: 0.9576 -\u003e [*] Best (RAW: 0.9581)\n"}
+,{"stream_name":"stdout","time":6827.8049616,"data":"[EMDataset_PVTv2B2_isic2018] Ep 55/60 [23.6s] | Loss: 0.7500 | Val Raw: 0.9580 | Val EMA: 0.9576\n"}
+,{"stream_name":"stdout","time":6852.899719171,"data":"[EMDataset_PVTv2B2_isic2018] Ep 56/60 [23.6s] | Loss: 0.7508 | Val Raw: 0.9581 | Val EMA: 0.9577 -\u003e [*] Best (RAW: 0.9581)\n"}
+,{"stream_name":"stdout","time":6877.72737356,"data":"[EMDataset_PVTv2B2_isic2018] Ep 57/60 [23.5s] | Loss: 0.7486 | Val Raw: 0.9571 | Val EMA: 0.9578\n"}
+,{"stream_name":"stdout","time":6902.798440822,"data":"[EMDataset_PVTv2B2_isic2018] Ep 58/60 [23.5s] | Loss: 0.7453 | Val Raw: 0.9581 | Val EMA: 0.9578 -\u003e [*] Best (RAW: 0.9581)\n"}
+,{"stream_name":"stdout","time":6927.62167226,"data":"[EMDataset_PVTv2B2_isic2018] Ep 59/60 [23.5s] | Loss: 0.7457 | Val Raw: 0.9578 | Val EMA: 0.9578\n"}
+,{"stream_name":"stdout","time":6952.684104497,"data":"[EMDataset_PVTv2B2_isic2018] Ep 60/60 [23.5s] | Loss: 0.7447 | Val Raw: 0.9582 | Val EMA: 0.9579 -\u003e [*] Best (RAW: 0.9582)\n"}
+,{"stream_name":"stdout","time":6952.686052908,"data":"\n"}
+,{"stream_name":"stdout","time":6952.68607022,"data":"[+] Training Finished for EMDataset_PVTv2B2_isic2018! Best Val Macro Dice: 0.9582 @ Ep 60 (RAW)\n"}
+,{"stream_name":"stdout","time":6953.765572512,"data":"\n"}
+,{"stream_name":"stdout","time":6953.765694872,"data":"--- EMDataset_PVTv2B2_isic2018 TEST RESULTS (SINGLE-VIEW, T=0.50) ---\n"}
+,{"stream_name":"stdout","time":6953.768836359,"data":"           Metric     Mean      Std   Median      Min      Max\n"}
+,{"stream_name":"stdout","time":6953.768859929,"data":"             Dice 0.953049 0.009722 0.952120 0.942948 0.969889\n"}
+,{"stream_name":"stdout","time":6953.768883841,"data":"             mIoU 0.910447 0.017859 0.908627 0.892054 0.941538\n"}
+,{"stream_name":"stdout","time":6953.768890438,"data":"      Sensitivity 0.961281 0.020129 0.966375 0.936420 0.984388\n"}
+,{"stream_name":"stdout","time":6953.768897813,"data":"      Specificity 0.996130 0.001718 0.995930 0.993760 0.998233\n"}
+,{"stream_name":"stdout","time":6953.768903721,"data":"        Precision 0.945372 0.016205 0.948199 0.915418 0.962075\n"}
+,{"stream_name":"stdout","time":6953.768910005,"data":"              FPR 0.003870 0.001718 0.004070 0.001767 0.006240\n"}
+,{"stream_name":"stdout","time":6953.76891624,"data":"             HD95 2.010749 0.590140 2.000000 1.000000 2.828427\n"}
+,{"stream_name":"stdout","time":6953.768922515,"data":"              ASD 1.244973 0.656069 1.185580 0.507077 2.083752\n"}
+,{"stream_name":"stdout","time":6953.768928126,"data":"              BF2 0.956808 0.020448 0.952869 0.936397 0.991380\n"}
+,{"stream_name":"stdout","time":6953.76893339,"data":"Global_Micro_Dice 0.951669 0.000000 0.951669 0.951669 0.951669\n"}
+,{"stream_name":"stdout","time":6953.768938669,"data":" Global_Micro_IoU 0.907795 0.000000 0.907795 0.907795 0.907795\n"}
+,{"stream_name":"stdout","time":6955.030014584,"data":"\n"}
+,{"stream_name":"stdout","time":6955.030117797,"data":"--- EMDataset_PVTv2B2_isic2018 TEST RESULTS (4-VIEW TTA, T=0.50) ---\n"}
+,{"stream_name":"stdout","time":6955.033051755,"data":"           Metric     Mean      Std   Median      Min      Max\n"}
+,{"stream_name":"stdout","time":6955.033067504,"data":"             Dice 0.953527 0.010458 0.953744 0.941661 0.968953\n"}
+,{"stream_name":"stdout","time":6955.033073656,"data":"             mIoU 0.911341 0.019141 0.911592 0.889753 0.939777\n"}
+,{"stream_name":"stdout","time":6955.033078209,"data":"      Sensitivity 0.963596 0.019779 0.967861 0.939541 0.987245\n"}
+,{"stream_name":"stdout","time":6955.033082679,"data":"      Specificity 0.996049 0.001871 0.995986 0.993075 0.998038\n"}
+,{"stream_name":"stdout","time":6955.033087233,"data":"        Precision 0.944138 0.019153 0.948586 0.907167 0.962798\n"}
+,{"stream_name":"stdout","time":6955.033097333,"data":"              FPR 0.003951 0.001871 0.004014 0.001962 0.006925\n"}
+,{"stream_name":"stdout","time":6955.033101139,"data":"             HD95 2.372678 1.358116 2.000000 1.000000 5.000000\n"}
+,{"stream_name":"stdout","time":6955.033104085,"data":"              ASD 1.332059 0.796347 1.174668 0.521867 2.404122\n"}
+,{"stream_name":"stdout","time":6955.03310764,"data":"              BF2 0.959442 0.023218 0.962005 0.927253 0.989167\n"}
+,{"stream_name":"stdout","time":6955.033121964,"data":"Global_Micro_Dice 0.952331 0.000000 0.952331 0.952331 0.952331\n"}
+,{"stream_name":"stdout","time":6955.033125099,"data":" Global_Micro_IoU 0.909000 0.000000 0.909000 0.909000 0.909000\n"}
+,{"stream_name":"stdout","time":6956.318394845,"data":"[*] EMDataset_PVTv2B2_isic2018 Calibrated Threshold on Val: T_opt = 0.740 (Val TTA Macro Dice: 0.9609)\n"}
+,{"stream_name":"stdout","time":6957.594868167,"data":"\n"}
+,{"stream_name":"stdout","time":6957.594900008,"data":"--- EMDataset_PVTv2B2_isic2018 TEST RESULTS (CALIBRATED 4-VIEW TTA, T_opt=0.740) ---\n"}
+,{"stream_name":"stdout","time":6957.598597648,"data":"           Metric     Mean      Std   Median      Min      Max  T_opt\n"}
+,{"stream_name":"stdout","time":6957.598619642,"data":"             Dice 0.954217 0.010466 0.952483 0.942055 0.970721   0.74\n"}
+,{"stream_name":"stdout","time":6957.598625654,"data":"             mIoU 0.912604 0.019223 0.909313 0.890458 0.943108   0.74\n"}
+,{"stream_name":"stdout","time":6957.598630419,"data":"      Sensitivity 0.949798 0.022305 0.954068 0.922890 0.976020   0.74\n"}
+,{"stream_name":"stdout","time":6957.598640006,"data":"      Specificity 0.997202 0.001406 0.997208 0.994837 0.998645   0.74\n"}
+,{"stream_name":"stdout","time":6957.598646911,"data":"        Precision 0.959156 0.015828 0.963468 0.928394 0.973393   0.74\n"}
+,{"stream_name":"stdout","time":6957.598655828,"data":"              FPR 0.002798 0.001406 0.002792 0.001355 0.005163   0.74\n"}
+,{"stream_name":"stdout","time":6957.59865884,"data":"             HD95 2.050094 0.597108 2.118034 1.000000 2.828427   0.74\n"}
+,{"stream_name":"stdout","time":6957.598661724,"data":"              ASD 1.202790 0.649359 1.171665 0.490204 2.020779   0.74\n"}
+,{"stream_name":"stdout","time":6957.598664579,"data":"              BF2 0.957669 0.021191 0.955935 0.935135 0.990423   0.74\n"}
+,{"stream_name":"stdout","time":6957.598667482,"data":"Global_Micro_Dice 0.953024 0.000000 0.953024 0.953024 0.953024   0.74\n"}
+,{"stream_name":"stdout","time":6957.598670343,"data":" Global_Micro_IoU 0.910264 0.000000 0.910264 0.910264 0.910264   0.74\n"}
+,{"stream_name":"stdout","time":6957.760863438,"data":"\n"}
+,{"stream_name":"stdout","time":6957.760889979,"data":"================================================================================\n"}
+,{"stream_name":"stdout","time":6957.760908365,"data":"[*] STARTING GDF-Netv4 TRAINING: CHASE-DB1_PVTv2B2_isic2018 (60 Epochs)\n"}
+,{"stream_name":"stdout","time":6957.761043027,"data":"[*] Backbone: pvt_v2_b2 | Warm-Start Mode: isic2018 | Loss Kernel: 7\n"}
+,{"stream_name":"stdout","time":6957.761060229,"data":"================================================================================\n"}
+,{"stream_name":"stdout","time":6958.464402938,"data":"[*] Found ISIC-2018 Checkpoint: /kaggle/input/datasets/namnguynnnn/gdfnetv4-isic-pretrained/GDFNetV4_PVTv2B2_ISIC2018_best.pth\n"}
+,{"stream_name":"stdout","time":6958.651957394,"data":"[+] Successfully initialized from ISIC-2018! (Missing: 0, Unexpected: 0)\n"}
+,{"stream_name":"stdout","time":6958.656331529,"data":"[+] Model Initialized | Total Params: 30,683,333 | Channels: (64, 128, 320, 512)\n"}
+,{"stream_name":"stdout","time":7141.491289925,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 01/60 [180.9s] | Loss: 5.4421 | Val Raw: 0.7177 | Val EMA: 0.0171 -\u003e [*] Best (RAW: 0.7177)\n"}
+,{"stream_name":"stdout","time":7178.696938722,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 02/60 [35.4s] | Loss: 3.6207 | Val Raw: 0.7596 | Val EMA: 0.0798 -\u003e [*] Best (RAW: 0.7596)\n"}
+,{"stream_name":"stdout","time":7216.733523358,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 03/60 [36.2s] | Loss: 3.3274 | Val Raw: 0.7703 | Val EMA: 0.1274 -\u003e [*] Best (RAW: 0.7703)\n"}
+,{"stream_name":"stdout","time":7254.142498476,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 04/60 [35.6s] | Loss: 3.1837 | Val Raw: 0.7880 | Val EMA: 0.1763 -\u003e [*] Best (RAW: 0.7880)\n"}
+,{"stream_name":"stdout","time":7291.869420075,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 05/60 [35.9s] | Loss: 3.0857 | Val Raw: 0.7914 | Val EMA: 0.2154 -\u003e [*] Best (RAW: 0.7914)\n"}
+,{"stream_name":"stdout","time":7329.369072957,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 06/60 [35.9s] | Loss: 3.0114 | Val Raw: 0.7879 | Val EMA: 0.2832\n"}
+,{"stream_name":"stdout","time":7367.093134237,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 07/60 [35.9s] | Loss: 2.9513 | Val Raw: 0.8002 | Val EMA: 0.4182 -\u003e [*] Best (RAW: 0.8002)\n"}
+,{"stream_name":"stdout","time":7404.572990044,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 08/60 [35.9s] | Loss: 2.9030 | Val Raw: 0.7957 | Val EMA: 0.5629\n"}
+,{"stream_name":"stdout","time":7442.094320404,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 09/60 [35.9s] | Loss: 2.8495 | Val Raw: 0.7947 | Val EMA: 0.6471\n"}
+,{"stream_name":"stdout","time":7479.860808527,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 10/60 [36.0s] | Loss: 2.8357 | Val Raw: 0.8020 | Val EMA: 0.6826 -\u003e [*] Best (RAW: 0.8020)\n"}
+,{"stream_name":"stdout","time":7517.477158155,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 11/60 [35.8s] | Loss: 2.7979 | Val Raw: 0.8026 | Val EMA: 0.7056 -\u003e [*] Best (RAW: 0.8026)\n"}
+,{"stream_name":"stdout","time":7554.991895795,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 12/60 [35.9s] | Loss: 2.7733 | Val Raw: 0.7945 | Val EMA: 0.7209\n"}
+,{"stream_name":"stdout","time":7592.544754411,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 13/60 [35.9s] | Loss: 2.7417 | Val Raw: 0.7995 | Val EMA: 0.7324\n"}
+,{"stream_name":"stdout","time":7630.027895705,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 14/60 [35.9s] | Loss: 2.7544 | Val Raw: 0.7968 | Val EMA: 0.7429\n"}
+,{"stream_name":"stdout","time":7667.503469397,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 15/60 [35.9s] | Loss: 2.7244 | Val Raw: 0.8014 | Val EMA: 0.7522\n"}
+,{"stream_name":"stdout","time":7704.996476191,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 16/60 [35.9s] | Loss: 2.7141 | Val Raw: 0.8009 | Val EMA: 0.7608\n"}
+,{"stream_name":"stdout","time":7742.718552576,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 17/60 [35.8s] | Loss: 2.7096 | Val Raw: 0.8040 | Val EMA: 0.7675 -\u003e [*] Best (RAW: 0.8040)\n"}
+,{"stream_name":"stdout","time":7780.230979489,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 18/60 [35.9s] | Loss: 2.6996 | Val Raw: 0.8033 | Val EMA: 0.7731\n"}
+,{"stream_name":"stdout","time":7817.997936213,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 19/60 [36.0s] | Loss: 2.6909 | Val Raw: 0.8060 | Val EMA: 0.7781 -\u003e [*] Best (RAW: 0.8060)\n"}
+,{"stream_name":"stdout","time":7855.513625247,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 20/60 [35.9s] | Loss: 2.6845 | Val Raw: 0.8048 | Val EMA: 0.7821\n"}
+,{"stream_name":"stdout","time":7892.890399756,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 21/60 [35.8s] | Loss: 2.7306 | Val Raw: 0.8043 | Val EMA: 0.7855\n"}
+,{"stream_name":"stdout","time":7930.549819178,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 22/60 [35.9s] | Loss: 2.7035 | Val Raw: 0.8074 | Val EMA: 0.7885 -\u003e [*] Best (RAW: 0.8074)\n"}
+,{"stream_name":"stdout","time":7968.168813482,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 23/60 [36.0s] | Loss: 2.6625 | Val Raw: 0.8009 | Val EMA: 0.7911\n"}
+,{"stream_name":"stdout","time":8005.5844127,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 24/60 [35.8s] | Loss: 2.6525 | Val Raw: 0.8025 | Val EMA: 0.7934\n"}
+,{"stream_name":"stdout","time":8043.317730283,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 25/60 [35.9s] | Loss: 2.6324 | Val Raw: 0.8112 | Val EMA: 0.7957 -\u003e [*] Best (RAW: 0.8112)\n"}
+,{"stream_name":"stdout","time":8080.859923033,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 26/60 [35.9s] | Loss: 2.6051 | Val Raw: 0.8071 | Val EMA: 0.7978\n"}
+,{"stream_name":"stdout","time":8118.383634571,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 27/60 [35.9s] | Loss: 2.5691 | Val Raw: 0.8107 | Val EMA: 0.7998\n"}
+,{"stream_name":"stdout","time":8155.863414857,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 28/60 [35.9s] | Loss: 2.5619 | Val Raw: 0.8051 | Val EMA: 0.8013\n"}
+,{"stream_name":"stdout","time":8193.339737417,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 29/60 [35.9s] | Loss: 2.5312 | Val Raw: 0.8101 | Val EMA: 0.8026\n"}
+,{"stream_name":"stdout","time":8231.087734499,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 30/60 [35.9s] | Loss: 2.5316 | Val Raw: 0.8132 | Val EMA: 0.8040 -\u003e [*] Best (RAW: 0.8132)\n"}
+,{"stream_name":"stdout","time":8268.514995822,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 31/60 [35.8s] | Loss: 2.5085 | Val Raw: 0.8060 | Val EMA: 0.8048\n"}
+,{"stream_name":"stdout","time":8305.971811317,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 32/60 [35.8s] | Loss: 2.4926 | Val Raw: 0.8105 | Val EMA: 0.8057\n"}
+,{"stream_name":"stdout","time":8343.46595434,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 33/60 [35.9s] | Loss: 2.4823 | Val Raw: 0.7994 | Val EMA: 0.8067\n"}
+,{"stream_name":"stdout","time":8380.985493229,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 34/60 [35.9s] | Loss: 2.4601 | Val Raw: 0.8049 | Val EMA: 0.8077\n"}
+,{"stream_name":"stdout","time":8418.594724665,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 35/60 [35.8s] | Loss: 2.4426 | Val Raw: 0.8157 | Val EMA: 0.8087 -\u003e [*] Best (RAW: 0.8157)\n"}
+,{"stream_name":"stdout","time":8456.605861499,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 36/60 [36.2s] | Loss: 2.4193 | Val Raw: 0.8161 | Val EMA: 0.8095 -\u003e [*] Best (RAW: 0.8161)\n"}
+,{"stream_name":"stdout","time":8494.155587416,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 37/60 [36.0s] | Loss: 2.4206 | Val Raw: 0.8087 | Val EMA: 0.8102\n"}
+,{"stream_name":"stdout","time":8531.812143191,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 38/60 [35.8s] | Loss: 2.3986 | Val Raw: 0.8164 | Val EMA: 0.8111 -\u003e [*] Best (RAW: 0.8164)\n"}
+,{"stream_name":"stdout","time":8569.266760001,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 39/60 [35.8s] | Loss: 2.3972 | Val Raw: 0.8084 | Val EMA: 0.8116\n"}
+,{"stream_name":"stdout","time":8606.798736412,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 40/60 [35.9s] | Loss: 2.3766 | Val Raw: 0.8151 | Val EMA: 0.8122\n"}
+,{"stream_name":"stdout","time":8644.247516582,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 41/60 [35.9s] | Loss: 2.3462 | Val Raw: 0.8106 | Val EMA: 0.8126\n"}
+,{"stream_name":"stdout","time":8681.6954375,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 42/60 [35.8s] | Loss: 2.3383 | Val Raw: 0.8158 | Val EMA: 0.8130\n"}
+,{"stream_name":"stdout","time":8719.179935291,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 43/60 [35.9s] | Loss: 2.3395 | Val Raw: 0.8125 | Val EMA: 0.8133\n"}
+,{"stream_name":"stdout","time":8756.625853055,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 44/60 [35.9s] | Loss: 2.3258 | Val Raw: 0.8155 | Val EMA: 0.8134\n"}
+,{"stream_name":"stdout","time":8794.03792076,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 45/60 [35.8s] | Loss: 2.3100 | Val Raw: 0.8147 | Val EMA: 0.8136\n"}
+,{"stream_name":"stdout","time":8831.692321292,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 46/60 [35.8s] | Loss: 2.2991 | Val Raw: 0.8177 | Val EMA: 0.8140 -\u003e [*] Best (RAW: 0.8177)\n"}
+,{"stream_name":"stdout","time":8869.132509145,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 47/60 [35.9s] | Loss: 2.3031 | Val Raw: 0.8115 | Val EMA: 0.8144\n"}
+,{"stream_name":"stdout","time":8906.654216255,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 48/60 [35.9s] | Loss: 2.2880 | Val Raw: 0.8132 | Val EMA: 0.8146\n"}
+,{"stream_name":"stdout","time":8944.032169422,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 49/60 [35.8s] | Loss: 2.2801 | Val Raw: 0.8125 | Val EMA: 0.8147\n"}
+,{"stream_name":"stdout","time":8981.523987406,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 50/60 [35.9s] | Loss: 2.2838 | Val Raw: 0.8121 | Val EMA: 0.8149\n"}
+,{"stream_name":"stdout","time":9018.977574964,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 51/60 [35.9s] | Loss: 2.2781 | Val Raw: 0.8106 | Val EMA: 0.8150\n"}
+,{"stream_name":"stdout","time":9056.426303048,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 52/60 [35.9s] | Loss: 2.2595 | Val Raw: 0.8095 | Val EMA: 0.8150\n"}
+,{"stream_name":"stdout","time":9093.889397293,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 53/60 [35.9s] | Loss: 2.2669 | Val Raw: 0.8101 | Val EMA: 0.8153\n"}
+,{"stream_name":"stdout","time":9131.356397681,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 54/60 [35.9s] | Loss: 2.2708 | Val Raw: 0.8155 | Val EMA: 0.8153\n"}
+,{"stream_name":"stdout","time":9168.870336765,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 55/60 [35.9s] | Loss: 2.2638 | Val Raw: 0.8161 | Val EMA: 0.8153\n"}
+,{"stream_name":"stdout","time":9206.399086719,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 56/60 [35.9s] | Loss: 2.2472 | Val Raw: 0.8144 | Val EMA: 0.8153\n"}
+,{"stream_name":"stdout","time":9243.780957863,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 57/60 [35.8s] | Loss: 2.2497 | Val Raw: 0.8123 | Val EMA: 0.8153\n"}
+,{"stream_name":"stdout","time":9281.186693712,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 58/60 [35.8s] | Loss: 2.2437 | Val Raw: 0.8141 | Val EMA: 0.8155\n"}
+,{"stream_name":"stdout","time":9318.606845219,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 59/60 [35.8s] | Loss: 2.2500 | Val Raw: 0.8144 | Val EMA: 0.8156\n"}
+,{"stream_name":"stdout","time":9356.110721717,"data":"[CHASE-DB1_PVTv2B2_isic2018] Ep 60/60 [35.9s] | Loss: 2.2486 | Val Raw: 0.8137 | Val EMA: 0.8156\n"}
+,{"stream_name":"stdout","time":9356.112920303,"data":"\n"}
+,{"stream_name":"stdout","time":9356.112939527,"data":"[+] Training Finished for CHASE-DB1_PVTv2B2_isic2018! Best Val Macro Dice: 0.8177 @ Ep 46 (RAW)\n"}
+,{"stream_name":"stdout","time":9357.539576214,"data":"\n"}
+,{"stream_name":"stdout","time":9357.539729508,"data":"--- CHASE-DB1_PVTv2B2_isic2018 TEST RESULTS (SINGLE-VIEW, T=0.50) ---\n"}
+,{"stream_name":"stdout","time":9357.543034119,"data":"           Metric     Mean      Std   Median      Min      Max\n"}
+,{"stream_name":"stdout","time":9357.543053634,"data":"             Dice 0.818345 0.015662 0.812689 0.807246 0.840755\n"}
+,{"stream_name":"stdout","time":9357.543060934,"data":"             mIoU 0.692766 0.022666 0.684506 0.676792 0.725260\n"}
+,{"stream_name":"stdout","time":9357.543067304,"data":"      Sensitivity 0.861612 0.029755 0.871088 0.818378 0.885895\n"}
+,{"stream_name":"stdout","time":9357.543073099,"data":"      Specificity 0.982245 0.004495 0.984099 0.975563 0.985218\n"}
+,{"stream_name":"stdout","time":9357.543078456,"data":"        Precision 0.781033 0.040409 0.783025 0.741424 0.816655\n"}
+,{"stream_name":"stdout","time":9357.543101217,"data":"              FPR 0.017755 0.004495 0.015901 0.014782 0.024437\n"}
+,{"stream_name":"stdout","time":9357.543106965,"data":"             HD95 4.000000 2.000000 3.000000 3.000000 7.000000\n"}
+,{"stream_name":"stdout","time":9357.543120031,"data":"              ASD 1.404119 0.199416 1.358562 1.219312 1.680042\n"}
+,{"stream_name":"stdout","time":9357.543124323,"data":"              BF2 0.909813 0.014586 0.914566 0.889033 0.921086\n"}
+,{"stream_name":"stdout","time":9357.543128293,"data":"Global_Micro_Dice 0.818536 0.000000 0.818536 0.818536 0.818536\n"}
+,{"stream_name":"stdout","time":9357.54313215,"data":" Global_Micro_IoU 0.692815 0.000000 0.692815 0.692815 0.692815\n"}
+,{"stream_name":"stdout","time":9359.359162359,"data":"\n"}
+,{"stream_name":"stdout","time":9359.359287777,"data":"--- CHASE-DB1_PVTv2B2_isic2018 TEST RESULTS (4-VIEW TTA, T=0.50) ---\n"}
+,{"stream_name":"stdout","time":9359.362392849,"data":"           Metric     Mean      Std   Median      Min      Max\n"}
+,{"stream_name":"stdout","time":9359.362415148,"data":"             Dice 0.826096 0.017832 0.820080 0.813133 0.851090\n"}
+,{"stream_name":"stdout","time":9359.362418689,"data":"             mIoU 0.704015 0.026153 0.695085 0.685109 0.740781\n"}
+,{"stream_name":"stdout","time":9359.362421484,"data":"      Sensitivity 0.865679 0.027482 0.871615 0.827553 0.891932\n"}
+,{"stream_name":"stdout","time":9359.362424131,"data":"      Specificity 0.983251 0.004871 0.984777 0.976183 0.987265\n"}
+,{"stream_name":"stdout","time":9359.362426744,"data":"        Precision 0.791976 0.045555 0.792035 0.747606 0.836228\n"}
+,{"stream_name":"stdout","time":9359.362429427,"data":"              FPR 0.016749 0.004871 0.015223 0.012735 0.023817\n"}
+,{"stream_name":"stdout","time":9359.362432022,"data":"             HD95 3.750000 1.500000 3.000000 3.000000 6.000000\n"}
+,{"stream_name":"stdout","time":9359.362434609,"data":"              ASD 1.399322 0.166797 1.375160 1.254135 1.592831\n"}
+,{"stream_name":"stdout","time":9359.362437213,"data":"              BF2 0.913083 0.014218 0.917181 0.892598 0.925374\n"}
+,{"stream_name":"stdout","time":9359.362439934,"data":"Global_Micro_Dice 0.826323 0.000000 0.826323 0.826323 0.826323\n"}
+,{"stream_name":"stdout","time":9359.362442578,"data":" Global_Micro_IoU 0.704047 0.000000 0.704047 0.704047 0.704047\n"}
+,{"stream_name":"stdout","time":9361.166012004,"data":"[*] CHASE-DB1_PVTv2B2_isic2018 Calibrated Threshold on Val: T_opt = 0.590 (Val TTA Macro Dice: 0.8243)\n"}
+,{"stream_name":"stdout","time":9363.046173338,"data":"\n"}
+,{"stream_name":"stdout","time":9363.04635001,"data":"--- CHASE-DB1_PVTv2B2_isic2018 TEST RESULTS (CALIBRATED 4-VIEW TTA, T_opt=0.590) ---\n"}
+,{"stream_name":"stdout","time":9363.0496042,"data":"           Metric     Mean      Std   Median      Min      Max  T_opt\n"}
+,{"stream_name":"stdout","time":9363.049621192,"data":"             Dice 0.826947 0.015550 0.821288 0.815664 0.849550   0.59\n"}
+,{"stream_name":"stdout","time":9363.049625793,"data":"             mIoU 0.705181 0.022856 0.696781 0.688710 0.738451   0.59\n"}
+,{"stream_name":"stdout","time":9363.049629553,"data":"      Sensitivity 0.842585 0.030301 0.848473 0.801331 0.872062   0.59\n"}
+,{"stream_name":"stdout","time":9363.049633249,"data":"      Specificity 0.985837 0.004486 0.987178 0.979403 0.989587   0.59\n"}
+,{"stream_name":"stdout","time":9363.049642867,"data":"        Precision 0.814199 0.046136 0.814189 0.770052 0.858365   0.59\n"}
+,{"stream_name":"stdout","time":9363.049645704,"data":"              FPR 0.014163 0.004486 0.012822 0.010413 0.020597   0.59\n"}
+,{"stream_name":"stdout","time":9363.04964818,"data":"             HD95 4.221415 2.059014 3.302776 3.000000 7.280110   0.59\n"}
+,{"stream_name":"stdout","time":9363.049650617,"data":"              ASD 1.434788 0.183713 1.387355 1.280553 1.683890   0.59\n"}
+,{"stream_name":"stdout","time":9363.049653252,"data":"              BF2 0.911325 0.015267 0.918322 0.888492 0.920167   0.59\n"}
+,{"stream_name":"stdout","time":9363.049655692,"data":"Global_Micro_Dice 0.827139 0.000000 0.827139 0.827139 0.827139   0.59\n"}
+,{"stream_name":"stdout","time":9363.049678827,"data":" Global_Micro_IoU 0.705231 0.000000 0.705231 0.705231 0.705231   0.59\n"}
+,{"stream_name":"stdout","time":9363.221104721,"data":"\n"}
+,{"stream_name":"stdout","time":9363.221128845,"data":"================================================================================\n"}
+,{"stream_name":"stdout","time":9363.221135324,"data":"[*] STARTING GDF-Netv4 TRAINING: DRIVE_PVTv2B2_isic2018 (50 Epochs)\n"}
+,{"stream_name":"stdout","time":9363.221140275,"data":"[*] Backbone: pvt_v2_b2 | Warm-Start Mode: isic2018 | Loss Kernel: 7\n"}
+,{"stream_name":"stdout","time":9363.221202738,"data":"================================================================================\n"}
+,{"stream_name":"stdout","time":9363.896818284,"data":"[*] Found ISIC-2018 Checkpoint: /kaggle/input/datasets/namnguynnnn/gdfnetv4-isic-pretrained/GDFNetV4_PVTv2B2_ISIC2018_best.pth\n"}
+,{"stream_name":"stdout","time":9364.083680658,"data":"[+] Successfully initialized from ISIC-2018! (Missing: 0, Unexpected: 0)\n"}
+,{"stream_name":"stdout","time":9364.085694915,"data":"[+] Model Initialized | Total Params: 30,683,333 | Channels: (64, 128, 320, 512)\n"}
+,{"stream_name":"stdout","time":9535.889967021,"data":"[DRIVE_PVTv2B2_isic2018] Ep 01/50 [154.2s] | Loss: 6.7695 | Val Raw: 0.5833 | Val EMA: 0.0040 -\u003e [*] Best (RAW: 0.5833)\n"}
+,{"stream_name":"stdout","time":9551.837585991,"data":"[DRIVE_PVTv2B2_isic2018] Ep 02/50 [14.4s] | Loss: 4.3652 | Val Raw: 0.6948 | Val EMA: 0.0110 -\u003e [*] Best (RAW: 0.6948)\n"}
+,{"stream_name":"stdout","time":9568.30937165,"data":"[DRIVE_PVTv2B2_isic2018] Ep 03/50 [14.9s] | Loss: 3.9356 | Val Raw: 0.7278 | Val EMA: 0.0367 -\u003e [*] Best (RAW: 0.7278)\n"}
+,{"stream_name":"stdout","time":9584.346385295,"data":"[DRIVE_PVTv2B2_isic2018] Ep 04/50 [14.7s] | Loss: 3.6992 | Val Raw: 0.7234 | Val EMA: 0.0565\n"}
+,{"stream_name":"stdout","time":9600.36442135,"data":"[DRIVE_PVTv2B2_isic2018] Ep 05/50 [14.5s] | Loss: 3.5584 | Val Raw: 0.7347 | Val EMA: 0.0738 -\u003e [*] Best (RAW: 0.7347)\n"}
+,{"stream_name":"stdout","time":9616.467611202,"data":"[DRIVE_PVTv2B2_isic2018] Ep 06/50 [14.6s] | Loss: 3.4784 | Val Raw: 0.7386 | Val EMA: 0.1039 -\u003e [*] Best (RAW: 0.7386)\n"}
+,{"stream_name":"stdout","time":9632.43806402,"data":"[DRIVE_PVTv2B2_isic2018] Ep 07/50 [14.4s] | Loss: 3.4237 | Val Raw: 0.7479 | Val EMA: 0.1321 -\u003e [*] Best (RAW: 0.7479)\n"}
+,{"stream_name":"stdout","time":9648.73817505,"data":"[DRIVE_PVTv2B2_isic2018] Ep 08/50 [15.0s] | Loss: 3.3762 | Val Raw: 0.7473 | Val EMA: 0.1545\n"}
+,{"stream_name":"stdout","time":9665.041323134,"data":"[DRIVE_PVTv2B2_isic2018] Ep 09/50 [14.8s] | Loss: 3.3438 | Val Raw: 0.7524 | Val EMA: 0.1955 -\u003e [*] Best (RAW: 0.7524)\n"}
+,{"stream_name":"stdout","time":9681.26559969,"data":"[DRIVE_PVTv2B2_isic2018] Ep 10/50 [14.7s] | Loss: 3.3188 | Val Raw: 0.7540 | Val EMA: 0.2496 -\u003e [*] Best (RAW: 0.7540)\n"}
+,{"stream_name":"stdout","time":9697.40859245,"data":"[DRIVE_PVTv2B2_isic2018] Ep 11/50 [14.6s] | Loss: 3.2948 | Val Raw: 0.7564 | Val EMA: 0.3257 -\u003e [*] Best (RAW: 0.7564)\n"}
+,{"stream_name":"stdout","time":9713.226106426,"data":"[DRIVE_PVTv2B2_isic2018] Ep 12/50 [14.5s] | Loss: 3.2617 | Val Raw: 0.7536 | Val EMA: 0.4164\n"}
+,{"stream_name":"stdout","time":9729.333284405,"data":"[DRIVE_PVTv2B2_isic2018] Ep 13/50 [14.8s] | Loss: 3.2455 | Val Raw: 0.7515 | Val EMA: 0.4918\n"}
+,{"stream_name":"stdout","time":9745.194822652,"data":"[DRIVE_PVTv2B2_isic2018] Ep 14/50 [14.5s] | Loss: 3.2317 | Val Raw: 0.7532 | Val EMA: 0.5588\n"}
+,{"stream_name":"stdout","time":9760.971908685,"data":"[DRIVE_PVTv2B2_isic2018] Ep 15/50 [14.4s] | Loss: 3.2034 | Val Raw: 0.7540 | Val EMA: 0.6019\n"}
+,{"stream_name":"stdout","time":9776.937296036,"data":"[DRIVE_PVTv2B2_isic2018] Ep 16/50 [14.6s] | Loss: 3.1952 | Val Raw: 0.7552 | Val EMA: 0.6334\n"}
+,{"stream_name":"stdout","time":9792.826360068,"data":"[DRIVE_PVTv2B2_isic2018] Ep 17/50 [14.6s] | Loss: 3.1880 | Val Raw: 0.7509 | Val EMA: 0.6588\n"}
+,{"stream_name":"stdout","time":9808.806085184,"data":"[DRIVE_PVTv2B2_isic2018] Ep 18/50 [14.7s] | Loss: 3.1862 | Val Raw: 0.7526 | Val EMA: 0.6787\n"}
+,{"stream_name":"stdout","time":9824.763078599,"data":"[DRIVE_PVTv2B2_isic2018] Ep 19/50 [14.6s] | Loss: 3.1811 | Val Raw: 0.7527 | Val EMA: 0.6966\n"}
+,{"stream_name":"stdout","time":9840.737590049,"data":"[DRIVE_PVTv2B2_isic2018] Ep 20/50 [14.6s] | Loss: 3.1761 | Val Raw: 0.7535 | Val EMA: 0.7108\n"}
+,{"stream_name":"stdout","time":9856.746858591,"data":"[DRIVE_PVTv2B2_isic2018] Ep 21/50 [14.7s] | Loss: 3.1805 | Val Raw: 0.7470 | Val EMA: 0.7191\n"}
+,{"stream_name":"stdout","time":9872.677864136,"data":"[DRIVE_PVTv2B2_isic2018] Ep 22/50 [14.6s] | Loss: 3.1534 | Val Raw: 0.7546 | Val EMA: 0.7261\n"}
+,{"stream_name":"stdout","time":9888.662251335,"data":"[DRIVE_PVTv2B2_isic2018] Ep 23/50 [14.6s] | Loss: 3.1343 | Val Raw: 0.7555 | Val EMA: 0.7318\n"}
+,{"stream_name":"stdout","time":9904.620605151,"data":"[DRIVE_PVTv2B2_isic2018] Ep 24/50 [14.7s] | Loss: 3.1102 | Val Raw: 0.7545 | Val EMA: 0.7364\n"}
+,{"stream_name":"stdout","time":9920.568011868,"data":"[DRIVE_PVTv2B2_isic2018] Ep 25/50 [14.6s] | Loss: 3.0858 | Val Raw: 0.7545 | Val EMA: 0.7399\n"}
+,{"stream_name":"stdout","time":9936.856760124,"data":"[DRIVE_PVTv2B2_isic2018] Ep 26/50 [14.7s] | Loss: 3.0689 | Val Raw: 0.7567 | Val EMA: 0.7428 -\u003e [*] Best (RAW: 0.7567)\n"}
+,{"stream_name":"stdout","time":9952.775070104,"data":"[DRIVE_PVTv2B2_isic2018] Ep 27/50 [14.6s] | Loss: 3.0497 | Val Raw: 0.7531 | Val EMA: 0.7460\n"}
+,{"stream_name":"stdout","time":9968.901863626,"data":"[DRIVE_PVTv2B2_isic2018] Ep 28/50 [14.6s] | Loss: 3.0329 | Val Raw: 0.7604 | Val EMA: 0.7483 -\u003e [*] Best (RAW: 0.7604)\n"}
+,{"stream_name":"stdout","time":9984.905696787,"data":"[DRIVE_PVTv2B2_isic2018] Ep 29/50 [14.7s] | Loss: 3.0165 | Val Raw: 0.7551 | Val EMA: 0.7506\n"}
+,{"stream_name":"stdout","time":10000.957822252,"data":"[DRIVE_PVTv2B2_isic2018] Ep 30/50 [14.7s] | Loss: 3.0021 | Val Raw: 0.7549 | Val EMA: 0.7523\n"}
+,{"stream_name":"stdout","time":10016.83644572,"data":"[DRIVE_PVTv2B2_isic2018] Ep 31/50 [14.6s] | Loss: 2.9922 | Val Raw: 0.7531 | Val EMA: 0.7538\n"}
+,{"stream_name":"stdout","time":10032.718290412,"data":"[DRIVE_PVTv2B2_isic2018] Ep 32/50 [14.6s] | Loss: 2.9656 | Val Raw: 0.7504 | Val EMA: 0.7550\n"}
+,{"stream_name":"stdout","time":10048.549195451,"data":"[DRIVE_PVTv2B2_isic2018] Ep 33/50 [14.5s] | Loss: 2.9537 | Val Raw: 0.7513 | Val EMA: 0.7561\n"}
+,{"stream_name":"stdout","time":10064.489394155,"data":"[DRIVE_PVTv2B2_isic2018] Ep 34/50 [14.6s] | Loss: 2.9405 | Val Raw: 0.7520 | Val EMA: 0.7566\n"}
+,{"stream_name":"stdout","time":10080.347770226,"data":"[DRIVE_PVTv2B2_isic2018] Ep 35/50 [14.6s] | Loss: 2.9276 | Val Raw: 0.7534 | Val EMA: 0.7570\n"}
+,{"stream_name":"stdout","time":10096.378949216,"data":"[DRIVE_PVTv2B2_isic2018] Ep 36/50 [14.7s] | Loss: 2.9217 | Val Raw: 0.7564 | Val EMA: 0.7576\n"}
+,{"stream_name":"stdout","time":10112.244693249,"data":"[DRIVE_PVTv2B2_isic2018] Ep 37/50 [14.5s] | Loss: 2.9040 | Val Raw: 0.7543 | Val EMA: 0.7582\n"}
+,{"stream_name":"stdout","time":10128.372496171,"data":"[DRIVE_PVTv2B2_isic2018] Ep 38/50 [14.6s] | Loss: 2.8983 | Val Raw: 0.7630 | Val EMA: 0.7588 -\u003e [*] Best (RAW: 0.7630)\n"}
+,{"stream_name":"stdout","time":10144.327089499,"data":"[DRIVE_PVTv2B2_isic2018] Ep 39/50 [14.6s] | Loss: 2.8837 | Val Raw: 0.7599 | Val EMA: 0.7595\n"}
+,{"stream_name":"stdout","time":10160.428182874,"data":"[DRIVE_PVTv2B2_isic2018] Ep 40/50 [14.6s] | Loss: 2.8706 | Val Raw: 0.7690 | Val EMA: 0.7598 -\u003e [*] Best (RAW: 0.7690)\n"}
+,{"stream_name":"stdout","time":10176.378440686,"data":"[DRIVE_PVTv2B2_isic2018] Ep 41/50 [14.6s] | Loss: 2.8560 | Val Raw: 0.7565 | Val EMA: 0.7604\n"}
+,{"stream_name":"stdout","time":10192.405812849,"data":"[DRIVE_PVTv2B2_isic2018] Ep 42/50 [14.7s] | Loss: 2.8525 | Val Raw: 0.7500 | Val EMA: 0.7606\n"}
+,{"stream_name":"stdout","time":10208.303182761,"data":"[DRIVE_PVTv2B2_isic2018] Ep 43/50 [14.6s] | Loss: 2.8571 | Val Raw: 0.7532 | Val EMA: 0.7607\n"}
+,{"stream_name":"stdout","time":10224.290965182,"data":"[DRIVE_PVTv2B2_isic2018] Ep 44/50 [14.6s] | Loss: 2.8490 | Val Raw: 0.7508 | Val EMA: 0.7611\n"}
+,{"stream_name":"stdout","time":10240.223651645,"data":"[DRIVE_PVTv2B2_isic2018] Ep 45/50 [14.6s] | Loss: 2.8541 | Val Raw: 0.7630 | Val EMA: 0.7614\n"}
+,{"stream_name":"stdout","time":10256.050252476,"data":"[DRIVE_PVTv2B2_isic2018] Ep 46/50 [14.5s] | Loss: 2.8419 | Val Raw: 0.7672 | Val EMA: 0.7615\n"}
+,{"stream_name":"stdout","time":10271.855192911,"data":"[DRIVE_PVTv2B2_isic2018] Ep 47/50 [14.4s] | Loss: 2.8230 | Val Raw: 0.7683 | Val EMA: 0.7618\n"}
+,{"stream_name":"stdout","time":10287.896277832,"data":"[DRIVE_PVTv2B2_isic2018] Ep 48/50 [14.5s] | Loss: 2.8319 | Val Raw: 0.7722 | Val EMA: 0.7619 -\u003e [*] Best (RAW: 0.7722)\n"}
+,{"stream_name":"stdout","time":10304.078102737,"data":"[DRIVE_PVTv2B2_isic2018] Ep 49/50 [14.7s] | Loss: 2.8147 | Val Raw: 0.7724 | Val EMA: 0.7620 -\u003e [*] Best (RAW: 0.7724)\n"}
+,{"stream_name":"stdout","time":10320.082920495,"data":"[DRIVE_PVTv2B2_isic2018] Ep 50/50 [14.7s] | Loss: 2.8116 | Val Raw: 0.7702 | Val EMA: 0.7623\n"}
+,{"stream_name":"stdout","time":10320.084927229,"data":"\n"}
+,{"stream_name":"stdout","time":10320.084993755,"data":"[+] Training Finished for DRIVE_PVTv2B2_isic2018! Best Val Macro Dice: 0.7724 @ Ep 49 (RAW)\n"}
+,{"stream_name":"stdout","time":10321.488275633,"data":"\n"}
+,{"stream_name":"stdout","time":10321.488335925,"data":"--- DRIVE_PVTv2B2_isic2018 TEST RESULTS (SINGLE-VIEW, T=0.50) ---\n"}
+,{"stream_name":"stdout","time":10321.491206433,"data":"           Metric     Mean      Std   Median      Min       Max\n"}
+,{"stream_name":"stdout","time":10321.491228443,"data":"             Dice 0.774923 0.041471 0.784390 0.693967  0.810574\n"}
+,{"stream_name":"stdout","time":10321.491235075,"data":"             mIoU 0.634046 0.053000 0.645266 0.531355  0.681483\n"}
+,{"stream_name":"stdout","time":10321.491239923,"data":"      Sensitivity 0.810775 0.041218 0.810477 0.758452  0.874551\n"}
+,{"stream_name":"stdout","time":10321.491244348,"data":"      Specificity 0.974505 0.006271 0.975431 0.964535  0.981670\n"}
+,{"stream_name":"stdout","time":10321.49124947,"data":"        Precision 0.747725 0.080953 0.763590 0.613871  0.844453\n"}
+,{"stream_name":"stdout","time":10321.49125456,"data":"              FPR 0.025495 0.006271 0.024569 0.018330  0.035465\n"}
+,{"stream_name":"stdout","time":10321.491259804,"data":"             HD95 7.282391 8.352254 3.924096 2.828427 24.186773\n"}
+,{"stream_name":"stdout","time":10321.491264828,"data":"              ASD 1.542759 1.007750 1.143056 1.071075  3.596242\n"}
+,{"stream_name":"stdout","time":10321.491270453,"data":"              BF2 0.903227 0.057045 0.924113 0.789382  0.938907\n"}
+,{"stream_name":"stdout","time":10321.491275096,"data":"Global_Micro_Dice 0.777925 0.000000 0.777925 0.777925  0.777925\n"}
+,{"stream_name":"stdout","time":10321.491279856,"data":" Global_Micro_IoU 0.636561 0.000000 0.636561 0.636561  0.636561\n"}
+,{"stream_name":"stdout","time":10323.159633966,"data":"\n"}
+,{"stream_name":"stdout","time":10323.159750843,"data":"--- DRIVE_PVTv2B2_isic2018 TEST RESULTS (4-VIEW TTA, T=0.50) ---\n"}
+,{"stream_name":"stdout","time":10323.162611332,"data":"           Metric     Mean      Std   Median      Min       Max\n"}
+,{"stream_name":"stdout","time":10323.162636339,"data":"             Dice 0.785117 0.039547 0.792972 0.709371  0.822707\n"}
+,{"stream_name":"stdout","time":10323.162642369,"data":"             mIoU 0.647650 0.051688 0.656963 0.549632  0.698813\n"}
+,{"stream_name":"stdout","time":10323.162646776,"data":"      Sensitivity 0.813866 0.040782 0.810706 0.764663  0.878466\n"}
+,{"stream_name":"stdout","time":10323.162651392,"data":"      Specificity 0.976564 0.005769 0.977038 0.967917  0.983341\n"}
+,{"stream_name":"stdout","time":10323.162656697,"data":"        Precision 0.763467 0.077776 0.776261 0.637669  0.857597\n"}
+,{"stream_name":"stdout","time":10323.162673403,"data":"              FPR 0.023436 0.005769 0.022962 0.016659  0.032083\n"}
+,{"stream_name":"stdout","time":10323.162677489,"data":"             HD95 7.172127 8.370945 3.736068 2.236068 24.000000\n"}
+,{"stream_name":"stdout","time":10323.162680899,"data":"              ASD 1.491478 0.951873 1.132647 0.992828  3.424079\n"}
+,{"stream_name":"stdout","time":10323.162685223,"data":"              BF2 0.908765 0.052507 0.925160 0.805371  0.946185\n"}
+,{"stream_name":"stdout","time":10323.162689539,"data":"Global_Micro_Dice 0.788069 0.000000 0.788069 0.788069  0.788069\n"}
+,{"stream_name":"stdout","time":10323.162693956,"data":" Global_Micro_IoU 0.650260 0.000000 0.650260 0.650260  0.650260\n"}
+,{"stream_name":"stdout","time":10324.100518907,"data":"[*] DRIVE_PVTv2B2_isic2018 Calibrated Threshold on Val: T_opt = 0.540 (Val TTA Macro Dice: 0.7781)\n"}
+,{"stream_name":"stdout","time":10325.779110742,"data":"\n"}
+,{"stream_name":"stdout","time":10325.779198036,"data":"--- DRIVE_PVTv2B2_isic2018 TEST RESULTS (CALIBRATED 4-VIEW TTA, T_opt=0.540) ---\n"}
+,{"stream_name":"stdout","time":10325.78270668,"data":"           Metric     Mean      Std   Median      Min       Max  T_opt\n"}
+,{"stream_name":"stdout","time":10325.782726694,"data":"             Dice 0.785486 0.037598 0.793755 0.713463  0.822514   0.54\n"}
+,{"stream_name":"stdout","time":10325.782732734,"data":"             mIoU 0.648020 0.049261 0.658046 0.554561  0.698534   0.54\n"}
+,{"stream_name":"stdout","time":10325.782738044,"data":"      Sensitivity 0.802159 0.041967 0.799044 0.751280  0.868698   0.54\n"}
+,{"stream_name":"stdout","time":10325.78274266,"data":"      Specificity 0.978332 0.005370 0.978662 0.970424  0.984691   0.54\n"}
+,{"stream_name":"stdout","time":10325.782747602,"data":"        Precision 0.774542 0.075411 0.786306 0.652683  0.865569   0.54\n"}
+,{"stream_name":"stdout","time":10325.782751887,"data":"              FPR 0.021668 0.005370 0.021338 0.015309  0.029576   0.54\n"}
+,{"stream_name":"stdout","time":10325.782756008,"data":"             HD95 7.254971 8.085076 4.081139 2.236068 23.423277   0.54\n"}
+,{"stream_name":"stdout","time":10325.782760955,"data":"              ASD 1.485548 0.918551 1.145332 0.994237  3.346497   0.54\n"}
+,{"stream_name":"stdout","time":10325.782765146,"data":"              BF2 0.908705 0.049991 0.923181 0.811353  0.947964   0.54\n"}
+,{"stream_name":"stdout","time":10325.782769343,"data":"Global_Micro_Dice 0.788183 0.000000 0.788183 0.788183  0.788183   0.54\n"}
+,{"stream_name":"stdout","time":10325.782774258,"data":" Global_Micro_IoU 0.650415 0.000000 0.650415 0.650415  0.650415   0.54\n"}
+,{"stream_name":"stdout","time":10325.955621781,"data":"\n"}
+,{"stream_name":"stdout","time":10325.955641187,"data":"==========================================================================================\n"}
+,{"stream_name":"stdout","time":10325.95570216,"data":"       REVISED RETRAINING MASTER SUMMARY (EM-Dataset, CHASE-DB1, DRIVE)       \n"}
+,{"stream_name":"stdout","time":10325.955708716,"data":"==========================================================================================\n"}
+,{"stream_name":"stdout","time":10325.962093978,"data":"  Dataset      Backbone Warm_Start  Best_Val_Dice  Best_Epoch  T_opt  SV_Mean_Dice  SV_Median_Dice  TTA_Mean_Dice  TTA_Median_Dice  Cal_Mean_Dice  Cal_Median_Dice  Cal_mIoU  Cal_Sens  Cal_Spec  Cal_Prec  Cal_FPR  Cal_HD95  Cal_ASD  Cal_BF2  Cal_Global_Dice\n"}
+,{"stream_name":"stdout","time":10325.962118445,"data":"EMDataset ConvFormerS18   isic2018       0.957108          46   0.52      0.950419        0.948965       0.951725         0.950623       0.951599         0.950431  0.907799  0.944226  0.997182  0.959619 0.002818  2.454665 1.336240 0.954642         0.950710\n"}
+,{"stream_name":"stdout","time":10325.962138816,"data":"CHASE-DB1 ConvFormerS18   isic2018       0.826206          41   0.46      0.824552        0.817462       0.823914         0.817759       0.823762         0.817937  0.700624  0.854498  0.984014  0.797291 0.015986  4.119008 1.469429 0.907877         0.823915\n"}
+,{"stream_name":"stdout","time":10325.962145441,"data":"    DRIVE ConvFormerS18   isic2018       0.771969          38   0.53      0.781560        0.782431       0.781663         0.784022       0.783262         0.785355  0.644328  0.833721  0.973118  0.743234 0.026882  6.724074 1.444335 0.913029         0.785736\n"}
+,{"stream_name":"stdout","time":10325.962151638,"data":"EMDataset       PVTv2B2   isic2018       0.958153          60   0.74      0.953049        0.952120       0.953527         0.953744       0.954217         0.952483  0.912604  0.949798  0.997202  0.959156 0.002798  2.050094 1.202790 0.957669         0.953024\n"}
+,{"stream_name":"stdout","time":10325.962156826,"data":"CHASE-DB1       PVTv2B2   isic2018       0.817742          46   0.59      0.818345        0.812689       0.826096         0.820080       0.826947         0.821288  0.705181  0.842585  0.985837  0.814199 0.014163  4.221415 1.434788 0.911325         0.827139\n"}
+,{"stream_name":"stdout","time":10325.962162002,"data":"    DRIVE       PVTv2B2   isic2018       0.772438          49   0.54      0.774923        0.784390       0.785117         0.792972       0.785486         0.793755  0.648020  0.802159  0.978332  0.774542 0.021668  7.254971 1.485548 0.908705         0.788183\n"}
+,{"stream_name":"stdout","time":10325.962167943,"data":"==========================================================================================\n"}
+,{"stream_name":"stderr","time":10337.009658785,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":10337.009695801,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":10337.464886812,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":10337.464911724,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":10338.493315355,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":10340.232459712,"data":"[NbConvertApp] Writing 528793 bytes to __results__.html\n"}
+]
