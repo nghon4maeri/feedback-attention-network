@@ -1,0 +1,23 @@
+{
+  "id": "namnguynnnn/gdfnetv4-s18-heavy-aug-em-chase-drive",
+  "title": "GDFNetV4 S18 Heavy Aug EM CHASE DRIVE",
+  "code_file": "run_gdfnet_v4_canonical_s18_heavy_aug_em_chase_drive.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "keywords": [
+    "gpu"
+  ],
+  "dataset_sources": [
+    "kmader/electron-microscopy-3d-segmentation",
+    "namnguynnnn/chase-db1",
+    "namnguynnnn/drive-vessel",
+    "namnguynnnn/gdfnetv4-isic-pretrained"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}
