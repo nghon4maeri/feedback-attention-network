@@ -442,11 +442,12 @@ class EMSliceDatasetV4(Dataset):
 
         if is_train:
             self.transform = A.Compose([
-                A.RandomResizedCrop(size=(img_size, img_size), scale=(0.70, 1.0), p=0.6),
+                A.RandomResizedCrop(size=(img_size, img_size), scale=(0.70, 1.0), p=0.60),
+                A.Resize(height=img_size, width=img_size),
                 A.HorizontalFlip(p=0.5),
                 A.VerticalFlip(p=0.5),
                 A.RandomRotate90(p=0.5),
-                A.Affine(scale=(0.85, 1.15), translate_percent=(-0.08, 0.08), rotate=(-180, 180), p=0.6),
+                A.Affine(scale=(0.85, 1.15), translate_percent=(-0.08, 0.08), rotate=(-180, 180), p=0.60),
                 A.OneOf([
                     A.ElasticTransform(alpha=40, sigma=5, p=1.0),
                     A.GridDistortion(p=1.0),
@@ -456,15 +457,14 @@ class EMSliceDatasetV4(Dataset):
                     A.MotionBlur(blur_limit=5, p=1.0),
                 ], p=0.25),
                 A.OneOf([
-                    A.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, p=1.0),
+                    A.ColorJitter(brightness=0.20, contrast=0.20, saturation=0.20, p=1.0),
                     A.RandomGamma(gamma_limit=(85, 115), p=1.0),
-                ], p=0.4),
-                A.CoarseDropout(num_holes_range=(1, 4), hole_height_range=(12, 28), hole_width_range=(12, 28), fill=0, fill_mask=0, p=0.25),
+                ], p=0.40),
                 A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
             ])
         else:
             self.transform = A.Compose([
-                A.Resize(img_size, img_size),
+                A.Resize(height=img_size, width=img_size),
                 A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
             ])
 
@@ -573,12 +573,13 @@ class RetinalDatasetV4(Dataset):
 
         if is_train:
             self.transform = A.Compose([
-                A.RandomResizedCrop(size=(img_size, img_size), scale=(0.75, 1.0), p=0.5),
-                A.CLAHE(clip_limit=2.5, tile_grid_size=(8, 8), p=0.6),
+                A.RandomResizedCrop(size=(img_size, img_size), scale=(0.75, 1.0), p=0.60),
+                A.Resize(height=img_size, width=img_size),
+                A.CLAHE(clip_limit=2.5, tile_grid_size=(8, 8), p=0.60),
                 A.HorizontalFlip(p=0.5),
                 A.VerticalFlip(p=0.5),
                 A.RandomRotate90(p=0.5),
-                A.Affine(scale=(0.88, 1.12), translate_percent=(-0.06, 0.06), rotate=(-180, 180), p=0.6),
+                A.Affine(scale=(0.88, 1.12), translate_percent=(-0.06, 0.06), rotate=(-180, 180), p=0.60),
                 A.OneOf([
                     A.ElasticTransform(alpha=30, sigma=5, p=1.0),
                     A.GridDistortion(p=1.0),
@@ -587,13 +588,12 @@ class RetinalDatasetV4(Dataset):
                     A.GaussianBlur(blur_limit=(3, 5), p=1.0),
                     A.MotionBlur(blur_limit=5, p=1.0),
                 ], p=0.25),
-                A.ColorJitter(brightness=0.20, contrast=0.20, saturation=0.20, hue=0.05, p=0.4),
-                A.CoarseDropout(num_holes_range=(1, 4), hole_height_range=(10, 24), hole_width_range=(10, 24), fill=0, fill_mask=0, p=0.25),
+                A.ColorJitter(brightness=0.20, contrast=0.20, saturation=0.20, hue=0.05, p=0.40),
                 A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
             ])
         else:
             self.transform = A.Compose([
-                A.Resize(img_size, img_size),
+                A.Resize(height=img_size, width=img_size),
                 A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
             ])
 
