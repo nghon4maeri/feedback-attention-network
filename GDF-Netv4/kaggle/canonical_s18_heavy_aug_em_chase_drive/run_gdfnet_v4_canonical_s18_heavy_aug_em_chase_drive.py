@@ -780,7 +780,10 @@ def find_pretrained_isic_checkpoint(backbone_tag):
 
 def run_experiment(dataset_tag, train_loader, val_loader, test_loader, backbone_name, backbone_tag, epochs, device, output_dir, warm_start_mode="isic2018", loss_kernel_size=15, grad_accum=2):
     set_seed(42)
-    run_id = f"{dataset_tag}_{backbone_tag}_{warm_start_mode}"
+    ws_tag = "chase_db1" if ("CHASE" in str(warm_start_mode) or "chase" in str(warm_start_mode)) else (
+        "isic2018" if warm_start_mode == "isic2018" else os.path.splitext(os.path.basename(str(warm_start_mode)))[0]
+    )
+    run_id = f"{dataset_tag}_{backbone_tag}_{ws_tag}"
     print("\n" + "=" * 80, flush=True)
     print(f"[*] STARTING GDF-Netv4 TRAINING: {run_id} ({epochs} Epochs)", flush=True)
     print(f"[*] Backbone: {backbone_name} | Warm-Start Mode: {warm_start_mode} | Loss Kernel: {loss_kernel_size}", flush=True)
@@ -938,7 +941,7 @@ def run_experiment(dataset_tag, train_loader, val_loader, test_loader, backbone_
     return checkpoint_best, {
         'Dataset': dataset_tag,
         'Backbone': backbone_tag,
-        'Warm_Start': warm_start_mode if not warm_start_mode.endswith(".pth") else "custom_ckpt",
+        'Warm_Start': ws_tag,
         'Best_Val_Dice': best_val_dice,
         'Best_Epoch': best_epoch,
         'T_opt': opt_t,
