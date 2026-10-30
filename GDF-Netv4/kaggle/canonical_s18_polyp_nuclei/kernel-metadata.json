@@ -1,0 +1,24 @@
+{
+  "id": "namnguynnnn/gdfnetv4-canonical-s18-polyp-nuclei",
+  "title": "GDFNetV4 Canonical S18 Polyp Nuclei",
+  "code_file": "run_gdfnet_v4_canonical_s18_polyp_nuclei.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "keywords": [
+    "gpu"
+  ],
+  "dataset_sources": [
+    "namnguynnnn/cvc-clinicdb",
+    "namnguynnnn/kvasir-seg",
+    "namnguynnnn/gdfnetv4-isic-pretrained"
+  ],
+  "competition_sources": [
+    "data-science-bowl-2018"
+  ],
+  "kernel_sources": [],
+  "model_sources": []
+}
