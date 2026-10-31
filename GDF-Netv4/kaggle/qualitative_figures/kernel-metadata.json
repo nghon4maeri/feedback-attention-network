@@ -1,0 +1,19 @@
+{
+  "id": "namnguynnnn/gdfnetv4-export-qualitative-figures",
+  "title": "GDF-Netv4 Export Qualitative Figures",
+  "code_file": "run_export_qualitative_figures.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": "true",
+  "enable_gpu": "true",
+  "enable_tpu": "false",
+  "enable_internet": "true",
+  "dataset_sources": [
+    "namnguynnnn/gdfnetv4-isic-pretrained"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [
+    "namnguynnnn/gdfnetv4-canonical-s18-polyp-nuclei",
+    "namnguynnnn/gdfnetv4-s18-heavy-aug-em-chase-drive"
+  ]
+}
